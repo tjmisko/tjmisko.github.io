@@ -54,7 +54,9 @@ minima:
 # Build settings
 markdown: kramdown
 
-gems: jekyll-seo-tag
+plugins:
+ - jekyll-feed
+ - jekyll-seo-tag
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
