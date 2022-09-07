@@ -13,7 +13,7 @@
   height: 600px;
   box-shadow: -50px;
   padding: $spacing-unit 0;
-  background-color: #1c5891;
+  background-image: linear-gradient(to bottom right, #1c5891, #1c9891);
 }
 
 .home-navigation-box{
@@ -23,22 +23,20 @@
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    background-color: #1c5891;
 }
 
 .home-navigation-page{
+    position: relative;
     margin: 10px;
-    font-size:18pt;
 }
 
 .home-navigation-page:hover{
-    color: red;
+    color: #fc3705;
     transition: 0.25s;
 }
 
 .home-navigation-dropdown{
     position: relative;
-    font-size:18pt;
     margin: 10px;
 }
 
@@ -48,11 +46,12 @@
     opacity: 0%;
     max-height: 0px;
     z-index: 1;
-    transition: max-height 0.5s ease, opacity 0.75s ease;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    transition-delay: 0.05s;
 }
 
 .home-navigation-dropdown:hover{
-    color: red;
+    color: #fc3705;
     .home-navigation-dropdown-content {
         color: #ddd;
         font-size: 15pt;
@@ -60,5 +59,38 @@
         max-height: 300px;
         opacity: 100%;
         transition: max-height 0.5s ease, opacity 0.75s ease;
+        transition-delay: 0.35s;
     }
+}
+
+.home-navigation-subdropdown{
+    position: relative;
+    margin: 10px;
+}
+
+.home-navigation-subdropdown-content{
+    visibility: hidden;
+    position: relative;
+    opacity: 0%;
+    max-height: 0px;
+    z-index: 1;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    transition-delay: 0.15s;
+}
+
+.home-navigation-subdropdown:hover{
+    color: #fc3705;
+    .home-navigation-subdropdown-content {
+        color: #ddd;
+        font-size: 15pt;
+        visibility: visible;
+        max-height: 300px;
+        opacity: 100%;
+        transition: max-height 0.5s ease, opacity 0.75s ease;
+        transition-delay: 0.5s;
+    }
+}
+
+.home-navigation-label{
+    color: #ddd;
 }
