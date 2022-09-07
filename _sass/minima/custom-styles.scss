@@ -3,6 +3,8 @@
 
 
 .sidebar {
+  color: #ddd;
+  font-size: 18pt;
   position: relative;
   margin-right: 0px;
   margin-left: auto;
@@ -26,7 +28,6 @@
 
 .home-navigation-page{
     margin: 10px;
-    background-color: #1c5891;
     font-size:18pt;
 }
 
@@ -39,23 +40,25 @@
     position: relative;
     font-size:18pt;
     margin: 10px;
-    background-color: #1c5891;
 }
 
 .home-navigation-dropdown-content{
     visibility: hidden;
     position: relative;
     opacity: 0%;
-    font-size: 15pt;
-    background-color: #1c5891;
-    min-width: 160px;
-    height: 0px;
+    max-height: 0px;
     z-index: 1;
-    transition: 0.5s;
+    transition: max-height 0.5s ease, opacity 0.75s ease;
 }
 
-.home-navigation-dropdown:hover .home-navigation-dropdown-content {
-    visibility: visible;
-    height: 100px;
-    opacity: 100%;
+.home-navigation-dropdown:hover{
+    color: red;
+    .home-navigation-dropdown-content {
+        color: #ddd;
+        font-size: 15pt;
+        visibility: visible;
+        max-height: 300px;
+        opacity: 100%;
+        transition: max-height 0.5s ease, opacity 0.75s ease;
+    }
 }
