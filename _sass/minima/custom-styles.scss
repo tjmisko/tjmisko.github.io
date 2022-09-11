@@ -118,7 +118,7 @@
 }
 
 .main-blurb{
-    color: #ddd;
+    color: white;
     max-width: 800px;
     margin: auto;
 }
@@ -129,22 +129,43 @@
 
 .lower-page-flex-container{
     display:flex;
+    background-color: #1e3840;
+
+
 }
 
 .blurb-box{
     margin-left: auto;
     margin-right: auto;
     width: 300px;
+
+}
+
+.blurb-title-box{
+    border-bottom-style: solid;
+    height: 50px;
+    border-color: white;
+
 }
 
 .blurb-title{
     font-size: 20pt;
-    border-bottom-style: solid;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.blurb-content-box{
+    margin-top: 20px;
+}
+
+.blurb-content{
+    color: white;
+
 }
 
 
 .research-papers-box{
-    background-color: purple;
+    background-color: #1e3840;
     color: white;
     height: 300px;
 }
