@@ -1,31 +1,36 @@
 // Placeholder to allow defining custom styles that override everything else.
 // (Use `_sass/minima/custom-variables.scss` to override variable defaults)
 
+.homepage-content{
+    display: flex;
+    margin: 0px;
+}
 
+//sidebar setup
 .sidebar {
-  color: #ddd;
-  font-size: 18pt;
-  position: relative;
-  margin-right: 0px;
-  margin-left: auto;
-  right: 0px;
-  max-width:400px;
-  height: 600px;
-  box-shadow: -50px;
-  padding: $spacing-unit 0;
-  background-image: linear-gradient(to bottom right, #1c5891, #1c9891);
+  color: #a5cbd7;
+  flex: 1;
+  text-align: left;
+  font-size: 14pt;
+  background-color: #1e3840;
+  height: 70vh;
+  border-color: #ddd;
+  border-left-style: solid;
+  min-width: 150px;
+  max-width: 180px;
 }
 
 .home-navigation-box{
     position: relative;
     margin: 10px;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+    top: 10%;
+    //-webkit-transform: translateY(-30%);
+    //-ms-transform: translateY(-30%);
+    //transform: translateY(-30%);
 }
 
 .home-navigation-page{
+    color: #a5cbd7;
     position: relative;
     margin: 10px;
 }
@@ -53,8 +58,8 @@
 .home-navigation-dropdown:hover{
     color: #fc3705;
     .home-navigation-dropdown-content {
-        color: #ddd;
-        font-size: 15pt;
+        color: #a5cbd7;
+        font-size: 12pt;
         visibility: visible;
         max-height: 300px;
         opacity: 100%;
@@ -81,8 +86,8 @@
 .home-navigation-subdropdown:hover{
     color: #fc3705;
     .home-navigation-subdropdown-content {
-        color: #ddd;
-        font-size: 15pt;
+        color: #a5cbd7;
+        font-size: 10pt;
         visibility: visible;
         max-height: 300px;
         opacity: 100%;
@@ -92,5 +97,61 @@
 }
 
 .home-navigation-label{
+    color: #a5cbd7;
+}
+
+// homepage setup
+.front-page-container {
+    flex: 1;
+    background-color: #1e3840;
+    height: 70vh;
+}
+
+.front-page-content{
+    margin: 50px 20px;
+}
+.page-title{
+    color: #a5cbd7;
+    text-align: center;
+    font-size: 36pt;
+    margin: 10px;
+}
+
+.main-blurb{
     color: #ddd;
+    max-width: 800px;
+    margin: auto;
+}
+
+.lower-page-container{
+    position: relative;
+}
+
+.lower-page-flex-container{
+    display:flex;
+}
+
+.blurb-box{
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+}
+
+.blurb-title{
+    font-size: 20pt;
+    border-bottom-style: solid;
+}
+
+
+.research-papers-box{
+    background-color: purple;
+    color: white;
+    height: 300px;
+}
+
+.research-papers-box-title{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    max-width: 500px;
 }
