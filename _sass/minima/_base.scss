@@ -20,7 +20,6 @@ dl, dd, ol, ul, figure {
  */
 body {
   font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
-  color: $text-color;
   background-color: $background-color;
   -webkit-text-size-adjust: 100%;
   -webkit-font-feature-settings: "kern" 1;
@@ -111,26 +110,6 @@ h1, h2, h3, h4, h5, h6 {
 /**
  * Links
  */
-a {
-  color: #a5cbd7;
-  text-decoration: none;
-
-  &:visited {
-    color: #a5cbd7;
-  }
-
-  &:hover {
-    color: #fc3705;
-  }
-
-  .social-media-list &:hover {
-    text-decoration: none;
-
-    .username {
-      text-decoration: underline;
-    }
-  }
-}
 
 
 /**
