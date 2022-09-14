@@ -13,7 +13,7 @@
   text-align: right;
   font-size: 16pt;
   background-color: #1e3840;
-  height: 50vh;
+  height: 60vh;
   border-color: #1e3840;
   border-left-style: solid;
   min-width: 150px;
@@ -85,7 +85,7 @@
     max-height: 0px;
     z-index: 1;
     transition: max-height 0.5s ease, opacity 0.5s ease;
-    transition-delay: 5s;
+    transition-delay: 0.95s;
 }
 
 .home-navigation-subdropdown:hover{
@@ -109,11 +109,11 @@
 .front-page-container {
     flex: 1;
     background-color: #1e3840;
-    height: 50vh;
+    height: 60vh;
 }
 
 .front-page-content{
-    margin: 70px 20px;
+    margin: 125px 20px;
 }
 
 .page-title{
