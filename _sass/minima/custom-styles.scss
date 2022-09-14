@@ -10,20 +10,20 @@
 .sidebar {
   color: #a5cbd7;
   flex: 1;
-  text-align: left;
-  font-size: 14pt;
+  text-align: right;
+  font-size: 16pt;
   background-color: #1e3840;
-  height: 70vh;
-  border-color: #ddd;
+  height: 50vh;
+  border-color: #1e3840;
   border-left-style: solid;
   min-width: 150px;
-  max-width: 180px;
+  max-width: 200px;
 }
 
 .home-navigation-box{
     position: relative;
-    margin: 10px;
-    top: 10%;
+    margin: 40px;
+    top: 60px;
     //-webkit-transform: translateY(-30%);
     //-ms-transform: translateY(-30%);
     //transform: translateY(-30%);
@@ -35,8 +35,13 @@
     margin: 10px;
 }
 
+.home-page-link:hover{
+    color: white;
+    transition: 0.25s;
+}
+
 .home-navigation-page:hover{
-    color: #fc3705;
+    color: white;
     transition: 0.25s;
 }
 
@@ -56,9 +61,9 @@
 }
 
 .home-navigation-dropdown:hover{
-    color: #fc3705;
+    color: white;
     .home-navigation-dropdown-content {
-        color: #a5cbd7;
+        color: #a5cbd7;;
         font-size: 12pt;
         visibility: visible;
         max-height: 300px;
@@ -80,13 +85,13 @@
     max-height: 0px;
     z-index: 1;
     transition: max-height 0.5s ease, opacity 0.5s ease;
-    transition-delay: 0.15s;
+    transition-delay: 5s;
 }
 
 .home-navigation-subdropdown:hover{
-    color: #fc3705;
+    color: white;
     .home-navigation-subdropdown-content {
-        color: #a5cbd7;
+        color: white;
         font-size: 10pt;
         visibility: visible;
         max-height: 300px;
@@ -104,32 +109,38 @@
 .front-page-container {
     flex: 1;
     background-color: #1e3840;
-    height: 70vh;
+    height: 50vh;
 }
 
 .front-page-content{
-    margin: 50px 20px;
+    margin: 70px 20px;
 }
+
 .page-title{
     color: #a5cbd7;
     text-align: center;
-    font-size: 36pt;
+    font-size: 60pt;
     margin: 10px;
+    font-weight: bold;
 }
 
 .main-blurb{
     color: white;
-    max-width: 800px;
+    max-width: 600px;
+    font-size: 22px;
     margin: auto;
+    text-align: center;
 }
 
 .lower-page-container{
     position: relative;
+
 }
 
 .lower-page-flex-container{
     display:flex;
     background-color: #1e3840;
+    height: 30vh;
 
 
 }
@@ -143,19 +154,21 @@
 
 .blurb-title-box{
     border-bottom-style: solid;
-    height: 50px;
+    height: 40px;
     border-color: white;
 
 }
 
 .blurb-title{
-    font-size: 20pt;
+    font-size: 16pt;
     color: white;
+    margin-top: 20px;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .blurb-content-box{
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .blurb-content{
