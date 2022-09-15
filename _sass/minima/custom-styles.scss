@@ -18,7 +18,7 @@
   font-size: 14pt;
   font-family: 'IBM Plex Mono', monospace;
   background-color: #1e3840;
-  height: 60vh;
+  height: 85vh;
   border-color: #1e3840;
   border-left-style: solid;
   min-width: 150px;
@@ -117,7 +117,7 @@
 .front-page-container {
     flex: 1;
     background-color: #1e3840;
-    height: 60vh;
+    height: 85vh;
 }
 
 .front-page-content{
@@ -151,7 +151,10 @@
 .lower-page-flex-container{
     display:flex;
     background-color: #1e3840;
-    height: 30vh;
+    height: 25vh;
+    margin-top: 50px;
+    margin-right:100px;
+    margin-left:150px;
 
 
 
