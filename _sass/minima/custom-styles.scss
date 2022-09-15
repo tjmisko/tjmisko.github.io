@@ -7,6 +7,7 @@
 .homepage-content{
     display: flex;
     margin: 0px;
+
 }
 
 //sidebar setup
@@ -108,14 +109,15 @@
 
 .home-navigation-label{
     color: #a5cbd7;
+
 }
 
 // homepage setup
+
 .front-page-container {
     flex: 1;
     background-color: #1e3840;
     height: 60vh;
-
 }
 
 .front-page-content{
@@ -125,7 +127,7 @@
 .page-title{
     color: #a5cbd7;
     text-align: center;
-    font-size: 60pt;
+    font-size: 50pt;
     margin: 10px;
     font-weight: bold;
     font-family: 'IBM Plex Mono', monospace;
@@ -150,6 +152,7 @@
     display:flex;
     background-color: #1e3840;
     height: 30vh;
+
 
 
 }
@@ -180,6 +183,7 @@
 
 .blurb-content-box{
     margin-top: 10px;
+    margin-bottom: 20px
 }
 
 .blurb-content{
@@ -188,15 +192,34 @@
 }
 
 
-.research-papers-box{
+.research-papers-container{
     background-color: #1e3840;
     color: white;
-    height: 300px;
+    height: 500px;
 }
 
-.research-papers-box-title{
+.research-papers-container-title{
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 30px;
     text-align: center;
     max-width: 500px;
+    font-family: 'IBM Plex Mono', monospace;
+
+}
+
+.research-flex-container{
+    display:flex;
+    background-color: #1e3840;
+    height: 30vh;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.research-paper-box{
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    height: 300px;
+    font-family: 'IBM Plex Mono', monospace;
 }
