@@ -4,22 +4,23 @@
 
   <body>
 
-    {%- include researchheader.html -%}
+    {%- include research-header.html -%}
 
     <main class="page-content" aria-label="Content">
-      <div class="wrapper">
-          <article class="post">
-
-            <header class="post-header">
-              <h1 class="post-title">{{ page.title | escape }}</h1>
-            </header>
-
-            <div class="post-content">
-              {{ content }}
+        <div class="toc-box">
+            <div class="toc-wrapper">
+                <div class="toc">
+                    <h1 class="toc-header">contents</h1>
+                    {%- include SSPI-research-toc.html -%}
+                </div>
             </div>
-
-          </article>
-      </div>
+        </div>
+        <div class="article-wrapper">
+            <div class="article-content">
+                {%- include SSPI-research-article.html -%}
+                {{ content }}
+            </div>
+        </div>
     </main>
 
     {%- include footer.html -%}

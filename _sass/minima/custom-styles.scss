@@ -168,13 +168,16 @@ header {
 
 .site-title{
     float: left;
-    margin: 5px;
-    text-align: center;
-    min-width: 150px;
+    margin: auto 10px;
+    min-width:8%;
+    #home-icon{
+        max-width: 30px;
+        margin: auto;
+    }
 }
 
 .research-page-nav-wrapper{
-    margin: auto 90px;
+    margin: auto 50px;
     width: 100%;
 }
 
@@ -191,4 +194,55 @@ header {
     font-weight: bold;
     color: #555;
     margin: auto 20px;
+}
+
+//research page format
+.toc-box{
+    color: #a5cbd7;
+    background-color: #1e3840;
+    float: left;
+    height: 100%;
+    width: 250px;
+}
+
+.toc-wrapper{
+    width: 200px;
+    margin: 40px auto;
+}
+
+.toc-header{
+    border-bottom-style: solid;
+    border-color: #ddd;
+    padding: 5px 0px;
+}
+
+.heading-link-box{
+    padding: 10px 0px;
+    border-bottom-style: solid;
+    border-color: #ddd;
+}
+
+.heading-link{
+    color: #ddd;
+}
+
+.article-wrapper{
+    color: #ddd;
+    float: auto;
+    overflow: hidden;
+    background-color: #1e3840;
+}
+
+.article-content{
+    margin: 15px 25px;
+}
+
+.research-title-box{
+    border-bottom-style: solid;
+    border-color: white;
+    text-align: center;
+}
+
+#SSPI-title{
+    color: #a5cbd7;
 }
