@@ -199,15 +199,15 @@ header {
 //research page format
 .toc-box{
     color: #a5cbd7;
-    background-color: #1e3840;
     float: left;
     height: 100%;
-    width: 250px;
+    width: 20%;
+    min-width: 220px;
 }
 
 .toc-wrapper{
     width: 200px;
-    margin: 40px auto;
+    margin: 50px auto;
 }
 
 .toc-header{
@@ -230,11 +230,13 @@ header {
     color: #ddd;
     float: auto;
     overflow: hidden;
-    background-color: #1e3840;
+    margin: 20px 30px;
 }
 
 .article-content{
-    margin: 15px 25px;
+    margin: auto;
+    min-width: 600px;
+    max-width: 800px;
 }
 
 .research-title-box{
