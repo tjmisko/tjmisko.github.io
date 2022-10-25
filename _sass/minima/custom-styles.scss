@@ -245,6 +245,44 @@ header {
     text-align: center;
 }
 
-#SSPI-title{
+#SSPI-title {
     color: #a5cbd7;
+}
+
+.stackbar {
+    background-color: white;
+}
+
+.block {
+    position: relative;
+    margin: 5px;
+    background-color: red;
+}
+
+
+#bar-container {
+    position: relative;
+    width: 90%;
+    height: 400px;
+    margin: auto;
+    background-color: blue;
+    padding: 10px;
+}
+
+#cat-wrapper {
+    margin: auto;
+    background-color: red;
+    position: absolute;
+    height: 40px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.cat {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+    min-width: 100px
 }
