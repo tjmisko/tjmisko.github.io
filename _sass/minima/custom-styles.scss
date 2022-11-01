@@ -144,7 +144,7 @@
 
 
 .research-papers-box{
-    background-color: purple;
+    background-color: red;
     color: white;
     height: 300px;
 }
@@ -286,3 +286,53 @@ header {
     margin: 5px;
     min-width: 100px
 }
+
+
+
+//time tracker css stuff
+
+.TT-homepage-container {
+    display: flex;
+    margin: 20px;
+    justify-content: center;
+}
+
+.graph-container {
+    padding: 10px;
+    color: white;
+    height: 500px;
+    width: 600px;
+    background-color: #0F5573;
+    justify-content: middle;
+}
+
+.bar-graphs {
+    display: flex;
+    justify-content: center;
+}
+
+.graph {
+    margin: 10px;
+    height: 300px;
+    width: 90px;
+    background-color: #F1A540;
+}
+
+.button-container {
+    padding: 10px;
+}
+
+.table-container {
+    height: 500px;
+    margin-left: 20px;
+    padding: 10px;
+    color: white;
+    background-color: #0F5573;
+}
+
+.timePeriod {
+    text-align: center;
+}
+
+
+
