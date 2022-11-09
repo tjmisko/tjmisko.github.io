@@ -287,13 +287,17 @@ header {
     min-width: 100px
 }
 
-
-
 //time tracker css stuff
+
+.TT-page-content {
+    background-color: #074864;
+    position: relative;
+    height: 100vh;
+}
 
 .TT-homepage-container {
     display: flex;
-    margin: 20px;
+    margin:  100px;
     justify-content: center;
 }
 
@@ -304,6 +308,7 @@ header {
     width: 600px;
     background-color: #0F5573;
     justify-content: middle;
+    border-radius: 40px;
 }
 
 .bar-graphs {
@@ -327,12 +332,18 @@ header {
     margin-left: 20px;
     padding: 10px;
     color: white;
-    background-color: #0F5573;
 }
 
 .timePeriod {
     text-align: center;
 }
 
-
+.table {
+    margin: 10px;
+    height: 200px;
+    width: 400px;
+    margin: 30px 30px 30px 30px;
+    background-color: #0F5573;
+    border-radius: 40px;
+}
 

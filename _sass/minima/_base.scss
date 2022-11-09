@@ -28,6 +28,7 @@ body {
           font-feature-settings: "kern" 1;
   font-kerning: normal;
   display: flex;
+  position: relative;
   min-height: 100vh;
   flex-direction: column;
   overflow-wrap: break-word;
