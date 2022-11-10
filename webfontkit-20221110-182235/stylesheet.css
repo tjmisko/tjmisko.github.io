@@ -4,8 +4,8 @@
 
 @font-face {
     font-family: 'heeboregular';
-    src: url('heebo-variablefont_wght-webfont.woff2') format('woff2'),
-         url('heebo-variablefont_wght-webfont.woff') format('woff');
+    src: url('https://github.com/tjmisko/tjmisko.github.io/blob/timeTracker-homepage/webfontkit-20221110-182235/heebo-variablefont_wght-webfont.woff2') format('woff2'),
+         url('https://github.com/tjmisko/tjmisko.github.io/blob/timeTracker-homepage/webfontkit-20221110-182235/heebo-variablefont_wght-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 
