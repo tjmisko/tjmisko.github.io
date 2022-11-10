@@ -2,6 +2,13 @@
 
 Use this document to record ideas, implementation details, and questions.  Never delete anything from here.  Use '##' followed by the date to add a new entry, using your name and bullet points. Document should be a reverse chronology
 
+## 6 November 2022
+Tristan and Jen at MY Coffee Roastery:
+* Jen implements width stuff and rounded corners
+* Put a timetracker.html layout in _layouts folder
+* Both look into the JavaScript stuffs and functional stuffs for GreenSock
+* Install greensock for animations and play around with stuff
+
 ## 25 October 2022
 Tristan:
 * I was working on the class structure and stuff for a while and I realized that I don't want to do any of that on the front end
