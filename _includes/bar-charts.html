@@ -1,31 +1,51 @@
 
-<div class ="bar-graphs">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/Draggable.min.js"></script>
+
+<body>
+  
+  <div class ="bar-graphs">
+    
+    <div class="container">
+      <div id="enrichment">
         <div class = "graph"></div>
-        <div class = "graph"></div>
-        <div class = "graph"></div>
-        <div class = "graph"></div>
+        enrichment 
       </div>
+    </div>
 
-      <div class="button-container">
-        <div class="timePeriod">
-          <label>
-            <input id="day" name="timePeriod" type="radio" value="day" checked=""/> Day
-          </label>
+    <div class = "graph"> graph B </div>
+    <div class = "graph"> graph C </div>
+    <div class = "graph"> graph D </div>
+
+    <script src="./draggable.js"></script>
+
+  </div>
+
+
+
+  <div class="button-container">
+    <div class="timePeriod">
+      <label>
+        <input id="day" name="timePeriod" type="radio" value="day" checked=""/> Day
+      </label>
           
-          <label>
-            <input id="week" name="timePeriod" type="radio" value="week"/> Week
-          </label>
+      <label>
+        <input id="week" name="timePeriod" type="radio" value="week"/> Week
+      </label>
           
-          <label>
-            <input id="month" name="timePeriod" type="radio" value="month"/> Month
-          </label>
+      <label>
+        <input id="month" name="timePeriod" type="radio" value="month"/> Month
+      </label>
 
-          <label>
-            <input id="year" name="timePeriod" type="radio" value ="year" /> Year
-          </label>
+      <label>
+        <input id="year" name="timePeriod" type="radio" value ="year" /> Year
+      </label>
 
-          <label>
-            <input id="calendar" name="timePeriod" type="radio" value ="calendar" /> Calendar
-          </label>
-        </div>
-      </div>
+      <label>
+        <input id="calendar" name="timePeriod" type="radio" value ="calendar" /> Calendar
+      </label>
+    </div>
+  </div>
+
+</body>
+  

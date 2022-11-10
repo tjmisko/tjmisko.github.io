@@ -157,8 +157,8 @@
 }
 
 
-// research header styling
-header {
+/*// research header styling*/
+.header {
     background-color: #c9d3d5;
 }
 .header-wrapper{
@@ -287,9 +287,10 @@ header {
     min-width: 100px
 }
 
-//time tracker css stuff
+/*time tracker css stuff*/
 
 .TT-page-content {
+    font-family: 'Heebo', monospace;
     background-color: #074864;
     position: relative;
     height: 100vh;
@@ -302,7 +303,7 @@ header {
 }
 
 .graph-container {
-    padding: 10px;
+    padding: 30px;
     color: white;
     height: 500px;
     width: 600px;
@@ -314,6 +315,7 @@ header {
 .bar-graphs {
     display: flex;
     justify-content: center;
+    text-align: center;
 }
 
 .graph {
@@ -345,5 +347,6 @@ header {
     margin: 30px 30px 30px 30px;
     background-color: #0F5573;
     border-radius: 40px;
+    padding: 30px;
 }
 
