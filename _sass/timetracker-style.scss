@@ -9,3 +9,45 @@
     background-color: red;
     margin: 30px;
 }
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+  width: 320px;
+  height: 500px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.list-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 90px;
+  width: 100%;
+}
+
+.item-content {
+  height: 100%;
+  border: 0px solid rgba(123, 123, 123, 0.498039);
+  border-radius: 4px;
+  color: rgb(153, 153, 153);
+  line-height: 90px;
+  padding-left: 32px;
+  font-size: 24px;
+  font-weight: 400;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0,0,0,0.2) 0px 1px 2px 0px;
+}
+
+.horizontal-slide-box {
+    height: 200px;
+    background-color: blue;
+}
+
+.h-element {
+    background-color: red;
+}

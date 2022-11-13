@@ -1,11 +1,16 @@
+// For my Red Square
 Draggable.create("#hello-world", {
     type: "x",
     bounds: document.getElementById("gs-background"),
     dragResistance: 0.15,
-    liveSnap: function(value) { return Math.round(value / 50) * 50;}
+    liveSnap: function(value) { return Math.round(value / 100) * 100;}
 });
 
-var rowSize   = 50; // => container height / number of items
+gsap.to("#hello-world", {x: 300, duration: 5}, 3)
+
+// For the list of sortable items
+
+var rowSize   = 100; // => container height / number of items
 var container = document.querySelector(".container");
 var listItems = Array.from(document.querySelectorAll(".list-item")); // Array of elements
 var sortables = listItems.map(Sortable); // Array of sortables
@@ -80,6 +85,7 @@ function Sortable(element, index) {
     var index = clamp(Math.round(this.y / rowSize), 0, total - 1);
 
     if (index !== sortable.index) {
+      console.log("switched position");
       changeIndex(sortable, index);
     }
   }
@@ -90,7 +96,7 @@ function Sortable(element, index) {
   }
 
   function layout() {
-    TweenLite.to(element, 0.3, { y: sortable.index * rowSize });
+    TweenLite.to(element, 0.1, { y: sortable.index * rowSize });
   }
 
   return sortable;
