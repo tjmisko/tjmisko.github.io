@@ -1,6 +1,10 @@
 # Running Ideation for Project
 
-Use this document to record ideas, implementation details, and questions.  Never delete anything from here.  Use '##' followed by the date to add a new entry, using your name and bullet points. Document should be a reverse chronology
+## 12 November 2022
+Tristan:
+* Merged all edits
+* Implemented working draggable in greensock_demo.html
+For Jen: Found https://greensock.com/forums/topic/14575-how-to-create-a-sortable-list-with-draggable/, which basically explains how to set this all up
 
 ## 6 November 2022
 Tristan and Jen at MY Coffee Roastery:
