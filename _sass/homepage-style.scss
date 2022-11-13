@@ -213,7 +213,7 @@ figure > img {
 
 
 .research-papers-box{
-    background-color: purple;
+    background-color: red;
     color: white;
     height: 300px;
 }
@@ -226,8 +226,8 @@ figure > img {
 }
 
 
-// research header styling
-header {
+/*// research header styling*/
+.header {
     background-color: #c9d3d5;
 }
 .header-wrapper{
@@ -356,16 +356,65 @@ header {
     min-width: 100px
 }
 
-#first-attempt {
-    background-color: yellow;
-    min-height: 200px;
-    min-width: 200px;
-    margin: 10px;
+/*time tracker css stuff*/
+
+.TT-page-content {
+    font-family: 'Heebo', monospace;
+    background-color: #074864;
+    position: relative;
+    height: 100vh;
 }
 
-#second-attempt {
-    background-color: blue;
-    min-height: 200px;
-    min-width: 200px;
+.TT-homepage-container {
+    display: flex;
+    margin:  100px;
+    justify-content: center;
+}
+
+.graph-container {
+    padding: 30px;
+    color: white;
+    height: 500px;
+    width: 600px;
+    background-color: #0F5573;
+    justify-content: middle;
+    border-radius: 40px;
+}
+
+.bar-graphs {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.graph {
     margin: 10px;
+    height: 300px;
+    width: 90px;
+    background-color: #F1A540;
+}
+
+.button-container {
+    padding: 10px;
+}
+
+.table-container {
+    height: 500px;
+    margin-left: 20px;
+    padding: 10px;
+    color: white;
+}
+
+.timePeriod {
+    text-align: center;
+}
+
+.table {
+    margin: 10px;
+    height: 200px;
+    width: 400px;
+    margin: 30px 30px 30px 30px;
+    background-color: #0F5573;
+    border-radius: 40px;
+    padding: 30px;
 }
