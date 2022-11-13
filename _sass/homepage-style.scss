@@ -1,6 +1,75 @@
 // Placeholder to allow defining custom styles that override everything else.
 // (Use `_sass/minima/custom-variables.scss` to override variable defaults)
 
+/**
+ * Reset some basic elements
+ */
+body, h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, hr,
+dl, dd, ol, ul, figure {
+  margin: 0;
+  padding: 0;
+
+}
+
+
+
+/**
+ * Basic styling
+ */
+body {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-feature-settings: "kern" 1;
+     -moz-font-feature-settings: "kern" 1;
+       -o-font-feature-settings: "kern" 1;
+          font-feature-settings: "kern" 1;
+  font-kerning: normal;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  overflow-wrap: break-word;
+}
+
+/**
+ * Set `margin-bottom` to maintain vertical rhythm
+ */
+
+
+/**
+ * `main` element
+ */
+main {
+  display: block; /* Default value of `display` of `main` element is 'inline' in IE 11. */
+}
+
+/**
+ * Images
+ */
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+/**
+ * Figures
+ */
+figure > img {
+  display: block;
+}
+
+/**
+ * Clearfix
+ */
+%clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.page-content{
+    background-color: #1e3840;
+}
 .homepage-content{
     display: flex;
     margin: 0px;
@@ -285,4 +354,18 @@ header {
     display: inline-block;
     margin: 5px;
     min-width: 100px
+}
+
+#first-attempt {
+    background-color: yellow;
+    min-height: 200px;
+    min-width: 200px;
+    margin: 10px;
+}
+
+#second-attempt {
+    background-color: blue;
+    min-height: 200px;
+    min-width: 200px;
+    margin: 10px;
 }

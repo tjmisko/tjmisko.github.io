@@ -1,0 +1,17 @@
+---
+layout: page
+---
+<div id="gs-background">
+    <div id="first-attempt">
+        Hello World
+    </div>
+    <div id="second-attempt">
+        <p> I <3 Jen</p>
+    </div>
+    <script>
+        gsap.to("#first-attempt", { x: 200, duration: 3});
+        gsap.to("#second-attempt", {y: -100, rotation: 360, duration: 10});
+        gsap.to("#first-attempt", {x: 0, skewX: 45, duration: 2}, 3);
+        gsap.to("#first-attempt", {skewX: -45, duration: 1}, 5);
+    </script>
+</div>
