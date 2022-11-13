@@ -20,7 +20,6 @@ dl, dd, ol, ul, figure {
  */
 body {
   font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
-  color: $text-color;
   background-color: $background-color;
   -webkit-text-size-adjust: 100%;
   -webkit-font-feature-settings: "kern" 1;
@@ -29,6 +28,7 @@ body {
           font-feature-settings: "kern" 1;
   font-kerning: normal;
   display: flex;
+  position: relative;
   min-height: 100vh;
   flex-direction: column;
   overflow-wrap: break-word;
@@ -104,32 +104,6 @@ li {
  */
 h1, h2, h3, h4, h5, h6 {
   font-weight: $base-font-weight;
-}
-
-
-
-/**
- * Links
- */
-a {
-  color: #a5cbd7;
-  text-decoration: none;
-
-  &:visited {
-    color: #a5cbd7;
-  }
-
-  &:hover {
-    color: #fc3705;
-  }
-
-  .social-media-list &:hover {
-    text-decoration: none;
-
-    .username {
-      text-decoration: underline;
-    }
-  }
 }
 
 
@@ -278,4 +252,8 @@ table {
     -webkit-overflow-scrolling: touch;
             -ms-overflow-style: -ms-autohiding-scrollbar;
   }
+}
+
+.page-content{
+    background-color: #1e3840;
 }

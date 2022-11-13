@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: research
 title: "SSPI Research"
 permalink: /Projects/SSPI/
 ---
@@ -32,12 +32,12 @@ the SSPI team, the SSPI contained only one indicator measuring inequality: the
 GINI Coefficient.  
 
 ### Data Collection for Extended Countries
-### Skills Demonstrated: Organization of complex task
+#### Skills Demonstrated: Organization of complex task
 As a team leader on the SSPI, I led a team of four undergraduates through the
 data collection process.  
 
 ### Reorganization of Market Structure Pillar
-### Skills Demonstrated
+#### Skills Demonstrated
 
 ### Outcome Variable Regressions
 

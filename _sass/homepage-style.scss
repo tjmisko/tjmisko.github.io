@@ -1,0 +1,420 @@
+// Placeholder to allow defining custom styles that override everything else.
+// (Use `_sass/minima/custom-variables.scss` to override variable defaults)
+
+/**
+ * Reset some basic elements
+ */
+body, h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, hr,
+dl, dd, ol, ul, figure {
+  margin: 0;
+  padding: 0;
+
+}
+
+
+
+/**
+ * Basic styling
+ */
+body {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-feature-settings: "kern" 1;
+     -moz-font-feature-settings: "kern" 1;
+       -o-font-feature-settings: "kern" 1;
+          font-feature-settings: "kern" 1;
+  font-kerning: normal;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  overflow-wrap: break-word;
+}
+
+/**
+ * Set `margin-bottom` to maintain vertical rhythm
+ */
+
+
+/**
+ * `main` element
+ */
+main {
+  display: block; /* Default value of `display` of `main` element is 'inline' in IE 11. */
+}
+
+/**
+ * Images
+ */
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+/**
+ * Figures
+ */
+figure > img {
+  display: block;
+}
+
+/**
+ * Clearfix
+ */
+%clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.page-content{
+    background-color: #1e3840;
+}
+.homepage-content{
+    display: flex;
+    margin: 0px;
+}
+
+//sidebar setup
+.sidebar {
+  color: #a5cbd7;
+  flex: 1;
+  text-align: left;
+  font-size: 14pt;
+  background-color: #1e3840;
+  height: 70vh;
+  border-color: #ddd;
+  border-left-style: solid;
+  min-width: 150px;
+  max-width: 180px;
+}
+
+.home-navigation-box{
+    position: relative;
+    margin: 10px;
+    top: 10%;
+    //-webkit-transform: translateY(-30%);
+    //-ms-transform: translateY(-30%);
+    //transform: translateY(-30%);
+}
+
+.home-navigation-page{
+    color: #a5cbd7;
+    position: relative;
+    margin: 10px;
+}
+
+.home-navigation-page:hover{
+    color: #fc3705;
+    transition: 0.25s;
+}
+
+.home-navigation-dropdown{
+    position: relative;
+    margin: 0px 10px;
+}
+
+.home-navigation-dropdown-content{
+    visibility: hidden;
+    position: relative;
+    opacity: 0%;
+    max-height: 0px;
+    z-index: 1;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    transition-delay: 0.05s;
+}
+
+.home-navigation-dropdown:hover{
+    color: #fc3705;
+    .home-navigation-dropdown-content {
+        color: #a5cbd7;
+        font-size: 12pt;
+        visibility: visible;
+        max-height: 300px;
+        opacity: 100%;
+        transition: max-height 0.5s ease, opacity 0.75s ease;
+        transition-delay: 0.35s;
+    }
+}
+
+.home-navigation-subdropdown{
+    position: relative;
+    margin: 10px;
+}
+
+.home-navigation-subdropdown-content{
+    visibility: hidden;
+    position: relative;
+    opacity: 0%;
+    max-height: 0px;
+    z-index: 1;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    transition-delay: 0.15s;
+}
+
+.home-navigation-subdropdown:hover{
+    color: #fc3705;
+    .home-navigation-subdropdown-content {
+        color: #a5cbd7;
+        font-size: 10pt;
+        visibility: visible;
+        max-height: 300px;
+        opacity: 100%;
+        transition: max-height 0.5s ease, opacity 0.75s ease;
+        transition-delay: 0.5s;
+    }
+}
+
+.home-navigation-label{
+    color: #a5cbd7;
+}
+
+// homepage setup
+.front-page-container {
+    flex: 1;
+    background-color: #1e3840;
+    height: 70vh;
+}
+
+.front-page-content{
+    margin: 50px 20px;
+}
+.page-title{
+    color: #a5cbd7;
+    text-align: center;
+    font-size: 36pt;
+    margin: 10px;
+}
+
+.main-blurb{
+    color: #ddd;
+    max-width: 800px;
+    margin: auto;
+}
+
+.lower-page-container{
+    position: relative;
+}
+
+.lower-page-flex-container{
+    display:flex;
+}
+
+.blurb-box{
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+}
+
+.blurb-title{
+    font-size: 20pt;
+    border-bottom-style: solid;
+}
+
+
+.research-papers-box{
+    background-color: red;
+    color: white;
+    height: 300px;
+}
+
+.research-papers-box-title{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    max-width: 500px;
+}
+
+
+/*// research header styling*/
+.header {
+    background-color: #c9d3d5;
+}
+.header-wrapper{
+    display: flex;
+    margin: 10px 5px;
+}
+
+.site-title{
+    float: left;
+    margin: auto 10px;
+    min-width:8%;
+    #home-icon{
+        max-width: 30px;
+        margin: auto;
+    }
+}
+
+.research-page-nav-wrapper{
+    margin: auto 50px;
+    width: 100%;
+}
+
+.research-page-nav-box{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.research-page-link-box{
+    display: flex;
+    justify-content: space-between;
+}
+.research-page-link{
+    font-weight: bold;
+    color: #555;
+    margin: auto 20px;
+}
+
+//research page format
+.toc-box{
+    color: #a5cbd7;
+    float: left;
+    height: 100%;
+    width: 20%;
+    min-width: 220px;
+}
+
+.toc-wrapper{
+    width: 200px;
+    margin: 50px auto;
+}
+
+.toc-header{
+    border-bottom-style: solid;
+    border-color: #ddd;
+    padding: 5px 0px;
+}
+
+.heading-link-box{
+    padding: 10px 0px;
+    border-bottom-style: solid;
+    border-color: #ddd;
+}
+
+.heading-link{
+    color: #ddd;
+}
+
+.article-wrapper{
+    color: #ddd;
+    float: auto;
+    overflow: hidden;
+    margin: 20px 30px;
+}
+
+.article-content{
+    margin: auto;
+    min-width: 600px;
+    max-width: 800px;
+}
+
+.research-title-box{
+    border-bottom-style: solid;
+    border-color: white;
+    text-align: center;
+}
+
+#SSPI-title {
+    color: #a5cbd7;
+}
+
+.stackbar {
+    background-color: white;
+}
+
+.block {
+    position: relative;
+    margin: 5px;
+    background-color: red;
+}
+
+
+#bar-container {
+    position: relative;
+    width: 90%;
+    height: 400px;
+    margin: auto;
+    background-color: blue;
+    padding: 10px;
+}
+
+#cat-wrapper {
+    margin: auto;
+    background-color: red;
+    position: absolute;
+    height: 40px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.cat {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+    min-width: 100px
+}
+
+/*time tracker css stuff*/
+
+.TT-page-content {
+    font-family: 'Heebo', monospace;
+    background-color: #074864;
+    position: relative;
+    height: 100vh;
+}
+
+.TT-homepage-container {
+    display: flex;
+    margin:  100px;
+    justify-content: center;
+}
+
+.graph-container {
+    padding: 30px;
+    color: white;
+    height: 500px;
+    width: 600px;
+    background-color: #0F5573;
+    justify-content: middle;
+    border-radius: 40px;
+}
+
+.bar-graphs {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.graph {
+    margin: 10px;
+    height: 300px;
+    width: 90px;
+    background-color: #F1A540;
+}
+
+.button-container {
+    padding: 10px;
+}
+
+.table-container {
+    height: 500px;
+    margin-left: 20px;
+    padding: 10px;
+    color: white;
+}
+
+.timePeriod {
+    text-align: center;
+}
+
+.table {
+    margin: 10px;
+    height: 200px;
+    width: 400px;
+    margin: 30px 30px 30px 30px;
+    background-color: #0F5573;
+    border-radius: 40px;
+    padding: 30px;
+}
