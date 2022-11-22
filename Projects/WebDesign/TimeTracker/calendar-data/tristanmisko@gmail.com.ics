@@ -1,0 +1,346 @@
+BEGIN:VCALENDAR
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:tristanmisko@gmail.com
+X-WR-TIMEZONE:America/Los_Angeles
+BEGIN:VEVENT
+DTSTART:20220620T101500Z
+DTEND:20220620T212000Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9tgslnkfmtdb3198lh001hs8gs22f311uuilarho08o1nrom40816g
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220318T224908Z
+DESCRIPTION:SK logo SAS SK 935 flight 935\nCopenhagen CPH 12:15pm (local ti
+ me) - San Francisco SFO 2:20pm (local time)\n\nConfirmation number: 7XEALI
+LAST-MODIFIED:20220609T030708Z
+LOCATION:Copenhagen CPH
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to San Francisco (SK 935)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20220619T110500Z
+DTEND:20220619T132000Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9trc30vqa4p0qmtlk37h088c6jek7kq9ic4ka11bl8rmmlsvv0bclg
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220318T224908Z
+DESCRIPTION:SK logo SAS SK 4604 flight 4604\nDublin DUB 12:05pm (local time
+ ) - Oslo OSL 3:20pm (local time)\n\nConfirmation number: 7XEALI
+LAST-MODIFIED:20220609T030708Z
+LOCATION:Dublin DUB
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to Oslo (SK 4604)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20220619T152000Z
+DTEND:20220619T163000Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9tsls620hjfnpoma4rui1ujsj7m738i71p5bmgk0oqophqfurh40a0
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220318T224908Z
+DESCRIPTION:SK logo SAS SK 1465 flight 1465\nOslo OSL 5:20pm (local time) -
+  Copenhagen CPH 6:30pm (local time)\n\nConfirmation number: 7XEALI
+LAST-MODIFIED:20220609T030708Z
+LOCATION:Oslo OSL
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to Copenhagen (SK 1465)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20220613T110000Z
+DTEND:20220613T121000Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9t65nvnfd16vqcdcvj083hngioh611p9e0sqdme3d5r0s5ecqrchtg
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220318T224908Z
+DESCRIPTION:Scandinavian Airlines flight 1422\nCopenhagen CPH 1:00pm (local
+  time) - Stockholm ARN 2:10pm (local time)\n\nConfirmation number: 7XEALI
+LAST-MODIFIED:20220612T205501Z
+LOCATION:Copenhagen CPH
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to Stockholm (SK 1422)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20220612T232500Z
+DTEND:20220613T095500Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9tivferjbgdlvbvsi5np4damistsncbsa2oqkkkqbql0o1ievog0tg
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220318T224908Z
+DESCRIPTION:Scandinavian Airlines flight 936\nSan Francisco SFO 4:25pm (loc
+ al time) - Copenhagen CPH 11:55am (local time)\n\nConfirmation number: 7XEA
+ LI
+LAST-MODIFIED:20220612T205501Z
+LOCATION:San Francisco SFO
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to Copenhagen (SK 936)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20220614T072000Z
+DTEND:20220614T100500Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9tah15tc456ffh5n91nq6ilg73s7dh09q4rev64kksdt9pv5b9p84g
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220318T224908Z
+DESCRIPTION:Scandinavian Airlines flight 535\nStockholm ARN 9:20am (local t
+ ime) - Dublin DUB 11:05am (local time)\n\nConfirmation number: 7XEALI
+LAST-MODIFIED:20220613T163137Z
+LOCATION:Stockholm ARN
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to Dublin (SK 535)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20220619T091000Z
+DTEND:20220619T181500Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9thdf4pol0s47kco5nkhbqi7utpnigk8c9ou9aeik7c2becl0956l0
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220618T131223Z
+DESCRIPTION:Scandinavian Airlines flight 536\nDublin DUB 10:10am (local tim
+ e) - Stockholm ARN 8:15pm (local time)\n\nConfirmation number: 2BUA7V
+LAST-MODIFIED:20220618T131223Z
+LOCATION:Dublin DUB
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to Stockholm (SK 536)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20220614
+DTEND;VALUE=DATE:20220617
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9triu8ssd09lbfqerf2qtvc1iuosp8qchqpak8kki535iquepj0o50
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220609T192429Z
+DESCRIPTION:Kinlay House Dublin\nDublin\n+353 1 679 6644\n\nCheck-in: Jun 1
+ 4\, 2022 2:00pm\nCheck-out: Jun 16\, 2022 10:00am\n
+LAST-MODIFIED:20220716T043425Z
+LOCATION:Kinlay House Dublin\, Dublin
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Stay at Kinlay House Dublin
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20220617
+DTEND;VALUE=DATE:20220620
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9tlnmf46qmhsf5efbps49d94isb1mk437kus8q1mik94f23rtbb190
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220609T031414Z
+DESCRIPTION:Abbey Court Hostel\nDublin\n+353 1 878 0700\n\nCheck-in: Jun 17
+ \, 2022 2:30pm\nCheck-out: Jun 19\, 2022 10:30am\n
+LAST-MODIFIED:20220716T102348Z
+LOCATION:Abbey Court Hostel\, Dublin
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Stay at Abbey Court Hostel
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20220823
+DTEND;VALUE=DATE:20221001
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9tmuaf5v1mp6tt7rcfabb9clqd3ol6h1b7f2u0rvg1pqqr2b5bml2g
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220821T181814Z
+DESCRIPTION:Private room hosted by Ahmad\nOakland\n\nCheck-in: Aug 23\, 202
+ 2 12:00am\nCheck-out: Sep 30\, 2022 3:00pm\n
+LAST-MODIFIED:20220821T181814Z
+LOCATION:Private room hosted by Ahmad\, Oakland
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Stay at Private room hosted by Ahmad
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20221001
+DTEND;VALUE=DATE:20221201
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9tm41uqlhm2ergmvckifoa8jefkn6tr5d4gghtjelmo2rg4nhv4mfg
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220809T084124Z
+DESCRIPTION:Private room hosted by Edward\nBerkeley\n\nCheck-in: Oct 1\, 20
+ 22 2:00pm\nCheck-out: Nov 30\, 2022 11:00am\n
+LAST-MODIFIED:20220821T210431Z
+LOCATION:Private room hosted by Edward\, Berkeley
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Stay at Private room hosted by Edward
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20220821T220000Z
+DTEND:20220821T230000Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=Unknown Organizer:mailto:unknownorganizer@calendar.google.com
+UID:7kukuqrfedlm2f9ts5r38koh6gcgd966s8q62d5aq49ndcpfs9hpuub66uouipcu3qqg
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220821T210429Z
+DESCRIPTION:Mari\n679 9th Ave\, New York\, NY 10036\n+1 646-649-3545
+LAST-MODIFIED:20220822T165923Z
+LOCATION:679 9th Ave\, New York\, NY 10036
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Reservation at Mari
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20220823T120000Z
+DTEND:20220823T175600Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9taas6cf99gn3chr10v6bnucifsfmpaq3ne77rptuel2jaa9aecg10
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220709T155145Z
+DESCRIPTION:Spirit Airlines flight 2168\nPhiladelphia PHL 8:00am (local tim
+ e) - Oakland OAK 10:56am (local time)\n\nConfirmation number: IW6WJB
+LAST-MODIFIED:20220824T172654Z
+LOCATION:Philadelphia PHL
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to Oakland (NK 2168)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20220822T220000Z
+DTEND:20220822T230000Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=Unknown Organizer:mailto:unknownorganizer@calendar.google.com
+UID:7kukuqrfedlm2f9td9j4qlf0ujr4s5an70s6pmibissa2nijt6ho51oqh1omika0r670
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20220820T233214Z
+DESCRIPTION:Sakagura\n211 E 43rd St B1\, New York\, NY 10017\n+1 212-953-72
+ 53
+LAST-MODIFIED:20220824T172705Z
+LOCATION:211 E 43rd St B1\, New York\, NY 10017
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Reservation at Sakagura
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20221216T052500Z
+DTEND:20221216T064400Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9tou0i4ro8p8l4qdbjspem0035ipvq3ee80n24ms2r2e5a4sh17ki0
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20221026T193050Z
+DESCRIPTION:JetBlue flight 2535\nSan Francisco SFO 9:25pm (local time) - Lo
+ s Angeles LAX 10:44pm (local time)\n\nConfirmation number: MECRDB
+LAST-MODIFIED:20221026T193050Z
+LOCATION:San Francisco SFO
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to Los Angeles (B6 2535)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20230116T223000Z
+DTEND:20230117T044000Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9td4bqrc02df27433b3grg0fk957k40cd9vril5hhvv2tgj1j7mrf0
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20221026T195637Z
+DESCRIPTION:Spirit Airlines flight 2410\nNewark EWR 5:30pm (local time) - O
+ akland OAK 8:40pm (local time)\n\nConfirmation number: VHMFSZ
+LAST-MODIFIED:20221026T195638Z
+LOCATION:Newark EWR
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to Oakland (NK 2410)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20221218T203500Z
+DTEND:20221219T013500Z
+DTSTAMP:20221116T032100Z
+ORGANIZER;CN=unknownorganizer@calendar.google.com:mailto:unknownorganizer@c
+ alendar.google.com
+UID:7kukuqrfedlm2f9tsi2834ptou9re4haim93rccraa1qbcd52h16hc39ci9q4mhj1ifg
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=trista
+ nmisko@gmail.com;X-NUM-GUESTS=0:mailto:tristanmisko@gmail.com
+CLASS:PRIVATE
+CREATED:20221026T194607Z
+DESCRIPTION:Spirit Airlines flight 266\nLos Angeles LAX 12:35pm (local time
+ ) - Philadelphia PHL 8:35pm (local time)\n\nConfirmation number: KIG94D
+LAST-MODIFIED:20221104T164752Z
+LOCATION:Los Angeles LAX
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Flight to Philadelphia (NK 266)
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

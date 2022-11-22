@@ -5,8 +5,7 @@ layout: time-tracker-layout
 <body>
 
   <div class="TT-homepage-container">
-    <div class="graph-container">
-       {% include bar-charts.html %}
+    <div id="graph-container">
     </div>
     <div class="table-container">
       {% include table.html %}
@@ -17,5 +16,6 @@ layout: time-tracker-layout
 
   <div id="list"></div>
 
-</body>
 
+  <script src="./horizontal_sortable.js"></script>
+</body>
