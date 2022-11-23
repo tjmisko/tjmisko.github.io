@@ -42,8 +42,4 @@ class barPlot {
     updateOrder(){
 
     }
-
-
-
-
 }

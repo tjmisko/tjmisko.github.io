@@ -2,11 +2,8 @@
 Draggable.create("#hello-world", {
     type: "x",
     bounds: document.getElementById("gs-background"),
-    dragResistance: 0.15,
-    liveSnap: function(value) { return Math.round(value / 100) * 100;}
+    dragResistance: 0.15
 });
-
-gsap.to("#hello-world", {x: 300, duration: 5}, 3)
 
 // For the list of sortable items
 
@@ -16,7 +13,7 @@ var listItems = Array.from(document.querySelectorAll(".list-item")); // Array of
 var sortables = listItems.map(Sortable); // Array of sortables
 var total     = sortables.length;
 
-TweenLite.to(container, 0.5, { autoAlpha: 1 });
+TweenLite.to(container, 1, { autoAlpha: 1 });
 
 function changeIndex(item, to) {
 
@@ -38,7 +35,6 @@ function changeIndex(item, to) {
 function Sortable(element, index) {
 
   var content = element.querySelector(".item-content");
-  var order   = element.querySelector(".order");
 
   var animation = TweenLite.to(content, 0.3, {
     boxShadow: "rgba(0,0,0,0.2) 0px 16px 32px 0px",
@@ -68,7 +64,6 @@ function Sortable(element, index) {
   function setIndex(index) {
 
     sortable.index = index;
-    order.textContent = index + 1;
 
     // Don't layout if you're dragging
     if (!dragger.isDragging) layout();
@@ -96,7 +91,7 @@ function Sortable(element, index) {
   }
 
   function layout() {
-    TweenLite.to(element, 0.1, { y: sortable.index * rowSize });
+    TweenLite.to(element, 0.2, { y: sortable.index * rowSize });
   }
 
   return sortable;
