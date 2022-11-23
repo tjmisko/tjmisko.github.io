@@ -13,6 +13,7 @@ var listItems = Array.from(document.querySelectorAll(".list-item")); // Array of
 var sortables = listItems.map(Sortable); // Array of sortables
 var total     = sortables.length;
 
+
 TweenLite.to(container, 1, { autoAlpha: 1 });
 
 function changeIndex(item, to) {
@@ -34,20 +35,19 @@ function changeIndex(item, to) {
 
 function Sortable(element, index) {
 
-  var content = element.querySelector(".item-content");
-
-  var animation = TweenLite.to(content, 0.3, {
-    boxShadow: "rgba(0,0,0,0.2) 0px 16px 32px 0px",
-    force3D: true,
-    scale: 1.1,
-    paused: true
-  });
+  // var content = element.querySelector(".item-content");
+  //
+  // var animation = TweenLite.to(content, 0.3, {
+  //   boxShadow: "rgba(0,0,0,0.2) 0px 16px 32px 0px",
+  //   force3D: true,
+  //   scale: 1.1,
+  //   paused: true
+  // });
 
   var dragger = new Draggable(element, {
     onDragStart: downAction,
     onRelease: upAction,
     onDrag: dragAction,
-    cursor: "inherit",
     type: "y"
   });
 
@@ -70,7 +70,6 @@ function Sortable(element, index) {
   }
 
   function downAction() {
-    animation.play();
     this.update();
   }
 
@@ -86,7 +85,6 @@ function Sortable(element, index) {
   }
 
   function upAction() {
-    animation.reverse();
     layout();
   }
 
