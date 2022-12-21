@@ -222,7 +222,6 @@ async function demo() {
 
 demo();
 
-
 TweenLite.to(b.barchart, 1, {autoAlpha: 1});
 
 // var colSize   = b.chartwidth/b.ncol; // => container height / number of items
