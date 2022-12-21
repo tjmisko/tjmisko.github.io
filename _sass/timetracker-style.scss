@@ -80,3 +80,21 @@
     margin: 0 auto;
     text-align: center;
 }
+
+
+.view-window {
+    position: relative;
+    height: 100%;
+}
+
+.frontpage-content{
+    position: absolute;
+    top: 6%;
+    width: 80vw;
+    margin: 0 10vw;
+}
+
+.front-background {
+    transform: perspective(30px) translate3d(0px, 0px, -5px) scale(2);
+    opacity: 25%;
+}
