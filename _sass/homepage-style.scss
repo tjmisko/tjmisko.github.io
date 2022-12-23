@@ -58,7 +58,7 @@ figure > img {
 }
 
 .homepage-content::before {
-    z-index: 0;
+    z-index: -1;
     content: "";
     position: absolute;
     top: 0;
@@ -67,8 +67,8 @@ figure > img {
     left: 0;
     background-image: url("../../../cb.svg");
     background-repeat: repeat-y;
-    background-size: 200%;
-    opacity: 0.5;
+    background-size: clamp(100%, 1200pt, 1200pt);
+    opacity: 0.15;
 }
 
 .homepage-content {
@@ -95,6 +95,10 @@ figure > img {
         color: $homepage-accent-color;
         text-decoration: none;
     }
+}
+
+#greeting-card {
+    height: 100vh;
 }
 
 ul {
