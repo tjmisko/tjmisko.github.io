@@ -57,28 +57,59 @@ figure > img {
   display: block;
 }
 
-/**
- * Clearfix
- */
-%clearfix:after {
-  content: "";
-  display: table;
-  clear: both;
+.homepage-content::before {
+    z-index: 0;
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-image: url("../../../cb.svg");
+    background-repeat: repeat-y;
+    background-size: 200%;
+    opacity: 0.5;
 }
 
+.homepage-content {
+    position: relative;
+    background-color: $homepage-background-color;
+}
+
+
 .homepage-card {
+    color: $homepage-font-color;
     scroll-snap-align: start;
-    height: clamp(500px, 100vh, 100vh);
+    min-width: 360px;
     display: flex;
     justify-content: center;
     padding: 30px;
     overflow: hidden;
+    align-items: center;
+    h1 {
+        position: relative;
+        margin: 5px 0px;
+    }
+    a {
+        position: relative;
+        color: $homepage-accent-color;
+        text-decoration: none;
+    }
 }
 
-#greeting-card > img {
-    position: absolute;
-    top: 0;
-    height: 100vw;
-    transform: perspective(300px);
-    overflow: hidden;
+ul {
+    position: relative;
+    margin: 5px 0px;
+    padding-left: 20px;
+}
+
+p {
+    line-height: 1.25;
+}
+.info-container {
+    max-width: 600px;
+}
+
+.next{
+    text-indent: 30px;
 }
