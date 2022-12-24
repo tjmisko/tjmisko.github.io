@@ -105,8 +105,12 @@ layout: homedefault
     </div>
 
     <div class="homepage-card" id="projects-card">
-        <div class="info-card">
+        <div class="info-card" id="projects-container">
             <h1 id="projects"> Projects </h1>
+            <div class="controls">
+                <button id="prevButton">Prev</button>
+                <button id="nextButton">Next</button>
+            </div>
             <div class="carousel-box">
                 <div class="project-card">
                     <h2 class="project-title"> Sustainable Shared Prosperity Index </h2>
@@ -138,6 +142,39 @@ layout: homedefault
                 </div>
             </div>
         </div>
+
+        <script>
+            console.clear();
+            let count = 0;
+            let unclicked = True;
+            const targets = document.querySelectorAll(".project-card");
+            gsap.set(targets, { xPercent: 100 });
+            gsap.set(targets[0], { xPercent: 0 });
+
+            // Next button
+            function slideOneNext() {
+                gsap.fromTo(targets[count], { xPercent: 0, zIndex: 0 }, { delay: 0.2, duration: 1.2, xPercent: 0, zIndex: -10 });
+                count = count < targets.length - 1 ? ++count : 0;
+                gsap.fromTo(targets[count], { xPercent: 100, zIndex: 10 }, { duration: 1.2, xPercent: 0, zIndex: 0 });
+            }
+            nextButton.addEventListener("click", function() {
+                slideOneNext();
+                unclicked = False;
+            });
+
+            // Previous button
+            function slideOnePrev() {
+              gsap.fromTo(targets[count], { xPercent: 0, zIndex: 10 }, {xPercent: 0, zIndex: 0 });
+              gsap.fromTo(targets[count], { xPercent: 0, zIndex: 0 }, { delay: 0, duration: 1.2, xPercent: 100, zIndex: -10 });
+              count = count < targets.length ? --count : 0;
+            }
+
+            prevButton.addEventListener("click", function() {
+              slideOnePrev();
+              unclicked = False;
+            });
+
+        </script>
     </div>
     <div class="homepage-card" id="contact-card">
         <div class="info-card">
