@@ -15,11 +15,21 @@ function indexOffset(index, offset, listLength) {
     return newIndex >= 0 ? newIndex%listLength : listLength + newIndex%listLength
 }
 
+
 // Compute layout of project tiles on page resize
 function layoutProjectTiles(projectTiles, carouselBox) {
     // Compute number of project tiles to display
-    console.log(carouselBoxWidth(carouselBox)/projectTileWidth(projectTiles))
+    let n = Math.floor(carouselBoxWidth(carouselBox)/projectTileWidth(projectTiles))
+    if (n == 0) {
+
+        gsap.set(projectTiles, {scale: carouselBoxWidth(carouselBox)/projectTileWidth(projectTiles), top: 0, left:0})
+    } else {
+        gsap.set(projectTiles, {scale: 1, top: 0, left: 0, x: (carouselBoxWidth(carouselBox)/2 - projectTileWidth(projectTiles)/2)})
+    }
+    console.log([n, carouselBoxWidth(carouselBox), projectTileWidth(projectTiles)])
 }
+
+layoutProjectTiles(projectTiles, carouselBox)
 addEventListener("resize", (event) => {layoutProjectTiles(projectTiles, carouselBox)})
 
 

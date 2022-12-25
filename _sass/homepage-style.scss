@@ -80,7 +80,6 @@ figure > img {
 .homepage-card {
     color: $homepage-font-color;
     scroll-snap-align: start;
-    min-width: 360px;
     display: flex;
     justify-content: center;
     padding: 30px;
@@ -122,11 +121,6 @@ p {
     text-indent: 30px;
 }
 
-.carousel-box {
-    width: 60vw;
-    margin: 0 20vw;
-}
-
 #projects-card {
     display: flex;
     align-items: flex-start;
@@ -154,18 +148,22 @@ p {
 }
 
 .carousel-box {
+    position: relative;
     top: 25px;
+    height: 500px;
+    width: 100%;
 }
 
 .project-card {
     position: absolute;
+    transform-origin: top left;
     height: 330px;
     width: 330px;
     margin: auto;
     background-color: $project-card-color;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.4);
+    box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
     a {
         position: absolute;
         height: 20px;
