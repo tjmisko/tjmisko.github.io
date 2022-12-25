@@ -113,14 +113,16 @@ p {
 
 .info-container {
     max-width: 600px;
+    font-size: clamp(9pt, 2vw, 12pt);
 }
-
-.next{
+.first {
+    margin: 5px 0px;
+}
+.next {
     text-indent: 30px;
 }
 
 .carousel-box {
-    position: relative;
     width: 60vw;
     margin: 0 20vw;
 }
@@ -128,6 +130,7 @@ p {
 #projects-card {
     display: flex;
     align-items: flex-start;
+    flex-direction: column;
     height: 450px;
 }
 
@@ -137,12 +140,12 @@ p {
 
 #nextButton {
     position: absolute;
-    right: 0;
+    left: 0;
 }
 
 #prevButton {
     position: absolute;
-    left: 0;
+    right: 0;
 }
 
 #projects-container {
@@ -151,15 +154,14 @@ p {
 }
 
 .carousel-box {
-    left: -50%;
-    height: 400px;
-    width: clamp(400px, 80%, 80%);
+    top: 25px;
 }
 
 .project-card {
     position: absolute;
     height: 330px;
     width: 330px;
+    margin: auto;
     background-color: $project-card-color;
     border-radius: 10px;
     padding: 20px;

@@ -25,8 +25,8 @@ layout: homedefault
                     and build things.
                     Welcome to my website! You can keep scrolling to
                     <ul>
-                        <li> <a href="https://www.google.com"> Learn a bit more about me </a> </li>
-                        <li> <a href="/about/"> View my portfolio </a> </li>
+                        <li> <a href="#about-card"> Learn a bit more about me </a> </li>
+                        <li> <a href="#projects-card"> View my portfolio </a> </li>
                         <li> <a> Contact me </a> </li>
                     </ul>
                     I am currently actively purusing work, so please reach out if you are interested in working with me!
@@ -38,7 +38,9 @@ layout: homedefault
 
     <div class="homepage-card" id="about-card">
         <div class="info-container" id="about">
-            <h1 id="about-me"> About Me </h1>
+            <div>
+                <h1 id="about-me"> About Me </h1>
+            </div>
             <h2 class="about-headers"> My Mission </h2>
             <p class="first"> I am passionate about building systems within which
                 data can be used to answer questions and improve people's lives. </p>
@@ -105,80 +107,51 @@ layout: homedefault
     </div>
 
     <div class="homepage-card" id="projects-card">
-        <div class="info-card" id="projects-container">
-            <h1 id="projects"> Projects </h1>
-            <div class="controls">
-                <button id="prevButton">Prev</button>
-                <button id="nextButton">Next</button>
+        <h1 id="projects"> Projects </h1>
+        <div class="controls">
+            <button id="prevButton">Prev</button>
+            <button id="nextButton">Next</button>
+        </div>
+        <div class="carousel-box">
+            <div class="project-card">
+                <h2 class="project-title"> Sustainable Shared Prosperity Index </h2>
+                <h3 class="project-type"> Economic Research </h3>
+                <p class="project-description"> stuff </p>
+                <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
             </div>
-            <div class="carousel-box">
-                <div class="project-card">
-                    <h2 class="project-title"> Sustainable Shared Prosperity Index </h2>
-                    <h3 class="project-type"> Economic Research </h3>
-                    <p class="project-description"> stuff </p>
-                    <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-                </div>
-                <div class="project-card">
-                    <h2 class="project-title"> Do Homeowners Care About Air Qualilty? </h2>
-                    <h3 class="project-type"> Economic Research </h3>
-                    <p class="project-description"> stuff </p>
-                    <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-                </div>
-                <div class="project-card">
-                    <h2 class="project-title"> Something In the Air: How Policy Affects Air Quality </h2>
-                    <h3 class="project-type"> Economic Research </h3>
-                    <p class="project-description"> stuff </p>
-                    <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-                </div>
-                <div class="project-card">
-                    <h2 class="project-title"> Lindy on Sproul </h2>
-                    <p class="project-description"> stuff </p>
-                    <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-                </div>
-                <div class="project-card">
-                    <h2 class="project-title"> RALPH </h2>
-                    <p class="project-description"> Full Stack Web Application </p>
-                    <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-                </div>
+            <div class="project-card">
+                <h2 class="project-title"> Do Homeowners Care About Air Qualilty? </h2>
+                <h3 class="project-type"> Economic Research </h3>
+                <p class="project-description"> stuff </p>
+                <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+            </div>
+            <div class="project-card">
+                <h2 class="project-title"> Something In the Air: How Policy Affects Air Quality </h2>
+                <h3 class="project-type"> Economic Research </h3>
+                <p class="project-description"> stuff </p>
+                <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+            </div>
+            <div class="project-card">
+                <h2 class="project-title"> Lindy on Sproul </h2>
+                <p class="project-description"> stuff </p>
+                <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+            </div>
+            <div class="project-card">
+                <h2 class="project-title"> RALPH </h2>
+                <p class="project-description"> Full Stack Web Application </p>
+                <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
             </div>
         </div>
 
         <script>
-            console.clear();
-            let count = 0;
-            let unclicked = True;
-            const targets = document.querySelectorAll(".project-card");
-            gsap.set(targets, { xPercent: 100 });
-            gsap.set(targets[0], { xPercent: 0 });
 
-            // Next button
-            function slideOneNext() {
-                gsap.fromTo(targets[count], { xPercent: 0, zIndex: 0 }, { delay: 0.2, duration: 1.2, xPercent: 0, zIndex: -10 });
-                count = count < targets.length - 1 ? ++count : 0;
-                gsap.fromTo(targets[count], { xPercent: 100, zIndex: 10 }, { duration: 1.2, xPercent: 0, zIndex: 0 });
-            }
-            nextButton.addEventListener("click", function() {
-                slideOneNext();
-                unclicked = False;
-            });
-
-            // Previous button
-            function slideOnePrev() {
-              gsap.fromTo(targets[count], { xPercent: 0, zIndex: 10 }, {xPercent: 0, zIndex: 0 });
-              gsap.fromTo(targets[count], { xPercent: 0, zIndex: 0 }, { delay: 0, duration: 1.2, xPercent: 100, zIndex: -10 });
-              count = count < targets.length ? --count : 0;
-            }
-
-            prevButton.addEventListener("click", function() {
-              slideOnePrev();
-              unclicked = False;
-            });
 
         </script>
     </div>
     <div class="homepage-card" id="contact-card">
         <div class="info-card">
             <h1 id="contact"> Contact Me </h1>
+
         </div>
     </div>
 </div>
