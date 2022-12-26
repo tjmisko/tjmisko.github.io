@@ -23,6 +23,7 @@ function visibleIndexRange(offsetCounter) {
 function setVisibleElements() {
     visibleTileIndices = visibleIndexRange(offsetCounter);
     console.log(visibleTileIndices)
+    undoTransform()
     for (p of projectTiles) {
         p.style.display = "none";
     }
@@ -30,6 +31,54 @@ function setVisibleElements() {
         projectTiles[visibleTileIndices[i]].style.display = "block";
         projectTiles[visibleTileIndices[i]].style.order = i;
     }
+
+    let timeoutID = setTimeout(incrementOffsetCounter, 4000);
+    return timeoutID;
+}
+
+function slideTilesLeft() {
+    let visibleTileIndices = visibleIndexRange(offsetCounter);
+    //adjust for flip rl
+    let nextTile = projectTiles[indexOffset(visibleTileIndices.at(-1), 1, projectTilesLength)]
+    let lastTile = projectTiles[visibleTileIndices[0]];
+    slideAllElementsLeft();
+    slideLeftmostOffscreen();
+    slideRightmostOnscreen(nextTile);
+}
+
+function slideTilesRight() {
+    let visibleTileIndices = visibleIndexRange(offsetCounter);
+    //adjust for flip rl
+    // let nextTile = projectTiles[indexOffset(visibleTileIndices.at(-1), 1, projectTilesLength)]
+    // let lastTile = projectTiles[visibleTileIndices[]
+    slideAllElementsRight();
+    slideRightmostOffscreen();
+    slideLeftmostOnscreen();
+}
+
+function slideAllElementsLeft() {
+    gsap.to(projectTiles, {xPercent: -100, duration: 1})
+}
+
+function slideLeftmostOffscreen() {
+    gsap.to(projectTiles[visibleIndexRange(offsetCounter)[0]], {x: -1000, duration: 1})
+}
+
+function slideRightmostOnscreen() {
+    nextTile.style.position = "absolute";
+    nextTile.style.display = "block";
+    nextTile.style.right = "0";
+    nextTile.style.transform = "translate(-100%)";
+    function  setDisplayFlex() {
+        nextTile.style.position = "relative";
+    }
+    gsap.fromTo(nextTile, {x: 1000}, {x: 0, duration: 1, onComplete: setDisplayFlex})
+}
+
+
+
+function undoTransform() {
+    gsap.set(projectTiles, {clearProps: "transform"})
 }
 
 // selects first element, slides it left,
@@ -46,8 +95,11 @@ function setVisibleElements() {
 // }
 
 // On page load, set visible elements
-setVisibleElements()
-addEventListener("resize", setVisibleElements)
+let timeoutID = setVisibleElements()
+addEventListener("resize", (event) => {
+    timeoutID = setVisibleElements();
+    clearTimeout(timeoutID);
+})
 
 // Compute the index based on the listLength and the offset to handle looping
 function indexOffset(index, offset, listLength) {
@@ -59,7 +111,6 @@ function incrementOffsetCounter() {
     console.log("increment")
     offsetCounter++
     setVisibleElements();
-    gsap.toAll(projectTiles, {xPercent: 0})
     //setTimeout(slideVisibleElementsLeft, 8000)
 
 }
