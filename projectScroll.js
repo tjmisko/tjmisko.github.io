@@ -5,9 +5,8 @@ let carouselControlsUnclicked = true;
 
 // Initialize selected elements and width functions
 const projectTiles = document.querySelectorAll(".project-card");
-let projectTileWidth = (projectTiles) => projectTiles[0].offsetWidth
 let carouselBox = document.querySelector(".carousel-box")
-let carouselBoxWidth = (carouselBoxWidth) => carouselBox.offsetWidth
+
 
 // Compute the index based on the listLength and the offset to handle looping
 function indexOffset(index, offset, listLength) {
@@ -15,24 +14,35 @@ function indexOffset(index, offset, listLength) {
     return newIndex >= 0 ? newIndex%listLength : listLength + newIndex%listLength
 }
 
-
-// Compute layout of project tiles on page resize
-function layoutProjectTiles(projectTiles, carouselBox) {
-    // Compute number of project tiles to display
-    let n = Math.floor(carouselBoxWidth(carouselBox)/projectTileWidth(projectTiles))
-    if (n == 0) {
-
-        gsap.set(projectTiles, {scale: carouselBoxWidth(carouselBox)/projectTileWidth(projectTiles), top: 0, left:0})
-    } else {
-        gsap.set(projectTiles, {scale: 1, top: 0, left: 0, x: (carouselBoxWidth(carouselBox)/2 - projectTileWidth(projectTiles)/2)})
+// Compute positions of the tiles
+function computeTopLeftCornerPositions(carouselBoxWidth, projectTileWidth, spaceBetweenTiles){
+    let nVisibleTiles = Math.floor((carouselBoxWidth + spaceBetweenTiles)/(projectTileWidth + spaceBetweenTiles))
+    let xTopLeftCorner = {};
+    let computedMargin = carouselBoxWidth/2 - (nVisibleTiles*projectTileWidth - (nVisibleTiles - 1)*spaceBetweenTiles)/2;
+    for (let i = 0; i < nVisibleTiles; i++) {
+        xTopLeftCorner[i] = computedMargin + (spaceBetweenTiles + projectTileWidth)*i
     }
-    console.log([n, carouselBoxWidth(carouselBox), projectTileWidth(projectTiles)])
+    return xTopLeftCorner
 }
 
-layoutProjectTiles(projectTiles, carouselBox)
-addEventListener("resize", (event) => {layoutProjectTiles(projectTiles, carouselBox)})
+// Move tiles to layout of project tiles on page resize assuming all tiles are same size
+// Tiles have an origin set to top left corner
+function layoutProjectTiles(carouselBox, projectTiles, spaceBetweenTiles) {
+    // Compute array of x values
+    let xTopLeftCorner = computeTopLeftCornerPositions(carouselBox.offsetWidth, projectTiles[0].width, spaceBetweenTiles)
+    if (Object.keys(xTopLeftCorner).length == 0) {
+        gsap.set(projectTiles, {scale: carouselBox.offsetWidth/projectTiles[0].offsetWidth, top: 0, left:0})
+    }
+
+}
+
+layoutProjectTiles(carouselBox, projectTiles, 10)
 
 
+// layoutProjectTiles(projectTiles, carouselBox)
+// addEventListener("resize", (event) => {layoutProjectTiles(projectTiles, carouselBox)})
+//
+//
 
 
 

@@ -149,16 +149,17 @@ p {
 
 .carousel-box {
     position: relative;
+    margin: 30px;
+    display: flex;
     top: 25px;
     height: 500px;
     width: 100%;
 }
 
 .project-card {
-    position: absolute;
     transform-origin: top left;
     height: 330px;
-    width: 330px;
+    min-width: 330px;
     margin: auto;
     background-color: $project-card-color;
     border-radius: 10px;
@@ -176,10 +177,10 @@ p {
 
 
 .project-title {
-    font-size: 14pt;
+    font-size: 12pt;
     margin: 5pt 0pt;
 }
 
 .project-type {
-
+    font-size: 10pt;
 }
