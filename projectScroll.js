@@ -19,30 +19,48 @@ function visibleIndexRange(offsetCounter) {
     return Array.from(range, (element) => indexOffset(element, offsetCounter, projectTilesLength))
 }
 // Order is still funky, maybe fix with flex order
-// How to implement sliding
+// How to implement sliding?
 function setVisibleElements() {
     visibleTileIndices = visibleIndexRange(offsetCounter);
     console.log(visibleTileIndices)
     for (p of projectTiles) {
         p.style.display = "none";
     }
-    for (i of visibleTileIndices) {
-        projectTiles[i].style.display = "block";
+    for (let i = 0; i < visibleTileIndices.length; i++) {
+        projectTiles[visibleTileIndices[i]].style.display = "block";
+        projectTiles[visibleTileIndices[i]].style.order = i;
     }
 }
 
+// selects first element, slides it left,
+// function slideVisibleElementsLeft() {
+//     console.log("slideLeft")
+//     visibleTileIndices = visibleIndexRange(offsetCounter);
+//     for (let i = 0; i < visibleTileIndices.length; i++){
+//         if (i == 0) {
+//             gsap.to(projectTiles[visibleTileIndices[i]], {xPercent: -500, duration:0.1, onComplete: incrementOffsetCounter});
+//         } else {
+//             gsap.to(projectTiles[visibleTileIndices[i]], {xPercent:-100, duration: 0.1});
+//         }
+//     }
+// }
+
+// On page load, set visible elements
+setVisibleElements()
 addEventListener("resize", setVisibleElements)
+
 // Compute the index based on the listLength and the offset to handle looping
 function indexOffset(index, offset, listLength) {
     newIndex = index + offset;
     return newIndex >= 0 ? newIndex%listLength : listLength + newIndex%listLength
 }
 
-setInterval(incrementOffsetCounter, 1000)
-
 function incrementOffsetCounter() {
+    console.log("increment")
     offsetCounter++
     setVisibleElements();
+    gsap.toAll(projectTiles, {xPercent: 0})
+    //setTimeout(slideVisibleElementsLeft, 8000)
 
 }
 //
