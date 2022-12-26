@@ -1,35 +1,50 @@
 console.clear();
 
-let mainIndex = 0;
+let offsetCounter = 0;
 let carouselControlsUnclicked = true;
 
-// Initialize selected elements and width functions
+// Initialize selected elements and width variables
 const projectTiles = document.querySelectorAll(".project-card");
-let carouselBox = document.querySelector(".carousel-box");
+const projectTilesWidth = projectTiles[0].offsetWidth
+const projectTilesLength = projectTiles.length
+const carouselBox = document.querySelector(".carousel-box");
 
 // Assuming a spacing between tiles of 10px and uniform tile width
 function nVisibleTiles() {
-    return Math.floor((carouselBox.offsetWidth + 10)/(projectTiles[0].offsetWidth + 10))
+    return Math.floor((carouselBox.offsetWidth + 10)/(projectTilesWidth + 5))
 }
 
+function visibleIndexRange(offsetCounter) {
+    const range = Array.from({ length: nVisibleTiles()}, (_, i) => i );
+    return Array.from(range, (element) => indexOffset(element, offsetCounter, projectTilesLength))
+}
+// Order is still funky, maybe fix with flex order
+// How to implement sliding
 function setVisibleElements() {
-    let slotsRemaining = nVisibleTiles();
+    visibleTileIndices = visibleIndexRange(offsetCounter);
+    console.log(visibleTileIndices)
     for (p of projectTiles) {
-        if (slotsRemaining > 0) {
-            p.style.display ="block";
-            slotsRemaining--
-        } else {
-            p.style.display ="none";
-        }
+        p.style.display = "none";
+    }
+    for (i of visibleTileIndices) {
+        projectTiles[i].style.display = "block";
     }
 }
-setVisibleElements()
+
 addEventListener("resize", setVisibleElements)
 // Compute the index based on the listLength and the offset to handle looping
-// function indexOffset(index, offset, listLength) {
-//     newIndex = index + offset;
-//     return newIndex >= 0 ? newIndex%listLength : listLength + newIndex%listLength
-// }
+function indexOffset(index, offset, listLength) {
+    newIndex = index + offset;
+    return newIndex >= 0 ? newIndex%listLength : listLength + newIndex%listLength
+}
+
+setInterval(incrementOffsetCounter, 1000)
+
+function incrementOffsetCounter() {
+    offsetCounter++
+    setVisibleElements();
+
+}
 //
 // // Compute positions of the tiles
 // function computeTopLeftCornerPositions(carouselBoxWidth, projectTileWidth, spaceBetweenTiles){

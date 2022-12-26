@@ -156,9 +156,11 @@ p {
 }
 
 .project-card {
+    position: relative; 
     transform-origin: top left;
     height: 330px;
     width: 330px;
+    max-width: 330px;
     min-width: 330px;
     margin: 0px 5px;
     background-color: $project-card-color;
@@ -173,6 +175,10 @@ p {
         right: 20px;
         display: block;
     }
+}
+
+.removed {
+
 }
 
 
