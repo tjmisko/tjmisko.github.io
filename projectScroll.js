@@ -76,7 +76,6 @@ function slideRightmostOnscreen() {
 }
 
 
-
 function undoTransform() {
     gsap.set(projectTiles, {clearProps: "transform"})
 }
