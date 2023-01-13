@@ -125,44 +125,23 @@ p {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    height: 450px;
 }
 
-#projects {
+#project-title {
     text-align: center;
 }
 
-#nextButton {
-    position: absolute;
-    left: 0;
-}
-
-#prevButton {
-    position: absolute;
-    right: 0;
-}
-
-#projects-container {
-    position: relative;
-    max-width: 600px;
-}
-
-.carousel-box {
-    display: flex;
-    justify-content: center;
-    top: 25px;
-    height: 500px;
-    width: 100%;
+.grid-box {
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: repeat(2, 330px);
 }
 
 .project-card {
-    position: relative;
-    transform-origin: top left;
     height: 330px;
     width: 330px;
     max-width: 330px;
     min-width: 330px;
-    margin: 0px 5px;
     background-color: $project-card-color;
     border-radius: 10px;
     padding: 20px;
