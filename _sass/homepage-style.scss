@@ -89,7 +89,7 @@ figure > img {
         position: relative;
         margin: 5px 0px;
     }
-    a {
+    .homepage-link {
         position: relative;
         color: $homepage-accent-color;
         text-decoration: none;
@@ -111,8 +111,8 @@ p {
 }
 
 .info-container {
-    max-width: 600px;
-    font-size: clamp(9pt, 2vw, 12pt);
+    max-width: 700px;
+    font-size: clamp(12pt, 1.3vw, 16pt);
 }
 .first {
     margin: 5px 0px;
@@ -164,4 +164,49 @@ p {
 
 .project-type {
     font-size: 10pt;
+}
+
+.blog-link {
+    color: $homepage-font-color;
+    text-decoration: none;
+}
+
+.blog-list {
+    list-style: none;
+}
+
+.blog-title {
+    color: $homepage-accent-color;
+}
+.blog-post-link {
+    padding: 15px;
+    margin: 10px 0px;
+    border-radius: 10px;
+    background-color: $project-card-color;
+}
+
+.blog-post-link:hover {
+    transform: scale(1.05);
+    transition: 0.15s ease;
+}
+
+
+.blog-content::before {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-image: url("../../../cb.svg");
+    background-repeat: repeat-y;
+    background-size: clamp(100%, 1200pt, 1200pt);
+    opacity: 0.15;
+}
+
+.blog-content {
+    position: relative;
+    background-color: $homepage-background-color;
+    color: $homepage-font-color;
 }

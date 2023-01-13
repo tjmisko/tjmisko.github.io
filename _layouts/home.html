@@ -8,8 +8,6 @@ layout: homedefault
 
 <div class="homepage-content">
     <div class="homepage-card" id="greeting-card">
-        <!-- <img src = "cb.svg">
-        </img> -->
         <div class="info-container" id="greeting">
             <div>
                 <h2>
@@ -25,11 +23,13 @@ layout: homedefault
                     and build things.
                     Welcome to my website! You can keep scrolling to
                     <ul>
-                        <li> <a href="#about-card"> Learn a bit more about me </a> </li>
-                        <li> <a href="#projects-card"> View my portfolio </a> </li>
-                        <li> <a href="#contact-card"> Contact me </a> </li>
+                        <li> <a class="homepage-link" href="#about-card"> Learn a bit more about me </a> </li>
+                        <li> <a class="homepage-link" href="#projects-card"> View my portfolio </a> </li>
+                        <li> <a class="homepage-link" href="#blog-card"> Read my blog </a> </li>
+                        <li> <a class="homepage-link" href="#contact-card"> Contact me </a> </li>
                     </ul>
-                    I am currently actively purusing work, so please reach out if you are interested in working with me!
+                    I am actively looking for new work opportunities right now.
+                    Reach out at the links below if you are interested in working with me!
                 </p>
             </div>
         </div>
@@ -137,6 +137,23 @@ layout: homedefault
                 <p class="project-description"> Full Stack Web Application </p>
                 <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
             </div>
+        </div>
+    </div>
+
+    <div class="homepage-card" id="blog-card">
+        <div class="info-container" id="blog-container">
+            <h1 id="blog-card-title"> Blog </h1>
+            <ul class="blog-list">
+              {% for post in site.posts %}
+                <a class="blog-link" href="{{ post.url }}"><li>
+                  <div class="blog-post-link">
+                    <h3 class="blog-title"> {{post.title}}</h3>
+                    <p><i>{{post.subtitle}} </i></p>
+                    <p> {{post.date | date: "%A %-d %B %Y" }} </p>
+                  </div>
+                </li></a>
+              {% endfor %}
+            </ul>
         </div>
     </div>
     <div class="homepage-card" id="contact-card">
