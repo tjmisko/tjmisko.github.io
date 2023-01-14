@@ -90,8 +90,9 @@ figure > img {
     overflow: hidden;
     align-items: center;
     h1 {
-        position: relative;
+        width: 100%;
         margin: 5px 0px;
+        text-align: center;
     }
     .homepage-link {
         position: relative;
@@ -102,6 +103,9 @@ figure > img {
 
 #greeting-card {
     height: 100vh;
+    h1 {
+        text-align: left;
+    }
 }
 
 ul {
