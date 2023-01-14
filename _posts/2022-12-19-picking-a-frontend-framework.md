@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "Picking a Frontend Framework for RALPH"
-subtitle: "A Reflection on Management and Delegation"
 author: "Tristan Misko"
 ---
 

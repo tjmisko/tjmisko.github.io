@@ -9,7 +9,6 @@ p, blockquote, pre, hr,
 dl, dd, ol, ul, figure {
   margin: 0;
   padding: 0;
-
 }
 
 
@@ -25,10 +24,15 @@ body {
           font-feature-settings: "kern" 1;
   font-kerning: normal;
   display: flex;
-  min-height: 100vh;
+  height: 100%;
+  width: 100%;
   flex-direction: column;
   overflow-wrap: break-word;
+  overscroll-behavior: none;
+
 }
+
+
 
 /**
  * Set `margin-bottom` to maintain vertical rhythm
@@ -132,14 +136,15 @@ p {
 }
 
 .grid-box {
-    display: grid;
-    grid-gap: 15px;
-    grid-template-columns: repeat(2, 330px);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
 }
 
 .project-card {
     height: 330px;
     width: 330px;
+    margin: 10px;
     max-width: 330px;
     min-width: 330px;
     background-color: $project-card-color;
@@ -178,6 +183,7 @@ p {
 .blog-title {
     color: $homepage-accent-color;
 }
+
 .blog-post-link {
     padding: 15px;
     margin: 10px 0px;
@@ -191,22 +197,45 @@ p {
 }
 
 
-.blog-content::before {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background-image: url("../../../cb.svg");
-    background-repeat: repeat-y;
-    background-size: clamp(100%, 1200pt, 1200pt);
-    opacity: 0.15;
+.post {
+    position: relative;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
 }
 
 .blog-content {
-    position: relative;
-    background-color: $homepage-background-color;
+    padding: 30px 40px;
+    overflow: hidden;
+    max-width: 750px;
     color: $homepage-font-color;
+    font-size: clamp(14pt, 14pt, 14pt);
+    overflow-wrap: break-word;
+    h3 {
+        font-size: 14pt;
+        margin: 10px 0px 5px 0px;
+    }
+    p {
+        font-size: 14pt;
+        margin: 2px;
+    }
+    p + p {
+        text-indent: 30px;
+    }
+}
+
+.post-header {
+    margin-top: 20px;
+    min-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    h2 {
+        margin-top: 5px;
+        font-size: 16pt;
+        font-style: italic;
+    }
+    ul {
+        list-style: none;
+    }
 }

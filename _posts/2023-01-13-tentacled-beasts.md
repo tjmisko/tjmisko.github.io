@@ -6,10 +6,10 @@ author: "Tristan Misko"
 modified_date: "2023-01-15"
 ---
 
-## Wednesday Morning, 5:49 AM
+### Wednesday Morning, 5:49 AM
 Under no circumstances should one hunt a tentacled beast alone under the cover of darkness.
 
-## Wednesday Morning, 2:14 AM
+### Wednesday Morning, 2:14 AM
 It's the middle of the night, but the coffee smells great and seems to be doing its job.  I'm pushing to finalize the SSPI Main Data File tonight, but it's looking like an uphill battle.  I'm producing charts for each of the indicators, clicking through to the source data, making sure everything is in order...and yes, it's sucking the life out of me, but my plan is to keep chugging through.  
 
 My stuff[footnote: two jackets, a pen, a half-filled notebook, my laptop, a tangled mess of chargers, my Garmin (dead and hence removed from my wrist), my wallet, a crumpled up receipt from…Chipotle, the aforementioned cup of coffee, and the Aeropress whence it came] is spread out across the desks in the dimmed conference room at IRLE, and the white screen is definitely a few lumens too bright for my heavy, squinting eyes.  I suppose staying up late like this is a bad habit I developed in school.  My face certainly wasn’t unfamiliar to the late night cleaning crews at Moffitt.  The wee small hours of the morning were often generous to me growing up: paragraphs would seem to coalesce for me out of the darkness, and problem sets would usually submit to my will before the dawn.
@@ -20,7 +20,7 @@ But the darkness sure seems to be playing it coy tonight.  (Tonight? Today? This
 
 The beasts back in school didn’t have tentacles.  Most were rather tame, actually.  Some were rather hairy: Multivariable Calculus problem sets were positively piliferous in my freshman year.  Others were slippery and slimey (Real Analysis).  Some were covered in quills (Complex Analysis), and some would wriggle and squirm something fierce (Greek Philosophy).  But despite their ugly features these beasts were usually manageable and at times even quite pleasurable to subdue, with the hunt requiring only a little grit and/or cleverness from me under the cover of darkness.  
 
-## Wednesday Morning, 6:28 AM
+### Wednesday Morning, 6:28 AM
 I have left IRLE and walked to Blue Bottle to enlist the support of more caffeine, which this morning (the now-rising sun pins it down definitively as “this morning”) comes in the thick and fruity form of the Mexican Single Origin Espresso.  The only other customer here is an older man seated at the table next to me, talking loudly across the cafe at the barista, but saying the kind of wise-sounding platitudinous things that I’m ashamed to say still make me cringe despite my belief that they’re more or less true and exactly the kind of simple yet profound things that we in our busy and self-important lives usually need reminding of [footnote: link to DFW’s this is water].  The barista is doing his best to humor him but is starting to show some obvious irritation, to which the customer is either completely unaware or completely indifferent.  He might be homeless.  Unhoused.  The customer, I mean.  It’s the Bay, after all, so it’s probably necessary to clarify.  All of which is totally irrelevant filler serving mainly as cover to keep me from dealing with the hideous many-tentacled research monster hiding in my laptop right now.
 
 Wednesday Morning, 6:30 AM
@@ -38,10 +38,10 @@ This is how the aforementioned mess of a spreadsheet I was looking at got produc
 
 I’ll leave the volume and timbre of the sigh I am heaving right now to your imagination.
 
-## Wednesday Morning, 6:57 AM
+### Wednesday Morning, 6:57 AM
 Under no circumstances should one hunt a tentacled beast alone under the cover of darkness.  Or, for that matter, at dawn.
 
-## Wednesday Afternoon, 3:10 PM
+### Wednesday Afternoon, 3:10 PM
 I’ve just finished my last official meeting as SSPI team leader, although I trust will not be the last meeting I run for the team.  I obviously didn’t finish the data last night, but all in all I’m really pleased with how things have gone this semester.  
 
 In August, nine new undergraduates joined the SSPI team as research apprentices.  Onboarding is a challenge always and everywhere, and the SSPI is no exception.  In previous semesters, we’ve assigned the new team members to read the working paper and have tried to “ramp them up” with some easy assignments, but it’s not uncommon for the new apprentices to feel a little bit paralyzed and unsure when faced with their first few real assignments.  I certainly felt that way when I started.  As it turns out, most wild beasts have tentacles, and it can be a bit intimidating to encounter them at first.
@@ -54,9 +54,9 @@ To bridge this skill gap, I put together some tutorial videos for the basic tool
 
 All of that’s great and all, but it begs the question: what was I doing, awake at unspeakable hours, hunting tentacled beasts under the cover of darkness?
 
-## Wednesday Morning, 7:44 AM
+### Wednesday Morning, 7:44 AM
 
-## Wednesday Afternoon, 3:23 PM
+### Wednesday Afternoon, 3:23 PM
 
 
 
