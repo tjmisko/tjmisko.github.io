@@ -101,6 +101,21 @@ figure > img {
     }
 }
 
+.resume-button {
+    position: absolute;
+    color: $homepage-accent-color;
+    padding: 7px 7px 4px 7px;
+    font-size: 14pt;
+    top: 30px;
+    right: 40px;
+    border-radius: 5px;
+    border: 1px solid $homepage-accent-color;
+}
+
+.resume-button:hover {
+    transform: scale(1.02);
+    transition: 0.15s ease;
+}
 #greeting-card {
     height: 100vh;
     h1 {
@@ -119,7 +134,7 @@ p {
 }
 
 .info-container {
-    max-width: 700px;
+    max-width: 650px;
     font-size: clamp(12pt, 1.3vw, 16pt);
 }
 .first {
