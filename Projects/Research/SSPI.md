@@ -1,5 +1,5 @@
 ---
-layout: research
+layout: page
 title: "SSPI Research"
 permalink: /Projects/SSPI/
 ---

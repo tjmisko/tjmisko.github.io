@@ -3,7 +3,6 @@ layout: post
 title: "Never Hunt Tentacled Beasts Alone Under the Cover of Darkness"
 subtitle: "A Reflection on Management and Delegation"
 author: "Tristan Misko"
-modified_date: "2023-01-15"
 ---
 
 ### Wednesday Morning, 5:49 AM
@@ -23,7 +22,7 @@ The beasts back in school didn’t have tentacles.  Most were rather tame, actua
 ### Wednesday Morning, 6:28 AM
 I have left IRLE and walked to Blue Bottle to enlist the support of more caffeine, which this morning (the now-rising sun pins it down definitively as “this morning”) comes in the thick and fruity form of the Mexican Single Origin Espresso.  The only other customer here is an older man seated at the table next to me, talking loudly across the cafe at the barista, but saying the kind of wise-sounding platitudinous things that I’m ashamed to say still make me cringe despite my belief that they’re more or less true and exactly the kind of simple yet profound things that we in our busy and self-important lives usually need reminding of [footnote: link to DFW’s this is water].  The barista is doing his best to humor him but is starting to show some obvious irritation, to which the customer is either completely unaware or completely indifferent.  He might be homeless.  Unhoused.  The customer, I mean.  It’s the Bay, after all, so it’s probably necessary to clarify.  All of which is totally irrelevant filler serving mainly as cover to keep me from dealing with the hideous many-tentacled research monster hiding in my laptop right now.
 
-Wednesday Morning, 6:30 AM
+### Wednesday Morning, 6:30 AM
 So anyway, here is the situation.  I worked on the Coal Power Indicator with one of my research mentees last semester.  She (apparently also a nocturnal hunter) and I met via Zoom to collect data after 11:00 PM on a March evening.  I’m looking at our data collection Google Sheet from last semester, and, frankly speaking, it’s not particularly subtle in its indication that it was put together by two overtired undergraduates in the middle of the night.  The formatting is inconsistent, and the sourcing isn’t super clear, but I think I remember that the organization we settled on was IEA, and a quick look at the indicator table confirms this.
 
 Navigation to the IEA site brings me to a front page that immediately fills me with a vague sense of dread.  It’s like walking into a room you’ve bombed an exam in, or maybe like accidentally opening a file for a big assignment you were stressed about but failed to finish in time.  I’m poking around the site and looking for a link to an API, a data download, something…. Further unpleasant memories involving reading data values off of graphs and lots of mindless repetitive tasks are bubbling up in my head.  More poking and some circuitous link paths bring me to the charts I’m recalling.  They present time series data on all sorts of energy indicators including the Total Energy Supply by Source.
@@ -34,7 +33,7 @@ Which let me tell you is incredibly annoying and honestly a little bit offensive
 
 The younger manager in me encountered this situation nine months ago, probably experienced some similar indignation, and eventually came to the conclusion that something like this was a great opportunity for teamwork, so I got my mentee on call, and we trudged painstakingly through all the countries, in this case highlighting and copying the six or seven digit number (it turns out countries use an ungodly amount of TerraJoules of energy).  After all, I got my start on the SSPI tediously collecting lots of data, and if that’s how I came up, surely that’s the best way…
 
-This is how the aforementioned mess of a spreadsheet I was looking at got produced.  The trouble now is that the values in the sheet we collected, seem to be in BTU, but everything on the IEA site is in TJ, so they’ve probably updated their data and changed units or else I’m looking at the wrong source.  Either way, we are using untraceable data that no longer replicates, which simply does not fly, and so it must be collected again, by me, right now, alone.
+This is how the aforementioned mess of a spreadsheet I was looking at got produced.  The trouble now is that the values in the sheet we collected seem to be in BTU, but everything on the IEA site is in TJ, so they’ve probably updated their data and changed units or else I’m looking at the wrong source.  Either way, we are using untraceable data that no longer replicates, which simply does not fly, and so it must be collected again, by me, right now, alone.
 
 I’ll leave the volume and timbre of the sigh I am heaving right now to your imagination.
 
