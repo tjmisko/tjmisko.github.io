@@ -47,3 +47,7 @@ $on-large:         $on-laptop !default;
   "homepage-style",
   "timetracker-style"     // Hook to override existing styles.
 ;
+
+.page-content {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
