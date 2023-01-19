@@ -1,13 +1,14 @@
 {%- for p in site.projects -%}
+    <div class="project-card">
+        <h1 class="project-title"> {{ p.project-title }}</h1>
+        <h2 class="project-subtitle">{{ p.project-subtitle }}</h2>
+        <h2 class="project-type"> {{ p.project-type }} </h2>
+        <p class="project-description"> {{ p.content }}</p>
 
-
+    </div>
 {%- endfor -%}
-<div class="project-card">
-    <h2 class="project-title"> Sustainable Shared Prosperity Index </h2>
-    <h3 class="project-type"> Economic Research </h3>
-    <p class="project-description"> stuff </p>
-    <a href="/SSPI/"><svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><title>External Link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
-</div>
+
+
 <div class="project-card">
     <h2 class="project-title"> Do Homeowners Care About Air Qualilty? </h2>
     <h3 class="project-type"> Economic Research </h3>

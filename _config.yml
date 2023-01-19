@@ -5,9 +5,16 @@ author:
 description: > # this means to ignore newlines until "show_excerpts:"
   Tristan Misko's portfolio website and personal blog.
 
-
 show_excerpts: false # set to true to show excerpts on the homepage
 
+collections:
+  - projects
+
+collections:
+  projects:
+    output: true
+    order:
+      - lindyonsproul.md
 # Minima date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
 minima:
@@ -25,7 +32,7 @@ minima:
     # instagram: jekyll
     linkedin: tjmisko
     # pinterest: jekyll
-    # youtube: jekyll
+    youtube: jekyll
     # youtube_channel: UC8CXR0-3I70i1tfPg1PAE1g
     # youtube_channel_name: CloudCannon
     # telegram: jekyll
