@@ -39,9 +39,7 @@ layout: default
 
 <div class="homepage-card" id="about-card">
     <div class="info-container" id="about">
-        <div>
-            <h1 id="about-me"> About Me </h1>
-        </div>
+        <h1 class="site-header" id="about-me"> About Me </h1>
         <h2 class="about-headers"> My Mission </h2>
         <p class="first"> I am passionate about building systems within which
             data can be used to answer questions and improve people's lives. </p>
@@ -108,7 +106,7 @@ layout: default
 </div>
 
 <div class="homepage-card" id="projects-card">
-    <h1 id="projects"> Projects </h1>
+    <h1 class="site-header" id="projects"> Projects </h1>
     <div class="grid-box">
         {%- include project-feed.html -%}
     </div>
@@ -116,13 +114,15 @@ layout: default
 
 <div class="homepage-card" id="blog-card">
     <div class="info-container" id="blog-container">
-        <h1 id="blog-card-title"> Blog </h1>
+        <h1 class="site-header" id="blog-card-title"> Blog </h1>
           {%- include blog-feed.html -%}
     </div>
 </div>
 <div class="homepage-card" id="contact-card">
     <div class="info-card">
-        <h1 id="contact"> Contact Me </h1>
+        <h1 class="site-header" id="contact"> Contact Me </h1>
+        Contact me via email at <a class="email-link" href="gmail.com">tristanmisko@gmail.com</a> or find me
+        elsewhere on the internet at the links below:
            {%- include social.html -%}
     </div>
 </div>

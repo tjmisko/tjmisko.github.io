@@ -25,6 +25,7 @@ body {
   font-kerning: normal;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 
 }
 
@@ -85,17 +86,15 @@ figure > img {
     padding: 30px 60px;
     overflow: hidden;
     align-items: center;
-    h1 {
-        width: 100%;
-        margin: 5px 0px;
-        text-align: center;
-    }
+
     .homepage-link {
         position: relative;
         color: $homepage-accent-color;
         text-decoration: none;
     }
 }
+
+// Resume Button
 
 .resume-button {
     position: absolute;
@@ -108,10 +107,16 @@ figure > img {
     border: 1px solid $homepage-accent-color;
 }
 
+.site-header {
+    text-align: center;
+    width: 100%;
+}
+
 .resume-button:hover {
     transform: scale(1.02);
     transition: 0.15s ease;
 }
+
 #greeting-card {
     height: 100vh;
     h1 {
@@ -133,6 +138,8 @@ p {
     max-width: 650px;
     font-size: clamp(12pt, 1.3vw, 16pt);
 }
+
+
 .first {
     margin: 5px 0px;
 }
@@ -140,15 +147,15 @@ p {
     text-indent: 30px;
 }
 
+
+// Project Styling
+
 #projects-card {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
 }
 
-#project-title {
-    text-align: center;
-}
 
 .grid-box {
     display: flex;
@@ -159,26 +166,28 @@ p {
 .project-card {
     margin: 10px;
     width: clamp(100px, 90%, 400px);
-    min-height: 300px;
+    overflow: hidden;
     background-color: $project-card-color;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
 }
 
-
 .project-title {
-    font-size: 120%;
+    text-align: left;
+    font-size: 110%;
     margin: 5pt 0pt;
 }
 
 .project-subtitle {
-
+    font-size: 100%;
 }
 
 .project-type {
-    font-size: 10pt;
+    font-size: 12pt;
 }
+
+// Blog stylings
 
 .blog-link {
     color: $homepage-font-color;
@@ -249,4 +258,29 @@ p {
     ul {
         list-style: none;
     }
+}
+
+
+
+.social-media-list {
+  margin-top: 20px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding-left: 0px;
+  width: 100%;
+}
+
+.svg-icon {
+  width: 16px;
+  height: 16px;
+  margin: 0px 30px;
+  fill: $homepage-font-color;
+  transform-origin: center;
+  scale: 1.8;
+  &:hover {fill:$homepage-accent-color}
+}
+
+.email-link {
+    color :$homepage-accent-color;
 }
