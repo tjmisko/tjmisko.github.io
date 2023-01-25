@@ -1,3 +1,7 @@
+---
+layout: post
+id: "do"
+---
 ## My Mission
 I am passionate about building systems within which data can be used to answer questions and improve people's lives.
 

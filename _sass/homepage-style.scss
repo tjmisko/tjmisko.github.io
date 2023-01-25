@@ -134,18 +134,22 @@ p {
     line-height: 1.25;
 }
 
+.about-me-navbox {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    font-size: 15pt;
+    margin: 15px 0px;
+}
+
 .info-container {
     max-width: 650px;
     font-size: clamp(12pt, 1.3vw, 16pt);
+    p + p {
+        text-indent: 30px;
+    }
 }
 
-
-.first {
-    margin: 5px 0px;
-}
-.next {
-    text-indent: 30px;
-}
 
 
 // Project Styling

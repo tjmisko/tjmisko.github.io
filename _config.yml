@@ -9,13 +9,14 @@ show_excerpts: false # set to true to show excerpts on the homepage
 
 collections:
   - projects
+  - about
 
 collections:
+  about:
+    output: true
   projects:
     output: true
-    order:
-      - something-in-the-
-      - lindyonsproul.md
+
 # Minima date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
 minima:

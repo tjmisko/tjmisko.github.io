@@ -21,8 +21,9 @@ Behind each of these applications is a well-intentioned developer or a team with
 
 But developer choices always create friction: maybe the task input menu is too cluttered or underfeatured for my needs, or perhaps there is a lot of overhead with tagging or categorization systems, or maybe I just want a checklist on which I can see a checkbox, a task, how long until its due and nothing else.
 
-Sometimes we can be acculturated to a system: iOS has been the quintessential example of inversion of control in UX/UI design, and I'm a regular user.      
+Sometimes we can be acculturated to a system: iOS has been the quintessential example of inversion of control in UX/UI design, and I'm a regular user.  
 
+In the end, the answer to Jen's question of how long it'd take to make something that suits her needs seems to me to be something like "an afternoon."  So we're putting it to the test.  
 
 
 ### The Bill of Goods for Our Checklist Application

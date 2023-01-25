@@ -41,12 +41,27 @@ layout: default
     <div class="info-container" id="about">
         <h1 class="site-header" id="about-me"> About Me </h1>
         <div class="about-me-navbox">
-
+            <button class="about-me-button"> What I Do </a>
+            <button class="about-page"> My Approach </a>
+            <button class="about-page"> What I Do When I'm Not Doing </a>
         </div>
+        {%- for a in site.about -%}
+            <div id="{{a.id}}"> {{ a.content }} </div>
+        {%- endfor -%}
+        <script>
+            function aboutButton(buttonElement) {
 
-        
+                if (buttonElement.id = "do") {
 
+                } else if (buttonElement.id = "approach") {
 
+                } else {
+
+                }
+                buttonElement.style.fontcolor = "red";
+            }
+
+        </script>
     </div>
 </div>
 
