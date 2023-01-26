@@ -1,0 +1,11 @@
+<ul class="blog-list">
+  {% for post in site.posts %}
+    <a class="blog-link" href="{{ post.url }}"><li>
+      <div class="blog-post-link">
+        <h3 class="blog-title"> {{post.title}}</h3>
+        <p><i>{{post.subtitle}} </i></p>
+        <b> {{post.date | date: "%A, %-d %B %Y" }} </b>
+      </div>
+    </li></a>
+  {% endfor %}
+</ul>

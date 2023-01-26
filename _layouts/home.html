@@ -41,26 +41,30 @@ layout: default
     <div class="info-container" id="about">
         <h1 class="site-header" id="about-me"> About Me </h1>
         <div class="about-me-navbox">
-            <button class="about-me-button"> What I Do </a>
-            <button class="about-page"> My Approach </a>
-            <button class="about-page"> What I Do When I'm Not Doing </a>
+            <button class="about-button" onclick="openTab('/about/what-i-do', this)"> What I Do </button>
+            <button class="about-button" onclick="openTab('/about/my-approach', this)"> My Approach </button>
+            <button class="about-button" onclick="openTab('/about/what-i-do-when-im-not-doing', this)"> What I Do When I'm Not Doing </button>
         </div>
-        {%- for a in site.about -%}
-            <div id="{{a.id}}"> {{ a.content }} </div>
-        {%- endfor -%}
+        {% for a in site.about %}
+            <div class="about-tab" id="{{a.id}}"> {{ a.content }} </div>
+        {% endfor %}
         <script>
-            function aboutButton(buttonElement) {
-
-                if (buttonElement.id = "do") {
-
-                } else if (buttonElement.id = "approach") {
-
-                } else {
-
+            function resetButtonsColor() {
+                aboutButtons = document.getElementsByClassName("about-button")
+                for (i = 0; i < aboutButtons.length; i++) {
+                    aboutButtons[i].style.color = "";
                 }
-                buttonElement.style.fontcolor = "red";
             }
-
+            function openTab(aboutID, element) {
+                resetButtonsColor()
+                aboutTabs = document.getElementsByClassName("about-tab")
+                for (i = 0; i < aboutTabs.length; i++) {
+                    aboutTabs[i].style.display = "none";
+                }
+                document.getElementById(aboutID).style.display = "block";
+                element.style.color = "rgba(250, 130, 30, 1)"
+            }
+            openTab("/about/what-i-do", document.getElementsByClassName("about-button")[0])
         </script>
     </div>
 </div>

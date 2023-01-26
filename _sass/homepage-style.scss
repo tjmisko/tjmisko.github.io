@@ -136,21 +136,29 @@ p {
 
 .about-me-navbox {
     display: flex;
-    position: relative;
     justify-content: space-between;
     font-size: 15pt;
     margin: 15px 0px;
 }
 
 .info-container {
-    max-width: 650px;
+    max-width: 600px;
     font-size: clamp(12pt, 1.3vw, 16pt);
     p + p {
         text-indent: 30px;
     }
 }
 
-
+.about-button {
+    border: none;
+    color: $homepage-font-color;
+    background-color: rgba(0,0,0,0);
+    font-size: 14pt;
+    &:hover {
+        transform: scale(1.04);
+        transition: 0.15s ease;
+    }
+}
 
 // Project Styling
 
