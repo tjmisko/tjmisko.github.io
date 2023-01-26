@@ -2,10 +2,17 @@
 layout: post
 ---
 ## My Mission
-I am passionate about building systems within which data can be used to answer questions and improve people's lives.
+
+I am passionate about building systems within which data and technology can be used to help people answer questions and make better decisions.  I firmly hold that there is no one approach to take in achieving this goal.  I strive to bring data science, software engineering, economics, philosophy, cognitive science, and good old-fashioned empathy for humans and their stories into productive conversation.  
 
 ## My Values
+* *Collaboration and conversation*:
+* *Open-mindedness*: For collaboration to yield fruitful results, . Defensiveness is our natural reaction.
+* *Abstraction and Grounding*:
 
+## Technology, People, and Society
+
+How do people make decisions?
 
 ## The Extraordinary Promise and Pernicious Seduction of Data
 
