@@ -1,13 +1,18 @@
 ---
 layout: post
 ---
-## Skills and Specializations
+## Human Capital: Skills and Specializations
 
-The concept of "human capital," i.e. the collection of knowledge and skills a person has accumulated through their education and experiences, is not an altogether useless metaphor when thinking about labor markets, but taking it too literally can lead us astray.  We become overly concerned with our *stock* of knowledge, as if human beings are some kind of high-capacity hard drive onto which our experiences are constantly writing data, as if our ability to solve problems depends primarily on the size of this stock, as
+The concept of "human capital," i.e. the collection of knowledge and skills a person has accumulated through their education and experiences, is not an altogether useless metaphor when thinking about labor markets, but taking it too literally can lead us astray.  It encourages us to think of our *stock* of knowledge, as if human beings are some kind of high-capacity hard drive onto which our experiences are constantly writing data, as if our ability to solve problems depends primarily on the size of this stock, as if the data on our hard drive is incorruptible and persists through time. 
 
-We all know intuitively that this conception is a bit of a category error, and yet we're quite content to leave it unquestioned.
+We all know intuitively that this conception is a bit of a category error, that this is not actually how we learn and think, but our approach to education and indeed the educational system itself is designed with this metaphor in mind.  What is a test if not an assessment of a student's command over a stock of facts and arguments?
 
-<!--- Why do we go to school? The engineers and the premeds will probably answer that they are acquiring skills and learning ideas that will be useful to them later in their career.  Perhaps the liberal arts folks will say something cliche about learning how to learn or learning how to think, or maybe they're just sticking it to their parents.  And of course the economics majors will answer that on one hand they are investing in the growth of their stock of human capital and that on the other they are pursuing a degree that will serve as a signaling mechanism to employers.... ---!> 
+What remains
+
+
+
+
+<!--- Why do we go to school? The engineers and the premeds will probably answer that they are acquiring skills and learning ideas that will be useful to them later in their career.  Perhaps the liberal arts folks will say something cliche about learning how to learn or learning how to think, or maybe they're just sticking it to their parents.  And of course the economics majors will answer that on one hand they are investing in the growth of their stock of human capital and that on the other they are pursuing a degree that will serve as a signaling mechanism to employers.... ---!>
 
 Every discipline is building a model of the world
 
@@ -18,3 +23,16 @@ Metaskills allow us to appreciate the subtleties of many disciplines
 * **Mathematics and its Applications**:
 
 * **Writing, Reading, and the Humanities**: If mathematics is the key foundation for the quantitative disciplines, writing is its counterpart in the humanities.  
+
+I've currently got a very negative approach: I'm picking out whats wrong.
+
+What would a positive approach look like?
+- The problems we are called upon to solve are multilayered and multidisciplinary: they involve across abstraction boundaries
+- Every specialization entails a special set of models
+
+
+What am I trying to say?
+- we tend to list off skills as if we have a stock of human capital
+- really, we have a collection of a few models that we can summon
+    - there is a stock of facts, but this stock is fragile and requires constant maintenance
+    - focus on metaskills
