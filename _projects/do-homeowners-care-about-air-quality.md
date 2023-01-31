@@ -4,6 +4,7 @@ project-type: "Economic Research - Original Working Paper"
 project-collaborators: "Supervised by Prof. David Card, Ph.D."
 project-status: Completed Fall 2021
 github: fa2021-wildfire-smoke-paper
+pdf: wildfire
 
 ---
 * Implemented a causal regression analysis design in R to evaluate the effect of negative air quality shocks on housing prices

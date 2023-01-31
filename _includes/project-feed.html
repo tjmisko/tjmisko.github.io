@@ -14,7 +14,8 @@
                     {%- if p.github -%}<li><a rel="me" href="https://github.com/tjmisko/{{ p.github | cgi_escape | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.external-github -%}<li><a rel="me" href="https://github.com/{{ p.external-github | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.youtube-playlist -%}<li><a rel="me" href="https://www.youtube.com/playlist?list={{ p.youtube-playlist | cgi_escape | escape }}" target="_blank" title="Youtube Playlist"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#youtube' | relative_url }}"></use></svg></a></li>{%- endif -%}
-                    {%- if p.pdf -%}<li><a rel="me" href="https://github.com/tjmisko/{{ p.github | cgi_escape | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#pdf' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                    {%- if p.pdf -%}<li><a rel="me" href="./{{ p.pdf }}.pdf" target="_blank" title="{{ p.pdf | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#pdf' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                    {%- if p.html -%}<li><a rel="me" href="./{{ p.html }}.html" target="_blank" title="{{ p.html | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#html' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.website -%}{%- endif -%}
                     {%- if p.paper -%}{%- endif -%}
                     {%- if p.folder -%}{%- endif -%}
