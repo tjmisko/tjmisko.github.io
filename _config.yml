@@ -7,14 +7,19 @@ description: > # this means to ignore newlines until "show_excerpts:"
 
 show_excerpts: false # set to true to show excerpts on the homepage
 
+
+
 collections:
   - projects
   - about
+  - pages
 
 collections:
   about:
     output: true
   projects:
+    output: true
+  pages:
     output: true
 
 # Minima date format
@@ -36,7 +41,7 @@ minima:
     # pinterest: jekyll
     # youtube: "\\@tjmisko"
     # youtube_channel: UC8CXR0-3I70i1tfPg1PAE1g
-    youtube_channel_name: tjmisko
+    # youtube_channel_name: tjmisko
     # telegram: jekyll
     # googleplus: +jekyll
     # microdotblog: jekyll

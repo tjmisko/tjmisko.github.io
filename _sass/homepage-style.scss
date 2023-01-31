@@ -71,11 +71,13 @@ figure > img {
     background-repeat: repeat-y;
     background-size: clamp(100%, 1200pt, 1200pt);
     opacity: 0.15;
+    min-height: 100vh;
 }
 
 .homepage-content {
     position: relative;
     background-color: $homepage-background-color;
+    min-height: 100vh;
 }
 
 
@@ -296,4 +298,14 @@ p {
 
 .email-link {
     color :$homepage-accent-color;
+}
+
+.blog-feed-page {
+    margin-top: 150px;
+    h2 {
+        color: $homepage-font-color;
+    }
+    .blog-post-link {
+        width: clamp(400px, 90%, 90%);
+    }
 }
