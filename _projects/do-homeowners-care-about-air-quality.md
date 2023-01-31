@@ -2,6 +2,7 @@
 project-title: "Do Homeowners Care About Air Quality? Evidence from Wildfire Smoke"
 project-type: "Economic Research - Original Working Paper"
 project-collaborators: "Supervised by Prof. David Card, Ph.D."
+project-status: Completed Fall 2021
 github: fa2021-wildfire-smoke-paper
 
 ---
