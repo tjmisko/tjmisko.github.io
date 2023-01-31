@@ -8,9 +8,12 @@
                 <p class="project-description"> {{ p.content }}</p>
             </div>
             <div class="project-footer">
+                <p class="project-type"> <b> Status: </b>{{ p.project-status }} </p>
                 <p class="project-type"> {{ p.project-collaborators }} </p>
                 <ul class="project-linkbox">
-                    {%- if p.github -%}<li><a rel="me" href="https://github.com/ {{ p.github | cgi_escape | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                    {%- if p.github -%}<li><a rel="me" href="https://github.com/tjmisko/{{ p.github | cgi_escape | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                    {%- if p.external-github -%}<li><a rel="me" href="https://github.com/{{ p.external-github | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                    {%- if p.youtube-playlist -%}<li><a rel="me" href="https://www.youtube.com/playlist?list={{ p.youtube-playlist | cgi_escape | escape }}" target="_blank" title="Youtube Playlist"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#youtube' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.website -%}{%- endif -%}
                     {%- if p.paper -%}{%- endif -%}
                     {%- if p.folder -%}{%- endif -%}
