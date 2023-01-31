@@ -1,12 +1,21 @@
 {%- for p in site.projects -%}
     <div class="project-card">
-        <h1 class="project-title"> {{ p.project-title }}</h1>
-        <h2 class="project-subtitle">{{ p.project-subtitle }}</h2>
-        <h2 class="project-type"> {{ p.project-type }} </h2>
-        <p class="project-description"> {{ p.content }}</p>
-        <p class="project-type"> {{ p.project-collaborators }} </p>
-        {%- for link in p.links -%}
-        <a href="{{ link-address }}"> </a>
-        {%- endfor -%}
+        <div class="project-flex-wrapper">
+            <div class="project-upper">
+                <h1 class="project-title"> {{ p.project-title }}</h1>
+                <h2 class="project-subtitle">{{ p.project-subtitle }}</h2>
+                <h2 class="project-type"> {{ p.project-type }} </h2>
+                <p class="project-description"> {{ p.content }}</p>
+            </div>
+            <div class="project-footer">
+                <p class="project-type"> {{ p.project-collaborators }} </p>
+                <ul class="project-linkbox">
+                    {%- if p.github -%}<li><a rel="me" href="https://github.com/ {{ p.github | cgi_escape | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                    {%- if p.website -%}{%- endif -%}
+                    {%- if p.paper -%}{%- endif -%}
+                    {%- if p.folder -%}{%- endif -%}
+                </ul>
+            </div>
+        </div>
     </div>
 {%- endfor -%}

@@ -2,5 +2,8 @@
 project-title: "Countdown Checklist"
 project-type: "Full Stack Web Application"
 project-collaborators: "Collaborators: Jen Tachibana"
-project-links:  
+project-status: "In Progress Since January 2023"
+github: tjmisko/checklist-app
 ---
+
+Hello there

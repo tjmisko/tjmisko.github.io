@@ -178,7 +178,16 @@ p {
     justify-content: center;
 }
 
+.project-flex-wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .project-card {
+    position: relative;
     margin: 10px;
     width: clamp(100px, 90%, 400px);
     overflow: hidden;
@@ -187,6 +196,8 @@ p {
     padding: 20px;
     box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
 }
+
+
 
 .project-title {
     text-align: left;
@@ -216,6 +227,15 @@ p {
 
 .blog-title {
     color: $homepage-accent-color;
+}
+
+.project-linkbox {
+    margin-top: 20px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding-left: 0px;
+    width: 100%;
 }
 
 .blog-post-link {
