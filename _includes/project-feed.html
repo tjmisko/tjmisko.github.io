@@ -16,9 +16,8 @@
                     {%- if p.youtube-playlist -%}<li><a rel="me" href="https://www.youtube.com/playlist?list={{ p.youtube-playlist | cgi_escape | escape }}" target="_blank" title="Youtube Playlist"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#youtube' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.pdf -%}<li><a rel="me" href="./{{ p.pdf }}.pdf" target="_blank" title="{{ p.pdf | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#pdf' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.html -%}<li><a rel="me" href="./{{ p.html }}.html" target="_blank" title="{{ p.html | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#html' | relative_url }}"></use></svg></a></li>{%- endif -%}
-                    {%- if p.website -%}{%- endif -%}
-                    {%- if p.paper -%}{%- endif -%}
-                    {%- if p.folder -%}{%- endif -%}
+                    {%- if p.website -%}<li><a rel="me" href="https://{{ p.website | escape }}" target="_blank" title="{{ p.website | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#website' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                    {%- if p.google-drive -%}{%- endif -%}
                 </ul>
             </div>
         </div>
