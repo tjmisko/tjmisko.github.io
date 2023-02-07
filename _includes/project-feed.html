@@ -9,7 +9,7 @@
             </div>
             <div class="project-footer">
                 <p class="project-type"> <b> Status: </b>{{ p.project-status }} </p>
-                <p class="project-type"> <b> Collaborators: </b> {{ p.project-collaborators }} </p>
+                {% if p.project-collaborators %}<p class="project-type"> <b> Collaborators: </b> {{ p.project-collaborators }} </p> {% endif %}
                 <ul class="project-linkbox">
                     {%- if p.github -%}<li><a rel="me" href="https://github.com/tjmisko/{{ p.github | cgi_escape | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.external-github -%}<li><a rel="me" href="https://github.com/{{ p.external-github | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
@@ -17,7 +17,7 @@
                     {%- if p.pdf -%}<li><a rel="me" href="./{{ p.pdf }}.pdf" target="_blank" title="{{ p.pdf | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#pdf' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.html -%}<li><a rel="me" href="./{{ p.html }}.html" target="_blank" title="{{ p.html | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#html' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.website -%}<li><a rel="me" href="https://{{ p.website | escape }}" target="_blank" title="{{ p.website | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#website' | relative_url }}"></use></svg></a></li>{%- endif -%}
-                    {%- if p.google-drive -%}{%- endif -%}
+                    {%- if p.google-drive -%}<li><a rel="me" href="https://drive.google.com/drive/{{ p.google-drive | escape }}" target="_blank" title="https://drive.google.com/drive/{{ p.google-drive  | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#google-drive' | relative_url }}"></use></svg></a></li>{%- endif -%}
                 </ul>
             </div>
         </div>
