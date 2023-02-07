@@ -27,9 +27,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: auto;
-
 }
-
 
 
 /**
@@ -161,6 +159,7 @@ p {
         transform: scale(1.04);
         transition: 0.15s ease;
     }
+    font-family: "Courier New";
 }
 
 // Project Styling
@@ -241,6 +240,7 @@ p {
 
 .blog-title {
     color: $homepage-accent-color;
+
 }
 
 
