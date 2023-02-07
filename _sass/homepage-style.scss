@@ -29,7 +29,9 @@ body {
   overflow: auto;
 }
 
-
+a {
+    color: $homepage-accent-color;
+}
 /**
  * Set `margin-bottom` to maintain vertical rhythm
  */

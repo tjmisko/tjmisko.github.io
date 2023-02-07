@@ -38,7 +38,7 @@ layout: default
         <div class="about-me-navbox">
             <button class="about-button" onclick="openTab('/about/what-i-do', this)"> What I Do </button>
             <button class="about-button" onclick="openTab('/about/my-approach', this)"> My Approach </button>
-            <button class="about-button" onclick="openTab('/about/what-i-do-when-im-not-doing', this)"> What I Do When I'm Not Doing </button>
+            <button class="about-button" onclick="openTab('/about/other-things-i-do', this)"> Other Things I Do </button>
         </div>
         {% for a in site.about %}
             <div class="about-tab" id="{{a.id}}"> {{ a.content }} </div>

@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Quasioptimal"
+title: "Quasioptimal & Other Musings"
 permalink: "/quasioptimal/"
 ---
 
