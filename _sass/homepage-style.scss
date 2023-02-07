@@ -82,6 +82,7 @@ figure > img {
 .homepage-card {
     color: $homepage-font-color;
     scroll-snap-align: start;
+    scroll-snap-type: y proximity;
     display: flex;
     justify-content: center;
     padding: 30px 60px;
@@ -111,6 +112,16 @@ figure > img {
 .site-header {
     text-align: center;
     width: 100%;
+    font-size: 30pt;
+    a {
+        text-decoration: none;
+        color: $homepage-font-color;
+    }
+
+    a:hover {
+        transform: scale(1.03);
+        transition: 0.13s ease;
+    }
 }
 
 .resume-button:hover {
@@ -227,6 +238,7 @@ p {
 }
 
 // Blog stylings
+
 
 .blog-link {
     color: $homepage-font-color;

@@ -2,11 +2,6 @@
 layout: default
 ---
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
-</style>
-
-
 <div class="homepage-card" id="greeting-card">
     <div class="info-container" id="greeting">
         <a href="/resume.pdf"><div class="resume-button">Résumé</div></a>
@@ -39,7 +34,7 @@ layout: default
 
 <div class="homepage-card" id="about-card">
     <div class="info-container" id="about">
-        <h1 class="site-header" id="about-me"> About Me </h1>
+        <h1 class="site-header"> About Me </h1>
         <div class="about-me-navbox">
             <button class="about-button" onclick="openTab('/about/what-i-do', this)"> What I Do </button>
             <button class="about-button" onclick="openTab('/about/my-approach', this)"> My Approach </button>
@@ -70,7 +65,7 @@ layout: default
 </div>
 
 <div class="homepage-card" id="projects-card">
-    <h1 class="site-header" id="projects"> Projects </h1>
+    <h1 class="site-header"> Projects </h1>
     <div class="grid-box">
         {%- include project-feed.html -%}
     </div>
@@ -78,7 +73,7 @@ layout: default
 
 <div class="homepage-card" id="blog-card">
     <div class="info-container" id="blog-container">
-        <a href="_pages/quasioptimal/"><h1 class="site-header" id="blog-card-title"> Quasioptimal </h1></a>
+        <h1 class="site-header"><a href="/quasioptimal/"> Quasioptimal</a></h1>
           {%- include blog-feed.html -%}
     </div>
 </div>
