@@ -96,6 +96,10 @@ figure > img {
         color: $homepage-accent-color;
         text-decoration: none;
     }
+    h2, h3 {
+        margin-top: 15px;
+        margin-bottom: 3px;
+    }
 }
 
 // Resume Button
@@ -250,12 +254,13 @@ p {
 .blog-list {
     list-style: none;
     padding: 0px;
+    h1, h2, h3 {
+        color: $homepage-accent-color;
+        margin: 0px;
+    }
 }
 
-.blog-title {
-    color: $homepage-accent-color;
 
-}
 
 
 

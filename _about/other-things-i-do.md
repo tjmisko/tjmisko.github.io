@@ -4,7 +4,7 @@ layout: post
 
 ## Swing Dancing
 
-I started dancing at Lindy on Sproul, Berkeley's premier swing dancing venue, all the way back in 2019.  I was the Lindy on Sproul coordinator for 2 years as we revived the club post-COVID, and I'm still a regular attendee.  I love the dance, the music, and the community of people it brings out!
+I started dancing at Lindy on Sproul, Berkeley's premier swing dancing venue, all the way back in 2019.  I was the Lindy on Sproul coordinator for 2 years as we revived the club post-COVID, and I'm still a regular attendee.  I love the dance, the music, and the community of people it brings out!  I'm currently focusing on expanding my repertoire and refining my technique both as a lead and a follow.  
 
 ## Climbing
 
@@ -18,9 +18,9 @@ I also hold the dubious COVID-era honor of having completed a full 26.2 mile mar
 
 I'm not training right now, but I look forward to improving my 800m, mile, 5K, and 10K times before my fast twitch muscle fiber deteriorates any more than it already has.  
 
-## Guitar
+## Guitar and Piano
 
-I play guitar casually and hold onto a fleeting hope to someday string some chords together into something mildly convincing.  Who knows?
+I play guitar and piano casually and hold onto a fleeting hope to someday string some chords together into something mildly convincing.  Who knows?
 
 ## Calisthenics
 
