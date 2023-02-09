@@ -3,11 +3,15 @@ layout: post
 ---
 ## Human Capital: Skills and Specializations
 
-The concept of "human capital," i.e. the collection of knowledge and skills a person has accumulated through their education and experiences, is not an altogether useless metaphor when thinking about labor markets, but taking it too literally can lead us astray.  It encourages us to think of our *stock* of knowledge, as if human beings are some kind of high-capacity hard drive onto which our experiences are constantly writing data, as if our ability to solve problems depends primarily on the size of this stock, as if the data on our hard drive is incorruptible and persists through time. 
+The concept of "human capital," i.e. the collection of knowledge and skills a person has accumulated through their education and experiences, is not an altogether useless metaphor when thinking about labor markets, but taking it too literally can lead us astray.  It encourages us to think of the *stock* of our knowledge, as if human beings are some kind of high-capacity hard drive onto which our experiences are constantly writing data, as if our ability to solve problems depends primarily on the size of this stock, as if the data on our hard drive is incorruptible and persists through time.
 
-We all know intuitively that this conception is a bit of a category error, that this is not actually how we learn and think, but our approach to education and indeed the educational system itself is designed with this metaphor in mind.  What is a test if not an assessment of a student's command over a stock of facts and arguments?
+And sure, it's true, we do accrue skills and knowledge over time, but they
+don't just pile up.  I'm drawn to the  
 
-What remains
+we must focus on the *flow* of skills and knowledge
+
+## Metaskills: Thtfff
+
 
 
 
