@@ -292,6 +292,10 @@ p {
     color: $homepage-font-color;
     font-size: clamp(14pt, 14pt, 14pt);
     overflow-wrap: break-word;
+    h2 {
+        font-size: 18pt;
+        margin: 15px 0px 3px 0px;
+    }
     h3 {
         font-size: 14pt;
         margin: 10px 0px 5px 0px;

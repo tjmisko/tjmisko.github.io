@@ -5,7 +5,7 @@ subtitle: "A Gesture at a Suggestion of a Statement of Purpose"
 author: "Tristan Misko"
 ---
 
-I've been a lot toying with an idea recently.  It's about models and metaphors and how we understand the world.  A philosopher might call it Applied Epistemology, but I'm not a philosopher.   
+I've been toying around with an idea recently.  It's about models and metaphors and how we understand the world.  A philosopher might call it Applied Epistemology, but I'm not a philosopher.   
 
 I won’t try to go into it here.  I’m not even sure I can.  I’m still hashing out what I think, what I value, what I believe.  Quasioptimal is my attempt at thinking, at documenting the process, at exploring the possibilities.
 
