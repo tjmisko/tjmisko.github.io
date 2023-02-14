@@ -296,6 +296,7 @@ p {
         font-size: 18pt;
         margin: 15px 0px 3px 0px;
     }
+
     h3 {
         font-size: 14pt;
         margin: 10px 0px 5px 0px;
@@ -307,6 +308,31 @@ p {
     p + p {
         text-indent: 30px;
     }
+    
+    blockquote {
+        margin-left: 30px;
+        margin-right: 30px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .footnotes {
+        border-top: solid $homepage-font-color;
+        margin-top: 15px;
+        padding-top: 15px;
+        ol {
+            color: $homepage-accent-color;
+            li > p {color: $homepage-font-color}
+        }
+    }
+
+    sup > a {
+        text-decoration: none;
+    }
+    .reversefootnote {
+        text-decoration: none;
+    }
+
 }
 
 .post-header {
