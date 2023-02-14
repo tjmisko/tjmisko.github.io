@@ -7,7 +7,7 @@ author: "Tristan Misko"
 
 ### A Hellish Infinitude of Suboptimal Choices
 
-While sitting doing work today, Jen asked me out of the blue how hard it would be to code up a checklist application that showed next to each item the time remaining until its due.  This seemed like a simple enough use case that for a moment I was sure this already existed.
+While sitting doing work today, Jen asked me out of the blue how hard it would be to code up a checklist application that showed next to each item the time remaining until its due.  This seemed like a simple enough usecase that for a moment I was sure such an app already existed.
 
 A quick Google reminded me of the peculiar horror that the productivity application landscape holds for me: the options seem infinite, and yet none seems to fit how I want to do things.  My brain simply resists being compressed into the system of every such app I've ever tried.
 
