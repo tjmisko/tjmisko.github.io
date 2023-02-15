@@ -29,3 +29,7 @@ I'll be honest, I've never really liked lifting or stretching as disciplines in 
 ## Cooking
 
 I enjoy learning about the science of cooking and applying that in my kitchen.  I love cooking food with and for my friends and playing with different cuisines, flavors, and methods.  
+
+## Coffee
+
+I'm a bit of a coffee nerd.  As in, a bag of freshly roasted beans on me at all times kind of nerd.  My current setup is fully portable (hence the omnipresent beans): JX-Pro Manual Coffee Grinder from 1Zpresso and an Aeropress. Just add hot water! Check out [James Hoffman](https://www.youtube.com/@jameshoffmann/videos) for some of the my favorite coffee content on the internet.  

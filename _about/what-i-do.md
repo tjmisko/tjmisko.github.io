@@ -11,7 +11,6 @@ I strongly believe that there is no one discipline to deploy when working at the
 All disciplines build models and use metaphors to understand the world.  Understanding what these models have to offer and where they fall short forms the epistemological core of my approach.
 
 ## My Skills
-* Mathematical excellence applied to statistics, data science, computer science, and economics.  
-* Strong communication 
-* Leadership
-* Teaching
+* Mathematical excellence applied to statistics, data science, computer science, and economics 
+* Robust communication skills including strong technical and non-technical writing and 
+* Teaching 
