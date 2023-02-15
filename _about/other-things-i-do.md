@@ -4,7 +4,7 @@ layout: post
 
 ## Swing Dancing
 
-I started dancing at Lindy on Sproul, Berkeley's premier swing dancing venue, all the way back in 2019.  I was the Lindy on Sproul coordinator for 2 years as we revived the club post-COVID, and I'm still a regular attendee.  I love the dance, the music, and the community of people it brings out!  I'm currently focusing on expanding my repertoire and refining my technique both as a lead and a follow.  
+I started dancing at Lindy on Sproul, Berkeley's premier swing dancing venue, all the way back in 2019.  I was the Lindy on Sproul coordinator for 2 years as we revived the club post-COVID, and I'm still a regular attendee.  I love the dance, the music, and the community of people it brings out!  I'm currently focusing on expanding my repertoire and refining my technique as both a lead and a follow.  
 
 ## Climbing
 
@@ -24,4 +24,8 @@ I play guitar and piano casually and hold onto a fleeting hope to someday string
 
 ## Calisthenics
 
-I'll be honest, I've never really liked lifting or stretching.  Calisthenics has been my newest project (I started in January 2023) and has me feeling really inspired to get strong and flexible!  My goals for the year are do five consecutive muscle ups, hold the human flag and the front lever for fifteen seconds each, master the handstand, and press a handstand.
+I'll be honest, I've never really liked lifting or stretching as disciplines in themselves.  Calisthenics has been my newest project (I started in January 2023) and has me feeling really inspired to get strong and flexible!  My goals for the year are do five consecutive muscle ups, hold the human flag and the front lever for fifteen seconds each, master the handstand, and press a handstand.
+
+## Cooking
+
+I enjoy learning about the science of cooking and applying that in my kitchen.  I love cooking food with and for my friends and playing with different cuisines, flavors, and methods.  
