@@ -28,8 +28,12 @@ I'll be honest, I've never really liked lifting or stretching as disciplines in 
 
 ## Cooking
 
-I enjoy learning about the science of cooking and applying that in my kitchen.  I love cooking food with and for my friends and playing with different cuisines, flavors, and methods.  
+I enjoy learning about the science of cooking and applying it in my kitchen.  I love cooking food with and for my friends and playing with different cuisines, flavors, and methods.  
 
 ## Coffee
 
 I'm a bit of a coffee nerd.  As in, a bag of freshly roasted beans on me at all times kind of nerd.  My current setup is fully portable (hence the omnipresent beans): JX-Pro Manual Coffee Grinder from 1Zpresso and an Aeropress. Just add hot water! Check out [James Hoffman](https://www.youtube.com/@jameshoffmann/videos) for some of the my favorite coffee content on the internet.  
+
+## Rollercoasters
+
+Well, I'm kind of a fake thoosie at this point, but my credit count is north of 100 and I have a [rankings spreadsheet](https://docs.google.com/spreadsheets/d/1DCDj14Vt9yC9ckRyAmXPKUrwRNkwWgCDpgSOGQznEsI/edit?usp=sharing), so I guess I still qualify.   Top 3 are [El Toro](https://rcdb.com/3183.htm), [Maverick](https://rcdb.com/3570.htm), and [I-305](https://rcdb.com/4520.htm).  Honorable mention goes to [Mean Streak](https://rcdb.com/16.htm).

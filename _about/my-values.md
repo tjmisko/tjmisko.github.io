@@ -13,4 +13,4 @@ For collaboration to yield fruitful results, we must remain open to changing our
 We learn best by pushing against the boundaries and trying things that might (and probably will) fail.  Play enables us to throw off constraints, question assumptions, and be creative.
 
 ### Groundedness
-The ultimate goal of work, society, the economy, etc. is to serve people and the planet.  It's easy to get lost up in the clouds or down in the weeds when we're working.  Keeping a clear focus on the goals of the work I'm doing and the tangible benefits that achieving those goals will confer ensures that I'm making a meaningful and impactful contribution in the world.
+The ultimate goal of work, society, the economy, etc. is to serve people and the planet.  It's easy to get lost up in the clouds or down in the weeds when we're working hard on something.  Keeping a clear focus on the goals of the work I'm doing and the tangible benefits that achieving those goals will confer ensures that I'm making a meaningful and impactful contribution in the world.
