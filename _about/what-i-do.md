@@ -14,5 +14,5 @@ All disciplines build models and use metaphors to understand the world.  Underst
 * Mathematical excellence applied to statistics, data science, computer science, and economics
 * Robust communication with good oral presentation skills and strong technical and non-technical writing 
 * Close reading and critical analysis of argumentation, form, and content of texts
-* Project management and 
+* Project management and prioritization skills 
 * Teaching and mentoring focused on developing conceptual understanding and building the confidence needed to take on problems.
