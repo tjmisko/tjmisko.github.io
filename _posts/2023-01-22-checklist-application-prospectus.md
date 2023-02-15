@@ -5,7 +5,7 @@ subtitle: "The Woes of the Picky"
 author: "Tristan Misko"
 ---
 
-### A Hellish Infinitude of Suboptimal Choices
+## A Hellish Infinitude of Suboptimal Choices
 
 While sitting doing work today, Jen asked me out of the blue how hard it would be to code up a checklist application that showed next to each item the time remaining until its due.  This seemed like a simple enough usecase that for a moment I was sure such an app already existed.
 
@@ -26,7 +26,7 @@ Sometimes we can be acculturated to a system: iOS has been the quintessential ex
 In the end, the answer to Jen's question of how long it'd take to make something that suits her needs seems to me to be something like "an afternoon."  So we're putting it to the test.  
 
 
-### The Bill of Goods for Our Checklist Application
+## The Bill of Goods for Our Checklist Application
 
 I'm well aware that checklist applications are a bit of a meme in the developer community for being every #learntocode developer's *baby's first application*, and I am chuckling at myself for wanting to do this, but picky people will be picky, and I'm no exception.  Doing this will be pretty boring, and I don't want to spend longer doing it than I ought to.
 
