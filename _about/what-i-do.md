@@ -12,8 +12,8 @@ All disciplines build models and use metaphors to understand the world.  Underst
 
 ## My Skills
 * Mathematical excellence and problem solving ability applied to statistics, data science, computer science, and economics
-* Robust communication with good oral presentation skills and strong technical and non-technical writing 
-* Project management, delegation, and prioritization
+* Robust communication with good oral presentation skills and thoughtful technical and non-technical writing
+* Project management, delegation, and prioritization honed across diverse project environments
 * Teaching and mentoring focused on developing conceptual understanding and building the confidence needed to take on problems.
 * Close reading and critical analysis of argumentation, form, and content of texts
 

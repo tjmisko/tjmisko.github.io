@@ -11,7 +11,13 @@ dl, dd, ol, ul, figure {
   padding: 0;
 }
 
+ul {
+    position: relative;
+    margin: 5px 0px;
+    padding-left: 20px;
+    line-height: 1.25;
 
+}
 
 /**
  * Basic styling
@@ -43,6 +49,8 @@ main {
   display: block; /* Default value of `display` of `main` element is 'inline' in IE 11. */
 }
 
+/** page-background styling */
+
 .homepage-content::before {
     z-index: -1;
     content: "";
@@ -54,7 +62,7 @@ main {
     background-image: url("../../../cb.svg");
     background-repeat: repeat-y;
     background-size: clamp(100%, 1200pt, 1200pt);
-    opacity: 0.25;
+    opacity: 0.20;
     min-height: 100vh;
 }
 
@@ -72,11 +80,10 @@ main {
     left: 0;
     top: 0;
     right: 0;
-
     background-color: $homepage-background-color;
 }
 
-
+/** homepage styling */
 .homepage-card {
     color: $homepage-font-color;
     scroll-snap-align: start;
@@ -98,8 +105,6 @@ main {
     }
 }
 
-// Resume Button
-
 .resume-button {
     position: absolute;
     color: $homepage-accent-color;
@@ -109,8 +114,13 @@ main {
     right: 40px;
     border-radius: 5px;
     border: 1px solid $homepage-accent-color;
+    &:hover {
+        transform: scale(1.02);
+        transition: 0.15s ease;
+    }
 }
 
+/** Headers about me, quasioptimal, and contact me */
 .site-header {
     text-align: center;
     width: 100%;
@@ -118,30 +128,15 @@ main {
     a {
         text-decoration: none;
         color: $homepage-font-color;
-    }
-
-    a:hover {
-        transform: scale(1.03);
-        transition: 0.13s ease;
+        &:hover {color: $homepage-accent-color}
     }
 }
-
-.resume-button:hover {
-    transform: scale(1.02);
-    transition: 0.15s ease;
-}
-
+/** custom styling for greeting page */
 #greeting-card {
     height: 100vh;
     h1 {
         text-align: left;
     }
-}
-
-ul {
-    position: relative;
-    margin: 5px 0px;
-    padding-left: 20px;
 }
 
 p {
