@@ -26,7 +26,6 @@ body {
   font-kerning: normal;
   display: flex;
   flex-direction: column;
-  overflow: auto;
 }
 
 a {
@@ -44,25 +43,8 @@ main {
   display: block; /* Default value of `display` of `main` element is 'inline' in IE 11. */
 }
 
-/**
- * Images
- */
-img {
-  max-width: 100%;
-  vertical-align: middle;
-}
-
-/**
- * Figures
- */
-figure > img {
-  display: block;
-}
-
-
-
 .homepage-content::before {
-    z-index: 0;
+    z-index: -1;
     content: "";
     position: absolute;
     top: 0;
@@ -72,11 +54,12 @@ figure > img {
     background-image: url("../../../cb.svg");
     background-repeat: repeat-y;
     background-size: clamp(100%, 1200pt, 1200pt);
-    opacity: 0.15;
+    opacity: 0.25;
     min-height: 100vh;
 }
 
 .homepage-content {
+    z-index: 0;
     position: relative;
     background-color: $homepage-background-color;
     min-height: 100vh;
@@ -84,7 +67,7 @@ figure > img {
 
 .ios-peek {
     position: fixed;
-    z-index: -2;
+    z-index: -3;
     bottom: 0;
     left: 0;
     top: 0;
@@ -182,6 +165,7 @@ p {
 
 .about-button {
     border: none;
+    cursor: pointer;
     color: $homepage-font-color;
     background-color: rgba(0,0,0,0);
     font-size: 14pt;
