@@ -152,7 +152,6 @@ p {
 
 .info-container {
     max-width: 600px;
-    font-size: clamp(12pt, 1.3vw, 16pt);
     p + p {
         text-indent: 30px;
     }
@@ -171,7 +170,7 @@ p {
     font-family: "Courier New";
 }
 
-// Project Styling
+/** Project Box and Card Styling */
 
 #projects-card {
     display: flex;
@@ -179,26 +178,28 @@ p {
     flex-direction: column;
 }
 
-
-.grid-box {
+.project-box {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
 }
 
+/** Internal card styling */
 .project-flex-wrapper {
     display: flex;
     height: 100%;
     width: 100%;
     flex-direction: column;
     justify-content: space-between;
+    ul, li {
+        margin-bottom: 0px;
+    }
 }
 
 .project-card {
     position: relative;
     margin: 10px;
     width: clamp(100px, 90%, 400px);
-    overflow: hidden;
     background-color: $project-card-color;
     border-radius: 10px;
     padding: 20px;
@@ -213,7 +214,7 @@ p {
 }
 
 .project-linkbox {
-    margin-top: 20px;
+    margin-top: 10px;
     list-style: none;
     display: flex;
     justify-content: center;
@@ -227,17 +228,12 @@ p {
     margin: 5pt 0pt;
 }
 
-.project-subtitle {
-    font-size: 100%;
-}
-
 .project-type {
     font-size: 10pt;
 }
 
-// Blog stylings
-
-
+/** Blog linkbox stylings */
+/** Implement filter buttons here in the future when the list gets too long*/
 .blog-link {
     color: $homepage-font-color;
     text-decoration: none;
@@ -252,10 +248,6 @@ p {
     }
 }
 
-
-
-
-
 .blog-post-link {
     padding: 15px;
     margin: 10px 0px;
@@ -265,86 +257,11 @@ p {
 }
 
 .blog-post-link:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
     transition: 0.15s ease;
 }
 
-
-.post {
-    position: relative;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-}
-
-.blog-content {
-    padding: 30px 50px;
-    overflow: hidden;
-    max-width: 750px;
-    color: $homepage-font-color;
-    font-size: clamp(14pt, 14pt, 14pt);
-    overflow-wrap: break-word;
-    h2 {
-        font-size: 18pt;
-        margin: 15px 0px 3px 0px;
-    }
-
-    h3 {
-        font-size: 14pt;
-        margin: 10px 0px 5px 0px;
-    }
-    p {
-        font-size: 14pt;
-        margin: 2px;
-    }
-    p + p {
-        text-indent: 30px;
-    }
-    
-    blockquote {
-        margin-left: 30px;
-        margin-right: 30px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-    .footnotes {
-        border-top: solid $homepage-font-color;
-        margin-top: 15px;
-        padding-top: 15px;
-        ol {
-            color: $homepage-accent-color;
-            li > p {color: $homepage-font-color}
-        }
-    }
-
-    sup > a {
-        text-decoration: none;
-    }
-    .reversefootnote {
-        text-decoration: none;
-    }
-
-}
-
-.post-header {
-    margin-top: 20px;
-    min-height: 30vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    h2 {
-        margin-top: 5px;
-        font-size: 16pt;
-        font-style: italic;
-    }
-    ul {
-        list-style: none;
-    }
-}
-
-
-
+/** Contact Me */
 .social-media-list {
   margin-top: 20px;
   list-style: none;
@@ -368,12 +285,3 @@ p {
     color :$homepage-accent-color;
 }
 
-.blog-feed-page {
-    margin-top: 150px;
-    h2 {
-        color: $homepage-font-color;
-    }
-    .blog-post-link {
-        width: clamp(400px, 90%, 90%);
-    }
-}
