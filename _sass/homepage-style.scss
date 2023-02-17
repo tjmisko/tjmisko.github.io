@@ -28,7 +28,7 @@ body {
      -moz-font-feature-settings: "kern" 1;
        -o-font-feature-settings: "kern" 1;
           font-feature-settings: "kern" 1;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Roboto";
   font-kerning: normal;
   display: flex;
   flex-direction: column;
@@ -100,12 +100,25 @@ main {
         text-decoration: none;
     }
     h2, h3 {
-        margin-top: 15px;
+        font-family: "IBM Plex Mono";
+        font-weight: normal;
         margin-bottom: 3px;
+    }
+    
+    p {
+        font-family: "Roboto";
+        font-weight: 300;
+        line-height: 1.4;
+    }
+    ul {
+        font-family: "Roboto";
+        font-weight: 300;
+        line-height: 1.4;
     }
 }
 
 .resume-button {
+    font-family: "Courier Prime";
     position: absolute;
     color: $homepage-accent-color;
     padding: 7px 7px 4px 7px;
@@ -122,6 +135,8 @@ main {
 
 /** Headers about me, quasioptimal, and contact me */
 .site-header {
+    font-family: "Courier Prime";
+    font-weight: normal;
     text-align: center;
     width: 100%;
     font-size: 30pt;
@@ -135,14 +150,17 @@ main {
 #greeting-card {
     height: 100vh;
     h1 {
+        font-family: "Courier Prime";
+        font-weight: normal;
         text-align: left;
     }
 }
 
-p {
-    line-height: 1.25;
+#about-card {
+    h2, h3 {
+        margin-top: 15px;
+    }
 }
-
 .about-me-navbox {
     display: flex;
     justify-content: space-between;
@@ -162,12 +180,12 @@ p {
     cursor: pointer;
     color: $homepage-font-color;
     background-color: rgba(0,0,0,0);
-    font-size: 14pt;
+    font-size: clamp(12pt, 2vw, 14pt);
     &:hover {
         transform: scale(1.04);
         transition: 0.15s ease;
     }
-    font-family: "Courier New";
+    font-family: "Courier Prime";
 }
 
 /** Project Box and Card Styling */
@@ -224,12 +242,15 @@ p {
 
 .project-title {
     text-align: left;
-    font-size: 110%;
-    margin: 5pt 0pt;
+    font-family: "IBM Plex Mono";
+    font-weight: normal;
+    font-size: 14pt;
 }
 
-.project-type {
-    font-size: 10pt;
+.project-type  {
+    font-family: "Roboto";
+    font-size: 11pt;
+    margin-top: 3px;
 }
 
 /** Blog linkbox stylings */

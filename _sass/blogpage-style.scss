@@ -1,20 +1,11 @@
 /** Stylesheet for blogs*/
 
-
-.post-header {
-    margin-top: 20px;
-    min-height: 30vh;
+.post {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    h2 {
-        margin-top: 5px;
-        font-size: 16pt;
-        font-style: italic;
-    }
-    ul {
-        list-style: none;
-    }
+    align-items: center;
 }
 
 .blog-feed-page {
@@ -27,24 +18,44 @@
     }
 }
 
+/** Prevent footnotes and subscripts from changing
+lineheight */
+sup, sub {
+    vertical-align: baseline;
+    position: relative;
+    top: -0.4em;
+  }
+  sub { 
+    top: 0.4em; 
+  }
+
 .blog-content {
-    font-family: "Roboto";
-    padding: 30px 60px;
+    padding: 30px clamp(30px, 10%, 10%);
     overflow: hidden;
-    max-width: 750px;
+    max-width: 700px;
     color: $homepage-font-color;
     overflow-wrap: break-word;
-    h2 {
-        font-size: 18pt;
+    h1 {
+        font-family: "Courier Prime";
+        font-size: 16pt;
         margin: 15px 0px 3px 0px;
     }
-
+    h2 {
+        font-family: "Courier Prime";
+        font-weight: normal;
+        font-size: 16pt;
+        margin: 15px 0px 3px 0px;
+    }
     h3 {
         font-size: 14pt;
         margin: 10px 0px 5px 0px;
     }
     p {
-        font-size: 13.5 pt;
+        font-family: "Merriweather";
+        font-weight: lighter;
+        font-style: normal;
+        line-height: 1.35;
+        font-size: clamp(11pt, 2vw, 13.5pt);
         margin: 2px;
     }
     p + p {
@@ -70,9 +81,34 @@
 
     sup > a {
         text-decoration: none;
+        margin: 0;
     }
     .reversefootnote {
         text-decoration: none;
     }
+}
 
+.post-header {
+    margin-top: 20px;
+    min-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    h1 {
+        font-family: "Courier Prime";
+        font-weight: normal;
+        font-size: 22pt;
+    }
+    h2 {
+        font-family: "IBM Plex Mono";
+        margin-top: 5px;
+        font-size: 14pt;
+        font-weight: normal;
+        font-style: italic;
+    }
+    ul {
+        font-size: 11pt;
+        font-family: "IBM Plex Mono";
+        list-style: none;
+    }
 }
