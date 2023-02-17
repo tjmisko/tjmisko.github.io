@@ -28,7 +28,7 @@ body {
      -moz-font-feature-settings: "kern" 1;
        -o-font-feature-settings: "kern" 1;
           font-feature-settings: "kern" 1;
-  font-family: "courier-new-webfont";
+  font-family: 'Times New Roman', Times, serif;
   font-kerning: normal;
   display: flex;
   flex-direction: column;
@@ -171,7 +171,7 @@ p {
 }
 
 /** Project Box and Card Styling */
-
+/** Implement Project Type filter buttons using the about buttons */
 #projects-card {
     display: flex;
     align-items: flex-start;

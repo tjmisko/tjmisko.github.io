@@ -1,5 +1,6 @@
 /** Stylesheet for blogs*/
 
+
 .post-header {
     margin-top: 20px;
     min-height: 30vh;
@@ -27,6 +28,7 @@
 }
 
 .blog-content {
+    font-family: "Roboto";
     padding: 30px 60px;
     overflow: hidden;
     max-width: 750px;
