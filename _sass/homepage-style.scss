@@ -16,7 +16,6 @@ ul {
     margin: 5px 0px;
     padding-left: 20px;
     line-height: 1.25;
-
 }
 
 /**
@@ -83,6 +82,30 @@ main {
     background-color: $homepage-background-color;
 }
 
+h1 {
+    font-family: "Courier Prime";
+    font-size: 32pt;
+}
+h2, h3 {
+    font-family: "IBM Plex Mono";
+    font-weight: normal;
+    font-size: 20pt;
+    margin-bottom: 3px;
+}
+
+p, ul {
+    font-family: "Roboto";
+    font-size: 14pt;
+    font-weight: 200;
+    line-height: 1.4;
+}
+
+.homepage-link {
+    position: relative;
+    color: $homepage-accent-color;
+    text-decoration: none;
+}
+
 /** homepage styling */
 .homepage-card {
     color: $homepage-font-color;
@@ -91,30 +114,12 @@ main {
     display: flex;
     justify-content: center;
     padding: 30px 60px;
+    @media (max-width: 500px) {
+        padding: 30px 40px;
+    }
     overflow: hidden;
     align-items: center;
 
-    .homepage-link {
-        position: relative;
-        color: $homepage-accent-color;
-        text-decoration: none;
-    }
-    h2, h3 {
-        font-family: "IBM Plex Mono";
-        font-weight: normal;
-        margin-bottom: 3px;
-    }
-    
-    p {
-        font-family: "Roboto";
-        font-weight: 300;
-        line-height: 1.4;
-    }
-    ul {
-        font-family: "Roboto";
-        font-weight: 300;
-        line-height: 1.4;
-    }
 }
 
 .resume-button {
@@ -122,7 +127,7 @@ main {
     position: absolute;
     color: $homepage-accent-color;
     padding: 7px 7px 4px 7px;
-    font-size: 14pt;
+    font-size: 1em;
     top: 30px;
     right: 40px;
     border-radius: 5px;
@@ -156,6 +161,8 @@ main {
     }
 }
 
+
+
 #about-card {
     h2, h3 {
         margin-top: 15px;
@@ -164,7 +171,6 @@ main {
 .about-me-navbox {
     display: flex;
     justify-content: space-between;
-    font-size: 15pt;
     margin: 15px 0px;
 }
 
@@ -180,7 +186,7 @@ main {
     cursor: pointer;
     color: $homepage-font-color;
     background-color: rgba(0,0,0,0);
-    font-size: clamp(12pt, 2vw, 14pt);
+    font-size: clamp(12pt, 1.5vw, 16pt);
     &:hover {
         transform: scale(1.04);
         transition: 0.15s ease;
