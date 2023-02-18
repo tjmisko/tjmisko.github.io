@@ -44,22 +44,21 @@ sup, sub {
         font-family: "Courier Prime";
         font-weight: normal;
         font-size: 16pt;
-        margin: 15px 0px 3px 0px;
+        margin: 25px 0px 3px 0px;
     }
     h3 {
         font-size: 14pt;
-        margin: 10px 0px 5px 0px;
+        margin: 25px 0px 5px 0px;
     }
-    p {
+    p, ul {
         font-family: "Merriweather";
         font-weight: lighter;
         font-style: normal;
-        line-height: 1.35;
+        line-height: 2.2;
         font-size: clamp(11pt, 2vw, 13.5pt);
-        margin: 2px;
     }
     p + p {
-        text-indent: 30px;
+        margin: 25px 0px;
     }
     
     blockquote {
