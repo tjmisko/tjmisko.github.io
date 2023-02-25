@@ -8,13 +8,17 @@
     align-items: center;
 }
 
+.pagehome {
+    position: absolute;
+    left: 0;
+    top: 30px;
+}
+.post-content {max-width: 650px;}
 .blog-feed-page {
-    margin-top: 150px;
+    padding: 80px 50px;
     h2 {
         color: $homepage-font-color;
-    }
-    .blog-post-link {
-        width: clamp(400px, 90%, 500px);
+        text-align: center;
     }
 }
 

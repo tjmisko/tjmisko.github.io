@@ -6,6 +6,11 @@ youtube-playlist: PLBZRugXUTZoSj5aMrsImKGgjm_420zlxA
 github: data-cleaning-in-R-SSPI-tutorial
 collaborators: "Max Strongman, Minh Nguyen, Justin Laskowski, and Richard Lu"
 html: data-cleaning-in-R-SSPI-tutorial
+tags:
+  - "economics"
+  - "data"
+  - "software"
+  - "teaching"
 ---
 * Led a complete redesign of the SSPI database, data collection procedures, and data validation processes 
 * Implemented a full stack web application for data collection, management, and validation which compiles data from dozens of reporting sources, seamlessly handles different formats, and allows automatic validation procedures that ensure the local SSPI database is correct and up-to-date

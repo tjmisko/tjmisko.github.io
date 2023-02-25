@@ -3,6 +3,9 @@ layout: default
 ---
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 <article class="post">
+  {%- if page.permalink -%}
+    <a rel="me" href="/" title="Return to homepage"><svg class="svg-icon grey pagehome"><use xlink:href="{{ '/assets/minima-social-icons.svg#home' | relative_url }}"></use></svg></a>
+  {%- endif -%}
   <div class="post-content">
     <div class="blog-feed-page">
         {{ content }}

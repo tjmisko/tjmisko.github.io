@@ -5,6 +5,8 @@ project-collaborators: "Collaborators: Jennifer Tachibana, Alan Jian"
 project-status: "Completed January 2021 - Redesign Ongoing"
 external-github: "lindyonsproul/lindyonsproul.github.io"
 website: lindyonsproul.dance
+tags:
+  - "software"
 ---
 * Designed and built out responsive static GitHub pages site with HTML, CSS, and JavaScript powered by the Jekyll framework
 * Implemented an animated infinite image carousel background using CSS Transitions and the GreenSock Web Animation API

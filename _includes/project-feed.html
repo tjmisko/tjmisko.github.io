@@ -8,6 +8,7 @@
             </div>
             <div class="project-footer">
                 <p class="project-type"> <b> Status: </b>{{ p.project-status }} </p>
+                {% if p.project-supervisor %}<p class="project-type"> <b> Supervisor: </b> {{ p.project-supervisor }} </p> {% endif %}
                 {% if p.project-collaborators %}<p class="project-type"> <b> Collaborators: </b> {{ p.project-collaborators }} </p> {% endif %}
                 <ul class="project-linkbox">
                     {%- if p.github -%}<li><a rel="me" href="https://github.com/tjmisko/{{ p.github | cgi_escape | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}

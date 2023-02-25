@@ -54,13 +54,14 @@ layout: default
 
 <div class="homepage-card" id="projects-card">
     <h1 class="site-header"> Projects </h1>
+    <div class="project-navbox">
+        <button class="project-button" onclick="showProjects([], this)"> All </button>
+        <button class="project-button" onclick="showProjects(this)"> Software Engineering </button>
+        <button class="project-button" onclick="showProjects(this)"> Data Science </button>
+        <button class="project-button" onclick="showProjects(this)"> Economic Research </button>
+    </div>
     <div class="project-box">
-        <div class="project-navbox">
-            <button class="project-button" onclick="showProjects([], this)"> All </button>
-            <button class="project-button" onclick="showProjects(this)"> Software Engineering </button>
-            <button class="project-button" onclick="showProjects(this)"> Data Science </button>
-            <button class="project-button" onclick="showProjects(this)"> Economic Research </button>
-        </div>
+        
         {%- include project-feed.html -%}
         <script>
             function resetProjectButtonsColor() {

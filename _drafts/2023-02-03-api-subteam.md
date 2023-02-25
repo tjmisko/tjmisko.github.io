@@ -9,7 +9,7 @@ I've been working on the SSPI for almost three years now, and I'm so excited to 
 
 # Current System
 
-The system on which the team has relied for the last five years has been straining as our project evolves.
+The data management system on which the SSPI team has relied for the last five years has been straining as the size, scope, and detail of our project has grown.  
 
 We use Google Sheets as our primary database because it is easy to use, accessible to all team members, and handles collaboration seamlessly.  This environment met our needs when our project was smaller, but as the number and complexity of our indicators has grown, the cracks have started to show.  
 
