@@ -54,8 +54,37 @@ layout: default
 
 <div class="homepage-card" id="projects-card">
     <h1 class="site-header"> Projects </h1>
+    <div class="project-navbox">
+        <button class="project-button" id="allbutton" onclick="showProjects('all', this)"> All </button>
+        <button class="project-button" onclick="showProjects('software', this)"> Software Engineering </button>
+        <button class="project-button" onclick="showProjects('data', this)"> Data Science </button>
+        <button class="project-button" onclick="showProjects('economics', this)"> Economic Research </button>
+    </div>
     <div class="project-box">
         {%- include project-feed.html -%}
+        <script>
+            function resetProjectButtonsColor() {
+                projectButtons = document.getElementsByClassName("project-button")
+                for (i = 0; i < projectButtons.length; i++) {
+                    projectButtons[i].style.color = "";
+                }
+            }
+
+            function showProjects(projectType, el) {
+                resetProjectButtonsColor()
+                projectCards = document.getElementsByClassName("project-card")
+                for (i = 0; i < projectCards.length; i++) {
+                    if (projectCards[i].className.includes(projectType)) {
+                        projectCards[i].style.display = "flex";
+                    } else {
+                        projectCards[i].style.display = "none";
+                    }
+                }
+                el.style.color = "rgba(250, 130, 30, 1)"
+            }
+            showProjects("all", document.getElementById("allbutton"))
+        </script>
+
     </div>
 </div>
 

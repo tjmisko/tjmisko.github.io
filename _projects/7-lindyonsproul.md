@@ -6,6 +6,7 @@ project-status: "Completed January 2021 - Redesign Ongoing"
 external-github: "lindyonsproul/lindyonsproul.github.io"
 website: lindyonsproul.dance
 tags:
+  - "all"
   - "software"
 ---
 * Designed and built out responsive static GitHub pages site with HTML, CSS, and JavaScript powered by the Jekyll framework

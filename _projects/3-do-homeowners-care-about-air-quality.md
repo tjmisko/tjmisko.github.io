@@ -6,6 +6,7 @@ project-status: Completed Fall 2021
 github: fa2021-wildfire-smoke-paper
 pdf: wildfire
 tags:
+  - "all"
   - "economics"
   - "data"
 ---
