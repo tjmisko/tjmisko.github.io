@@ -7,6 +7,7 @@ github: data-cleaning-in-R-SSPI-tutorial
 collaborators: "Max Strongman, Minh Nguyen, Justin Laskowski, and Richard Lu"
 html: data-cleaning-in-R-SSPI-tutorial
 tags:
+  - "all"
   - "economics"
   - "data"
   - "software"

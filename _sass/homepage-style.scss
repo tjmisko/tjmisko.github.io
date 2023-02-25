@@ -203,6 +203,27 @@ p, ul {
     padding: 30px 3%;
 }
 
+.project-navbox {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 5%;
+    margin: 5px 0px;
+    width: 90%;
+}
+
+.project-button {
+    border: none;
+    cursor: pointer;
+    color: $homepage-font-color;
+    background-color: rgba(0,0,0,0);
+    font-size: clamp(10pt, 1.3vw, 16pt);
+    &:hover {
+        transform: scale(1.04);
+        transition: 0.15s ease;
+    }
+    font-family: "Courier Prime";
+}
+
 .project-box {
     display: flex;
     flex-flow: row wrap;

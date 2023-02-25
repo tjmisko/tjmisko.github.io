@@ -7,6 +7,7 @@ project-collaborators: Ekaterina Fedorova, Sangcheol Moon, Tai Lohrer, Uma Krish
 google-drive: folders/1PJDPvXb6jn5GzCf5b4NTGPeeaPUqG1zt
 website: irle.berkeley.edu/research-centers/center-for-work-technology-and-society/creating-a-sustainable-shared-prosperity-policy-index-sspi/
 tags:
+  - "all"
   - "economics"
   - "data"
 ---

@@ -5,6 +5,7 @@ project-collaborators: "Jen Tachibana"
 project-status: "In Progress Since January 2023"
 github: "checklist-app"
 tags:
+  - "all"
   - "software"
 ---
 * Used React to implement a clean, responsive, and minimalist user interface

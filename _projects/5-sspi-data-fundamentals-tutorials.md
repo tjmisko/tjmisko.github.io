@@ -6,6 +6,7 @@ youtube-playlist: PLBZRugXUTZoSj5aMrsImKGgjm_420zlxA
 github: data-cleaning-in-R-SSPI-tutorial
 html: data-cleaning-in-R-SSPI-tutorial
 tags:
+  - "all"
   - "data"
   - "teaching"
 ---

@@ -6,6 +6,7 @@ project-collaborators: "Prof. Clair Brown, Ph.D., UC Berkeley (Advisor)"
 github: sp2022-honors-thesis
 pdf: something-in-the-air
 tags:
+  - "all"
   - "economics"
   - "data"
 ---
