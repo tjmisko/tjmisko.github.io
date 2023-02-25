@@ -11,6 +11,7 @@ tags:
   - "economics"
   - "data"
 ---
-* Created an index that scores and ranks policy across Sustainability, Market Structure, and Public Goods
-* Led data collection and policy research to engineer policy indicators
-* Conducted sensitivity testing
+* Created an index that scores and ranks national policies across Sustainability, Market Structure, and Public Goods for 49 countries
+* Led 12 undergraduates in data collection and policy research to engineer over 50 data-driven policy indicators
+* Conducted sensitivity testing to ensure the robustness of indicators and aggregation methodology
+* Assessed the extent to which the SSPI policy index tracks performance metrics using regression analysis 

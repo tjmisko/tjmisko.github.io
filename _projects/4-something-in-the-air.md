@@ -2,7 +2,7 @@
 project-title: "Something in the Air: How Policy Affects Air Quality"
 project-type: "Economic Research - Original Working Paper"
 project-status: "Completed Spring 2022"
-project-collaborators: "Prof. Clair Brown, Ph.D., UC Berkeley (Advisor)"
+supervisor: "Prof. Clair Brown, UC Berkeley"
 github: sp2022-honors-thesis
 pdf: something-in-the-air
 tags:
