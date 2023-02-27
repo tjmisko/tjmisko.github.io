@@ -7,9 +7,12 @@ author: "Tristan Misko"
 
 Walking down to BART and listening to this podcast with Nick Bostrom
 
+The infinitude of textural detail in the world.  Painting and drawing are hard because we have to learn to see through our concepts and abstractions and see the world as it is.  Such an interesting way of coming into knowledge or understanding something.  Attention and sensitivity.
+
 Looking around at the world and realizing how many concepts I'm projecting onto it at once.  Beautiful kind of mindfulness.  The notion of the ground.  The lightposts.  Attention.  Subconscious recognitions.  Relevance filtering, done automatically. 
 
-Neural networks as intuition machines. 
+Neural networks as intuition machines. It doesn't know how or why it got to where it is.  We do this all the time.  
+
 20 February 2023
 Voices in AI, “A Conversation with Nick Bostrom”
 The host raised Searle’s Chinese Room argument that AI cannot be conscious, which I had never heard before
