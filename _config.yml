@@ -3,7 +3,9 @@ author:
   name: Tristan Misko
   email: tristanmisko@gmail.com
 description: > # this means to ignore newlines until "show_excerpts:"
-  Tristan Misko's portfolio website and personal blog.
+  View my data science and software engineering portfolio 
+  and check out Quasioptimal, my personal blog vaguely about 
+  data, metaphors, code, and applied epistemology.
 
 show_excerpts: false # set to true to show excerpts on the homepage
 
