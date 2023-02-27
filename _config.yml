@@ -13,6 +13,7 @@ collections:
   - projects
   - about
   - pages
+  - archives
 
 collections:
   about:
@@ -20,6 +21,8 @@ collections:
   projects:
     output: true
   pages:
+    output: true
+  archives:
     output: true
 
 # Minima date format
