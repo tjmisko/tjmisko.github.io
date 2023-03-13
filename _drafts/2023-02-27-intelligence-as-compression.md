@@ -1,11 +1,18 @@
 ---
 layout: post
-title: "Intelligence as Compression"
+title: "Intelligence as a Sort of Compression"
 subtitle: "Searle, Bostrom, and the Chinese Room" 
 author: "Tristan Misko"
 ---
 
-Walking down to BART and listening to this podcast with Nick Bostrom
+It was a chilly Sunday afternoon as I walked down Bancroft Way towards Downtown Berkeley BART to pick up my partner from the station.  I decided to dip into a podcast entitled "A Conversation with Nick Bostrom" recorded in 2017 for the now-defunct show *Voices in AI* with X.  
+
+With all the AI buzz in the last six months
+
+What does Bostrom's argument remind me of? All of the finicky arguments about reasoning about infinity and the ways in which we must be careful in our thought experiments.  
+
+Combinatorial arguments
+
 
 The infinitude of textural detail in the world.  Painting and drawing are hard because we have to learn to see through our concepts and abstractions and see the world as it is.  Such an interesting way of coming into knowledge or understanding something.  Attention and sensitivity.
 

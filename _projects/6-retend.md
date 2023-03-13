@@ -3,7 +3,7 @@ project-title: "Retend"
 project-type: "Full Stack Web Application"
 project-status: "In Progress Since December 2022"
 youtube-playlist: PLBZRugXUTZoSj5aMrsImKGgjm_420zlxA
-github: ralph
+github: retend
 tags:
   - "all"
   - "software"

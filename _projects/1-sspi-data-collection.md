@@ -3,8 +3,8 @@ project-title: "SSPI Data Collection Application"
 project-type: "Project Manager and Lead Engineer"
 project-status: "In Progress Since Fall 2022"
 youtube-playlist: PLBZRugXUTZoSj5aMrsImKGgjm_420zlxA
-github: data-cleaning-in-R-SSPI-tutorial
-collaborators: "Max Strongman, Minh Nguyen, Justin Laskowski, and Richard Lu"
+github: sspi-data-collection
+collaborators: "Max Strongman, Minh Nguyen, Justin Laskowski, and Daya Khunkhun"
 html: data-cleaning-in-R-SSPI-tutorial
 tags:
   - "all"
