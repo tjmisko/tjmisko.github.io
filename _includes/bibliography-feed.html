@@ -4,8 +4,9 @@
       <div class="blog-post-link">
         <h3 class="blog-title"> {{post.title}}</h3>
         <i>{{post.subtitle}} </i>
-        <b> {{post.author}} </b>
-        <p> Read: {{post.completed | date: "%B %Y" }}</p>
+        Author: <b>{{post.author}}</b>
+        <p>Read: {{post.completed | date: "%B %Y" }}; Annotated: {{post.date | date: "%B %Y" }}</p>
+
       </div>
     </li></a>
   {% endfor %}
