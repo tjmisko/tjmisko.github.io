@@ -9,6 +9,9 @@ permalink: "/quasioptimal/"
 {% include blog-feed.html %}
 
 
+## Annotated Bibliography
+
+{% include bibliography-feed.html %}
 ## Archives
 
 {% include archive-feed.html %}

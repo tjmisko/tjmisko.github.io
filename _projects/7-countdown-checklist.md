@@ -8,6 +8,6 @@ tags:
   - "all"
   - "software"
 ---
-* Used React to implement a clean, responsive, and minimalist user interface
-* Handled backend routing using Node.js
+* Used React to implement a clean, responsive, and minimalist user interface displaying the task to be completed and the time to 
+* Deployed backend routing using Node.js 
 * Implemented data persistence using MySQL connected to a local database
