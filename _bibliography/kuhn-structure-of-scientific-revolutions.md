@@ -11,7 +11,7 @@ Because I already had a sense of the direction of the argument and the conclusio
 
 To write this annotation, I'm drawing on a couple of summary sources as well as some sparse notes I made at the time.[^1] 
 
-## There Is No Perfect Theory
+## Physics Can't Be Your Metaphysics; or, There Is No Perfect Theory
 
 I came into school with a generative mindset toward theory.  How can we lay down new ground? How can we connect theories together?  How can we explain everything?  I wanted to work either in theoretical physics or theoretical economics, and I chose economics because the potential value added seemed higher. 
 
@@ -30,7 +30,7 @@ But, as Kuhn shows through historical examples, and as I felt distinctly in my i
 
 Kuhn's diagnosis of this conservative impulse among practicing scientists really stuck with me.  It's just intuitively true: we can all recognize it in ourselves.  Models are sticky, and we feel a certain resistance to updating our beliefs.  *Structure* left me feeling a certain anxiety about avoiding this state of entrenchment, which I think is a particular danger for someone with my inclinations toward conceptualizing and philosophizing.  That anxiety has made me hypervigilent: one way of phrasing the entire endeavor of quasioptimal might be a kind of hypervigilence around models, concepts, "paradigms," and ways of knowing.
 
-## The Path Dependence of Thought
+## The Path-Dependence of Thought
 
 *Structure* prompted me to think more seriously about the history of thought.  In particular, it got me thinking about how the notion of rational scientific enquiry is distinctly inflected with Western biases and makes a lot of invisible assumptions that are historically contingent and open for debate.  
 
@@ -42,7 +42,7 @@ In Kuhn's account, the "filling in the picture" metaphor describes the "normal" 
 
 
 
-[^1]: Summary Sources: [Wikipedia](https://en.wikipedia.org/wiki/The_Structure_of_Scientific_Revolutions) and [Stanford Plato](https://plato.stanford.edu/entries/thomas-kuhn)
+[^1]: Summary Sources: [Wikipedia](https://en.wikipedia.org/wiki/The_Structuçre_of_Scientific_Revolutions) and [Stanford Plato](https://plato.stanford.edu/entries/thomas-kuhn)
 [^2]: William F. Buckley, Jr. (1955), ["Our Mission Statement"](https://www.nationalreview.com/1955/11/our-mission-statement-william-f-buckley-jr/) for *National Review*.  This is an absolutely fascinating document to read in 2023 because of the insight into the deep intellectual and emotional currents underpinning the American right to this day.  There are sentences in this piece that could be taken out of a Tucker Carlson vamp.  
 
 
