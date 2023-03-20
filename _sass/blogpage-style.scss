@@ -14,11 +14,16 @@
     top: 30px;
 }
 .post-content {max-width: 650px;}
+
 .blog-feed-page {
     padding: 80px 50px;
     h2 {
         color: $homepage-font-color;
         text-align: center;
+        margin-top: 30px;
+    }
+    p + p {
+        text-indent: 40px;
     }
 }
 
