@@ -9,7 +9,7 @@ layout: default
             <h2 class="post-subtitle"> {{page.subtitle | escape }} </h2>
         {%- endif -%}
         <ul class="post-meta">
-          {%- assign date_format = site.minima.date_format | default: "%M %Y" -%}
+          {%- assign date_format = site.minima.date_format | default: "%B %Y" -%}
           {%- if page.author -%}
              {% for author in page.author %}
               <li itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -17,7 +17,8 @@ layout: default
                 {%- if forloop.last == false %}, {% endif -%}
             {% endfor %}
           {%- endif -%}
-          <li>Bibliography Annotation Date: <time class="dt-published"> {{ page.date | date: date_format }}</time></li>
+          <li>Completed {{ page.completed | date_format }}</li>
+          <li>Bibliography Annotation Date: {{ page.date | date: date_format }} </li>
          </ul>
       </header>
 
