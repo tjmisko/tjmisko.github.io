@@ -9,7 +9,7 @@ layout: default
             <h2 class="post-subtitle"> {{page.subtitle | escape }} </h2>
         {%- endif -%}
         <ul class="post-meta">
-          {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+          {%- assign date_format = site.minima.date_format | default: "%M %Y" -%}
           {%- if page.author -%}
              {% for author in page.author %}
               <li itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -17,15 +17,9 @@ layout: default
                 {%- if forloop.last == false %}, {% endif -%}
             {% endfor %}
           {%- endif -%}
-          <li>Date Published: <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+          <li>Bibliography Annotation Date: <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
               {{ page.date | date: date_format }}
           </time></li>
-          {%- if page.modified_date -%}
-            {%- assign mdate = page.modified_date | date_to_xmlschema -%}
-            <li> Last Updated: <time class="dt-modified" datetime="{{ mdate }}" itemprop="dateModified">
-              {{ mdate | date: date_format }}
-            </time></li>
-          {%- endif -%}
          </ul>
       </header>
 
