@@ -11,7 +11,7 @@ layout: default
         <ul class="post-meta">
           {%- assign date_format = site.minima.date_format | default: "%B %Y" -%}
           {%- if page.author -%}
-             {% for author in page.author %}
+            {% for author in page.author %}
               <li itemprop="author" itemscope itemtype="http://schema.org/Person">
                 Author: <span class="p-author h-card" itemprop="name">{{ author }}</span></li>
                 {%- if forloop.last == false %}, {% endif -%}
@@ -19,9 +19,8 @@ layout: default
           {%- endif -%}
           <li>Completed {{ page.completed | date_format }}</li>
           <li>Bibliography Annotation Date: {{ page.date | date: date_format }} </li>
-         </ul>
+        </ul>
       </header>
-
       <div class="post-content e-content" itemprop="articleBody">
         {{ content }}
       </div>
