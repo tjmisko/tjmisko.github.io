@@ -3,6 +3,7 @@ layout: post
 title: "The Structure of Scientific Revolutions"
 author: "Thomas Kuhn"
 completed: "August 2020"
+annotated: "March 2023"
 ---
 
 *The Structure of Scientific Revolutions* is one of those perennially recommended books for anyone interested in the philosophy and history of science.  *Structure*'s language of "paradigms" and "paradigm shift" has been so thoroughly appropriated and bastardized in business book circles that encountering that language in its original context prompted a little bit of an eyeroll from me.  But the ideas here really are worth thinking about, and they were one of the first steps I took down the road that has led to *Quasioptimal*.  

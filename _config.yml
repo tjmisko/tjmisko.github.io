@@ -17,6 +17,7 @@ collections:
   - pages
   - archives
   - bibliography
+  - sspi-devlog
 
 collections:
   about:
@@ -28,6 +29,8 @@ collections:
   archives:
     output: true
   bibliography:
+    output: true
+  sspi-devlog:
     output: true
 
 # Minima date format

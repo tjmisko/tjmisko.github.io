@@ -17,6 +17,9 @@ Any annotations dated before March 2023 are retrospective (and therefore dubious
 
 {% include bibliography-feed.html %}
 
+## SSPI Development Log
+
+{% include sspi-development-log.html %}
 
 ## Archives
 

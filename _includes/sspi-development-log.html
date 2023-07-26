@@ -1,0 +1,11 @@
+<ul class="blog-list">
+  {% for entry in site.sspi-devlog %}
+    <a class="blog-link" href="{{ entry.url }}"><li>
+      <div class="blog-post-link">
+        <h3 class="blog-title"> {{entry.title}}</h3>
+        <p><i>{{entry.subtitle}} </i></p>
+        <b> {{entry.date | date: "%A, %-d %B %Y" }} </b>
+      </div>
+    </li></a>
+  {% endfor %}
+</ul>

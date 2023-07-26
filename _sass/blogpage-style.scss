@@ -26,7 +26,6 @@
         color: $homepage-font-color;
         & + p {
             text-indent: 40px;
-            
         }
     }
     
@@ -42,6 +41,12 @@ sup, sub {
   sub { 
     top: 0.4em; 
   }
+pre {
+    display: block;
+    overflow: auto;
+    font-family: 'Monaco', monospace;
+    padding: 1em 1em;
+}
 
 .blog-content {
     padding: 30px clamp(30px, 10%, 10%);
