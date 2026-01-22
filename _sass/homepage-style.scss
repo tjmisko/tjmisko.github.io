@@ -31,6 +31,7 @@ body {
   font-kerning: normal;
   display: flex;
   flex-direction: column;
+  font-size: 14pt;
 }
 
 a {
@@ -51,13 +52,6 @@ main {
 /** page-background styling */
 
 
-.homepage-content {
-  z-index: 0;
-  position: relative;
-  background-color: $homepage-background-color;
-  min-height: 100vh;
-}
-
 .ios-peek {
   position: fixed;
   z-index: -3;
@@ -70,18 +64,18 @@ main {
 
 h1 {
   font-family: "Courier Prime";
-  font-size: 32pt;
+  font-size: 1.7em;
 }
 h2, h3 {
   font-family: "IBM Plex Mono";
   font-weight: normal;
-  font-size: 20pt;
+  font-size: 1.3em;
   margin-bottom: 3px;
 }
 
 p, ul {
   font-family: "Roboto";
-  font-size: 14pt;
+  font-size: 0.8em;
   font-weight: 200;
   line-height: 1.4;
 }
@@ -100,13 +94,8 @@ p, ul {
   display: flex;
   font-size: 1.3em;
   justify-content: center;
-  padding: 30px 60px;
-  @media (max-width: 500px) {
-    padding: 30px 40px;
-  }
-  overflow: hidden;
   align-items: center;
-
+  min-height: clamp(500px, 100vh, 100vh);
 }
 
 .resume-button {
@@ -114,15 +103,17 @@ p, ul {
   position: absolute;
   color: $homepage-accent-color;
   padding: 7px 7px 4px 7px;
-  font-size: 1em;
-  top: 30px;
-  right: 40px;
+  font-size: clamp(1rem, 5vw, 1.4rem);
+  top: 25px;
+  right: 25px;
   border-radius: 5px;
   border: 1px solid $homepage-accent-color;
-  &:hover {
-    transform: scale(1.02);
-    transition: 0.15s ease;
-  }
+  text-decoration: none;
+}
+
+.resume-button:hover {
+  transform: scale(1.02);
+  transition: 0.15s ease;
 }
 
 /** Headers about me, quasioptimal, and contact me */
@@ -132,17 +123,17 @@ p, ul {
   text-align: center;
   width: 100%;
   font-size: 1.8em;
-  a {
+}
+.site-header a {
     text-decoration: none;
     color: $homepage-font-color;
-    &:hover {color: $homepage-accent-color}
-  }
-}
-/** custom styling for greeting page */
-#greeting-card {
-  height: 100vh;
 }
 
+.site-header a:hover {
+    color: $homepage-accent-color;
+}
+
+/** custom styling for greeting page */
 #greeting-card h1 {
   font-family: "Courier Prime";
   font-weight: normal;
@@ -150,10 +141,10 @@ p, ul {
 }
 
 #greeting-card p {
-  font-size: 1.3em;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
 }
 #greeting-card ul {
-  font-size: 1.3em;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
   padding-left: 1.5em;
 }
 #greeting-card .social-media-list {
@@ -163,7 +154,7 @@ p, ul {
 #greeting-card .name-title-ascii {
   // background-color: #111111;
   box-sizing: border-box;
-  font-size: 0.8em;
+  font-size: clamp(0.4rem, 2.4vw, 1rem);
   padding: 0.5em;
   margin: 0.5em auto 0.5em;
   border-radius: 0.5em;
@@ -171,13 +162,10 @@ p, ul {
 
 
 
-#about-card {
-  padding-top: 1em;
-  padding-bottom: 3em;
-  h2, h3 {
-    margin-top: 15px;
-  }
+#about-card h2, #about-card h3 {
+  margin-top: 15px;
 }
+
 .about-me-navbox {
   display: flex;
   justify-content: space-between;
@@ -186,9 +174,10 @@ p, ul {
 
 .info-container {
   max-width: 600px;
-  p + p {
-    text-indent: 30px;
-  }
+  min-width: 0;
+}
+.info-container p + p {
+  text-indent: 30px;
 }
 
 .about-button {
@@ -288,7 +277,7 @@ p, ul {
 
 .project-type  {
   font-family: "Roboto";
-  font-size: 11pt;
+  font-size: 0.6em;
   margin-top: 3px;
 }
 
