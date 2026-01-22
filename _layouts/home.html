@@ -1,108 +1,105 @@
 ---
 layout: default
 ---
+<div class="homepage-card" id="greeting-card">
+    <div class="info-container" id="greeting">
+        <a href="/resume.pdf"><div class="resume-button">Resume</div></a>
+        <p>
+          Hi, I'm
+        </p>
+    <pre class="name-title-ascii" title="Tristan Misko">
+ _______   _     _                __  __ _     _
+|__   __| (_)   | |              |  \/  (_)   | |
+   | |_ __ _ ___| |_ __ _ _ __   | \  / |_ ___| | _____
+   | | '__| / __| __/ _` | '_ \  | |\/| | / __| |/ / _ \
+   | | |  | \__ \ || (_| | | | | | |  | | \__ \   < (_) |
+   |_|_|  |_|___/\__\__,_|_| |_| |_|  |_|_|___/_|\_\___/
+  </pre>
+        <p>
+          I'm a software and data engineer based in the Bay Area. By day, I
+          write software, build systems, analyze data, and design tools. By night,
+          I read books, mostly economics, philosophy, and literature. Occasionally
+          I write or make things for the internet.
+        </p>
+          <ul>
+            <li> <a class="homepage-link" href="#about-card"> Learn a bit more about me </a> </li>
+            <li> <a class="homepage-link" href="#projects-card"> View my portfolio </a> </li>
+          </ul>
+        <p>
+          I am actively looking for new work opportunities right now.
+          Reach out at the links below if you are interested in working with me!
+        </p>
+      <div class="info-card">
+        <hr style="margin: 1.5em;"/>
+           {%- include social.html -%}
+      </div>
+    </div>
+</div>
 
-Welcome to tristanmisko.com. There's not much here at the moment. Over the next few months I'll be rennovating the old site. Check for progress also at https://quasioptimal.io, where I intend to house Quasioptimal.
+<div class="homepage-card" id="about-card">
+    <div class="info-container" id="about">
+        <h1 class="site-header"> About Me </h1>
+        <div class="about-me-navbox">
+            <button class="about-button" onclick="openTab('/about/what-i-do', this)"> What I Do </button>
+            <button class="about-button" onclick="openTab('/about/my-values', this)"> My Values </button>
+            <button class="about-button" onclick="openTab('/about/other-things-i-do', this)"> Other Things I Do </button>
+        </div>
+        {% for a in site.about %}
+            <div class="about-tab" id="{{a.id}}"> {{ a.content }} </div>
+        {% endfor %}
+        <script>
+            function resetButtonsColor() {
+                aboutButtons = document.getElementsByClassName("about-button")
+                for (i = 0; i < aboutButtons.length; i++) {
+                    aboutButtons[i].style.color = "";
+                }
+            }
+            function openTab(aboutID, element) {
+                resetButtonsColor()
+                aboutTabs = document.getElementsByClassName("about-tab")
+                for (i = 0; i < aboutTabs.length; i++) {
+                    aboutTabs[i].style.display = "none";
+                }
+                document.getElementById(aboutID).style.display = "block";
+                element.style.color = "rgba(250, 130, 30, 1)"
+            }
+            openTab("/about/what-i-do", document.getElementsByClassName("about-button")[0])
+        </script>
+    </div>
+</div>
 
-All of the original permalinks are still available on the site (for now) but are not advertised.
+<div class="homepage-card" id="projects-card">
+    <h1 class="site-header"> Projects </h1>
+    <div class="project-navbox">
+        <button class="project-button" id="allbutton" onclick="showProjects('all', this)"> All </button>
+        <button class="project-button" onclick="showProjects('software', this)"> Software </button>
+        <button class="project-button" onclick="showProjects('data', this)"> Data </button>
+        <button class="project-button" onclick="showProjects('economics', this)"> Economics </button>
+    </div>
+    <div class="project-box">
+        {%- include project-feed.html -%}
+        <script>
+            function resetProjectButtonsColor() {
+                projectButtons = document.getElementsByClassName("project-button")
+                for (i = 0; i < projectButtons.length; i++) {
+                    projectButtons[i].style.color = "";
+                }
+            }
 
-<!-- <div class="homepage-card" id="greeting-card"> -->
-<!--     <div class="info-container" id="greeting"> -->
-<!--         <a href="/resume.pdf"><div class="resume-button">Résumé</div></a> -->
-<!--         <h2> Hi, I'm </h2> -->
-<!--         <h1> Tristan Misko.</h1> -->
-<!--         <p> I work with data and code to understand systems, solve problems, -->
-<!--             and build things. Welcome to my website! -->
-<!--             <ul> -->
-<!--                 <li> <a class="homepage-link" href="#about-card"> Learn a bit more about me </a> </li> -->
-<!--                 <li> <a class="homepage-link" href="#projects-card"> View my portfolio </a> </li> -->
-<!--                 <li> <a class="homepage-link" href="#blog-card"> Check out my blog, <i>Quasioptimal</i> </a> </li> -->
-<!--                 <li> <a class="homepage-link" href="#contact-card"> Find me elsewhere on the internet </a> </li> -->
-<!--             </ul> -->
-<!--         <p>I am actively looking for new work opportunities right now. -->
-<!--         Reach out at the links below if you are interested in working with me! </p> -->
-<!--     </div> -->
-<!-- </div> -->
+            function showProjects(projectType, el) {
+                resetProjectButtonsColor()
+                projectCards = document.getElementsByClassName("project-card")
+                for (i = 0; i < projectCards.length; i++) {
+                    if (projectCards[i].className.includes(projectType)) {
+                        projectCards[i].style.display = "flex";
+                    } else {
+                        projectCards[i].style.display = "none";
+                    }
+                }
+                el.style.color = "rgba(250, 130, 30, 1)"
+            }
+            showProjects("all", document.getElementById("allbutton"))
+        </script>
 
-<!-- <div class="homepage-card" id="about-card"> -->
-<!--     <div class="info-container" id="about"> -->
-<!--         <h1 class="site-header"> About Me </h1> -->
-<!--         <div class="about-me-navbox"> -->
-<!--             <button class="about-button" onclick="openTab('/about/what-i-do', this)"> What I Do </button> -->
-<!--             <button class="about-button" onclick="openTab('/about/my-values', this)"> My Values </button> -->
-<!--             <button class="about-button" onclick="openTab('/about/other-things-i-do', this)"> Other Things I Do </button> -->
-<!--         </div> -->
-<!--         {% for a in site.about %} -->
-<!--             <div class="about-tab" id="{{a.id}}"> {{ a.content }} </div> -->
-<!--         {% endfor %} -->
-<!--         <script> -->
-<!--             function resetButtonsColor() { -->
-<!--                 aboutButtons = document.getElementsByClassName("about-button") -->
-<!--                 for (i = 0; i < aboutButtons.length; i++) { -->
-<!--                     aboutButtons[i].style.color = ""; -->
-<!--                 } -->
-<!--             } -->
-<!--             function openTab(aboutID, element) { -->
-<!--                 resetButtonsColor() -->
-<!--                 aboutTabs = document.getElementsByClassName("about-tab") -->
-<!--                 for (i = 0; i < aboutTabs.length; i++) { -->
-<!--                     aboutTabs[i].style.display = "none"; -->
-<!--                 } -->
-<!--                 document.getElementById(aboutID).style.display = "block"; -->
-<!--                 element.style.color = "rgba(250, 130, 30, 1)" -->
-<!--             } -->
-<!--             openTab("/about/what-i-do", document.getElementsByClassName("about-button")[0]) -->
-<!--         </script> -->
-<!--     </div> -->
-<!-- </div> -->
-
-<!-- <div class="homepage-card" id="projects-card"> -->
-<!--     <h1 class="site-header"> Projects </h1> -->
-<!--     <div class="project-navbox"> -->
-<!--         <button class="project-button" id="allbutton" onclick="showProjects('all', this)"> All </button> -->
-<!--         <button class="project-button" onclick="showProjects('software', this)"> Software Engineering </button> -->
-<!--         <button class="project-button" onclick="showProjects('data', this)"> Data Science </button> -->
-<!--         <button class="project-button" onclick="showProjects('economics', this)"> Economic Research </button> -->
-<!--     </div> -->
-<!--     <div class="project-box"> -->
-<!--         {%- include project-feed.html -%} -->
-<!--         <script> -->
-<!--             function resetProjectButtonsColor() { -->
-<!--                 projectButtons = document.getElementsByClassName("project-button") -->
-<!--                 for (i = 0; i < projectButtons.length; i++) { -->
-<!--                     projectButtons[i].style.color = ""; -->
-<!--                 } -->
-<!--             } -->
-
-<!--             function showProjects(projectType, el) { -->
-<!--                 resetProjectButtonsColor() -->
-<!--                 projectCards = document.getElementsByClassName("project-card") -->
-<!--                 for (i = 0; i < projectCards.length; i++) { -->
-<!--                     if (projectCards[i].className.includes(projectType)) { -->
-<!--                         projectCards[i].style.display = "flex"; -->
-<!--                     } else { -->
-<!--                         projectCards[i].style.display = "none"; -->
-<!--                     } -->
-<!--                 } -->
-<!--                 el.style.color = "rgba(250, 130, 30, 1)" -->
-<!--             } -->
-<!--             showProjects("all", document.getElementById("allbutton")) -->
-<!--         </script> -->
-
-<!--     </div> -->
-<!-- </div> -->
-
-<!-- <div class="homepage-card" id="blog-card"> -->
-<!--     <div class="info-container" id="blog-container"> -->
-<!--         <h1 class="site-header"><a href="/quasioptimal/"> Quasioptimal</a></h1> -->
-<!--           {%- include blog-feed.html -%} -->
-<!--     </div> -->
-<!-- </div> -->
-<!-- <div class="homepage-card" id="contact-card"> -->
-<!--     <div class="info-card"> -->
-<!--         <h1 class="site-header" id="contact"> Contact Me </h1> -->
-<!--         Contact me via email at <a class="email-link" href="gmail.com">tristanmisko@gmail.com</a> or find me -->
-<!--         elsewhere on the internet at the links below: -->
-<!--            {%- include social.html -%} -->
-<!--     </div> -->
-<!-- </div> -->
+    </div>
+</div>

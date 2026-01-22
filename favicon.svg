@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 64 64"
+     role="img"
+     aria-label="terminal prompt favicon">
+
+  <!-- > (coordinates remapped to fit 64×64) -->
+  <path d="M 5.000 20.600 L 21.000 31.267 L 5.000 41.933"
+        fill="none"
+        stroke="#F97316"
+        stroke-width="5.3333333333"
+        stroke-linecap="butt"
+        stroke-linejoin="miter"/>
+
+  <!-- ~ (filled outline; same shape, remapped + softened, moved down, moved right, etc.) -->
+  <path fill="#F97316" d="
+    M 27.000 43.933
+    C 29.000 43.133, 31.000 42.467, 33.000 42.467
+    C 35.000 42.467, 37.000 43.133, 39.000 43.933
+    C 41.000 44.733, 43.000 45.400, 45.000 45.400
+    C 47.000 45.400, 49.000 44.733, 51.000 43.933
+    L 51.000 49.267
+    C 49.000 50.067, 47.000 50.733, 45.000 50.733
+    C 43.000 50.733, 41.000 50.067, 39.000 49.267
+    C 37.000 48.467, 35.000 47.800, 33.000 47.800
+    C 31.000 47.800, 29.000 48.467, 27.000 49.267
+    Z
+  "/>
+
+  <!-- * (geometry remapped; size increased via endpoints, stroke unchanged relative) -->
+  <g stroke="#F97316"
+     stroke-width="1.3333333333"
+     stroke-linecap="butt"
+     stroke-linejoin="miter">
+    <line x1="44.333" y1="20.600" x2="59.000" y2="20.600"/>
+    <line x1="51.667" y1="13.267" x2="51.667" y2="27.933"/>
+    <line x1="46.600" y1="15.533" x2="56.733" y2="25.667"/>
+    <line x1="56.733" y1="15.533" x2="46.600" y2="25.667"/>
+  </g>
+
+</svg>
+

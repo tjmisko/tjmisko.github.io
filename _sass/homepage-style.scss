@@ -2,8 +2,8 @@
 // (Use `_sass/minima/custom-variables.scss` to override variable defaults)
 
 /**
- * Reset some basic elements
- */
+* Reset some basic elements
+*/
 body, h1, h2, h3, h4, h5, h6,
 p, blockquote, pre, hr,
 dl, dd, ol, ul, figure {
@@ -12,21 +12,21 @@ dl, dd, ol, ul, figure {
 }
 
 ul {
-    position: relative;
-    margin: 5px 0px;
-    padding-left: 20px;
-    line-height: 1.25;
+  position: relative;
+  margin: 5px 0px;
+  padding-left: 20px;
+  line-height: 1.25;
 }
 
 /**
- * Basic styling
- */
+* Basic styling
+*/
 body {
   -webkit-text-size-adjust: 100%;
   -webkit-font-feature-settings: "kern" 1;
-     -moz-font-feature-settings: "kern" 1;
-       -o-font-feature-settings: "kern" 1;
-          font-feature-settings: "kern" 1;
+  -moz-font-feature-settings: "kern" 1;
+  -o-font-feature-settings: "kern" 1;
+  font-feature-settings: "kern" 1;
   font-family: "Roboto";
   font-kerning: normal;
   display: flex;
@@ -34,281 +34,292 @@ body {
 }
 
 a {
-    color: $homepage-accent-color;
+  color: $homepage-accent-color;
 }
 /**
- * Set `margin-bottom` to maintain vertical rhythm
- */
+* Set `margin-bottom` to maintain vertical rhythm
+*/
 
 
 /**
- * `main` element
- */
+* `main` element
+*/
 main {
   display: block; /* Default value of `display` of `main` element is 'inline' in IE 11. */
 }
 
 /** page-background styling */
 
-.homepage-content::before {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background-image: url("../../../cb.svg");
-    background-repeat: repeat-y;
-    background-size: clamp(100%, 1200pt, 1200pt);
-    opacity: 0.20;
-    min-height: 100vh;
-}
 
 .homepage-content {
-    z-index: 0;
-    position: relative;
-    background-color: $homepage-background-color;
-    min-height: 100vh;
+  z-index: 0;
+  position: relative;
+  background-color: $homepage-background-color;
+  min-height: 100vh;
 }
 
 .ios-peek {
-    position: fixed;
-    z-index: -3;
-    bottom: 0;
-    left: 0;
-    top: 0;
-    right: 0;
-    background-color: $homepage-background-color;
+  position: fixed;
+  z-index: -3;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  right: 0;
+  background-color: $homepage-background-color;
 }
 
 h1 {
-    font-family: "Courier Prime";
-    font-size: 32pt;
+  font-family: "Courier Prime";
+  font-size: 32pt;
 }
 h2, h3 {
-    font-family: "IBM Plex Mono";
-    font-weight: normal;
-    font-size: 20pt;
-    margin-bottom: 3px;
+  font-family: "IBM Plex Mono";
+  font-weight: normal;
+  font-size: 20pt;
+  margin-bottom: 3px;
 }
 
 p, ul {
-    font-family: "Roboto";
-    font-size: 14pt;
-    font-weight: 200;
-    line-height: 1.4;
+  font-family: "Roboto";
+  font-size: 14pt;
+  font-weight: 200;
+  line-height: 1.4;
 }
 
 .homepage-link {
-    position: relative;
-    color: $homepage-accent-color;
-    text-decoration: none;
+  position: relative;
+  color: $homepage-accent-color;
+  text-decoration: none;
 }
 
 /** homepage styling */
 .homepage-card {
-    color: $homepage-font-color;
-    scroll-snap-align: start;
-    scroll-snap-type: y proximity;
-    display: flex;
-    justify-content: center;
-    padding: 30px 60px;
-    @media (max-width: 500px) {
-        padding: 30px 40px;
-    }
-    overflow: hidden;
-    align-items: center;
+  color: $homepage-font-color;
+  scroll-snap-align: start;
+  scroll-snap-type: y proximity;
+  display: flex;
+  font-size: 1.3em;
+  justify-content: center;
+  padding: 30px 60px;
+  @media (max-width: 500px) {
+    padding: 30px 40px;
+  }
+  overflow: hidden;
+  align-items: center;
 
 }
 
 .resume-button {
-    font-family: "Courier Prime";
-    position: absolute;
-    color: $homepage-accent-color;
-    padding: 7px 7px 4px 7px;
-    font-size: 1em;
-    top: 30px;
-    right: 40px;
-    border-radius: 5px;
-    border: 1px solid $homepage-accent-color;
-    &:hover {
-        transform: scale(1.02);
-        transition: 0.15s ease;
-    }
+  font-family: "Courier Prime";
+  position: absolute;
+  color: $homepage-accent-color;
+  padding: 7px 7px 4px 7px;
+  font-size: 1em;
+  top: 30px;
+  right: 40px;
+  border-radius: 5px;
+  border: 1px solid $homepage-accent-color;
+  &:hover {
+    transform: scale(1.02);
+    transition: 0.15s ease;
+  }
 }
 
 /** Headers about me, quasioptimal, and contact me */
 .site-header {
-    font-family: "Courier Prime";
-    font-weight: normal;
-    text-align: center;
-    width: 100%;
-    font-size: 30pt;
-    a {
-        text-decoration: none;
-        color: $homepage-font-color;
-        &:hover {color: $homepage-accent-color}
-    }
+  font-family: "Courier Prime";
+  font-weight: normal;
+  text-align: center;
+  width: 100%;
+  font-size: 1.8em;
+  a {
+    text-decoration: none;
+    color: $homepage-font-color;
+    &:hover {color: $homepage-accent-color}
+  }
 }
 /** custom styling for greeting page */
 #greeting-card {
-    height: 100vh;
-    h1 {
-        font-family: "Courier Prime";
-        font-weight: normal;
-        text-align: left;
-    }
+  height: 100vh;
+}
+
+#greeting-card h1 {
+  font-family: "Courier Prime";
+  font-weight: normal;
+  text-align: left;
+}
+
+#greeting-card p {
+  font-size: 1.3em;
+}
+#greeting-card ul {
+  font-size: 1.3em;
+  padding-left: 1.5em;
+}
+#greeting-card .social-media-list {
+  padding: 0;
+}
+
+#greeting-card .name-title-ascii {
+  // background-color: #111111;
+  box-sizing: border-box;
+  font-size: 0.8em;
+  padding: 0.5em;
+  margin: 0.5em auto 0.5em;
+  border-radius: 0.5em;
 }
 
 
 
 #about-card {
-    h2, h3 {
-        margin-top: 15px;
-    }
+  padding-top: 1em;
+  padding-bottom: 3em;
+  h2, h3 {
+    margin-top: 15px;
+  }
 }
 .about-me-navbox {
-    display: flex;
-    justify-content: space-between;
-    margin: 15px 0px;
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0px;
 }
 
 .info-container {
-    max-width: 600px;
-    p + p {
-        text-indent: 30px;
-    }
+  max-width: 600px;
+  p + p {
+    text-indent: 30px;
+  }
 }
 
 .about-button {
-    border: none;
-    cursor: pointer;
-    color: $homepage-font-color;
-    background-color: rgba(0,0,0,0);
-    font-size: clamp(12pt, 1.5vw, 16pt);
-    &:hover {
-        transform: scale(1.04);
-        transition: 0.15s ease;
-    }
-    font-family: "Courier Prime";
+  border: none;
+  cursor: pointer;
+  color: $homepage-font-color;
+  background-color: rgba(0,0,0,0);
+  font-size: clamp(12pt, 1.5vw, 16pt);
+  font-family: "Courier Prime";
+}
+
+.about-button:hover {
+  transform: scale(1.04);
+  transition: 0.15s ease;
 }
 
 /** Project Box and Card Styling */
 /** Implement Project Type filter buttons using the about buttons */
 #projects-card {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 30px 3%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 30px 3%;
 }
 
 .project-navbox {
-    display: flex;
-    justify-content: space-between;
-    padding: 0px 5%;
-    margin: 5px 0px;
-    width: 90%;
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  margin: 20px auto 10px;
 }
 
 .project-button {
-    border: none;
-    cursor: pointer;
-    color: $homepage-font-color;
-    background-color: rgba(0,0,0,0);
-    font-size: clamp(10pt, 1.3vw, 16pt);
-    &:hover {
-        transform: scale(1.04);
-        transition: 0.15s ease;
-    }
-    font-family: "Courier Prime";
+  border: none;
+  cursor: pointer;
+  color: $homepage-font-color;
+  background-color: rgba(0,0,0,0);
+  font-size: 16pt;
+  font-family: "Courier Prime";
+}
+
+.project-button:hover {
+  transform: scale(1.04);
+  transition: 0.15s ease;
 }
 
 .project-box {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
 }
 
 /** Internal card styling */
 .project-flex-wrapper {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    flex-direction: column;
-    justify-content: space-between;
-    ul, li {
-        margin-bottom: 0px;
-    }
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  ul, li {
+    margin-bottom: 0px;
+  }
 }
 
 .project-card {
-    position: relative;
-    margin: 10px;
-    width: clamp(100px, 90%, 400px);
-    background-color: $project-card-color;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
+  position: relative;
+  margin: 10px;
+  width: clamp(100px, 90%, 400px);
+  background-color: $project-card-color;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
 }
 
 .project-footer {
-    font-size: 8pt;
-    border-top: $homepage-font-color solid 0.01em;
-    padding-top: 10px;
-    margin-top: 15px;
+  font-size: 8pt;
+  border-top: $homepage-font-color solid 0.01em;
+  padding-top: 10px;
+  margin-top: 15px;
 }
 
 .project-linkbox {
-    margin-top: 10px;
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    padding-left: 0px;
-    width: 100%;
+  margin-top: 10px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding-left: 0px;
+  width: 100%;
 }
 
 .project-title {
-    text-align: left;
-    font-family: "IBM Plex Mono";
-    font-weight: normal;
-    font-size: 14pt;
+  text-align: left;
+  font-family: "IBM Plex Mono";
+  font-weight: normal;
+  font-size: 14pt;
 }
 
 .project-type  {
-    font-family: "Roboto";
-    font-size: 11pt;
-    margin-top: 3px;
+  font-family: "Roboto";
+  font-size: 11pt;
+  margin-top: 3px;
 }
 
 /** Blog linkbox stylings */
 /** Implement filter buttons here in the future when the list gets too long*/
 .blog-link {
-    color: $homepage-font-color;
-    text-decoration: none;
+  color: $homepage-font-color;
+  text-decoration: none;
 }
 
 .blog-list {
-    list-style: none;
-    padding: 0px;
-    h1, h2, h3 {
-        color: $homepage-accent-color;
-        margin: 0px;
-        font-size: 1.1em;
-    }
+  list-style: none;
+  padding: 0px;
+  h1, h2, h3 {
+    color: $homepage-accent-color;
+    margin: 0px;
+    font-size: 1.1em;
+  }
 }
 
 .blog-post-link {
-    padding: 15px;
-    margin: 10px 0px;
-    border-radius: 10px;
-    background-color: $project-card-color;
-    box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
+  padding: 15px;
+  margin: 10px 0px;
+  border-radius: 10px;
+  background-color: $project-card-color;
+  box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
 }
 
 .blog-post-link:hover {
-    transform: scale(1.03);
-    transition: 0.15s ease;
+  transform: scale(1.03);
+  transition: 0.15s ease;
 }
 
 /** Contact Me */
@@ -330,8 +341,10 @@ p, ul {
   scale: 1.8;
   &:hover {fill:$homepage-accent-color}
 }
-
+.social-media-list .svg-icon {
+  scale: 2.3;
+}
 .email-link {
-    color :$homepage-accent-color;
+  color :$homepage-accent-color;
 }
 

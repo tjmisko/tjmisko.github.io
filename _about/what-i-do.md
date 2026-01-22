@@ -1,8 +1,8 @@
 ---
 layout: post
 ---
-## My Mission
 
+## My Mission
 What do we know? How do we know what we know?  How do we fit that knowledge into what we already profess to know? How do we deploy that knowledge in accordance with our values?  I'm passionate about building systems within which data and technology can be used to help people answer questions like these to make better decisions.
 
 ## My Approach

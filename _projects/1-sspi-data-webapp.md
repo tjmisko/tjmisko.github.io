@@ -1,11 +1,10 @@
 ---
-project-title: "SSPI Data Collection Application"
-project-type: "Project Manager and Lead Engineer"
-project-status: "In Progress Since Fall 2022"
-youtube-playlist: PLBZRugXUTZoSj5aMrsImKGgjm_420zlxA
-github: sspi-data-collection
-collaborators: "Max Strongman, Minh Nguyen, Justin Laskowski, and Daya Khunkhun"
-html: data-cleaning-in-R-SSPI-tutorial
+project-title: "SSPI Full Stack Web Application"
+project-type: "Software and Data Engineer"
+project-status: "Completed December 2025"
+github: sspi-data-webapp
+website: sspi.world
+collaborators: "Max Strongman, Ruotong Xu, Aadil Jamari"
 tags:
   - "all"
   - "data"

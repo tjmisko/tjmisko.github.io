@@ -3,14 +3,8 @@ author:
   name: Tristan Misko
   email: tristanmisko@gmail.com
 description: > # this means to ignore newlines until "show_excerpts:"
-  View my data science and software engineering portfolio 
-  and check out Quasioptimal, my personal blog vaguely about 
-  data, metaphors, code, and applied epistemology.
-
+  View my software and data engineering portfolio.
 show_excerpts: false # set to true to show excerpts on the homepage
-
-
-
 collections:
   - projects
   - about
@@ -18,7 +12,6 @@ collections:
   - archives
   - bibliography
   - sspi-devlog
-
 collections:
   about:
     output: true
@@ -41,15 +34,16 @@ minima:
 
   # generate social links in footer
   social_links:
-    #twitter: jekyllrb
     github:  tjmisko
+    facebook: tristanmisko
+    linkedin: tristanmisko
+    spotify: tristanmisko
+    substack: quasioptimal
+    #twitter: jekyllrb
     # devto: jekyll
     # dribbble: jekyll
-    facebook: tristanmisko
     # flickr:   jekyll
     # instagram: jekyll
-    linkedin: tristan-misko
-    spotify: tristanmisko
     # pinterest: jekyll
     # youtube: "\\@tjmisko"
     # youtube_channel: UC8CXR0-3I70i1tfPg1PAE1g
@@ -80,7 +74,6 @@ minima:
 
 # Build settings
 markdown: kramdown
-
 plugins:
  - jekyll-feed
  - jekyll-seo-tag

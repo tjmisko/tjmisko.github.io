@@ -4,8 +4,7 @@ project-type: "Economic Research - Lead Research Analyst and Project Manager"
 project-status: "In Progress Since August 2020"
 project-supervisor: Prof. Clair Brown, UC Berkeley 
 project-collaborators: Ekaterina Fedorova, Sangcheol Moon, Tai Lohrer, Uma Krishnaswammy, Ryusuke Kondo, Claudio Pezzia, Simon Sallstrom, Michelle Tan, McCoy Cantwell, Jeffrey Suzuki, Sreeja Apparaju, Ploypat Taedullayasatit, Daya Khunkhun, Izzy Weiss, Abigale Lischak, Minh Nguyen, Richard Lu, Sonya Chang, Jess Nathan, Justin Laskowski"
-google-drive: folders/1PJDPvXb6jn5GzCf5b4NTGPeeaPUqG1zt
-website: irle.berkeley.edu/research-centers/center-for-work-technology-and-society/creating-a-sustainable-shared-prosperity-policy-index-sspi/
+website: irle.berkeley.edu/publications/working-papers/national-policies-to-support-sustainable-equitable-economies/
 tags:
   - "all"
   - "economics"
