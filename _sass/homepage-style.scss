@@ -129,6 +129,10 @@ p, ul {
     color: $homepage-font-color;
 }
 
+#about {
+  min-height: 900px;
+}
+
 .site-header a:hover {
     color: $homepage-accent-color;
 }
