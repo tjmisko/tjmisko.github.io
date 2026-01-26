@@ -44,6 +44,6 @@ $on-large:         $on-laptop !default;
 
 // Import pre-styling-overrides hook and style-partials.
 @import
-  "homepage-style",
-  "blogpage-style"// Hook to override existing styles.
+  "home",
+  "blog"// Hook to override existing styles.
 ;

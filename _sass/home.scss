@@ -38,19 +38,12 @@ body {
 html {
   scroll-snap-type: y proximity;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 a {
   color: $homepage-accent-color;
 }
-/**
-* Set `margin-bottom` to maintain vertical rhythm
-*/
-
-
-/**
-* `main` element
-*/
 main {
   display: block; /* Default value of `display` of `main` element is 'inline' in IE 11. */
 }
@@ -110,6 +103,10 @@ p, ul {
   margin-bottom: 2em;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  padding: 0 1em;
+}
+.homepage-card:last-child {
+  margin-bottom: 0;
 }
 
 .resume-button {
@@ -215,17 +212,24 @@ p, ul {
 /** Project Box and Card Styling */
 /** Implement Project Type filter buttons using the about buttons */
 #projects-card {
-  display: flex;
-  align-items: flex-start;
   flex-direction: column;
-  padding: 30px 3%;
+  align-items: center;
 }
-
-.project-navbox {
+.project-carousel {
   display: flex;
-  justify-content: space-around;
-  width: 80%;
-  margin: 20px auto 10px;
+  align-items: center;
+  justify-content: flex-start;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 2em;
+  width: min(100%, 1300px);
+  padding-inline: 20vw;          /* creates visible neighbors */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: thin; /* firefox */
+  gap: 15px;
+  padding: 15px;
 }
 
 .project-button {
@@ -262,16 +266,18 @@ p, ul {
 
 .project-card {
   position: relative;
-  margin: 10px;
-  width: clamp(100px, 90%, 400px);
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  min-width: 370px;
   background-color: $project-card-color;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
+  box-sizing: border-box;
 }
 
 .project-footer {
-  font-size: 8pt;
+  font-size: 0.6rem;
   border-top: $homepage-font-color solid 0.01em;
   padding-top: 10px;
   margin-top: 15px;
@@ -281,6 +287,7 @@ p, ul {
   margin-top: 10px;
   list-style: none;
   display: flex;
+  gap: 20px;
   justify-content: center;
   padding-left: 0px;
   width: 100%;
@@ -290,12 +297,12 @@ p, ul {
   text-align: left;
   font-family: "IBM Plex Mono";
   font-weight: normal;
-  font-size: 14pt;
+  font-size: 1.2rem;
 }
 
 .project-type  {
   font-family: "Roboto";
-  font-size: 0.6em;
+  font-size: 1rem;
   margin-top: 3px;
 }
 
