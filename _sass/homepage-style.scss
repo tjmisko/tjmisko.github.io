@@ -35,6 +35,11 @@ body {
   box-sizing: border-box;
 }
 
+html {
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+}
+
 a {
   color: $homepage-accent-color;
 }
@@ -94,8 +99,8 @@ p, ul {
 /** homepage styling */
 .homepage-card {
   color: $homepage-font-color;
-  scroll-snap-align: start;
-  scroll-snap-type: y proximity;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
   display: flex;
   font-size: 1.3em;
   justify-content: center;
@@ -103,6 +108,8 @@ p, ul {
   min-height: clamp(500px, 100vh, 100vh);
   box-sizing: border-box;
   margin-bottom: 2em;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .resume-button {
@@ -330,7 +337,7 @@ p, ul {
   justify-content: center;
   padding-left: 0px;
   width: 100%;
-  gap: clamp(20px, 5vw, 30px);
+  gap: clamp(10px, 5vw, 30px);
 }
 
 .svg-icon {
