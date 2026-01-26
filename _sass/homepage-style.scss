@@ -32,6 +32,7 @@ body {
   display: flex;
   flex-direction: column;
   font-size: 14pt;
+  box-sizing: border-box;
 }
 
 a {
@@ -47,6 +48,10 @@ a {
 */
 main {
   display: block; /* Default value of `display` of `main` element is 'inline' in IE 11. */
+}
+
+.page-content {
+  box-sizing: border-box;
 }
 
 /** page-background styling */
@@ -96,6 +101,8 @@ p, ul {
   justify-content: center;
   align-items: center;
   min-height: clamp(500px, 100vh, 100vh);
+  box-sizing: border-box;
+  margin-bottom: 2em;
 }
 
 .resume-button {
@@ -175,10 +182,10 @@ p, ul {
   justify-content: space-between;
   margin: 15px 0px;
 }
-
 .info-container {
   max-width: 600px;
   min-width: 0;
+  box-sizing: border-box;
 }
 .info-container p + p {
   text-indent: 30px;
@@ -323,19 +330,21 @@ p, ul {
   justify-content: center;
   padding-left: 0px;
   width: 100%;
+  gap: clamp(20px, 5vw, 30px);
 }
 
 .svg-icon {
-  width: 16px;
-  height: 16px;
-  margin: 0px 30px;
+  width: clamp(24px, 5vw, 36px);
+  height: clamp(24px, 5vw, 36px);
   fill: $homepage-font-color;
   transform-origin: center;
-  scale: 1.8;
   &:hover {fill:$homepage-accent-color}
 }
+.social-card hr {
+  width: 60%;
+  margin: 1.5em auto 0;
+}
 .social-media-list .svg-icon {
-  scale: 2.3;
 }
 .email-link {
   color :$homepage-accent-color;
