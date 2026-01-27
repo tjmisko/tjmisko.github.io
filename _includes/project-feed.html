@@ -4,12 +4,10 @@
             <div class="project-upper">
                 <h1 class="project-title"> {{ p.project-title }}</h1>
                 <h2 class="project-type"> {{ p.project-type }} </h2>
+                <p class="project-headline"> {{p.project-headline }} </p>
                 <p class="project-description"> {{ p.content }}</p>
             </div>
             <div class="project-footer">
-                <p class="project-type"> <b> Status: </b>{{ p.project-status }} </p>
-                {% if p.project-supervisor %}<p class="project-type"> <b> Supervisor: </b> {{ p.project-supervisor }} </p> {% endif %}
-                {% if p.project-collaborators %}<p class="project-type"> <b> Collaborators: </b> {{ p.project-collaborators }} </p> {% endif %}
                 <ul class="project-linkbox">
                     {%- if p.github -%}<li><a rel="me" href="https://github.com/tjmisko/{{ p.github | cgi_escape | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.external-github -%}<li><a rel="me" href="https://github.com/{{ p.external-github | escape }}" target="_blank" title="{{ p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
@@ -19,6 +17,11 @@
                     {%- if p.website -%}<li><a rel="me" href="https://{{ p.website | escape }}" target="_blank" title="{{ p.website | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#website' | relative_url }}"></use></svg></a></li>{%- endif -%}
                     {%- if p.google-drive -%}<li><a rel="me" href="https://drive.google.com/drive/{{ p.google-drive | escape }}" target="_blank" title="https://drive.google.com/drive/{{ p.google-drive  | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#google-drive' | relative_url }}"></use></svg></a></li>{%- endif -%}
                 </ul>
+                <div class="project-type-box">
+                  <p class="project-type"> <b> Status: </b>{{ p.project-status }} </p>
+                  {% if p.project-supervisor %}<p class="project-type"> <b> Supervisor: </b> {{ p.project-supervisor }} </p> {% endif %}
+                  {% if p.project-collaborators %}<p class="project-type"> <b> Collaborators: </b> {{ p.project-collaborators }} </p> {% endif %}
+                </div>
             </div>
         </div>
     </div>

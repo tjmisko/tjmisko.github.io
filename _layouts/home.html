@@ -69,10 +69,42 @@ layout: default
 </div>
 
 <div class="homepage-card" id="projects-card">
-    <h1 class="site-header"> Projects </h1>
-    <div class="project-carousel">
-        {%- include project-feed.html -%}
-    </div>
+  <h1 class="site-header"> Projects </h1>
+  <div class="project-container">
+    {%- include project-feed.html -%}
+  </div>
+  <button class="show-more">Show More</button>
+  <script>
+  // Select cards
+  const cards = document.querySelectorAll(".project-card")
+  let i = 0;
+  for (const c of cards) {
+    if (i > 2) {
+      c.classList.add("hidden-project");
+    }
+    const ul = c.querySelector("ul");
+    ul.style.display = "none";
+    i++
+  }
+  const showMore = document.querySelector("button.show-more")
+  showMore.addEventListener("click", (event) => {
+    console.log("hello")
+    const hiddenProjects = document.querySelectorAll(".project-card.hidden-project");
+    console.log(hiddenProjects)
+    let j = 0;
+    for (let h of hiddenProjects) {
+      if (j > 2) {
+        return
+      }
+      h.classList.remove("hidden-project");
+      j++
+    }
+    const remainingHidden = document.querySelectorAll(".project-card.hidden-project");
+    if (remainingHidden.length == 0) {
+      showMore.style.display = "none";
+    }
+  })
+  </script>
 </div>
 
 <div class="homepage-card" id="work-card">
@@ -97,6 +129,7 @@ layout: default
                 document.getElementById(aboutID).style.display = "block";
                 element.style.color = "rgba(250, 130, 30, 1)"
             }
+
             openTab("/about/skills", document.getElementsByClassName("about-button")[0])
         </script>
     </div>

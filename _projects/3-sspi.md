@@ -3,7 +3,7 @@ project-title: "Sustainable and Shared Prosperity Index (SSPI)"
 project-type: "Economic Research - Lead Research Analyst and Project Manager"
 project-status: "Completed Fall 2025"
 project-supervisor: Prof. Clair Brown, UC Berkeley 
-project-collaborators: Ekaterina Fedorova, Sangcheol Moon, Tai Lohrer, Uma Krishnaswammy, Ryusuke Kondo, Claudio Pezzia, Simon Sallstrom, Michelle Tan, McCoy Cantwell, Jeffrey Suzuki, Sreeja Apparaju, Ploypat Taedullayasatit, Daya Khunkhun, Izzy Weiss, Abigale Lischak, Minh Nguyen, Richard Lu, Sonya Chang, Jess Nathan, Justin Laskowski"
+project-collaborators: Max Strongman, Ruotong Xu, Izzy Weiss, Minh Nguyen, Uma Krishnaswammy, Claudio Pezzia <i>et al.</i>
 website: irle.berkeley.edu/publications/working-papers/national-policies-to-support-sustainable-equitable-economies/
 tags:
   - "all"
