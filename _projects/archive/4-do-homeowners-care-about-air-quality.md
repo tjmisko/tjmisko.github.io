@@ -1,6 +1,6 @@
 ---
 project-title: "Do Homeowners Care About Air Quality? Evidence from Wildfire Smoke"
-project-type: "Economic Research - Original Working Paper"
+project-type: "Economic Research - Working Paper"
 project-supervisor: "Prof. David Card, UC Berkeley, and Silvia Fregoni"
 project-status: Completed Fall 2021
 github: fa2021-wildfire-smoke-paper

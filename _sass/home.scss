@@ -262,13 +262,28 @@ p, ul {
   list-style: none;
 }
 
-.project-card ul li::marker {
+.project-card:has(:not(.project-linkbox)) li::marker {
   content: "›  ";
   margin: 0 0.2em;
   color: $homepage-accent-color;
 }
 
+
+.project-modal-parent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  z-index: 2;
+  display: none;
+  place-items: center;
+}
+
+
 .project-card {
+  transform: translate(0, 0) scale(1);
   min-width: 0;
   position: relative;
   background-color: $project-card-color;
@@ -276,6 +291,32 @@ p, ul {
   padding: 20px;
   box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
   box-sizing: border-box;
+  z-index: 1;
+}
+
+.project-card.project-modal {
+  position: relative;
+  max-width: 550px;
+  z-index: 3
+}
+
+.project-card:hover:not(.project-modal):not(:has(.project-linkbox li:hover)) {
+  transform: translate(1px, 1px) scale(1.002);
+  transition: transform 0.03s ease;
+  cursor: pointer;
+  border: solid 1px $homepage-accent-color;
+}
+
+.show-more {
+  width: 90%;
+  margin: 0.5em auto;
+  border: none;
+  background: none;
+  color: $homepage-font-color
+}
+
+.show-more:hover {
+  cursor: pointer;
 }
 
 .project-footer {
@@ -297,6 +338,9 @@ p, ul {
   display: flex;
   gap: 10px;
   justify-content: center;
+}
+.project-linkbox li {
+  list-style: none;
 }
 
 .project-linkbox .svg-icon {

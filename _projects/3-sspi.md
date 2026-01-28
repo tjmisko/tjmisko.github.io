@@ -1,6 +1,6 @@
 ---
 project-title: "Sustainable and Shared Prosperity Index (SSPI)"
-project-type: "Economic Research - Lead Research Analyst and Project Manager"
+project-type: "Economic & Policy Research - Data Analysis - Econometrics"
 project-status: "Completed Fall 2025"
 project-supervisor: Prof. Clair Brown, UC Berkeley 
 project-collaborators: Max Strongman, Ruotong Xu, Izzy Weiss, Minh Nguyen, Uma Krishnaswammy, Claudio Pezzia <i>et al.</i>
