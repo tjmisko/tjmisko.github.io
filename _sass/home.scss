@@ -293,7 +293,8 @@ p, ul {
   z-index: 4
 }
 
-html.using-mouse .project-card:hover:not(.project-modal):not(:has(.project-linkbox li:hover)), html.using-keyboard .project-card:focus-visible {
+html.using-mouse .project-card:hover:not(.project-modal):not(:has(.project-linkbox li:hover)),
+html.using-keyboard .project-card:focus-visible {
   transform: translate(1px, 1px) scale(1.002);
   transition: transform 0.03s ease;
   cursor: pointer;
@@ -315,6 +316,7 @@ html.using-mouse .project-card:hover:not(.project-modal):not(:has(.project-linkb
 .project-footer {
   display: flex;
   flex-direction: row-reverse;
+  align-items: center;
   font-size: 0.6rem;
   border-top: $homepage-font-color solid 0.01em;
   padding-top: 10px;
@@ -333,7 +335,13 @@ html.using-mouse .project-card:hover:not(.project-modal):not(:has(.project-linkb
   justify-content: center;
 }
 .project-linkbox li {
+  position: relative;
   list-style: none;
+}
+.project-linkbox a {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .project-linkbox .svg-icon {
