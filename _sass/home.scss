@@ -296,7 +296,7 @@ p, ul {
 
 .project-card.project-modal {
   position: relative;
-  max-width: 550px;
+  max-width: min(550px, 100%);
   z-index: 3
 }
 
