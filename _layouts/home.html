@@ -77,34 +77,57 @@ layout: default
   <button class="show-more">Show More</button>
   </div>
   <script>
+  function showModal(projectCard) {
+    const modalParent = document.querySelector(".project-modal-parent");
+    modalParent.style.display = "grid";
+    modalParent.innerHTML = "";
+    const modalWindow = projectCard.cloneNode(true);
+    modalWindow.classList.add("project-modal");
+    const projectDescription = modalWindow.querySelector(".project-description")
+    if (projectDescription) {
+      projectDescription.style.display = "block";
+    }
+    modalParent.appendChild(modalWindow);
+    modalParent.addEventListener("click", (event) => {
+      modalParent.innerHTML = "";
+      modalParent.style.display = "none";
+    })
+    modalWindow.addEventListener("click", (event) => {
+      event.stopPropagation();
+    })
+  }
   // Select cards
   const cards = document.querySelectorAll(".project-card")
   let i = 0;
+  document.addEventListener("keydown", (e) => {
+    modalParent = document.querySelector('.project-modal-parent')
+    if (e.key === "Escape") {
+      modalParent.innerHTML = "";
+      modalParent.style.display = "none";
+      return
+    }
+    const activeProject = document.activeElement?.classList.contains("project-card");
+    if (e.key === "Enter" && activeProject) {
+      showModal(document.activeElement);
+    };
+  })
   for (const c of cards) {
     if (i > 2) {
       c.classList.add("hidden-project");
     }
     c.addEventListener("click", (event) => {
-      const modalParent = document.querySelector(".project-modal-parent");
-      modalParent.style.display = "grid";
-      modalParent.innerHTML = "";
-      const modalWindow = c.cloneNode(true);
-      modalWindow.classList.add("project-modal");
-      const projectDescription = modalWindow.querySelector(".project-description")
-      if (projectDescription) {
-        projectDescription.style.display = "block";
-      }
-      modalParent.appendChild(modalWindow);
-      modalParent.addEventListener("click", (event) => {
-        modalParent.innerHTML = "";
-        modalParent.style.display = "none";
-      })
-      modalWindow.addEventListener("click", (event) => {
-        event.stopPropagation();
-      })
+      showModal(c);
     });
     i++
   }
+  document.addEventListener(("mousemove"), () => {
+    document.documentElement.classList.remove("using-keyboard");
+    document.documentElement.classList.add("using-mouse");
+  });
+  document.addEventListener(("keydown"), (e) => {
+    document.documentElement.classList.add("using-keyboard");
+    document.documentElement.classList.remove("using-mouse");
+  });
   const showMore = document.querySelector("button.show-more")
   showMore.addEventListener("click", (event) => {
     const hiddenProjects = document.querySelectorAll(".project-card.hidden-project");
@@ -114,6 +137,7 @@ layout: default
         return
       }
       h.classList.remove("hidden-project");
+      if (j == 0) h.focus();
       j++
     }
     const remainingHidden = document.querySelectorAll(".project-card.hidden-project");

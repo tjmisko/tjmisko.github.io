@@ -33,12 +33,14 @@ body {
   flex-direction: column;
   font-size: 14pt;
   box-sizing: border-box;
+  background-color: $homepage-background-color;
 }
 
 html {
   scroll-snap-type: y proximity;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  background-color: $homepage-background-color;
 }
 
 a {
@@ -222,10 +224,6 @@ p, ul {
   padding: 15px;
 }
 
-.hidden-project {
-  display: none;
-}
-
 .project-box {
   display: flex;
   flex-flow: row wrap;
@@ -269,6 +267,7 @@ p, ul {
 
 
 .project-card {
+  all: unset;
   transform: translate(0, 0) scale(1);
   min-width: 0;
   position: relative;
@@ -282,6 +281,11 @@ p, ul {
   z-index: 2;
 }
 
+.hidden-project {
+  display: none;
+}
+
+
 .project-card.project-modal {
   position: relative;
   max-width: 550px;
@@ -289,7 +293,7 @@ p, ul {
   z-index: 4
 }
 
-.project-card:hover:not(.project-modal):not(:has(.project-linkbox li:hover)) {
+html.using-mouse .project-card:hover:not(.project-modal):not(:has(.project-linkbox li:hover)), html.using-keyboard .project-card:focus-visible {
   transform: translate(1px, 1px) scale(1.002);
   transition: transform 0.03s ease;
   cursor: pointer;
