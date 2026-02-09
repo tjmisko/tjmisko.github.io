@@ -105,9 +105,6 @@ p, ul {
   scroll-snap-stop: always;
   padding: 0 1em;
 }
-.homepage-card:last-child {
-  margin-bottom: 0;
-}
 
 .resume-button {
   font-family: "Courier Prime";
@@ -214,6 +211,7 @@ p, ul {
 /** Implement Project Type filter buttons using the about buttons */
 #projects-card {
   flex-direction: column;
+  margin-bottom: 0;
   align-items: center;
   padding: 0;
   box-sizing: border-box;

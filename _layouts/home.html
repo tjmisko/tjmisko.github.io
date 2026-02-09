@@ -87,6 +87,14 @@ layout: default
     if (projectDescription) {
       projectDescription.style.display = "block";
     }
+    const projectCollaborators = modalWindow.querySelector(".project-collaborators");
+    if (projectCollaborators) {
+      projectCollaborators.style.display = "block";
+    }
+    const projectSupervisor = modalWindow.querySelector(".project-supervisor");
+    if (projectSupervisor) {
+      projectSupervisor.style.display = "block";
+    }
     modalParent.appendChild(modalWindow);
     modalParent.addEventListener("click", (event) => {
       modalParent.innerHTML = "";

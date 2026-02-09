@@ -19,8 +19,8 @@
                 </ul>
                 <div class="project-type-box">
                   <p class="project-type"> <b> Status: </b>{{ p.project-status }} </p>
-                  {% if p.project-supervisor %}<p class="project-type"> <b> Supervisor: </b> {{ p.project-supervisor }} </p> {% endif %}
-                  {% if p.project-collaborators %}<p class="project-type"> <b> Collaborators: </b> {{ p.project-collaborators }} </p> {% endif %}
+                  {% if p.project-supervisor %}<p class="project-type project-supervisor" style="display: none;"> <b> Supervisor: </b> {{ p.project-supervisor }} </p> {% endif %}
+                  {% if p.project-collaborators %}<p class="project-type project-collaborators" style="display: none;"> <b> Collaborators: </b> {{ p.project-collaborators }} </p> {% endif %}
                 </div>
             </div>
         </div>

@@ -22,24 +22,26 @@
         text-align: center;
         margin-top: 30px;
     }
-    p { 
+    p {
         color: $homepage-font-color;
         & + p {
             text-indent: 40px;
         }
     }
-    
+
 }
 
 /** Prevent footnotes and subscripts from changing
 lineheight */
+pre {
+}
 sup, sub {
     vertical-align: baseline;
     position: relative;
     top: -0.4em;
   }
-  sub { 
-    top: 0.4em; 
+  sub {
+    top: 0.4em;
   }
 pre {
     display: block;
@@ -79,7 +81,7 @@ pre {
     p + p {
         margin: 25px 0px;
     }
-    
+
     blockquote {
         margin-left: 30px;
         margin-right: 30px;

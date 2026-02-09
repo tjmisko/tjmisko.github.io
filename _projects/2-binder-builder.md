@@ -1,11 +1,12 @@
 ---
 project-title: "BinderBuilder"
-project-type: "Software Engineering"
-project-status: "Completed March 2023"
+project-type: "Software - Automation - Internal Tool"
+project-status: "Completed March 2024"
 project-headline: Developed a Python CLI tool automating footnote verification and binder assembly for expert reports, reducing time spent on footnote checking and binder creation by 80-90% across test cases.
 tags:
   - "all"
   - "software"
+  - "tooling"
   - "automation"
 ---
 * Built CLI application in Python using Click

@@ -5,7 +5,8 @@ project-status: "Completed December 2025"
 project-headline: Designed and delivered the full-stack system behind sspi.world, including the ETL pipeline, Flask backend, MongoDB aggregation pipelines, and JS/HTML/CSS frontend.
 github: sspi-data-webapp
 website: sspi.world
-collaborators: "Max Strongman, Ruotong Xu, Aadil Jamari"
+project-supervisor: Clair Brown
+project-collaborators: Max Strongman, Ruotong Xu, Aadil Jamari
 tags:
   - "all"
   - "data"
