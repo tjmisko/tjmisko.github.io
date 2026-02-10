@@ -34,6 +34,7 @@ minima:
 
   # generate social links in footer
   social_links:
+    email: tjmisko@quasioptimal.com
     github:  tjmisko
     facebook: tristanmisko
     linkedin: tristanmisko
