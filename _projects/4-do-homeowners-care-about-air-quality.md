@@ -3,6 +3,7 @@ project-title: "Do Homeowners Care About Air Quality? Evidence from Wildfire Smo
 project-type: "Economic Research - Regression Analysis - Working Paper"
 project-supervisor: "Prof. David Card, UC Berkeley, and Silvia Fregoni"
 project-status: Completed Fall 2021
+project-headline: Evaulated whether housing prices respond to quasi-random treatment with negative air quality shocks induced by wildfires.
 github: fa2021-wildfire-smoke-paper
 pdf: wildfire
 tags:

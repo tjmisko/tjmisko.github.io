@@ -2,7 +2,7 @@
 project-title: "SSPI Full Stack Web Application"
 project-type: "Software and Data Engineer"
 project-status: "Completed December 2025"
-project-headline: Designed and delivered the full-stack system behind sspi.world, including the ETL pipeline, Flask backend, MongoDB aggregation pipelines, and JS/HTML/CSS frontend.
+project-headline: Designed and delivered sspi.world, a full-stack web application presenting the SSPI interactively. Owned development and deployment end-to-end, implementing automated data ingestion, ETL, Flask backend, Click CLI, and a JS web interface.
 github: sspi-data-webapp
 website: sspi.world
 project-supervisor: Clair Brown

@@ -2,9 +2,9 @@
 layout: post
 ---
 ## Movement
+- **Calisthenics**: Building foundational skills for handstands, planche, and front-lever.
 - **Running**: I run everything from 800m to marathons. Currently preparing for a middle-distance training cycle, and hoping to compete at some point in 2026.
 - **Lindy Hop**: I started dancing at Lindy on Sproul at UC Berkeley in 2019. I love the dance, the music, and the community of people it brings out! Always working on developing more musicality and refining my leading and following technique.
-- **Calisthenics**: Building some foundational skills for handstands, planche, and front-lever.
 - **Climbing**: Mostly indoor bouldering, mostly for fun.
 
 ## Making
