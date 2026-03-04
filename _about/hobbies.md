@@ -8,7 +8,7 @@ layout: post
 - **Climbing**
 
 ## Making
-- **Woodworking**: <pre>Scrapwood + Hand Tools => Useful Stuff + Satisfaction</pre>
+- **Woodworking**: <code>Scrapwood + Hand Tools => Useful Stuff + Satisfaction</code>
 - **Cooking**
 
 ## Miscellany
