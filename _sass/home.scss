@@ -38,9 +38,14 @@ body {
 
 html {
   scroll-snap-type: y proximity;
-  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   background-color: $homepage-background-color;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+  }
 }
 
 a {
@@ -92,17 +97,14 @@ p, ul {
 /** homepage styling */
 .homepage-card {
   color: $homepage-font-color;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
   display: flex;
   font-size: 1.3em;
   justify-content: center;
   align-items: center;
-  min-height: clamp(500px, 100vh, 100vh);
+  min-height: clamp(500px, 100svh, 100svh);
   box-sizing: border-box;
   margin-bottom: 2em;
   scroll-snap-align: start;
-  scroll-snap-stop: always;
   padding: 0 1em;
 }
 
@@ -276,7 +278,7 @@ p, ul {
   font-size: 0.9em;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
   box-sizing: border-box;
   z-index: 2;
 }
@@ -387,7 +389,7 @@ html.using-keyboard .project-card:focus-visible {
   margin: 10px 0px;
   border-radius: 10px;
   background-color: $project-card-color;
-  box-shadow: 5px 5px 5px 3px rgba(1,1,1,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
 }
 
 .blog-post-link:hover {

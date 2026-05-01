@@ -72,6 +72,19 @@ layout: default
       event.stopPropagation();
     })
   }
+  // Smooth-scroll for in-page anchor links (CSS scroll-behavior is off
+  // so it doesn't fight native snap during ordinary scrolling).
+  document.querySelectorAll('a.homepage-link[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const targetId = link.getAttribute("href").slice(1);
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.pushState(null, "", "#" + targetId);
+    });
+  });
+
   // Select cards
   const cards = document.querySelectorAll(".project-card")
   let i = 0;
@@ -100,7 +113,15 @@ layout: default
     document.documentElement.classList.remove("using-keyboard");
     document.documentElement.classList.add("using-mouse");
   });
+  let isScrolling = false;
+  let scrollIdleTimer = 0;
+  window.addEventListener("scroll", () => {
+    isScrolling = true;
+    clearTimeout(scrollIdleTimer);
+    scrollIdleTimer = setTimeout(() => { isScrolling = false; }, 150);
+  }, { passive: true });
   document.addEventListener("mouseover", (e) => {
+    if (isScrolling) return;
     const card = e.target.closest(".project-card");
     const usingKeyboard = document.documentElement.classList.contains("using-keyboard");
     if (!card || usingKeyboard ) return;
