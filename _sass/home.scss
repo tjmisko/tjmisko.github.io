@@ -140,7 +140,7 @@ p, ul {
     color: $homepage-font-color;
 }
 
-#about {
+#skills {
   min-height: 900px;
 }
 
@@ -177,15 +177,10 @@ p, ul {
 
 
 
-#about-card h2, #about-card h3 {
+#skills-card h2, #skills-card h3 {
   margin-top: 15px;
 }
 
-.about-me-navbox {
-  display: flex;
-  justify-content: space-between;
-  margin: 15px 0px;
-}
 .info-container {
   max-width: 600px;
   min-width: 0;
@@ -195,22 +190,7 @@ p, ul {
   text-indent: 30px;
 }
 
-.about-button {
-  border: none;
-  cursor: pointer;
-  color: $homepage-font-color;
-  background-color: rgba(0,0,0,0);
-  font-size: clamp(12pt, 1.5vw, 16pt);
-  font-family: "Courier Prime";
-}
-
-.about-button:hover {
-  transform: scale(1.04);
-  transition: 0.15s ease;
-}
-
 /** Project Box and Card Styling */
-/** Implement Project Type filter buttons using the about buttons */
 #projects-card {
   flex-direction: column;
   margin-bottom: 0;

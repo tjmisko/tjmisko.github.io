@@ -5,7 +5,7 @@ layout: default
     <div class="info-container" id="greeting">
         <a class="resume-button" href="/resume.pdf">Resume</a>
         <p>
-          Hi, I'm
+          Welcome! I'm
         </p>
         <pre class="name-title-ascii" title="Tristan Misko">
  _______   _     _                __  __ _     _
@@ -16,18 +16,23 @@ layout: default
    |_|_|  |_|___/\__\__,_|_| |_| |_|  |_|_|___/_|\_\___/
         </pre>
         <p>
-          I build software tools and products that help professionals
-          automate the mechanical parts of their work. I also write
-          and work with data.
+          I build software tools and products that structure
+          information flows, guiding user attention to where it's
+          most needed and automating the rest.
         </p>
           <ul>
-            <li> <a class="homepage-link" href="#projects-card"> View my portfolio </a> </li>
-            <li> <a class="homepage-link" href="#about-card"> Learn a bit more about me </a> </li>
-            <li> <a class="homepage-link" href="https://quasioptimal.io"> Visit Quasioptimal </a> </li>
+            <li> <a class="homepage-link" href="#projects-card"> Portfolio </a></li>
+            <li> <a class="homepage-link" href="#skills-card"> Skills </a></li>
           </ul>
         <p>
-          I'm actively searching for work in the Bay Area.
-          Feel free to reach out at the links below!
+          I moonlight as an interdisciplinary researcher studying
+          the possibilities, limits, and dangers of optimization as engineering
+          tool, organizational principle, ethical stance, and cultural
+          mindset. See <a class="homepage-link" href="https://quasioptimal.io">Quasioptimal</a>
+          for more.
+        </p>
+        <p>
+          I'm looking for work in the San Francisco Bay Area. Feel free to reach out at the links below!
         </p>
         <div class="social-card">
           <hr/>
@@ -154,34 +159,14 @@ layout: default
   </script>
 </div>
 
-<div class="homepage-card" id="about-card">
-    <div class="info-container" id="about">
-        <div class="about-me-navbox">
-            <button class="about-button" onclick="openTab('/about/skills', this)"> Skills</button>
-            <button class="about-button" onclick="openTab('/about/values', this)"> Values </button>
-            <button class="about-button" onclick="openTab('/about/hobbies', this)"> Hobbies</button>
-        </div>
+<div class="homepage-card" id="skills-card">
+    <div class="info-container" id="skills">
+        <h1 class="site-header"> Skills </h1>
         {% for a in site.about %}
-            <div class="about-tab" id="{{a.id}}"> {{ a.content }} </div>
+            {% if a.id contains 'skills' %}
+            <div class="skills-content" id="{{a.id}}"> {{ a.content }} </div>
+            {% endif %}
         {% endfor %}
-        <script>
-            function resetButtonsColor() {
-                aboutButtons = document.getElementsByClassName("about-button")
-                for (i = 0; i < aboutButtons.length; i++) {
-                    aboutButtons[i].style.color = "";
-                }
-            }
-            function openTab(aboutID, element) {
-                resetButtonsColor()
-                aboutTabs = document.getElementsByClassName("about-tab")
-                for (i = 0; i < aboutTabs.length; i++) {
-                    aboutTabs[i].style.display = "none";
-                }
-                document.getElementById(aboutID).style.display = "block";
-                element.style.color = "rgba(250, 130, 30, 1)"
-            }
-            openTab("/about/skills", document.getElementsByClassName("about-button")[0])
-        </script>
     </div>
 </div>
 
