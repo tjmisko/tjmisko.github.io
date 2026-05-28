@@ -1,8 +1,6 @@
 ---
 layout: post
 ---
-Problem solving across any technical system.
-
 ## Technology
 * **Systems & Backend**: Design and implementation of systems and services in Python, Go, and Rust with attention to correctness, performance, reliability, and operational simplicity.
 * **Web**: Applications, interfaces, and webpages with TypeScript, JavaScript, modern HTML/CSS, and React.
