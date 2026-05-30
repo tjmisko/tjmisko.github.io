@@ -14,6 +14,26 @@ $homepage-background-color: rgb(25,25,27);
 $homepage-accent-color: rgb(250, 130, 30);
 $project-card-color: rgb(39,39,42);
 
+// Motion design tokens. Durations live as CSS custom properties so the
+// prefers-reduced-motion guard below can zero them out at runtime, disabling
+// every transition and reveal without touching individual rules.
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 180ms;   // hover / interactive feedback
+  --dur-reveal: 220ms; // scroll-reveal entrances
+  --reveal-rise: 8px;  // distance elements travel as they fade in
+  --reveal-stagger: 40ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-reveal: 0ms;
+    --reveal-rise: 0px;
+    --reveal-stagger: 0ms;
+  }
+}
+
 // Width of the content area
 $content-width:    800px !default;
 
