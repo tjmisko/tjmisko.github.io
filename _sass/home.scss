@@ -93,6 +93,23 @@ p, ul {
   color: $homepage-accent-color;
   text-decoration: none;
 }
+// Underline that grows from the left on hover/focus.
+.homepage-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background-color: $homepage-accent-color;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.homepage-link:hover::after,
+.homepage-link:focus-visible::after {
+  transform: scaleX(1);
+}
 
 /** homepage styling */
 .homepage-card {
@@ -106,11 +123,35 @@ p, ul {
   margin-bottom: 2em;
   scroll-snap-align: start;
   padding: 0 1em;
+  // Anchor each card's corner section-nav (and the resume button) to the card.
+  position: relative;
+}
+
+// Scroll-reveal utility: elements start faded + slightly lowered and settle
+// into place when `.is-visible` is added by the IntersectionObserver in
+// home.html. Travel distance and duration come from the motion tokens, so a
+// prefers-reduced-motion user simply sees everything already in place.
+.reveal {
+  transition: opacity var(--dur-reveal) var(--ease-out),
+              transform var(--dur-reveal) var(--ease-out);
+  will-change: opacity, transform;
+}
+// Only hide the start state when JS is present (the head sets `.js`), so a
+// no-script visitor sees all content immediately instead of a blank section.
+.js .reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-rise));
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
 }
 
 .resume-button {
   font-family: "Courier Prime";
   position: absolute;
+  background: none;
+  cursor: pointer;
   color: $homepage-accent-color;
   padding: 7px 7px 4px 7px;
   font-size: clamp(1rem, 5vw, 1.4rem);
@@ -119,11 +160,107 @@ p, ul {
   border-radius: 5px;
   border: 1px solid $homepage-accent-color;
   text-decoration: none;
+  transition: transform var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
 }
 
-.resume-button:hover {
+.resume-button:hover,
+.resume-button:focus-visible {
   transform: scale(1.02);
-  transition: 0.15s ease;
+  background-color: $homepage-accent-color;
+  color: $homepage-background-color;
+}
+
+// Resume popover: full-screen fade overlay holding a panel that renders the
+// PDF in an iframe, with Download / open-in-new-tab fallbacks.
+.resume-modal-parent {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: 4vmin;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-out),
+              visibility 0s linear var(--dur-fast);
+}
+.resume-modal-parent.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.resume-modal {
+  display: flex;
+  flex-direction: column;
+  width: min(900px, 100%);
+  height: min(90vh, 1100px);
+  background-color: $project-card-color;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  transform: scale(0.97);
+  opacity: 0;
+  transition: transform var(--dur-fast) var(--ease-out),
+              opacity var(--dur-fast) var(--ease-out);
+}
+.resume-modal-parent.is-open .resume-modal {
+  transform: scale(1);
+  opacity: 1;
+}
+.resume-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 0.55em 0.9em;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.12);
+}
+.resume-modal-title {
+  margin: 0;
+  font-family: "Courier Prime";
+  font-size: 1.1rem;
+  color: $homepage-font-color;
+}
+.resume-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.resume-modal-action {
+  font-family: "IBM Plex Mono";
+  font-size: 0.85rem;
+  color: $homepage-accent-color;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.resume-modal-action:hover,
+.resume-modal-action:focus-visible {
+  text-decoration: underline;
+}
+.resume-modal-close {
+  all: unset;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0 0.2em;
+  color: $homepage-font-color;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.resume-modal-close:hover,
+.resume-modal-close:focus-visible {
+  color: $homepage-accent-color;
+}
+.resume-modal-frame {
+  flex: 1 1 auto;
+  width: 100%;
+  border: 0;
+  background: #fff;
 }
 
 /** Headers about me, quasioptimal, and contact me */
@@ -156,10 +293,10 @@ p, ul {
 }
 
 #greeting-card p {
-  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-size: clamp(1.1rem, 2.7vw, 1.45rem);
 }
 #greeting-card ul {
-  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-size: clamp(1.1rem, 2.7vw, 1.45rem);
   padding-left: 1.5em;
 }
 #greeting-card .social-media-list {
@@ -173,6 +310,64 @@ p, ul {
   padding: 0.5em;
   margin: 0.5em auto 0.5em;
   border-radius: 0.5em;
+}
+
+// Faint bottom-left cue inviting a scroll down to the portfolio. Anchored to
+// the initial containing block (like the resume button) so it sits at the
+// bottom of the first screen and scrolls away with the hero. "Faintness" comes
+// from a dim colour, not opacity, so the reveal fade-in still works.
+// Faint corner navigation between the three snap sections. Anchored to its
+// .homepage-card (position:relative): `--up` sits top-left and points to the
+// previous section, `--down` sits bottom-left and points to the next. Label on
+// the left, arrow to its right. "Faintness" is a dim colour, not opacity, so
+// the reveal fade-in still works.
+.section-nav {
+  position: absolute;
+  left: 25px;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: rgba(225, 225, 225, 0.4);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.section-nav--up { top: 25px; }
+.section-nav--down { bottom: 25px; }
+
+.section-nav:hover,
+.section-nav:focus-visible {
+  color: $homepage-accent-color;
+}
+.section-nav-label {
+  font-family: "Courier Prime";
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+.section-nav-arrow {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+// Hero ASCII "typing" effect. On a fresh load the banner is rebuilt as one
+// span per glyph (see home.html); each starts transparent and is painted in as
+// a vim-style block cursor sweeps across it. Order matters: `.is-cursor` is
+// declared last so it wins over `.is-typed` during the closing blink.
+.name-title-ascii .ascii-char {
+  color: transparent;
+}
+.name-title-ascii .ascii-char.is-typed {
+  color: inherit;
+}
+.name-title-ascii .ascii-char.is-cursor {
+  // Reverse-video block: the accent fills the cell, the glyph shows through in
+  // the page background colour — a fat terminal cursor.
+  color: $homepage-background-color;
+  background-color: $homepage-accent-color;
+  border-radius: 1px;
 }
 
 
@@ -206,6 +401,101 @@ p, ul {
   padding: clamp(5px, 2vw, 2rem);
   box-sizing: border-box;
 }
+
+// ---- Project rolodex ----------------------------------------------------
+// Projects are paged one row (up to 3 cards) at a time. The deck is a 3D
+// stage; each row flips around a horizontal axis as it rolls into view. The
+// JS in home.html builds the rows + side track and adds `.rolodex--ready`.
+.rolodex {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+  max-width: 1200px;
+  padding: clamp(5px, 2vw, 2rem);
+  box-sizing: border-box;
+}
+.rolodex-deck {
+  flex: 1 1 auto;
+  min-width: 0;
+  // Pre-JS / no-JS fallback: a plain responsive grid of every card.
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 15px;
+}
+.rolodex-track { display: none; }
+
+// Active (JS-ready) rolodex: the deck becomes a fixed-height 3D viewport.
+.rolodex--ready .rolodex-deck {
+  display: block;
+  position: relative;
+  height: clamp(340px, 56vh, 460px);
+  perspective: 1600px;
+  overflow: hidden;
+}
+.rolodex--ready .rolodex-row {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cpr, 3), minmax(0, 1fr));
+  gap: 15px;
+  transform-origin: center center;
+  backface-visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform var(--dur-reveal) var(--ease-out),
+              opacity var(--dur-reveal) var(--ease-out);
+}
+.rolodex--ready .rolodex-row.is-prev { transform: rotateX(90deg); }
+.rolodex--ready .rolodex-row.is-next { transform: rotateX(-90deg); }
+.rolodex--ready .rolodex-row.is-active {
+  transform: rotateX(0deg);
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+.rolodex--ready .rolodex-row .project-card { height: 100%; overflow: hidden; }
+// Clamp long headlines so each face fits the fixed row height (full text is in the modal).
+.rolodex--ready .project-headline {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Side position track: one tick per row, click or drag to jump.
+.rolodex--ready .rolodex-track {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 14px;
+  padding: 6px 0;
+  box-sizing: border-box;
+  touch-action: none;
+}
+.rolodex-tick {
+  all: unset;
+  cursor: pointer;
+  width: 5px;
+  height: 16px;
+  border-radius: 3px;
+  background-color: rgba(225, 225, 225, 0.25);
+  transition: background-color var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+}
+.rolodex-tick:hover,
+.rolodex-tick:focus-visible { background-color: rgba(225, 225, 225, 0.55); }
+.rolodex-tick.is-active {
+  background-color: $homepage-accent-color;
+  transform: scaleX(1.8);
+}
+
+// Reduced motion: instant row swap, no 3D rotation.
+.rolodex--no-motion .rolodex-row { transition: none; transform: none; }
+.rolodex--no-motion .rolodex-row:not(.is-active) { display: none; }
+.rolodex--no-motion .rolodex-row.is-active { display: grid; }
 
 .project-box {
   display: flex;
@@ -244,23 +534,44 @@ p, ul {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.55);
   z-index: 3;
-  display: none;
+  display: grid;
   place-items: center;
+  // Hidden until `.is-open` is toggled in JS; kept in the layout (rather than
+  // display:none) so opacity can transition in and out.
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-out),
+              visibility 0s linear var(--dur-fast);
+}
+.project-modal-parent.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity var(--dur-fast) var(--ease-out);
 }
 
 
 .project-card {
   all: unset;
-  transform: translate(0, 0) scale(1);
   min-width: 0;
   position: relative;
   background-color: $project-card-color;
   font-size: 0.9em;
   border-radius: 10px;
   padding: 20px;
+  // Transparent border reserved up front so the accent border on hover
+  // doesn't nudge the layout.
+  border: 1px solid transparent;
   box-shadow: 0 4px 12px rgba(0,0,0,0.35);
   box-sizing: border-box;
   z-index: 2;
+  // Opacity reveals over the slower reveal duration; the interactive
+  // properties settle over the faster hover duration.
+  transition: opacity var(--dur-reveal) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
 }
 
 .hidden-project {
@@ -274,15 +585,25 @@ p, ul {
   max-width: min(550px, 85%);
   overflow-y: scroll;
   max-height: 93%;
-  z-index: 4
+  z-index: 4;
+  // Settle in from a slight scale-down as the overlay fades.
+  transform: scale(0.97);
+  opacity: 0;
+  transition: transform var(--dur-fast) var(--ease-out),
+              opacity var(--dur-fast) var(--ease-out);
+}
+
+.project-modal-parent.is-open .project-card.project-modal {
+  transform: scale(1);
+  opacity: 1;
 }
 
 html.using-mouse .project-card:hover:not(.project-modal):not(:has(.project-linkbox li:hover)),
 html.using-keyboard .project-card:focus-visible {
-  transform: translate(1px, 1px) scale(1.002);
-  transition: transform 0.03s ease;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.45);
+  border-color: $homepage-accent-color;
   cursor: pointer;
-  border: solid 1px $homepage-accent-color;
 }
 
 .show-more {
@@ -290,11 +611,16 @@ html.using-keyboard .project-card:focus-visible {
   margin: 0.5em auto;
   border: none;
   background: none;
-  color: $homepage-font-color
+  color: $homepage-font-color;
+  transition: color var(--dur-fast) var(--ease-out),
+              letter-spacing var(--dur-fast) var(--ease-out);
 }
 
-.show-more:hover {
+.show-more:hover,
+.show-more:focus-visible {
   cursor: pointer;
+  color: $homepage-accent-color;
+  letter-spacing: 0.04em;
 }
 
 .project-footer {
@@ -370,11 +696,13 @@ html.using-keyboard .project-card:focus-visible {
   border-radius: 10px;
   background-color: $project-card-color;
   box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  transition: transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
 }
 
 .blog-post-link:hover {
-  transform: scale(1.03);
-  transition: 0.15s ease;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.45);
 }
 
 /** Contact Me */
@@ -393,7 +721,12 @@ html.using-keyboard .project-card:focus-visible {
   height: clamp(24px, 5vw, 36px);
   fill: $homepage-font-color;
   transform-origin: center;
-  &:hover {fill:$homepage-accent-color}
+  transition: fill var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+  &:hover {
+    fill: $homepage-accent-color;
+    transform: scale(1.12);
+  }
 }
 .social-card hr {
   width: 60%;

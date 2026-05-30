@@ -3,11 +3,11 @@ layout: default
 ---
 <div class="homepage-card" id="greeting-card">
     <div class="info-container" id="greeting">
-        <a class="resume-button" href="/resume.pdf">Resume</a>
-        <p>
+        <button class="resume-button" id="resume-trigger" type="button" aria-haspopup="dialog">Resume</button>
+        <p class="reveal">
           Welcome! I'm
         </p>
-        <pre class="name-title-ascii" title="Tristan Misko">
+        <pre class="name-title-ascii reveal" title="Tristan Misko" role="img" aria-label="Tristan Misko">
  _______   _     _                __  __ _     _
 |__   __| (_)   | |              |  \/  (_)   | |
    | |_ __ _ ___| |_ __ _ _ __   | \  / |_ ___| | _____
@@ -15,71 +15,122 @@ layout: default
    | | |  | \__ \ || (_| | | | | | |  | | \__ \   < (_) |
    |_|_|  |_|___/\__\__,_|_| |_| |_|  |_|_|___/_|\_\___/
         </pre>
-        <p>
-          I build software tools and products that structure
-          information flows, guiding user attention to where it's
+        <p class="reveal">
+          I build software that structures information flows, guiding user attention to where it's
           most needed and automating the rest. View
           <a class="homepage-link" href="/arachne">Arachne</a>
-          (my latest project; under active development), my
+          (latest automation project), or look through my
           <a class="homepage-link" href="#projects-card">portfolio</a>, and
           <a class="homepage-link" href="#skills-card"> skills </a> below.
         </p>
-        <p>
+        <p class="reveal">
           I moonlight as an interdisciplinary researcher studying
           the possibilities, limits, and dangers of optimization as engineering
           tool, organizational principle, ethical stance, and cultural
-          mindset. See <a class="homepage-link" href="https://quasioptimal.io">Quasioptimal</a>
+          mindset. Visit <a class="homepage-link" href="https://quasioptimal.io">Quasioptimal</a>
           for more.
         </p>
-        <p>
+        <p class="reveal">
           I'm looking for work in the San Francisco Bay Area. Feel free to reach out at the links below!
         </p>
-        <div class="social-card">
+        <div class="social-card reveal">
           <hr/>
            {%- include social.html -%}
         </div>
     </div>
+    {%- include section-nav.html dir="down" target="#projects-card" label="Portfolio" -%}
 </div>
 
 <div class="homepage-card" id="projects-card">
+  {%- include section-nav.html dir="up" target="#greeting-card" label="Home" -%}
   <div class="project-modal-parent"></div>
-  <h1 class="site-header"> Portfolio </h1>
-  <div class="project-container">
-    {%- include project-feed.html -%}
+  <h1 class="site-header reveal"> Portfolio </h1>
+  <div class="rolodex reveal" id="rolodex">
+    <div class="rolodex-deck" id="rolodex-deck">
+      {%- include project-feed.html -%}
+    </div>
+    <div class="rolodex-track" id="rolodex-track" aria-hidden="true"></div>
   </div>
-  <button class="show-more">Show More</button>
+  {%- include section-nav.html dir="down" target="#skills-card" label="Skills" -%}
   </div>
   <script>
-  function showModal(projectCard) {
-    const modalParent = document.querySelector(".project-modal-parent");
-    modalParent.style.display = "grid";
+  // This script sits in the document before #skills-card, so defer setup until
+  // the whole DOM is parsed — otherwise querySelectorAll(".reveal") misses the
+  // skills section and it never gets revealed.
+  document.addEventListener("DOMContentLoaded", function () {
+  // ---- Project modal ----------------------------------------------------
+  const modalParent = document.querySelector(".project-modal-parent");
+  let modalCloseTimer = 0;
+
+  function openModal(projectCard) {
+    clearTimeout(modalCloseTimer);
     modalParent.innerHTML = "";
     const modalWindow = projectCard.cloneNode(true);
     modalWindow.classList.add("project-modal");
-    const projectDescription = modalWindow.querySelector(".project-description")
-    if (projectDescription) {
-      projectDescription.style.display = "block";
-    }
-    const projectCollaborators = modalWindow.querySelector(".project-collaborators");
-    if (projectCollaborators) {
-      projectCollaborators.style.display = "block";
-    }
-    const projectSupervisor = modalWindow.querySelector(".project-supervisor");
-    if (projectSupervisor) {
-      projectSupervisor.style.display = "block";
-    }
+    // Drop reveal bookkeeping so the clone animates with the modal's own
+    // transition rather than starting from a faded reveal state.
+    modalWindow.classList.remove("reveal", "is-visible");
+    modalWindow
+      .querySelectorAll(".project-description, .project-collaborators, .project-supervisor")
+      .forEach((el) => { el.style.display = "block"; });
+    modalWindow.addEventListener("click", (event) => event.stopPropagation());
     modalParent.appendChild(modalWindow);
-    modalParent.addEventListener("click", (event) => {
-      modalParent.innerHTML = "";
-      modalParent.style.display = "none";
-    })
-    modalWindow.addEventListener("click", (event) => {
-      event.stopPropagation();
-    })
+    // Flip to the open state on the next frame so the transition runs.
+    requestAnimationFrame(() => modalParent.classList.add("is-open"));
   }
-  // Smooth-scroll for in-page anchor links (CSS scroll-behavior is off
-  // so it doesn't fight native snap during ordinary scrolling).
-  document.querySelectorAll('a.homepage-link[href^="#"]').forEach((link) => {
+
+  function closeModal() {
+    if (!modalParent.classList.contains("is-open")) return;
+    modalParent.classList.remove("is-open");
+    // Clear contents once the fade-out has finished.
+    clearTimeout(modalCloseTimer);
+    modalCloseTimer = setTimeout(() => { modalParent.innerHTML = ""; }, 250);
+  }
+
+  modalParent.addEventListener("click", closeModal);
+
+  // ---- Resume PDF modal --------------------------------------------------
+  // The resume button opens a popover that renders /resume.pdf inline (with
+  // Download / open-in-new-tab fallbacks). The PDF src is attached on first
+  // open so it isn't fetched until needed.
+  (function resumeModal() {
+    const trigger = document.getElementById("resume-trigger");
+    const overlay = document.getElementById("resume-modal");
+    if (!trigger || !overlay) return;
+    const frame = overlay.querySelector(".resume-modal-frame");
+    const closeBtn = overlay.querySelector(".resume-modal-close");
+    let lastFocus = null;
+
+    function openResume() {
+      lastFocus = document.activeElement;
+      if (frame && !frame.getAttribute("src") && frame.dataset.src) {
+        frame.setAttribute("src", frame.dataset.src);
+      }
+      overlay.classList.add("is-open");
+      overlay.setAttribute("aria-hidden", "false");
+      (closeBtn || overlay).focus();
+    }
+    function closeResume() {
+      if (!overlay.classList.contains("is-open")) return;
+      overlay.classList.remove("is-open");
+      overlay.setAttribute("aria-hidden", "true");
+      if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+    }
+
+    trigger.addEventListener("click", openResume);
+    if (closeBtn) closeBtn.addEventListener("click", closeResume);
+    // Close when the backdrop (not the panel) is clicked.
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) closeResume();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeResume();
+    });
+  })();
+
+  // ---- Smooth-scroll for in-page anchor links ---------------------------
+  // (CSS scroll-behavior stays off so it doesn't fight native snap.)
+  document.querySelectorAll('a.homepage-link[href^="#"], a.section-nav[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
       const targetId = link.getAttribute("href").slice(1);
       const target = document.getElementById(targetId);
@@ -90,34 +141,306 @@ layout: default
     });
   });
 
-  // Select cards
-  const cards = document.querySelectorAll(".project-card")
-  let i = 0;
-  document.addEventListener("keydown", (e) => {
-    modalParent = document.querySelector('.project-modal-parent')
-    if (e.key === "Escape") {
-      modalParent.innerHTML = "";
-      modalParent.style.display = "none";
-      return
+  // ---- Scroll-reveal -----------------------------------------------------
+  const prefersReducedMotion =
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STAGGER_MS = prefersReducedMotion ? 0 : 40;
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      const el = entry.target;
+      revealObserver.unobserve(el);
+      const delay = Number(el.dataset.revealDelay || 0);
+      if (delay) {
+        setTimeout(() => el.classList.add("is-visible"), delay);
+      } else {
+        el.classList.add("is-visible");
+      }
     }
-    const activeProject = document.activeElement?.classList.contains("project-card");
-    if (e.key === "Enter" && activeProject) {
-      showModal(document.activeElement);
-    };
-  })
-  for (const c of cards) {
-    if (i > 2) {
-      c.classList.add("hidden-project");
+    // threshold 0 + default margin: an element reveals as soon as any part of
+    // it enters the viewport. This guarantees the last section (skills), whose
+    // content is centered low in a tall card at the page bottom, can't get
+    // stranded below a raised trigger line and stay invisible.
+  }, { threshold: 0 });
+
+  // ---- Hero ASCII typing animation (fresh loads only) -------------------
+  // On a genuine page load/reload, type the name banner out behind a
+  // vim-style block cursor. Skipped under prefers-reduced-motion and for
+  // back/forward (bfcache) restores, where the finished banner is already on
+  // screen. Runs before the observe() loop below so the banner can opt out of
+  // the reveal system without being observed.
+  (function typeHeroBanner() {
+    const banner = document.querySelector(".name-title-ascii");
+    if (!banner) return;
+
+    const nav = performance.getEntriesByType("navigation")[0];
+    const navType = nav ? nav.type : "navigate";
+    const isFreshLoad = navType === "navigate" || navType === "reload";
+    // Leave the banner to the reveal observer (plain fade-in) in these cases.
+    if (prefersReducedMotion || !isFreshLoad) return;
+
+    // Drop the trailing blank line, then keep an intact copy for fallback.
+    const source = banner.textContent.replace(/\s+$/, "");
+    if (!source) return;
+
+    // Hero copy below the banner is held back until typing finishes, then
+    // cascades up. (Everything above the banner — "Welcome! I'm" — still
+    // reveals immediately via the observer.)
+    const greeting = document.getElementById("greeting");
+    const heroReveals = greeting ? Array.from(greeting.querySelectorAll(".reveal")) : [];
+    const bannerPos = heroReveals.indexOf(banner);
+    const deferred = bannerPos >= 0 ? heroReveals.slice(bannerPos + 1) : [];
+    const DEFER_LEADIN_MS = 150;  // beat between the banner landing and copy rising
+    const DEFER_STAGGER_MS = 90;  // gap between successive lines
+    let deferredReleased = false;
+    function revealDeferred() {
+      if (deferredReleased) return;
+      deferredReleased = true;
+      deferred.forEach((el, i) => {
+        setTimeout(
+          () => el.classList.add("is-visible"),
+          DEFER_LEADIN_MS + i * DEFER_STAGGER_MS
+        );
+      });
     }
-    c.addEventListener("click", (event) => {
-      showModal(c);
+
+    try {
+      // Opt the banner out of the reveal fade and show it immediately; its
+      // glyphs stay transparent until the cursor types each one in.
+      banner.classList.remove("reveal");
+      // Hold the copy below the banner: it stays hidden (still .reveal) while
+      // the observe loop skips anything marked reveal-deferred.
+      deferred.forEach((el) => el.classList.add("reveal-deferred"));
+
+      const cells = []; // one span per visible glyph, in type order
+      const fragment = document.createDocumentFragment();
+      for (const ch of source) {
+        if (ch === "\n") {
+          fragment.appendChild(document.createTextNode("\n"));
+          continue;
+        }
+        const span = document.createElement("span");
+        span.className = "ascii-char";
+        span.textContent = ch;
+        fragment.appendChild(span);
+        cells.push(span);
+      }
+      banner.textContent = "";
+      banner.appendChild(fragment);
+
+      const total = cells.length;
+      const TYPE_MS = 850; // whole banner typed in well under a second
+      let typed = 0;       // cells[0..typed-1] painted; cursor rests on cells[typed]
+      let startTime = null;
+      cells[0].classList.add("is-cursor");
+
+      function step(now) {
+        if (startTime === null) startTime = now;
+        const progress = Math.min(1, (now - startTime) / TYPE_MS);
+        const target = Math.floor(progress * total);
+        if (target > typed) {
+          cells[typed].classList.remove("is-cursor");
+          for (let k = typed; k < target; k++) cells[k].classList.add("is-typed");
+          if (target < total) cells[target].classList.add("is-cursor");
+          typed = target;
+        }
+        if (progress < 1) {
+          requestAnimationFrame(step);
+          return;
+        }
+        for (let k = 0; k < total; k++) cells[k].classList.add("is-typed");
+        revealDeferred(); // banner fully typed — cascade the copy up
+        // A few terminal-style blinks on the last cell, then settle.
+        const last = cells[total - 1];
+        let blinks = 0;
+        last.classList.add("is-cursor");
+        const blink = setInterval(() => {
+          last.classList.toggle("is-cursor");
+          if (++blinks >= 6) {
+            clearInterval(blink);
+            last.classList.remove("is-cursor");
+          }
+        }, 120);
+      }
+
+      requestAnimationFrame(step);
+    } catch (err) {
+      // Anything unexpected: show the banner intact and release the copy.
+      banner.textContent = source;
+      banner.classList.remove("reveal");
+      revealDeferred();
+    }
+  })();
+
+  // Reveal the static content (hero copy, section headers, skills). Skip
+  // anything the typing animation is holding back (reveal-deferred); those are
+  // released by revealDeferred() once the banner finishes typing.
+  document.querySelectorAll(".reveal:not(.reveal-deferred)").forEach((el) => revealObserver.observe(el));
+
+  // ---- Project rolodex ---------------------------------------------------
+  // Projects are paged one row (up to 3 cards) at a time; rows flip in on a
+  // horizontal 3D axis. Up/Down keys (when focus is in projects), the mouse
+  // wheel, touch swipe, and the side track all change rows. No wrap. A card's
+  // click/Enter still opens the existing detail modal.
+  (function initRolodex() {
+    const rolodex = document.getElementById("rolodex");
+    const deck = document.getElementById("rolodex-deck");
+    const track = document.getElementById("rolodex-track");
+    const projectsCard = document.getElementById("projects-card");
+    if (!rolodex || !deck || !track || !projectsCard) return;
+
+    const allCards = Array.from(deck.querySelectorAll(".project-card"));
+    if (!allCards.length) return;
+    allCards.forEach((card) => card.addEventListener("click", () => openModal(card)));
+
+    let cpr = 0;     // cards per row, responsive to width
+    let rows = [];   // row wrapper elements
+    let active = 0;  // active row index
+
+    const columnsForWidth = () =>
+      Math.max(1, Math.min(3, Math.floor((deck.clientWidth || window.innerWidth) / 340)));
+
+    function applyRowStates() {
+      rows.forEach((row, i) => {
+        row.classList.toggle("is-active", i === active);
+        row.classList.toggle("is-prev", i < active);
+        row.classList.toggle("is-next", i > active);
+        row.querySelectorAll(".project-card").forEach((c) => { c.tabIndex = i === active ? 0 : -1; });
+      });
+      Array.from(track.children).forEach((tick, i) => tick.classList.toggle("is-active", i === active));
+      track.setAttribute("aria-valuenow", String(active + 1));
+    }
+
+    function buildRows() {
+      cpr = columnsForWidth();
+      deck.style.setProperty("--cpr", String(cpr));
+      deck.innerHTML = "";
+      rows = [];
+      for (let i = 0; i < allCards.length; i += cpr) {
+        const row = document.createElement("div");
+        row.className = "rolodex-row";
+        allCards.slice(i, i + cpr).forEach((c) => row.appendChild(c));
+        deck.appendChild(row);
+        rows.push(row);
+      }
+      if (active > rows.length - 1) active = rows.length - 1;
+      track.innerHTML = "";
+      rows.forEach((_, i) => {
+        const tick = document.createElement("button");
+        tick.type = "button";
+        tick.className = "rolodex-tick";
+        tick.setAttribute("aria-label", "Go to project row " + (i + 1));
+        tick.addEventListener("click", () => go(i, true));
+        track.appendChild(tick);
+      });
+      track.setAttribute("aria-valuemax", String(rows.length));
+      applyRowStates();
+    }
+
+    function go(i, focusCard) {
+      const next = Math.max(0, Math.min(rows.length - 1, i));
+      if (next === active) return;
+      active = next;
+      applyRowStates();
+      if (focusCard) {
+        const first = rows[active].querySelector(".project-card");
+        if (first) first.focus({ preventScroll: true });
+      }
+    }
+    const step = (delta, focusCard) => go(active + delta, focusCard);
+    const atBoundary = (dir) => (dir > 0 && active === rows.length - 1) || (dir < 0 && active === 0);
+
+    track.setAttribute("role", "slider");
+    track.setAttribute("aria-label", "Project position");
+    track.setAttribute("aria-valuemin", "1");
+
+    buildRows();
+    rolodex.classList.add("rolodex--ready");
+    if (prefersReducedMotion) rolodex.classList.add("rolodex--no-motion");
+
+    let resizeTimer = 0;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { if (columnsForWidth() !== cpr) buildRows(); }, 150);
+    }, { passive: true });
+
+    // Only treat the wheel/keys as rolodex input while projects is the snapped section.
+    const projectsSnapped = () =>
+      Math.abs(projectsCard.getBoundingClientRect().top) < window.innerHeight * 0.5;
+
+    // Up/Down page rows when focus is within projects (clamped — leave via corner nav).
+    projectsCard.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown") { e.preventDefault(); step(1, true); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); step(-1, true); }
     });
-    i++
-  }
-  document.addEventListener(("mousemove"), () => {
+
+    // Mouse wheel pages rows; releases at the ends so snap-scroll can leave the section.
+    let wheelCooldown = false;
+    projectsCard.addEventListener("wheel", (e) => {
+      if (!projectsSnapped()) return;
+      const dir = e.deltaY > 0 ? 1 : -1;
+      if (atBoundary(dir)) return;
+      e.preventDefault();
+      if (wheelCooldown) return;
+      wheelCooldown = true;
+      setTimeout(() => { wheelCooldown = false; }, 450);
+      step(dir, false);
+    }, { passive: false });
+
+    // Touch swipe (up = next row); releases at the ends.
+    let touchY = null;
+    projectsCard.addEventListener("touchstart", (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+    projectsCard.addEventListener("touchend", (e) => {
+      if (touchY === null) return;
+      const dy = e.changedTouches[0].clientY - touchY;
+      touchY = null;
+      if (Math.abs(dy) < 40) return;
+      const dir = dy < 0 ? 1 : -1;
+      if (!atBoundary(dir)) step(dir, false);
+    }, { passive: true });
+
+    // Side track: click a tick or drag to jump to a row.
+    const rowFromPointer = (clientY) => {
+      const r = track.getBoundingClientRect();
+      return Math.round(((clientY - r.top) / r.height) * (rows.length - 1));
+    };
+    let dragging = false;
+    track.addEventListener("pointerdown", (e) => {
+      if (e.target.closest(".rolodex-tick")) return; // tick handles its own click
+      dragging = true;
+      track.setPointerCapture(e.pointerId);
+      go(rowFromPointer(e.clientY), false);
+    });
+    track.addEventListener("pointermove", (e) => { if (dragging) go(rowFromPointer(e.clientY), false); });
+    track.addEventListener("pointerup", (e) => {
+      dragging = false;
+      try { track.releasePointerCapture(e.pointerId); } catch (err) {}
+    });
+  })();
+
+  // ---- Keyboard handling -------------------------------------------------
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeModal();
+      return;
+    }
+    const active = document.activeElement;
+    if (e.key === "Enter" && active && active.classList.contains("project-card")) {
+      openModal(active);
+    }
+  });
+
+  // ---- Input-mode tracking (mouse vs keyboard) ---------------------------
+  document.addEventListener("mousemove", () => {
     document.documentElement.classList.remove("using-keyboard");
     document.documentElement.classList.add("using-mouse");
   });
+  document.addEventListener("keydown", () => {
+    document.documentElement.classList.add("using-keyboard");
+    document.documentElement.classList.remove("using-mouse");
+  });
+
   let isScrolling = false;
   let scrollIdleTimer = 0;
   window.addEventListener("scroll", () => {
@@ -125,48 +448,44 @@ layout: default
     clearTimeout(scrollIdleTimer);
     scrollIdleTimer = setTimeout(() => { isScrolling = false; }, 150);
   }, { passive: true });
+
   document.addEventListener("mouseover", (e) => {
     if (isScrolling) return;
     const card = e.target.closest(".project-card");
-    const usingKeyboard = document.documentElement.classList.contains("using-keyboard");
-    if (!card || usingKeyboard ) return;
-    // Only move focus if focus is not already on a card via keyboard
+    if (!card || document.documentElement.classList.contains("using-keyboard")) return;
+    // Only move focus if focus is not already on a card via keyboard.
     if (document.activeElement !== card) {
       card.focus({ preventScroll: true });
     }
   });
-  document.addEventListener(("keydown"), (e) => {
-    document.documentElement.classList.add("using-keyboard");
-    document.documentElement.classList.remove("using-mouse");
-  });
-  const showMore = document.querySelector("button.show-more")
-  showMore.addEventListener("click", (event) => {
-    const hiddenProjects = document.querySelectorAll(".project-card.hidden-project");
-    let j = 0;
-    for (let h of hiddenProjects) {
-      if (j > 2) {
-        return
-      }
-      h.classList.remove("hidden-project");
-      if (j == 0) h.focus();
-      j++
-    }
-    const remainingHidden = document.querySelectorAll(".project-card.hidden-project");
-    if (remainingHidden.length == 0) {
-      showMore.style.display = "none";
-    }
-  })
+
+  }); // end DOMContentLoaded
   </script>
 </div>
 
 <div class="homepage-card" id="skills-card">
+    {%- include section-nav.html dir="up" target="#projects-card" label="Portfolio" -%}
     <div class="info-container" id="skills">
-        <h1 class="site-header"> Skills </h1>
+        <h1 class="site-header reveal"> Skills </h1>
         {% for a in site.about %}
             {% if a.id contains 'skills' %}
-            <div class="skills-content" id="{{a.id}}"> {{ a.content }} </div>
+            <div class="skills-content reveal" id="{{a.id}}"> {{ a.content }} </div>
             {% endif %}
         {% endfor %}
     </div>
+</div>
+
+<div class="resume-modal-parent" id="resume-modal" role="dialog" aria-modal="true" aria-label="Resume" aria-hidden="true">
+  <div class="resume-modal">
+    <div class="resume-modal-header">
+      <h2 class="resume-modal-title">Resume</h2>
+      <div class="resume-modal-actions">
+        <a class="resume-modal-action" href="/resume.pdf" download>Download</a>
+        <a class="resume-modal-action" href="/resume.pdf" target="_blank" rel="noopener">Open in new tab</a>
+        <button class="resume-modal-close" type="button" aria-label="Close resume">&times;</button>
+      </div>
+    </div>
+    <iframe class="resume-modal-frame" data-src="/resume.pdf" title="Resume (PDF)"></iframe>
+  </div>
 </div>
 

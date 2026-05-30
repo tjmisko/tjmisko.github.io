@@ -1,0 +1,17 @@
+{%- comment -%}
+  Faint corner navigation cue between snap sections.
+  Params:
+    dir    — "up" (top-left, previous section) or "down" (bottom-left, next section)
+    target — anchor href, e.g. "#projects-card"
+    label  — destination name shown next to the arrow
+{%- endcomment -%}
+<a class="section-nav section-nav--{{ include.dir }} reveal" href="{{ include.target }}" aria-label="Go to {{ include.label }}">
+  <span class="section-nav-label">{{ include.label }}</span>
+  <svg class="section-nav-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    {%- if include.dir == "up" -%}
+    <path d="M12 19V5M6 11l6-6 6 6"/>
+    {%- else -%}
+    <path d="M12 5v14M6 13l6 6 6-6"/>
+    {%- endif -%}
+  </svg>
+</a>
