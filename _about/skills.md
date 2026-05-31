@@ -2,14 +2,14 @@
 layout: post
 ---
 ## Technology
-* **Systems & Backend**: Design and implementation of systems and services in Python, Go, and Rust with attention to correctness, performance, reliability, and operational simplicity.
+* **Systems & Backend**: Design and implementation of correct, performant, reliable services in Python, Go, and Rust.
 * **Web**: Applications, interfaces, and webpages with TypeScript, JavaScript, modern HTML/CSS, and React.
-* **ML/AI**: Practical ML and deep learning in Python (PyTorch, NumPy), including data preparation, training, and evaluation.
-* **Infrastructure & Automation**: Provisioning and operating infrastructure for self-hosted services and websites, including environment setup, service supervision, deployment automation, and maintenance. Bash scripting, CI/CD workflows, Docker, light DevOps, and reproducible system configuration.
+* **ML/AI**: Practical ML and deep learning in Python with PyTorch and NumPy.
+* **Infrastructure & Automation**: Provisioning and operating self-hosted services and sites with Bash, CI/CD, Docker, and reproducible, automated system configuration.
 * **Mathematics**: Fluency and rigor in linear algebra, probability theory, real analysis, and algorithms.
-* **Data Analysis**: Quantitative analysis in Python, R, and Stata, with a focus on economic data, causal reasoning, and model-fitting.
+* **Data Analysis**: Quantitative and causal analysis of economic data in Python, R, and Stata.
 
 ## People
 * **Communication**: Clarity, precision, and flair in technical writing and speaking.
 * **Teaching**: Mentoring focused on developing conceptual understanding and building problem-solving skills.
-* **Project Management**: Coordination, delegation, and prioritization across diverse project environments. Undogmatically agile.
+* **Project Management**: Coordination, delegation, and prioritization — undogmatically agile.
