@@ -372,11 +372,17 @@ p, ul {
   margin-top: 15px;
 }
 
+// Skills is the last section: drop the inter-card margin so the page ends at a
+// hard bottom with no trailing whitespace.
+#skills-card {
+  margin-bottom: 0;
+}
+
 // Keep the Skills section within one screen on a standard monitor as a single
 // column: widen it so bullets wrap to fewer lines, and tighten the type and
 // spacing so the whole thing clears the fold.
 #skills-card .info-container {
-  max-width: min(700px, 92vw);
+  max-width: min(650px, 92vw);
 }
 .skills-content {
   font-size: 0.86em;
@@ -498,6 +504,9 @@ p, ul {
   justify-content: space-between;
   align-items: center;
   width: 26px;
+  // Match the 10px top/bottom inset on .rolodex-row so the track's rounded caps
+  // sit flush with the cards' edges instead of protruding past them.
+  margin: 10px 0;
   padding: 13px 0;
   box-sizing: border-box;
   // Outer box that nests the nodes.
@@ -734,18 +743,18 @@ html.using-keyboard .project-card:focus-visible {
 }
 .project-status.is-active::before {
   background-color: $homepage-accent-color;
-  // Constant "live" glow so the active dot reads as live even between pings
-  // (and survives prefers-reduced-motion, where the ping is disabled).
-  box-shadow: 0 0 5px rgba(250, 130, 30, 0.85);
+  // No glow at rest — the dot sits as a flat accent dot; the glow appears only
+  // for the brief ping below. (Under prefers-reduced-motion the animation is
+  // disabled, leaving the same flat dot.)
   animation: status-pulse 6s ease-out infinite;
 }
-// One discrete "ping" per 6s cycle: a ring expands and fades over the first
-// ~0.9s, then stays invisible for the rest of the cycle. The steady glow is
-// carried through every keyframe so it never blinks off.
+// One discrete "ping" per 6s cycle: a little glow plus an expanding ring flash
+// over the first ~0.9s, then both fade to nothing so the dot sits flat (no glow)
+// for the rest of the cycle.
 @keyframes status-pulse {
-  0%           { box-shadow: 0 0 5px rgba(250, 130, 30, 0.85), 0 0 0 0 rgba(250, 130, 30, 0.55); }
-  15%          { box-shadow: 0 0 5px rgba(250, 130, 30, 0.85), 0 0 0 8px rgba(250, 130, 30, 0); }
-  15.01%, 100% { box-shadow: 0 0 5px rgba(250, 130, 30, 0.85), 0 0 0 0 rgba(250, 130, 30, 0); }
+  0%           { box-shadow: 0 0 5px rgba(250, 130, 30, 0.8), 0 0 0 0 rgba(250, 130, 30, 0.55); }
+  15%          { box-shadow: 0 0 0 rgba(250, 130, 30, 0), 0 0 0 6.4px rgba(250, 130, 30, 0); }
+  15.01%, 100% { box-shadow: 0 0 0 rgba(250, 130, 30, 0), 0 0 0 0 rgba(250, 130, 30, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
   .project-status.is-active::before { animation: none; }
@@ -851,11 +860,29 @@ html.using-keyboard .project-card:focus-visible {
     transform: scale(1.12);
   }
 }
-.social-card hr {
-  width: 60%;
-  margin: 1.5em auto 0;
+.social-card {
+  // Shrink-wrap the card to the icon row so the divider can match the links'
+  // horizontal extent exactly (see hr below).
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
-.social-media-list .svg-icon {
+.social-card .social-media-list {
+  width: auto; // size to the icons instead of filling the row
+}
+.social-card hr {
+  // Span exactly the links' bounding box, and keep the rule faint.
+  width: 100%;
+  margin: 1.5em auto 0;
+  border: none;
+  border-top: 1px solid rgba(225, 225, 225, 0.12);
+}
+.social-card .svg-icon {
+  // Slightly dimmer than the body text so the links sit back a touch; hover
+  // still brings them up to the full accent.
+  fill: rgb(180, 180, 180);
+  &:hover { fill: $homepage-accent-color; }
 }
 .email-link {
   color :$homepage-accent-color;
