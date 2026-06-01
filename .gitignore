@@ -21,3 +21,4 @@ Gemfile.lock
 ehthumbs.db
 Thumbs.db
 *.Rhistory
+.worktrees/
