@@ -260,7 +260,45 @@ p, ul {
   flex: 1 1 auto;
   width: 100%;
   border: 0;
-  background: #fff;
+  background: $project-card-color; // dark backdrop, matches the modal body
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+// Wrapper carries the border + drop shadow. The canvas itself is colour-
+// inverted (below), and a CSS filter applies to the element's own box-shadow
+// too — so a shadow on the canvas would invert into a light glow. Keeping the
+// shadow on the un-filtered wrapper keeps it a real, dark drop shadow.
+.resume-page {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden; // clip the canvas corners to the rounded border
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+}
+.resume-page:last-child {
+  margin-bottom: 0;
+}
+.resume-modal-frame canvas {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  // Render the (white) PDF in dark mode to match the dark UI. invert flips
+  // white->near-black and black text->near-white; hue-rotate keeps any colored
+  // content (links, accents) close to its true hue. The exact-color document is
+  // always one click away via the Download / Open-in-new-tab links above.
+  filter: invert(0.92) hue-rotate(180deg);
+}
+.resume-modal-status {
+  margin: 0;
+  padding: 2rem 1rem;
+  text-align: center;
+  font-family: "IBM Plex Mono";
+  font-size: 0.9rem;
+  color: #e6e6e6;
 }
 
 /** Headers about me, quasioptimal, and contact me */

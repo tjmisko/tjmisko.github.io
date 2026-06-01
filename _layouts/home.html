@@ -90,9 +90,13 @@ layout: default
   modalParent.addEventListener("click", closeModal);
 
   // ---- Resume PDF modal --------------------------------------------------
-  // The resume button opens a popover that renders /resume.pdf inline (with
-  // Download / open-in-new-tab fallbacks). The PDF src is attached on first
-  // open so it isn't fetched until needed.
+  // The resume button opens a popover that renders /resume.pdf inline. We
+  // render the PDF ourselves with pdf.js into a <canvas> rather than pointing
+  // an <iframe> at the file: browsers configured to "save" PDFs (common on
+  // Linux/Firefox) would otherwise download the file and leave the frame
+  // blank. Fetching + drawing means no navigation, so nothing auto-downloads,
+  // and we control the output so it's never blank. The Download / open-in-new-
+  // tab links in the header remain as fallbacks (and on render failure).
   (function resumeModal() {
     const trigger = document.getElementById("resume-trigger");
     const overlay = document.getElementById("resume-modal");
@@ -101,14 +105,84 @@ layout: default
     const closeBtn = overlay.querySelector(".resume-modal-close");
     let lastFocus = null;
 
+    // pdf.js (UMD build) is loaded lazily on first open from a CDN; the worker
+    // is pinned to the same version.
+    const PDFJS_VERSION = "3.11.174";
+    const PDFJS_SRC = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" + PDFJS_VERSION + "/pdf.min.js";
+    const PDFJS_WORKER = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" + PDFJS_VERSION + "/pdf.worker.min.js";
+
+    let pdfjsPromise = null;
+    let pdfDoc = null;
+    let renderState = "idle"; // idle | done | error
+    let isRendering = false;
+
+    function setStatus(message) {
+      frame.innerHTML = '<p class="resume-modal-status"></p>';
+      frame.firstChild.textContent = message;
+    }
+
+    function loadPdfJs() {
+      if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+      if (pdfjsPromise) return pdfjsPromise;
+      pdfjsPromise = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = PDFJS_SRC;
+        script.onload = () => {
+          if (window.pdfjsLib) {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+            resolve(window.pdfjsLib);
+          } else {
+            reject(new Error("pdf.js did not initialize"));
+          }
+        };
+        script.onerror = () => { pdfjsPromise = null; reject(new Error("pdf.js failed to load")); };
+        document.head.appendChild(script);
+      });
+      return pdfjsPromise;
+    }
+
+    async function renderResume(force) {
+      if (isRendering) return;
+      if ((renderState === "done" || renderState === "error") && !force) return;
+      isRendering = true;
+      if (!pdfDoc) setStatus("Loading resume…");
+      try {
+        const pdfjsLib = await loadPdfJs();
+        if (!pdfDoc) pdfDoc = await pdfjsLib.getDocument(frame.dataset.src).promise;
+        const dpr = window.devicePixelRatio || 1;
+        const styles = getComputedStyle(frame);
+        const padX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+        const available = Math.max(frame.clientWidth - padX, 120);
+        frame.innerHTML = "";
+        for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+          const page = await pdfDoc.getPage(pageNum);
+          const base = page.getViewport({ scale: 1 });
+          const viewport = page.getViewport({ scale: (available / base.width) * dpr });
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.floor(viewport.width);
+          canvas.height = Math.floor(viewport.height);
+          canvas.style.width = available + "px"; // height stays auto -> keeps aspect
+          const pageEl = document.createElement("div");
+          pageEl.className = "resume-page"; // un-filtered wrapper holds the shadow
+          pageEl.appendChild(canvas);
+          frame.appendChild(pageEl);
+          await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+        }
+        renderState = "done";
+      } catch (err) {
+        renderState = "error";
+        setStatus("Couldn’t display the resume here. Use “Open in new tab” or “Download” above.");
+      } finally {
+        isRendering = false;
+      }
+    }
+
     function openResume() {
       lastFocus = document.activeElement;
-      if (frame && !frame.getAttribute("src") && frame.dataset.src) {
-        frame.setAttribute("src", frame.dataset.src);
-      }
       overlay.classList.add("is-open");
       overlay.setAttribute("aria-hidden", "false");
       (closeBtn || overlay).focus();
+      renderResume(false);
     }
     function closeResume() {
       if (!overlay.classList.contains("is-open")) return;
@@ -125,6 +199,13 @@ layout: default
     });
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") closeResume();
+    });
+    // Re-render at the new width when the viewport changes (e.g. phone rotate).
+    let resizeTimer = null;
+    window.addEventListener("resize", () => {
+      if (renderState !== "done" || !overlay.classList.contains("is-open")) return;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => renderResume(true), 200);
     });
   })();
 
@@ -542,7 +623,7 @@ layout: default
         <button class="resume-modal-close" type="button" aria-label="Close resume">&times;</button>
       </div>
     </div>
-    <iframe class="resume-modal-frame" data-src="/resume.pdf" title="Resume (PDF)"></iframe>
+    <div class="resume-modal-frame" data-src="/resume.pdf" role="document" aria-label="Resume (PDF)" tabindex="0"></div>
   </div>
 </div>
 
