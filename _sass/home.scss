@@ -347,6 +347,11 @@ p, ul {
   height: 18px;
   flex: none;
 }
+// On narrow screens (mobile) the corner nav collapses to just the arrow so the
+// label doesn't crowd the section content.
+@media screen and (max-width: $on-palm) {
+  .section-nav-label { display: none; }
+}
 
 // Hero ASCII "typing" effect. On a fresh load the banner is rebuilt as one
 // span per glyph (see home.html); each starts transparent and is painted in as
