@@ -2,7 +2,7 @@
 project-title: "Switchboard"
 project-type: "Software - Systems Daemon - Go"
 project-status: "Active Development"
-project-headline: Built a zero-configuration Go daemon that discovers every running Claude Code agent on a Hyprland/wezterm Linux desktop and makes them switchable from a status-bar chip, correlating each process across /proc, the terminal multiplexer, and the Wayland compositor and detecting process death via a kernel pidfd rather than polling.
+project-headline: A zero-configuration Go daemon that discovers every Claude Code agent on a Hyprland/wezterm desktop and makes them switchable from a status-bar chip, correlating each across /proc, the terminal, and the Wayland compositor.
 github: switchboard
 tags:
   - "all"
