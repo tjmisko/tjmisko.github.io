@@ -300,8 +300,14 @@ layout: default
     let rows = [];   // row wrapper elements
     let active = 0;  // active row index
 
-    const columnsForWidth = () =>
-      Math.max(1, Math.min(3, Math.floor((deck.clientWidth || window.innerWidth) / 340)));
+    const columnsForWidth = () => {
+      // Measure the deck itself. Never fall back to window.innerWidth: it is
+      // wider than the (often column-constrained) deck, so on an initial
+      // 0-width read it would cram too many cards into too little space and
+      // never self-correct without a resize.
+      const w = deck.clientWidth || deck.getBoundingClientRect().width;
+      return Math.max(1, Math.min(3, Math.floor(w / 340)));
+    };
 
     function applyRowStates() {
       rows.forEach((row, i) => {
@@ -363,11 +369,17 @@ layout: default
     rolodex.classList.add("rolodex--ready");
     if (prefersReducedMotion) rolodex.classList.add("rolodex--no-motion");
 
+    // Re-measure when the deck's width crosses a column boundary. A
+    // ResizeObserver fires on the first real layout, so an initial 0-width read
+    // (which would otherwise lock in a crammed column count) self-corrects as
+    // soon as the deck is sized.
     let resizeTimer = 0;
-    window.addEventListener("resize", () => {
+    const remeasure = () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => { if (columnsForWidth() !== cpr) buildRows(); }, 150);
-    }, { passive: true });
+      resizeTimer = setTimeout(() => { if (columnsForWidth() !== cpr) buildRows(); }, 120);
+    };
+    if (typeof ResizeObserver !== "undefined") new ResizeObserver(remeasure).observe(deck);
+    window.addEventListener("resize", remeasure, { passive: true });
 
     // Keyboard nav (only while focus is within projects):
     //   Up/Down    page rows (clamped — leave the section via corner nav)

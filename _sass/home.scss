@@ -446,7 +446,7 @@ p, ul {
 .rolodex--ready .rolodex-deck {
   display: block;
   position: relative;
-  height: clamp(340px, 56vh, 460px);
+  height: clamp(338px, 40vh, 350px);
   perspective: 1600px;
   overflow: hidden;
 }
@@ -481,7 +481,7 @@ p, ul {
 // Clamp long headlines so each face fits the fixed row height (full text is in the modal).
 .rolodex--ready .project-headline {
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -623,7 +623,7 @@ p, ul {
   background-color: $project-card-color;
   font-size: 0.9em;
   border-radius: 10px;
-  padding: 20px;
+  padding: 20px 20px 16px;
   // Transparent border reserved up front so the accent border on hover
   // doesn't nudge the layout.
   border: 1px solid transparent;
@@ -692,19 +692,68 @@ html.using-keyboard .project-card:focus-visible {
   flex-direction: row-reverse;
   align-items: center;
   font-size: 0.6rem;
-  border-top: $homepage-font-color solid 0.01em;
-  padding-top: 10px;
-  margin-top: 15px;
-  gap: 30px;
+  border-top: 1px solid rgba(225, 225, 225, 0.18);
+  padding-top: 8px;
+  margin-top: 10px;
+  gap: 24px;
 }
 .project-type-box {
   flex: 1 1 auto;
 }
+
+// Compact status indicator — a state-coloured dot plus a small tracked label —
+// so the footer reads as a status chip rather than a "Status: <value>" field.
+.project-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  font-family: "Roboto";
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(225, 225, 225, 0.5);
+}
+.project-status::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: rgba(225, 225, 225, 0.32);
+}
+// Active: a brighter label and a live, pulsing accent dot.
+.project-status.is-active {
+  color: rgba(225, 225, 225, 0.72);
+}
+.project-status.is-active::before {
+  background-color: $homepage-accent-color;
+  // Constant "live" glow so the active dot reads as live even between pings
+  // (and survives prefers-reduced-motion, where the ping is disabled).
+  box-shadow: 0 0 5px rgba(250, 130, 30, 0.85);
+  animation: status-pulse 6s ease-out infinite;
+}
+// One discrete "ping" per 6s cycle: a ring expands and fades over the first
+// ~0.9s, then stays invisible for the rest of the cycle. The steady glow is
+// carried through every keyframe so it never blinks off.
+@keyframes status-pulse {
+  0%           { box-shadow: 0 0 5px rgba(250, 130, 30, 0.85), 0 0 0 0 rgba(250, 130, 30, 0.55); }
+  15%          { box-shadow: 0 0 5px rgba(250, 130, 30, 0.85), 0 0 0 8px rgba(250, 130, 30, 0); }
+  15.01%, 100% { box-shadow: 0 0 5px rgba(250, 130, 30, 0.85), 0 0 0 0 rgba(250, 130, 30, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-status.is-active::before { animation: none; }
+}
 .project-linkbox {
-  flex-grow: 0 0 auto;
-  margin-top: 10px;
+  flex: 0 0 auto;
+  // Fix the icon-row height (icons render at 26px) so cards with and without
+  // links share one footer height — keeping the separator + status at one
+  // consistent position across every card.
+  height: 26px;
   list-style: none;
   display: flex;
+  align-items: center;
   gap: 10px;
   justify-content: center;
 }
@@ -719,8 +768,8 @@ html.using-keyboard .project-card:focus-visible {
 }
 
 .project-linkbox .svg-icon {
-  width: 32px;
-  height: 32px;
+  width: 22px;
+  height: 22px;
 }
 
 .project-title {
@@ -735,6 +784,11 @@ html.using-keyboard .project-card:focus-visible {
   font-size: 1rem;
   margin-top: 3px;
   margin-bottom: 6px;
+}
+
+.project-headline {
+  margin: 6px 0 0;
+  line-height: 1.4;
 }
 
 /** Blog linkbox stylings */
