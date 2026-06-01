@@ -226,6 +226,13 @@ layout: default
         fragment.appendChild(span);
         cells.push(span);
       }
+      // One extra cell past the final glyph so the closing cursor rests off the
+      // last character (terminal-style) rather than on top of it.
+      const cursorRest = document.createElement("span");
+      cursorRest.className = "ascii-char";
+      cursorRest.textContent = " ";
+      fragment.appendChild(cursorRest);
+      cells.push(cursorRest);
       banner.textContent = "";
       banner.appendChild(fragment);
 
@@ -251,17 +258,24 @@ layout: default
         }
         for (let k = 0; k < total; k++) cells[k].classList.add("is-typed");
         revealDeferred(); // banner fully typed — cascade the copy up
-        // A few terminal-style blinks on the last cell, then settle.
+        // Rest solid on the last cell for a beat (so the line reads as "done"),
+        // then a few terminal-style blinks, then settle.
         const last = cells[total - 1];
-        let blinks = 0;
         last.classList.add("is-cursor");
-        const blink = setInterval(() => {
-          last.classList.toggle("is-cursor");
-          if (++blinks >= 6) {
-            clearInterval(blink);
-            last.classList.remove("is-cursor");
-          }
-        }, 120);
+        const LINGER_MS = 150; // solid hold before the blink-out
+        const FLASHES = 3;    // distinct cursor flashes after the hold
+        setTimeout(() => {
+          last.classList.remove("is-cursor"); // end the solid hold
+          let ticks = 0;
+          const blink = setInterval(() => {
+            last.classList.toggle("is-cursor");
+            // Two toggles per flash (on, then off); stop after FLASHES, off.
+            if (++ticks >= FLASHES * 2) {
+              clearInterval(blink);
+              last.classList.remove("is-cursor");
+            }
+          }, 120);
+        }, LINGER_MS);
       }
 
       requestAnimationFrame(step);
@@ -349,17 +363,23 @@ layout: default
       applyRowStates();
     }
 
-    function go(i, focusCard) {
+    function go(i, focusCard, col) {
       const next = Math.max(0, Math.min(rows.length - 1, i));
       if (next === active) return;
       active = next;
       applyRowStates();
       if (focusCard) {
-        const first = rows[active].querySelector(".project-card");
-        if (first) first.focus({ preventScroll: true });
+        // Preserve the column across the row transition so vertical paging
+        // doesn't snap focus back to the first card. col is undefined for
+        // tick/drag jumps, which fall back to the first card.
+        const cards = rows[active].querySelectorAll(".project-card");
+        if (cards.length) {
+          const idx = col == null ? 0 : Math.min(cards.length - 1, Math.max(0, col));
+          cards[idx].focus({ preventScroll: true });
+        }
       }
     }
-    const step = (delta, focusCard) => go(active + delta, focusCard);
+    const step = (delta, focusCard, col) => go(active + delta, focusCard, col);
 
     track.setAttribute("role", "slider");
     track.setAttribute("aria-label", "Project position");
@@ -387,8 +407,14 @@ layout: default
     // Mouse wheel and touch swipe are deliberately not bound so they fall
     // through to normal page scrolling.
     projectsCard.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowDown") { e.preventDefault(); step(1, true); }
-      else if (e.key === "ArrowUp") { e.preventDefault(); step(-1, true); }
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        // Carry the current column into the destination row so paging stays in
+        // the same column (clamped to that row's card count).
+        const cards = Array.from(rows[active].querySelectorAll(".project-card"));
+        const col = cards.indexOf(document.activeElement);
+        step(e.key === "ArrowDown" ? 1 : -1, true, col < 0 ? 0 : col);
+      }
       else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
         const cards = Array.from(rows[active].querySelectorAll(".project-card"));
         if (!cards.length) return;
@@ -398,6 +424,23 @@ layout: default
         const idx = cur < 0 ? 0 : Math.min(cards.length - 1, Math.max(0, cur + dir));
         cards[idx].focus({ preventScroll: true });
       }
+    });
+
+    // The handler above only fires once focus is already inside the projects
+    // section. When the section is the one in view but nothing in it is focused
+    // yet, Left/Right should still pull focus into the rolodex. Cover that case
+    // at the document level (bail if the section already handled the key).
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      if (e.defaultPrevented) return;                       // handled by focus-in path
+      if (projectsCard.contains(document.activeElement)) return;
+      const r = projectsCard.getBoundingClientRect();
+      const mid = window.innerHeight / 2;
+      if (r.top > mid || r.bottom < mid) return;            // section not the one in view
+      const first = rows[active] && rows[active].querySelector(".project-card");
+      if (!first) return;
+      e.preventDefault();
+      first.focus({ preventScroll: true });
     });
 
     // Side track: click a tick or drag to jump to a row.
@@ -422,7 +465,21 @@ layout: default
   // ---- Keyboard handling -------------------------------------------------
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      closeModal();
+      // Modal close takes priority: when a project modal is open the card that
+      // opened it is usually still the focused element, so check open-state
+      // first to avoid blurring the card instead of closing the modal. (The
+      // resume modal closes itself in its own Escape handler.)
+      if (modalParent.classList.contains("is-open")) {
+        closeModal();
+        return;
+      }
+      // No project modal open: if a rolodex card holds focus, step focus back
+      // out of the rolodex.
+      const active = document.activeElement;
+      if (active && active.classList.contains("project-card") &&
+          !active.classList.contains("project-modal")) {
+        active.blur();
+      }
       return;
     }
     const active = document.activeElement;
