@@ -580,13 +580,18 @@ p, ul {
   list-style: none;
 }
 
-.project-card li::marker {
-  content: ">  ";
-  margin: 0 0.2em;
-  color: $homepage-accent-color;
+// Custom orange ">" bullets. Use ::before rather than ::marker: mobile Safari
+// (iOS WebKit) does not render generated string content on ::marker, so a
+// ::marker-based bullet shows on desktop but leaves a blank gutter on mobile.
+.project-card .project-description li {
+  position: relative;
 }
-.project-card .project-linkbox li::marker {
-  content: "";
+.project-card .project-description li::before {
+  content: ">";
+  position: absolute;
+  left: -1em;
+  color: $homepage-accent-color;
+  font-weight: 700;
 }
 
 
