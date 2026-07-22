@@ -65,5 +65,6 @@ $on-large:         $on-laptop !default;
 // Import pre-styling-overrides hook and style-partials.
 @import
   "home",
+  "arc",
   "blog"// Hook to override existing styles.
 ;

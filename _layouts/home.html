@@ -18,10 +18,17 @@ layout: default
         <p class="reveal">
           I build software that structures information flows, guiding user attention to where it's
           most needed and automating the rest. View
-          <a class="homepage-link" href="/arachne">Arachne</a>
+          <a class="homepage-link" href="#projects-card">Arachne</a>
           (latest automation project), or look through my
           <a class="homepage-link" href="#projects-card">portfolio</a>, and
           <a class="homepage-link" href="#skills-card"> skills </a> below.
+        </p>
+        <p class="reveal">
+          I design systems and direct fleets of AI coding agents to build them: the architecture,
+          the concurrency and safety boundaries, and the review are mine, while autonomous agent
+          loops write the bulk of the implementation to my specification. I hand-write in Python and
+          JavaScript, and I've built enough by hand — a full-stack research platform, ETL pipelines,
+          CLIs — to know exactly what I'm directing.
         </p>
         <p class="reveal">
           I moonlight as an interdisciplinary researcher studying
@@ -38,11 +45,132 @@ layout: default
            {%- include social.html -%}
         </div>
     </div>
-    {%- include section-nav.html dir="down" target="#projects-card" label="Portfolio" -%}
+    {%- include section-nav.html dir="down" target="#arc-card" label="Trajectory" -%}
+</div>
+
+<div class="homepage-card" id="arc-card">
+  {%- include section-nav.html dir="up" target="#greeting-card" label="Home" -%}
+  <div class="arc-container">
+    <h1 class="site-header reveal">Trajectory</h1>
+    <div class="arc-legend reveal" aria-hidden="true">
+      <span class="arc-legend--research">research</span>
+      <span class="arc-legend--data">econometrics</span>
+      <span class="arc-legend--software">software</span>
+    </div>
+    <div class="arc-stage reveal">
+      <div class="arc-lanes-wrap">
+        <div class="arc-scroll">
+          <div class="arc-lanes">
+            <div class="arc-ruler-tick" style="grid-column: 2; --o: 2;">2018</div>
+            <div class="arc-ruler-tick" style="grid-column: 6; --o: 6;">2020</div>
+            <div class="arc-ruler-tick" style="grid-column: 10; --o: 10;">2022</div>
+            <div class="arc-ruler-tick" style="grid-column: 14; --o: 14;">2024</div>
+            <div class="arc-ruler-tick" style="grid-column: 18 / 20; --o: 18;">2026</div>
+
+            <div class="arc-lane-labels" style="grid-row: 1 / 8;">
+              <span>RESEARCH</span>
+              <span>DATA</span>
+              <span>SOFTWARE</span>
+            </div>
+
+            <!-- honors-thesis outline, in its own row above SSPI research -->
+            <div class="arc-group arc-group--thesis" style="grid-row: 3; grid-column: 9 / 11;">
+              <span class="arc-group-label arc-group-label--below">Honors Thesis</span>
+            </div>
+
+            <!-- Items without project files stay hard-coded here; every chip
+                 with a project file is sourced from its front matter (p.arc)
+                 in the loop below, and clicking it opens that project. -->
+            <div class="arc-chip" style="grid-row: 2; grid-column: 3 / 11; --o: 3;">
+              <strong>BA Applied Math + Economics &middot; UC Berkeley</strong>
+            </div>
+            <button type="button" class="arc-chip arc-chip--data"
+                    style="grid-row: 4; grid-column: 15 / 18; --o: 15;" data-project="07-sspi">
+              <strong>IRLE &middot; SSPI Research</strong>
+            </button>
+            <a class="arc-quiet" style="grid-row: 2; grid-column: 12 / 18; --o: 12;"
+               href="https://quasioptimal.io" target="_blank" rel="noopener">
+              Quasioptimal &mdash; independent research &middot; 2023&ndash;Present
+            </a>
+            <div class="arc-chip arc-chip--data" style="grid-row: 5; grid-column: 13 / 15; --o: 13;">
+              <strong>BRG &middot; Antitrust Econometrics</strong>
+            </div>
+
+            {%- for p in site.projects -%}
+              {%- if p.arc.lane -%}
+                {%- assign col_start = p.arc.start | minus: 2018 | times: 2 | plus: 2 | round -%}
+                {%- assign col_end = p.arc.end | minus: 2018 | times: 2 | plus: 2 | round -%}
+                {%- if p.arc.kind -%}
+            <button type="button"
+                    class="arc-chip arc-chip--{{ p.arc.lane }} arc-chip--mini"
+                    style="grid-row: {{ p.arc.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_start }};"
+                    data-project="{{ p.slug }}" aria-label="{{ p.arc.label }}">
+              <span class="arc-ico arc-ico--{{ p.arc.kind }}" aria-hidden="true"></span>
+              <span class="arc-pop"><strong>{{ p.arc.label }}</strong><small>{{ p.arc.sub }}</small></span>
+            </button>
+                {%- else -%}
+            <button type="button"
+                    class="arc-chip arc-chip--{{ p.arc.tone | default: p.arc.lane }}"
+                    style="grid-row: {{ p.arc.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_start }};"
+                    data-project="{{ p.slug }}">
+              <strong>{{ p.arc.label }}</strong>
+              {%- if p.arc.sub %}<small>{{ p.arc.sub }}</small>{% endif -%}
+            </button>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            <div class="arc-junction"></div>
+            <div class="arc-node" style="--o: 99;">
+              <h3>Software Engineering<br>+ AI Research</h3>
+              {%- for p in site.projects -%}
+                {%- if p.arc.node -%}
+              <button type="button" class="arc-chip arc-chip--software"
+                      data-project="{{ p.slug }}">
+                <strong>{{ p.arc.node.label }}</strong>
+                <small>{{ p.arc.node.sub }}</small>
+              </button>
+                {%- endif -%}
+              {%- endfor -%}
+              <div class="arc-chip arc-chip--ramp">
+                Rust + systems fundamentals &middot; AI study
+              </div>
+              <p class="arc-node-status"><span class="arc-live-dot"></span>In progress</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="arc-throughline reveal">
+      One thread through all of it: computational systems that must be correct on the inside and
+      stand up to scrutiny from the outside &mdash; good research &middot; supportable cases &middot;
+      trustworthy AI output.
+    </p>
+  </div>
+  <script>
+  // Arc chips and node entries cross-link into the portfolio: clicking one
+  // opens the matching project card's modal (cards carry data-project slugs,
+  // so the project files stay the single source of truth).
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".arc-chip[data-project], .arc-node-link[data-project]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        const card = document.querySelector('.project-card[data-project="' + el.dataset.project + '"]');
+        if (card) card.click();
+      });
+    });
+    // The grid carries a fixed overhang for 2018–2019; default the view to
+    // 2019 with the start of college scrolled off — reachable by scrolling.
+    const arcScroll = document.querySelector("#arc-card .arc-scroll");
+    if (arcScroll) arcScroll.scrollLeft = arcScroll.scrollWidth;
+  });
+  </script>
+  {%- include section-nav.html dir="down" target="#projects-card" label="Portfolio" -%}
 </div>
 
 <div class="homepage-card" id="projects-card">
-  {%- include section-nav.html dir="up" target="#greeting-card" label="Home" -%}
+  {%- include section-nav.html dir="up" target="#arc-card" label="Trajectory" -%}
   <div class="project-modal-parent"></div>
   <h1 class="site-header reveal"> Portfolio </h1>
   <div class="rolodex reveal" id="rolodex">

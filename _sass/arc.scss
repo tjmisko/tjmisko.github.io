@@ -1,0 +1,398 @@
+// Trajectory card — converging swimlanes. Three labeled streams (research /
+// data / software) over a shared 2018–2026 ruler, converging through a
+// junction into the 2026 node. Streams share one palette: research gray,
+// econometrics steel, software orange — the arc warms from gray to the site
+// accent as it approaches now. Chips with project files are generated from
+// front matter (see the loop in home.html) and click through to their cards.
+
+$arc-research: rgb(200, 200, 204);
+$arc-data: rgb(110, 150, 185);
+$arc-software: $homepage-accent-color;
+$arc-dim: rgba(225, 225, 225, 0.55);
+$arc-faint: rgba(225, 225, 225, 0.16);
+
+.arc-container {
+  font-size: 1rem;
+  width: min(1280px, 96vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+// Match the other section headers ("Portfolio", "Skills"), which render at
+// 1.7em inside the card's 1.3em context — the container resets to 1rem, so
+// restate the size explicitly.
+.arc-container .site-header { font-size: 2.2rem; }
+
+.arc-stage { width: 100%; }
+
+// The grid scrolls inside its own container on narrow viewports; the page
+// body itself never scrolls horizontally.
+.arc-scroll { overflow-x: auto; padding-bottom: 4px; }
+.arc-scroll > * { min-width: 1132px; }
+
+.arc-throughline {
+  font-family: "IBM Plex Mono";
+  font-size: 0.86rem;
+  color: $arc-dim;
+  text-align: center;
+  max-width: 66ch;
+  line-height: 1.55;
+  margin: 0.35rem 0 0;
+}
+
+@keyframes arc-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.arc-live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: $homepage-accent-color;
+  margin-right: 6px;
+  animation: arc-pulse 2s var(--ease-out) infinite;
+}
+
+// ---- Swimlane grid ---------------------------------------------------------
+// Columns: 1 lane label · 2–17 half-years 2018–2026 · 18 junction · 19 node.
+// The 2018–2019 columns are a fixed 132px overhang: the lanes are exactly
+// that much wider than the scroll container, so the default view (scrolled
+// fully right by JS) starts at 2019 and the start of college is reachable
+// by scrolling left.
+// Rows: 1 ruler · 2 college+quasioptimal · 3 theses · 4 SSPI research ·
+// 5 data (BRG) · 6–7 software.
+.arc-lanes {
+  display: grid;
+  width: calc(100% + 132px);
+  grid-template-columns: 104px 66px 66px repeat(14, 1fr) 18px 220px;
+  grid-template-rows: 28px repeat(6, auto);
+  row-gap: 10px;
+  align-items: stretch;
+  font-family: "IBM Plex Mono";
+}
+.arc-ruler-tick {
+  grid-row: 1;
+  border-left: 1px solid $arc-faint;
+  color: $arc-dim;
+  font-size: 0.74rem;
+  padding-left: 5px;
+  align-self: end;
+}
+// One wrapper distributes the three lane labels evenly over the full grid
+// height, independent of individual row heights. Pinned to the left edge of
+// the scroll viewport so the key stays visible at any scroll position; the
+// translucent backdrop masks chips sliding underneath.
+.arc-lane-labels {
+  grid-column: 1;
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  background: rgba(25, 25, 27, 0.82);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  span {
+    font-family: "Courier Prime";
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    color: $arc-dim;
+    padding-right: 12px;
+    text-align: right;
+  }
+}
+
+// Chips are <button>s when they cross-link to a project, <div>s otherwise —
+// style both identically and reserve the pointer for the clickable ones.
+.arc-chip {
+  appearance: none;
+  font: inherit;
+  font-family: "IBM Plex Mono";
+  text-align: left;
+  align-self: center; // hug content — never stretch to the row's tallest item
+  background: $project-card-color;
+  border: 1px solid $arc-faint;
+  border-left: 3px solid $arc-research;
+  border-radius: 4px;
+  padding: 6px 11px;
+  margin: 2px 6px 2px 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: $homepage-font-color;
+  strong { font-weight: 600; }
+  small { display: block; color: $arc-dim; font-size: 0.88em; }
+}
+// A bar whose start is scrolled off keeps its title visible: the text pins
+// just right of the lane rail (104px + border/padding) and, on scrolling the
+// start back into view, seeks left until it rests at the bar's own edge.
+.arc-chip > strong {
+  display: inline-block;
+  position: sticky;
+  left: 118px;
+}
+button.arc-chip { cursor: pointer; }
+button.arc-chip:hover,
+button.arc-chip:focus-visible {
+  border-color: rgba(225, 225, 225, 0.4);
+  border-left-width: 3px;
+}
+// Color families carry domain relationships (there is no grouping box):
+// steel = economics/econometrics work, orange = software, gray = neutral.
+.arc-chip--research { border-left-color: $arc-research; }
+.arc-chip--data {
+  border-left-color: $arc-data;
+  background: rgba(110, 150, 185, 0.09);
+}
+.arc-chip--software {
+  border-left-color: $arc-software;
+  background: rgba(250, 130, 30, 0.07);
+}
+.arc-chip--ramp {
+  border-style: dashed;
+  border-left: 3px dashed $arc-software;
+  background: transparent;
+  color: $arc-dim;
+}
+
+// ---- Mini chips: icon + hover popover (short projects: papers, CLI tools) --
+.arc-chip--mini {
+  position: relative;
+  text-align: center;
+  padding: 11px 6px;
+  align-self: center;
+}
+.arc-chip--mini:hover,
+.arc-chip--mini:focus-visible { z-index: 3; }
+.arc-pop {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: max-content;
+  max-width: 250px;
+  text-align: left;
+  background: $project-card-color;
+  border: 1px solid rgba(225, 225, 225, 0.3);
+  border-radius: 4px;
+  padding: 7px 11px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  strong { display: block; font-weight: 600; }
+  small { display: block; color: $arc-dim; font-size: 0.88em; }
+}
+.arc-chip--mini:hover .arc-pop,
+.arc-chip--mini:focus-visible .arc-pop { display: block; }
+
+// Terminal-styled glyph icons for the mini chips.
+.arc-ico { display: block; margin: 0 auto; }
+.arc-ico--paper {
+  width: 18px;
+  height: 22px;
+  border: 1px solid rgba(110, 150, 185, 0.9);
+  border-radius: 2px;
+  background-image: repeating-linear-gradient(
+    to bottom, transparent 0 4px, rgba(110, 150, 185, 0.55) 4px 5px);
+  background-size: 10px 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.arc-ico--cli {
+  width: 24px;
+  height: 19px;
+  border: 1px solid rgba(250, 130, 30, 0.8);
+  border-radius: 2px;
+}
+.arc-ico--cli::before {
+  content: ">_";
+  display: block;
+  font-size: 10px;
+  line-height: 17px;
+  color: $homepage-accent-color;
+}
+
+// ---- Grouping outlines (economics research · honors thesis) ----------------
+.arc-group {
+  position: relative;
+  margin: -7px;
+  border: 1px dashed rgba(110, 150, 185, 0.35);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.arc-group--thesis {
+  // Hug the mini chips instead of stretching to the row height.
+  align-self: center;
+  height: 62px;
+  margin: 0;
+  border-style: solid;
+  border-color: rgba(110, 150, 185, 0.25);
+}
+.arc-group-label {
+  position: absolute;
+  top: -9px;
+  left: 12px;
+  padding: 0 6px;
+  background: $homepage-background-color;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  color: rgba(110, 150, 185, 0.85);
+}
+.arc-group-label--below {
+  top: auto;
+  bottom: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+// ---- Quiet marker (Quasioptimal) -------------------------------------------
+.arc-quiet {
+  align-self: center; // level with the Berkeley chip in the same row
+  margin: 0 6px 0 0;
+  padding: 3px 2px; // symmetric, so the text center matches the chip text
+
+  font-size: 0.74rem;
+  color: $arc-dim;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(225, 225, 225, 0.3);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.arc-quiet:hover,
+.arc-quiet:focus-visible { color: $homepage-accent-color; }
+
+// ---- Narrative notes (the "why" bubbles) -----------------------------------
+.arc-note {
+  align-self: center;
+  margin: 2px 8px 2px 0;
+  border: 1px dashed $arc-faint;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 0.76rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: $arc-dim;
+}
+
+// ---- Junction + 2026 node --------------------------------------------------
+.arc-junction {
+  grid-column: 18;
+  grid-row: 2 / 8;
+  border-right: 1px solid $arc-faint;
+  position: relative;
+}
+.arc-junction::after {
+  content: "\25B6"; // ▶
+  position: absolute;
+  right: -7px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $homepage-accent-color;
+  font-size: 0.6rem;
+}
+// The 2026 node: formatted like a group of chips rather than a monolith —
+// a dashed convergence outline holding one chip per project, matching the
+// lane treatment on the left.
+.arc-node {
+  grid-column: 19;
+  grid-row: 2 / 8;
+  border: 1px dashed rgba(250, 130, 30, 0.5);
+  border-radius: 8px;
+  padding: 12px;
+  margin-left: 12px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  h3 {
+    font-family: "Courier Prime";
+    font-size: 1.1rem;
+    margin: 0 0 2px;
+    color: $homepage-accent-color;
+    font-weight: normal;
+    line-height: 1.3;
+    text-align: center;
+  }
+  .arc-chip { margin: 0; align-self: stretch; }
+}
+.arc-node-status {
+  margin: 2px 0 0;
+  font-size: 0.74rem;
+  color: $arc-dim;
+  text-align: center;
+}
+
+// ---- Legend (mobile only — replaces the lane rail) --------------------------
+.arc-legend {
+  display: none;
+  gap: 1.1rem;
+  font-family: "IBM Plex Mono";
+  font-size: 0.72rem;
+  color: $arc-dim;
+  span::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  .arc-legend--research::before { background: $arc-research; }
+  .arc-legend--data::before { background: $arc-data; }
+  .arc-legend--software::before { background: $arc-software; }
+}
+
+// ---- Mobile: vertical chronological feed ------------------------------------
+// Below 700px the grid transposes into a single time-ordered column: every
+// item carries --o (its half-year start column) as a flex order, ruler ticks
+// become year dividers, minis expand their popover content inline, and the
+// 2026 node closes the feed. Same front-matter source of truth; no
+// horizontal scrolling anywhere.
+@media screen and (max-width: 700px) {
+  .arc-legend { display: flex; }
+  .arc-scroll { overflow-x: visible; }
+  .arc-scroll > * { min-width: 0; }
+  .arc-lanes {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+  .arc-lanes > * { order: var(--o, 0); }
+  .arc-lane-labels,
+  .arc-group,
+  .arc-junction { display: none; }
+  .arc-chip { margin: 0; align-self: stretch; }
+  // No horizontal scroller on mobile — the page would become the sticky
+  // container and shove titles rightward. Pin them back down.
+  .arc-chip > strong { position: static; left: auto; }
+  .arc-ruler-tick {
+    border-left: none;
+    border-bottom: 1px solid $arc-faint;
+    padding: 8px 0 3px;
+    align-self: stretch;
+  }
+  .arc-chip--mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    padding: 6px 11px;
+  }
+  .arc-ico { margin: 0; flex: 0 0 auto; }
+  .arc-pop {
+    display: block;
+    position: static;
+    border: none;
+    background: none;
+    padding: 0;
+    width: auto;
+    max-width: none;
+  }
+  .arc-quiet { align-self: flex-start; }
+  .arc-node {
+    margin: 6px 0 0;
+    align-self: stretch;
+  }
+}

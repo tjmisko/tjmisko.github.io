@@ -1,5 +1,5 @@
 {%- for p in site.projects -%}
-    <button class="project-card {{ p.tags | join }}">
+    <button class="project-card {{ p.tags | join }}" data-project="{{ p.slug }}">
         <div class="project-flex-wrapper">
             <div class="project-upper">
                 <h1 class="project-title"> {{ p.project-title }}</h1>
