@@ -1,0 +1,103 @@
+# Tooling waterfall — the "Tools" view of the Trajectory card (see the
+# arc-lanes--tools grid in _layouts/home.html). Each entry here is one bar on
+# the same 2018–2026 ruler the projects view uses.
+#
+#   start / end   decimal half-years; 2024.5 means mid-2024. They map to grid
+#                 columns as (year - 2018) * 2 + 2, so only .0 and .5 land on
+#                 a column boundary. `end: 2026.5` is the "now" line.
+#   ongoing       true if still in use — draws the bar into the now line.
+#   occasional    true for reach-for-it-sometimes tools (dashed, dimmer).
+#   family        analysis | language | environment — drives the bar color and
+#                 the legend above the chart.
+#   span / note   display strings for the hover popover (and the mobile feed).
+#
+# Bars render top-to-bottom in file order, so keep each group roughly
+# chronological by `start`.
+
+- group: Computing
+  tools:
+    - name: Excel / Google Sheets
+      family: analysis
+      start: 2018
+      end: 2024.5
+      span: 2018 – 2024
+      note: Modeling, case exhibits, and everyday analysis through BRG.
+
+    - name: R
+      family: analysis
+      start: 2020
+      end: 2024.5
+      span: 2020 – 2024
+      note: Econometrics and causal inference — regressions, panel data, ggplot.
+
+    - name: Python
+      family: language
+      start: 2020.5
+      end: 2026.5
+      span: 2020 – now
+      ongoing: true
+      note: Primary language. ETL pipelines, Flask backends, CLIs, analysis.
+
+    - name: Stata
+      family: analysis
+      start: 2024
+      end: 2024.5
+      span: 2024
+      note: Antitrust econometrics at BRG, on the case teams that used it.
+
+    - name: HTML / CSS / JavaScript
+      family: language
+      start: 2023
+      end: 2026.5
+      span: 2023 – now
+      ongoing: true
+      note: Browser interfaces — the sspi.world front end, charts, this site.
+
+    - name: TypeScript
+      family: language
+      start: 2024.5
+      end: 2026.5
+      span: 2024 – now
+      ongoing: true
+      occasional: true
+      note: Occasional — typed front ends and tooling where the types earn their keep.
+
+    - name: Go
+      family: language
+      start: 2024.5
+      end: 2026.5
+      span: 2024 – now
+      ongoing: true
+      note: Concurrent daemons and CLIs — Switchboard, Arachne's process layer.
+
+    - name: Vim / Neovim
+      family: environment
+      start: 2024
+      end: 2026.5
+      span: 2024 – now
+      ongoing: true
+      note: Primary editor, configured from scratch; Lua plugins of my own.
+
+    - name: Obsidian
+      family: environment
+      start: 2023.5
+      end: 2026.5
+      span: 2023 – now
+      ongoing: true
+      note: Plain-text notes and linked research knowledge base.
+
+    - name: C
+      family: language
+      start: 2025.5
+      end: 2026.5
+      span: 2025 – now
+      ongoing: true
+      note: Systems fundamentals — memory, pointers, what the layers above sit on.
+
+    - name: Rust
+      family: language
+      start: 2026
+      end: 2026.5
+      span: 2026 – now
+      ongoing: true
+      note: Current study — ownership, lifetimes, safe systems programming.

@@ -26,6 +26,43 @@ $arc-faint: rgba(225, 225, 225, 0.16);
 .arc-container .site-header { font-size: 2.2rem; }
 
 .arc-stage { width: 100%; }
+.arc-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+.arc-view[hidden] { display: none; }
+// The view is a centering flex column, so the grid has to claim the width back.
+.arc-lanes-wrap { width: 100%; }
+
+// ---- Projects / Tools view switch ------------------------------------------
+.arc-toggle {
+  display: inline-flex;
+  border: 1px solid $arc-faint;
+  border-radius: 5px;
+  overflow: hidden;
+  font-family: "IBM Plex Mono";
+}
+.arc-toggle-btn {
+  appearance: none;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: $arc-dim;
+  padding: 6px 20px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out);
+  & + & { border-left: 1px solid $arc-faint; }
+  &:hover { color: $homepage-font-color; }
+  &.is-active {
+    color: $homepage-accent-color;
+    background: rgba(250, 130, 30, 0.1);
+  }
+}
 
 // The grid scrolls inside its own container on narrow viewports; the page
 // body itself never scrolls horizontally.
@@ -323,6 +360,100 @@ button.arc-chip:focus-visible {
   text-align: center;
 }
 
+// ---- Tools waterfall -------------------------------------------------------
+// Same ruler, read the other way: one bar per tool, stacked in the order they
+// were picked up. Columns: 1 group rail · 2–18 half-years 2018.0–2026.0 · 19
+// the "now" gutter. No overhang here — the full range fits, so the view opens
+// at 2018 rather than scrolled. Rows are implicit (one per tool in
+// _data/tools.yml), which keeps adding a group a data-only change.
+.arc-lanes--tools {
+  width: 100%;
+  grid-template-columns: 104px repeat(17, 1fr) 46px;
+  grid-template-rows: 28px;
+  grid-auto-rows: minmax(30px, auto);
+  row-gap: 6px;
+  // Room for the last row's popover, which opens downward: reserving it here
+  // keeps the scroller from growing a vertical scrollbar on hover (overflow-x
+  // on .arc-scroll makes overflow-y a scroller too, so anything past the grid
+  // box would otherwise be clipped).
+  padding-bottom: 80px;
+}
+// One rail label per group, spanning that group's rows.
+.arc-lane-labels--group {
+  justify-content: center;
+  span { padding-right: 14px; }
+}
+.arc-ruler-tick--now {
+  border-left-color: rgba(250, 130, 30, 0.45);
+  color: $homepage-accent-color;
+}
+.arc-now-line {
+  grid-column: 19;
+  border-left: 1px dashed rgba(250, 130, 30, 0.3);
+  pointer-events: none;
+}
+
+.arc-chip--tool {
+  position: relative;
+  align-self: stretch; // fill the row so the span reads as a bar, not a tag
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+.arc-chip--analysis {
+  border-left-color: $arc-data;
+  background: rgba(110, 150, 185, 0.09);
+}
+.arc-chip--language {
+  border-left-color: $arc-software;
+  background: rgba(250, 130, 30, 0.07);
+}
+.arc-chip--environment {
+  border-left-color: $arc-research;
+  background: rgba(225, 225, 225, 0.05);
+}
+// Still in use: the bar runs into the now line, so accent its trailing edge.
+.arc-chip--tool.is-ongoing {
+  border-right-color: rgba(250, 130, 30, 0.45);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+// Reach-for-it-sometimes tools read lighter than daily drivers.
+.arc-chip--tool.is-occasional {
+  border-style: dashed;
+  background: none;
+  strong { color: $arc-dim; }
+}
+.arc-chip--tool:hover,
+.arc-chip--tool:focus-visible {
+  border-color: rgba(225, 225, 225, 0.4);
+  z-index: 3;
+}
+
+// Tool popovers open downward (upward would clip against the ruler in the
+// scroll container) and flip their anchor for bars close to the right edge.
+.arc-pop--tool {
+  top: calc(100% + 6px);
+  bottom: auto;
+  white-space: normal;
+  pointer-events: none;
+  z-index: 3;
+}
+.arc-chip--tool.is-late .arc-pop--tool {
+  left: auto;
+  right: 0;
+}
+.arc-chip--tool:hover .arc-pop--tool,
+.arc-chip--tool:focus-visible .arc-pop--tool { display: block; }
+.arc-tool-span {
+  color: $homepage-accent-color !important;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
 // ---- Legend (mobile only — replaces the lane rail) --------------------------
 .arc-legend {
   display: none;
@@ -395,4 +526,18 @@ button.arc-chip:focus-visible {
     margin: 6px 0 0;
     align-self: stretch;
   }
+
+  // Tools feed: same transpose, but bars become cards carrying their span and
+  // note inline (there is no hover to reveal them on touch).
+  .arc-lanes--tools { padding-bottom: 0; }
+  .arc-now-line { display: none; }
+  .arc-chip--tool {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 7px 11px;
+    white-space: normal;
+  }
+  .arc-chip--tool.is-ongoing { border-radius: 4px; }
+  .arc-pop--tool { pointer-events: auto; }
 }

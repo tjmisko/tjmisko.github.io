@@ -52,12 +52,22 @@ layout: default
   {%- include section-nav.html dir="up" target="#greeting-card" label="Home" -%}
   <div class="arc-container">
     <h1 class="site-header reveal">Trajectory</h1>
-    <div class="arc-legend reveal" aria-hidden="true">
-      <span class="arc-legend--research">research</span>
-      <span class="arc-legend--data">econometrics</span>
-      <span class="arc-legend--software">software</span>
+    <div class="arc-toggle reveal" role="tablist" aria-label="Trajectory view">
+      <button type="button" class="arc-toggle-btn is-active" role="tab" data-view="projects"
+              id="arc-tab-projects" aria-controls="arc-view-projects" aria-selected="true">Projects</button>
+      <button type="button" class="arc-toggle-btn" role="tab" data-view="tools" tabindex="-1"
+              id="arc-tab-tools" aria-controls="arc-view-tools" aria-selected="false">Tools</button>
     </div>
+    <!-- Both views live inside one .reveal stage: a view that is hidden when
+         the IntersectionObserver runs would never receive .is-visible and
+         would stay invisible after being switched to. -->
     <div class="arc-stage reveal">
+    <div class="arc-view" id="arc-view-projects" role="tabpanel" aria-labelledby="arc-tab-projects">
+      <div class="arc-legend" aria-hidden="true">
+        <span class="arc-legend--research">research</span>
+        <span class="arc-legend--data">econometrics</span>
+        <span class="arc-legend--software">software</span>
+      </div>
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
           <div class="arc-lanes">
@@ -140,14 +150,72 @@ layout: default
           </div>
         </div>
       </div>
-
+      <p class="arc-throughline">
+        One thread through all of it: computational systems that must be correct on the inside and
+        stand up to scrutiny from the outside &mdash; good research &middot; supportable cases &middot;
+        trustworthy AI output.
+      </p>
     </div>
 
-    <p class="arc-throughline reveal">
-      One thread through all of it: computational systems that must be correct on the inside and
-      stand up to scrutiny from the outside &mdash; good research &middot; supportable cases &middot;
-      trustworthy AI output.
-    </p>
+    <!-- Tools view: same ruler, one bar per tool, sourced from _data/tools.yml.
+         Columns 2–18 are half-years 2018.0–2026.0 and column 19 is the "now"
+         gutter, so a bar ending at line 19 runs to the present. -->
+    <div class="arc-view" id="arc-view-tools" role="tabpanel" aria-labelledby="arc-tab-tools" hidden>
+      <div class="arc-legend" aria-hidden="true">
+        <span class="arc-legend--data">analysis</span>
+        <span class="arc-legend--software">languages</span>
+        <span class="arc-legend--research">environment</span>
+      </div>
+      <div class="arc-lanes-wrap">
+        <div class="arc-scroll">
+          <div class="arc-lanes arc-lanes--tools">
+            <div class="arc-ruler-tick" style="grid-column: 2; --o: 2;">2018</div>
+            <div class="arc-ruler-tick" style="grid-column: 6; --o: 6;">2020</div>
+            <div class="arc-ruler-tick" style="grid-column: 10; --o: 10;">2022</div>
+            <div class="arc-ruler-tick" style="grid-column: 14; --o: 14;">2024</div>
+            <div class="arc-ruler-tick" style="grid-column: 18; --o: 18;">2026</div>
+            <div class="arc-ruler-tick arc-ruler-tick--now" style="grid-column: 19; --o: 19;">now</div>
+
+            {%- assign tool_row = 1 -%}
+            {%- for g in site.data.tools -%}
+              {%- assign group_size = g.tools | size -%}
+              {%- assign group_first = tool_row | plus: 1 -%}
+              {%- assign group_last = group_first | plus: group_size -%}
+            <div class="arc-lane-labels arc-lane-labels--group"
+                 style="grid-row: {{ group_first }} / {{ group_last }};">
+              <span>{{ g.group | upcase }}</span>
+            </div>
+              {%- for t in g.tools -%}
+                {%- assign tool_row = tool_row | plus: 1 -%}
+                {%- assign col_start = t.start | minus: 2018 | times: 2 | plus: 2 | round -%}
+                {%- assign col_end = t.end | minus: 2018 | times: 2 | plus: 2 | round -%}
+            <div class="arc-chip arc-chip--tool arc-chip--{{ t.family }}
+                        {%- if t.ongoing %} is-ongoing{% endif -%}
+                        {%- if t.occasional %} is-occasional{% endif -%}
+                        {%- comment -%}Bars in the right half flip their popover
+                        anchor so it opens inward instead of off the grid.
+                        {%- endcomment -%}
+                        {%- if col_start >= 13 %} is-late{% endif %}"
+                 style="grid-row: {{ tool_row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_start }};"
+                 tabindex="0">
+              <strong>{{ t.name }}</strong>
+              <span class="arc-pop arc-pop--tool">
+                <small class="arc-tool-span">{{ t.span }}</small>
+                <small>{{ t.note }}</small>
+              </span>
+            </div>
+              {%- endfor -%}
+            {%- endfor -%}
+            <div class="arc-now-line" style="grid-row: 2 / {{ tool_row | plus: 1 }};"></div>
+          </div>
+        </div>
+      </div>
+      <p class="arc-throughline">
+        The stack accumulates rather than rotates: spreadsheets and stats packages for research
+        questions, general-purpose languages to build the systems, then the layer underneath them.
+      </p>
+    </div>
+    </div>
   </div>
   <script>
   // Arc chips and node entries cross-link into the portfolio: clicking one
@@ -160,10 +228,38 @@ layout: default
         if (card) card.click();
       });
     });
-    // The grid carries a fixed overhang for 2018–2019; default the view to
-    // 2019 with the start of college scrolled off — reachable by scrolling.
-    const arcScroll = document.querySelector("#arc-card .arc-scroll");
+    // The projects grid carries a fixed overhang for 2018–2019; default that
+    // view to 2019 with the start of college scrolled off — reachable by
+    // scrolling. (The tools grid shows its full range, so it is left alone.)
+    const arcScroll = document.querySelector("#arc-view-projects .arc-scroll");
     if (arcScroll) arcScroll.scrollLeft = arcScroll.scrollWidth;
+
+    // ---- Projects / Tools view switch ------------------------------------
+    // Two readings of the same 2018–2026 ruler: what I built, and what I built
+    // it with. Standard tablist semantics — arrows move between tabs, the
+    // inactive tab stays out of the tab order.
+    const arcTabs = Array.from(document.querySelectorAll("#arc-card .arc-toggle-btn"));
+    if (arcTabs.length) {
+      const showView = (view) => {
+        arcTabs.forEach((tab) => {
+          const isActive = tab.dataset.view === view;
+          tab.classList.toggle("is-active", isActive);
+          tab.setAttribute("aria-selected", String(isActive));
+          tab.tabIndex = isActive ? 0 : -1;
+          document.getElementById("arc-view-" + tab.dataset.view).hidden = !isActive;
+        });
+      };
+      arcTabs.forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
+      document.querySelector("#arc-card .arc-toggle").addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        const dir = e.key === "ArrowRight" ? 1 : -1;
+        const at = arcTabs.findIndex((t) => t.classList.contains("is-active"));
+        const next = arcTabs[(at + dir + arcTabs.length) % arcTabs.length];
+        showView(next.dataset.view);
+        next.focus();
+      });
+    }
   });
   </script>
   {%- include section-nav.html dir="down" target="#projects-card" label="Portfolio" -%}
