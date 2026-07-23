@@ -106,11 +106,25 @@ views:
   - id: toolchain
     tab: Toolchain
     throughline: >-
-      The environment the work happens in: plain text I own, configured from scratch, and
-      extended with plugins of my own when it doesn't do what I need.
+      The environment the work happens in — editor, notes, and the machine underneath. It has
+      moved steadily toward plain text I own and configuration I wrote myself.
     groups:
       - group: Editing & Notes
         tools:
+          - name: Atom
+            family: environment
+            start: 2019
+            end: 2022
+            span: 2019 – 2022
+            note: First editor — the coursework and early econometrics years.
+
+          - name: VS Code
+            family: environment
+            start: 2022
+            end: 2024
+            span: 2022 – 2024
+            note: Everyday editor through the SSPI build and the start of BRG.
+
           - name: Obsidian
             family: environment
             start: 2023.5
@@ -126,3 +140,27 @@ views:
             span: 2024 – now
             ongoing: true
             note: Primary editor, configured from scratch; Lua plugins of my own.
+
+      - group: Operating Systems
+        tools:
+          - name: macOS
+            family: environment
+            start: 2018
+            end: 2023.5
+            span: 2018 – 2023
+            note: Personal machine through college and the SSPI research years.
+
+          - name: Windows
+            family: environment
+            start: 2023.5
+            end: 2024.5
+            span: 2023 – 2024
+            note: Issued machine at BRG; the case work ran on it.
+
+          - name: Linux
+            family: environment
+            start: 2024.5
+            end: 2026.5
+            span: 2024 – now
+            ongoing: true
+            note: Primary machine since mid-2024 — everything since is built here.

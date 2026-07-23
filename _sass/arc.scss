@@ -397,9 +397,12 @@ button.arc-chip:focus-visible {
   // box would otherwise be clipped).
   padding-bottom: 80px;
 }
-// One rail label per group, spanning that group's rows.
+// One rail label per group, spanning that group's rows. The negative margin
+// closes the row-gap between adjacent groups: bars whose start is scrolled off
+// pass underneath the rail, and an uncovered seam would let them show through.
 .arc-lane-labels--group {
   justify-content: center;
+  margin: -3px 0; // half the grid's 6px row-gap, top and bottom
   span { padding-right: 14px; }
 }
 .arc-ruler-tick--now {
