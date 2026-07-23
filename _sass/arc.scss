@@ -35,6 +35,15 @@ $arc-faint: rgba(225, 225, 225, 0.16);
 .arc-view[hidden] { display: none; }
 // The view is a centering flex column, so the grid has to claim the width back.
 .arc-lanes-wrap { width: 100%; }
+// The switch sits below the chart, so a short view (Toolchain) would otherwise
+// yank it upward on every tab change. Floor the chart area so the switch holds
+// still: 440px puts a waterfall's legend + chart at the same total height as
+// the projects lanes, which have no legend row on desktop. Not on mobile, where
+// the transposed feed is long and variable and a floor would only add dead
+// space.
+@media screen and (min-width: 701px) {
+  .arc-view--waterfall .arc-lanes-wrap { min-height: 440px; }
+}
 
 // ---- Projects / Tools view switch ------------------------------------------
 .arc-toggle {
@@ -469,9 +478,20 @@ button.arc-chip:focus-visible {
     border-radius: 50%;
     margin-right: 6px;
   }
-  .arc-legend--research::before { background: $arc-research; }
-  .arc-legend--data::before { background: $arc-data; }
-  .arc-legend--software::before { background: $arc-software; }
+  .arc-legend--research::before,
+  .arc-legend--environment::before { background: $arc-research; }
+  .arc-legend--data::before,
+  .arc-legend--analysis::before { background: $arc-data; }
+  .arc-legend--software::before,
+  .arc-legend--language::before { background: $arc-software; }
+}
+// The waterfall views spend their rail on group names, so the color key has to
+// stay visible on desktop too (the projects view keeps its lane rail instead).
+// A view with only one family emits an empty legend rather than none, so the
+// reserved height has to come from the box itself.
+.arc-view--waterfall .arc-legend {
+  display: flex;
+  min-height: 1.1rem;
 }
 
 // ---- Mobile: vertical chronological feed ------------------------------------

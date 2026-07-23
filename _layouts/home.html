@@ -52,13 +52,7 @@ layout: default
   {%- include section-nav.html dir="up" target="#greeting-card" label="Home" -%}
   <div class="arc-container">
     <h1 class="site-header reveal">Trajectory</h1>
-    <div class="arc-toggle reveal" role="tablist" aria-label="Trajectory view">
-      <button type="button" class="arc-toggle-btn is-active" role="tab" data-view="projects"
-              id="arc-tab-projects" aria-controls="arc-view-projects" aria-selected="true">Projects</button>
-      <button type="button" class="arc-toggle-btn" role="tab" data-view="tools" tabindex="-1"
-              id="arc-tab-tools" aria-controls="arc-view-tools" aria-selected="false">Tools</button>
-    </div>
-    <!-- Both views live inside one .reveal stage: a view that is hidden when
+    <!-- Every view lives inside one .reveal stage: a view that is hidden when
          the IntersectionObserver runs would never receive .is-visible and
          would stay invisible after being switched to. -->
     <div class="arc-stage reveal">
@@ -157,14 +151,32 @@ layout: default
       </p>
     </div>
 
-    <!-- Tools view: same ruler, one bar per tool, sourced from _data/tools.yml.
-         Columns 2–18 are half-years 2018.0–2026.0 and column 19 is the "now"
-         gutter, so a bar ending at line 19 runs to the present. -->
-    <div class="arc-view" id="arc-view-tools" role="tabpanel" aria-labelledby="arc-tab-tools" hidden>
+    <!-- Waterfall views (Tools, Toolchain, …): same ruler, one bar per tool,
+         all sourced from _data/tools.yml. Columns 2–18 are half-years
+         2018.0–2026.0 and column 19 is the "now" gutter, so a bar ending at
+         line 19 runs to the present. -->
+    {%- for v in site.data.tools.views -%}
+      {%- comment -%}The legend is derived from the families actually used, and
+      dropped entirely when a view only has one — a single dot explains nothing.
+      {%- endcomment -%}
+      {%- assign view_tools = "" | split: "" -%}
+      {%- for g in v.groups -%}
+        {%- assign view_tools = view_tools | concat: g.tools -%}
+      {%- endfor -%}
+      {%- assign view_families = view_tools | map: "family" | uniq -%}
+    <div class="arc-view arc-view--waterfall" id="arc-view-{{ v.id }}" role="tabpanel"
+         aria-labelledby="arc-tab-{{ v.id }}" hidden>
+      {%- comment -%}The container is emitted even when empty so every view's
+      chart starts at the same y and the switch below doesn't shift between
+      tabs.{%- endcomment %}
       <div class="arc-legend" aria-hidden="true">
-        <span class="arc-legend--data">analysis</span>
-        <span class="arc-legend--software">languages</span>
-        <span class="arc-legend--research">environment</span>
+        {%- if view_families.size > 1 -%}
+          {%- for f in site.data.tools.families -%}
+            {%- if view_families contains f.id %}
+        <span class="arc-legend--{{ f.id }}">{{ f.label }}</span>
+            {%- endif -%}
+          {%- endfor %}
+        {%- endif %}
       </div>
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
@@ -177,7 +189,7 @@ layout: default
             <div class="arc-ruler-tick arc-ruler-tick--now" style="grid-column: 19; --o: 19;">now</div>
 
             {%- assign tool_row = 1 -%}
-            {%- for g in site.data.tools -%}
+            {%- for g in v.groups -%}
               {%- assign group_size = g.tools | size -%}
               {%- assign group_first = tool_row | plus: 1 -%}
               {%- assign group_last = group_first | plus: group_size -%}
@@ -210,11 +222,20 @@ layout: default
           </div>
         </div>
       </div>
-      <p class="arc-throughline">
-        The stack accumulates rather than rotates: spreadsheets and stats packages for research
-        questions, general-purpose languages to build the systems, then the layer underneath them.
-      </p>
+      <p class="arc-throughline">{{ v.throughline }}</p>
     </div>
+    {%- endfor -%}
+    </div>
+
+    <!-- The view switch sits under the chart: it reads as a footer control for
+         the thing above it rather than competing with the section header. -->
+    <div class="arc-toggle reveal" role="tablist" aria-label="Trajectory view">
+      <button type="button" class="arc-toggle-btn is-active" role="tab" data-view="projects"
+              id="arc-tab-projects" aria-controls="arc-view-projects" aria-selected="true">Projects</button>
+      {%- for v in site.data.tools.views %}
+      <button type="button" class="arc-toggle-btn" role="tab" data-view="{{ v.id }}" tabindex="-1"
+              id="arc-tab-{{ v.id }}" aria-controls="arc-view-{{ v.id }}" aria-selected="false">{{ v.tab }}</button>
+      {%- endfor %}
     </div>
   </div>
   <script>
