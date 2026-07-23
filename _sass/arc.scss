@@ -5,6 +5,16 @@
 // accent as it approaches now. Chips with project files are generated from
 // front matter (see the loop in home.html) and click through to their cards.
 
+// Every timeline hides its first three half-year columns (2018.0, 2018.5,
+// 2019.0) behind a fixed-width overhang: the grid is exactly $arc-overhang
+// wider than its scroll container, so parking the scroller fully right (see
+// parkScroller in home.html) opens the view at mid-2019 while those years stay
+// reachable by scrolling left. Fixed rather than fractional so the hidden
+// amount doesn't drift with viewport width.
+$arc-overhang-cols: 3;
+$arc-overhang-col: 66px;
+$arc-overhang: $arc-overhang-cols * $arc-overhang-col;
+
 $arc-research: rgb(200, 200, 204);
 $arc-data: rgb(110, 150, 185);
 $arc-software: $homepage-accent-color;
@@ -103,17 +113,16 @@ $arc-faint: rgba(225, 225, 225, 0.16);
 }
 
 // ---- Swimlane grid ---------------------------------------------------------
-// Columns: 1 lane label · 2–17 half-years 2018–2026 · 18 junction · 19 node.
-// The 2018–2019 columns are a fixed 132px overhang: the lanes are exactly
-// that much wider than the scroll container, so the default view (scrolled
-// fully right by JS) starts at 2019 and the start of college is reachable
-// by scrolling left.
+// Columns: 1 lane label · 2–17 half-years 2018–2026 · 18 junction · 19 node,
+// with 2–4 as the overhang described at the top of this file (so the view
+// opens at mid-2019 and the start of college is reachable by scrolling left).
 // Rows: 1 ruler · 2 college+quasioptimal · 3 theses · 4 SSPI research ·
 // 5 data (BRG) · 6–7 software.
 .arc-lanes {
   display: grid;
-  width: calc(100% + 132px);
-  grid-template-columns: 104px 66px 66px repeat(14, 1fr) 18px 220px;
+  width: calc(100% + #{$arc-overhang});
+  grid-template-columns:
+    104px repeat($arc-overhang-cols, $arc-overhang-col) repeat(13, 1fr) 18px 220px;
   grid-template-rows: 28px repeat(6, auto);
   row-gap: 10px;
   align-items: stretch;
@@ -372,12 +381,13 @@ button.arc-chip:focus-visible {
 // ---- Tools waterfall -------------------------------------------------------
 // Same ruler, read the other way: one bar per tool, stacked in the order they
 // were picked up. Columns: 1 group rail · 2–18 half-years 2018.0–2026.0 · 19
-// the "now" gutter. No overhang here — the full range fits, so the view opens
-// at 2018 rather than scrolled. Rows are implicit (one per tool in
-// _data/tools.yml), which keeps adding a group a data-only change.
+// the "now" gutter, with the same 2–4 overhang as the swimlanes. Rows are
+// implicit (one per tool in _data/tools.yml), which keeps adding a group a
+// data-only change.
 .arc-lanes--tools {
-  width: 100%;
-  grid-template-columns: 104px repeat(17, 1fr) 46px;
+  width: calc(100% + #{$arc-overhang});
+  grid-template-columns:
+    104px repeat($arc-overhang-cols, $arc-overhang-col) repeat(14, 1fr) 46px;
   grid-template-rows: 28px;
   grid-auto-rows: minmax(30px, auto);
   row-gap: 6px;

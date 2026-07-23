@@ -249,16 +249,23 @@ layout: default
         if (card) card.click();
       });
     });
-    // The projects grid carries a fixed overhang for 2018–2019; default that
-    // view to 2019 with the start of college scrolled off — reachable by
-    // scrolling. (The tools grid shows its full range, so it is left alone.)
-    const arcScroll = document.querySelector("#arc-view-projects .arc-scroll");
-    if (arcScroll) arcScroll.scrollLeft = arcScroll.scrollWidth;
+    // Every grid carries a fixed overhang for 2018 through early 2019, so
+    // parking its scroller fully right opens the view at mid-2019 with the
+    // earlier years reachable by scrolling left. A hidden view measures zero,
+    // so each one is parked the first time it's shown — and only the first
+    // time, so tabbing away and back doesn't discard where a visitor scrolled.
+    const parkScroller = (view) => {
+      const scroller = document.querySelector("#arc-view-" + view + " .arc-scroll");
+      if (!scroller || scroller.dataset.parked) return;
+      scroller.scrollLeft = scroller.scrollWidth;
+      scroller.dataset.parked = "1";
+    };
+    parkScroller("projects");
 
-    // ---- Projects / Tools view switch ------------------------------------
-    // Two readings of the same 2018–2026 ruler: what I built, and what I built
-    // it with. Standard tablist semantics — arrows move between tabs, the
-    // inactive tab stays out of the tab order.
+    // ---- Trajectory view switch ------------------------------------------
+    // Readings of the same 2018–2026 ruler: what I built, and what I built it
+    // with. Standard tablist semantics — arrows move between tabs, the
+    // inactive tabs stay out of the tab order.
     const arcTabs = Array.from(document.querySelectorAll("#arc-card .arc-toggle-btn"));
     if (arcTabs.length) {
       const showView = (view) => {
@@ -269,6 +276,7 @@ layout: default
           tab.tabIndex = isActive ? 0 : -1;
           document.getElementById("arc-view-" + tab.dataset.view).hidden = !isActive;
         });
+        parkScroller(view); // now measurable — the view is on screen
       };
       arcTabs.forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
       document.querySelector("#arc-card .arc-toggle").addEventListener("keydown", (e) => {
