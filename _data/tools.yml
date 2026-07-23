@@ -52,6 +52,13 @@ views:
             span: 2020 – 2024
             note: Econometrics and causal inference — regressions, panel data, ggplot.
 
+          - name: Stata
+            family: analysis
+            start: 2024
+            end: 2024.5
+            span: 2024
+            note: Antitrust econometrics at BRG, on the case teams that used it.
+
           - name: Python
             family: language
             start: 2020.5
@@ -59,13 +66,6 @@ views:
             span: 2020 – now
             ongoing: true
             note: Primary language. ETL pipelines, Flask backends, CLIs, analysis.
-
-          - name: Stata
-            family: analysis
-            start: 2024
-            end: 2024.5
-            span: 2024
-            note: Antitrust econometrics at BRG, on the case teams that used it.
 
           - name: HTML / CSS / JavaScript
             family: language
