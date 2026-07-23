@@ -190,20 +190,21 @@ layout: default
 
             {%- assign tool_row = 1 -%}
             {%- for g in v.groups -%}
-              {%- assign group_size = g.tools | size -%}
               {%- assign group_first = tool_row | plus: 1 -%}
-              {%- assign group_last = group_first | plus: group_size -%}
-            <div class="arc-lane-labels arc-lane-labels--group"
-                 style="grid-row: {{ group_first }} / {{ group_last }};">
-              <span>{{ g.group | upcase }}</span>
-            </div>
               {%- for t in g.tools -%}
-                {%- assign tool_row = tool_row | plus: 1 -%}
+                {%- comment -%}A tool marked `continues` shares the previous
+                tool's row, turning a non-overlapping succession (editors,
+                operating systems) into one row of adjacent segments instead of
+                a staircase.{%- endcomment -%}
+                {%- unless t.continues -%}
+                  {%- assign tool_row = tool_row | plus: 1 -%}
+                {%- endunless -%}
                 {%- assign col_start = t.start | minus: 2018 | times: 2 | plus: 2 | round -%}
                 {%- assign col_end = t.end | minus: 2018 | times: 2 | plus: 2 | round -%}
             <div class="arc-chip arc-chip--tool arc-chip--{{ t.family }}
                         {%- if t.ongoing %} is-ongoing{% endif -%}
                         {%- if t.occasional %} is-occasional{% endif -%}
+                        {%- if t.continues %} is-continuation{% endif -%}
                         {%- comment -%}Bars in the right half flip their popover
                         anchor so it opens inward instead of off the grid.
                         {%- endcomment -%}
@@ -217,6 +218,13 @@ layout: default
               </span>
             </div>
               {%- endfor -%}
+              {%- comment -%}Emitted after its rows so the span can use the row
+              counter; grid placement is explicit, so DOM order is free.
+              {%- endcomment %}
+            <div class="arc-lane-labels arc-lane-labels--group"
+                 style="grid-row: {{ group_first }} / {{ tool_row | plus: 1 }};">
+              <span>{{ g.group | upcase }}</span>
+            </div>
             {%- endfor -%}
             <div class="arc-now-line" style="grid-row: 2 / {{ tool_row | plus: 1 }};"></div>
           </div>

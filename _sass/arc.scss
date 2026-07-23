@@ -52,7 +52,14 @@ $arc-faint: rgba(225, 225, 225, 0.16);
 // the transposed feed is long and variable and a floor would only add dead
 // space.
 @media screen and (min-width: 701px) {
-  .arc-view--waterfall .arc-lanes-wrap { min-height: 440px; }
+  .arc-view--waterfall .arc-lanes-wrap {
+    min-height: 440px;
+    // Grid rather than flex so the scroller still stretches to full width
+    // without fighting its 1132px min-width; a view shorter than the floor
+    // (Toolchain) then sits centered in it instead of stranded at the top.
+    display: grid;
+    align-content: center;
+  }
 }
 
 // ---- Projects / Tools view switch ------------------------------------------
@@ -400,9 +407,15 @@ button.arc-chip:focus-visible {
 // One rail label per group, spanning that group's rows. The negative margin
 // closes the row-gap between adjacent groups: bars whose start is scrolled off
 // pass underneath the rail, and an uncovered seam would let them show through.
+// These labels sit level with the bars rather than between lanes, so the
+// backdrop is solid rather than the swimlane rail's translucent one — any
+// alpha at all lets a bar's accent border read through the lettering. Sticky
+// bar titles already signal that a bar continues past the rail.
 .arc-lane-labels--group {
   justify-content: center;
-  margin: -3px 0; // half the grid's 6px row-gap, top and bottom
+  margin: -4px 0; // just over half the grid's 6px row-gap, so the rails overlap
+  background: $homepage-background-color;
+  backdrop-filter: none;
   span { padding-right: 14px; }
 }
 .arc-ruler-tick--now {
@@ -440,6 +453,17 @@ button.arc-chip:focus-visible {
 // Still in use: the bar runs into the now line, so accent its trailing edge.
 .arc-chip--tool.is-ongoing {
   border-right-color: rgba(250, 130, 30, 0.45);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+// Segments of a relay row butt against each other, so square the corners at
+// each join — the succession should read as one continuous track, and two 4px
+// radii meeting pinch a notch out of it.
+.arc-chip--tool.is-continuation {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.arc-chip--tool:has(+ .arc-chip--tool.is-continuation) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }

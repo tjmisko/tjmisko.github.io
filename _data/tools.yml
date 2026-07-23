@@ -7,6 +7,11 @@
 #                 a column boundary. `end: 2026.5` is the "now" line.
 #   ongoing       true if still in use — draws the bar into the now line.
 #   occasional    true for reach-for-it-sometimes tools (dashed, dimmer).
+#   continues     true to share the previous tool's row instead of starting a
+#                 new one. For things you switch between rather than accumulate
+#                 (editors, operating systems) the spans don't overlap, so a
+#                 staircase would be misleading — they belong on one row as a
+#                 relay of segments. Set it on every entry after the first.
 #   family        one of `families` below; drives bar color and the legend,
 #                 which is derived per view and hidden when a view uses only
 #                 one family.
@@ -109,7 +114,7 @@ views:
       The environment the work happens in — editor, notes, and the machine underneath. It has
       moved steadily toward plain text I own and configuration I wrote myself.
     groups:
-      - group: Editing & Notes
+      - group: Editors
         tools:
           - name: Atom
             family: environment
@@ -120,26 +125,38 @@ views:
 
           - name: VS Code
             family: environment
+            continues: true
             start: 2022
             end: 2024
             span: 2022 – 2024
             note: Everyday editor through the SSPI build and the start of BRG.
 
-          - name: Obsidian
-            family: environment
-            start: 2023.5
-            end: 2026.5
-            span: 2023 – now
-            ongoing: true
-            note: Plain-text notes and linked research knowledge base.
-
           - name: Vim / Neovim
             family: environment
+            continues: true
             start: 2024
             end: 2026.5
             span: 2024 – now
             ongoing: true
             note: Primary editor, configured from scratch; Lua plugins of my own.
+
+      - group: Notes
+        tools:
+          - name: Apple Notes
+            family: environment
+            start: 2018
+            end: 2023.5
+            span: 2018 – 2023
+            note: Default notes app through college and the SSPI research years.
+
+          - name: Obsidian
+            family: environment
+            continues: true
+            start: 2023.5
+            end: 2026.5
+            span: 2023 – now
+            ongoing: true
+            note: Plain-text notes and linked research knowledge base.
 
       - group: Operating Systems
         tools:
@@ -152,6 +169,7 @@ views:
 
           - name: Windows
             family: environment
+            continues: true
             start: 2023.5
             end: 2024.5
             span: 2023 – 2024
@@ -159,6 +177,7 @@ views:
 
           - name: Linux
             family: environment
+            continues: true
             start: 2024.5
             end: 2026.5
             span: 2024 – now
