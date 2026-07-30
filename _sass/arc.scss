@@ -120,10 +120,10 @@ $arc-ruler-h: 28px;
 }
 
 // ---- Swimlane grid ---------------------------------------------------------
-// Columns: 1 lane label · half-years from 2020 · the part-column running out to
-// today · junction · node. As in the waterfall, the count depends on the build
-// date, so grid-template-columns and the junction/node columns are emitted
-// inline by home.html.
+// Columns: 1 lane label · half-years from 2020 to a fixed 2026 · junction ·
+// node. The count comes from that end year rather than from the build date —
+// this scale stops where the current work sits — but grid-template-columns and
+// the junction/node columns are still emitted inline by home.html.
 // Rows: 1 ruler · 2 college+quasioptimal · 3 theses · 4 SSPI research ·
 // 5 data (BRG) · 6–7 software.
 .arc-lanes {

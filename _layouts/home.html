@@ -52,9 +52,19 @@ layout: default
   {%- include section-nav.html dir="up" target="#greeting-card" label="Home" -%}
   <div class="arc-container">
     {%- comment -%}
-    "now" is resolved at build time from site.time, so the marker tracks the last
-    publish instead of a date baked into the source. Everything downstream is
-    derived from these:
+    The two views read different scales, deliberately.
+
+    Work is fixed: the axis runs 2020 to the start of 2026 and stops there, so
+    the node past its right edge stays where the current work actually sits
+    instead of sliding rightward with every publish.
+
+      work_cols  half-year columns from 2020 to work_last_year.
+      work_end   the grid line at work_last_year: the junction sits on it and
+                 the node one column past it, so everything still running reads
+                 as running out of the chart into the present.
+
+    The waterfall's "now" is resolved at build time from site.time, so its
+    marker tracks the last publish rather than a date baked into the source:
 
       arc_full   whole half-year columns from 2020 up to the last boundary at or
                  before today — the 1fr columns of the grid.
@@ -66,6 +76,9 @@ layout: default
     Day-of-year over 365 is close enough at this scale — a leap year moves the
     line by a third of a pixel.
     {%- endcomment -%}
+    {%- assign work_last_year = 2026 -%}
+    {%- assign work_cols = work_last_year | minus: 2020 | times: 2 -%}
+    {%- assign work_end = work_cols | plus: 2 -%}
     {%- assign arc_now_year = site.time | date: "%Y" | plus: 0 -%}
     {%- assign arc_doy = site.time | date: "%j" | plus: 0 -%}
     {%- assign arc_dec = arc_doy | minus: 1 | divided_by: 365.0 | plus: arc_now_year -%}
@@ -78,7 +91,7 @@ layout: default
          the IntersectionObserver runs would never receive .is-visible and
          would stay invisible after being switched to. -->
     <div class="arc-stage reveal">
-    <div class="arc-view" id="arc-view-projects" role="tabpanel" aria-labelledby="arc-tab-projects">
+    <div class="arc-view" id="arc-view-work" role="tabpanel" aria-labelledby="arc-tab-work">
       <div class="arc-legend" aria-hidden="true">
         <span class="arc-legend--research">research</span>
         <span class="arc-legend--data">econometrics</span>
@@ -87,10 +100,10 @@ layout: default
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
           <div class="arc-lanes"
-               style="grid-template-columns: 104px repeat({{ arc_full }}, 1fr) {{ arc_tail }}fr 18px 220px;">
+               style="grid-template-columns: 104px repeat({{ work_cols }}, 1fr) 18px 220px;">
             {%- comment -%}Rows are 1 ruler + 6 content, so the rules run to
             line 8.{%- endcomment -%}
-            {%- include arc-year-ruler.html end=8 last=arc_now_year -%}
+            {%- include arc-year-ruler.html end=8 last=work_last_year -%}
 
             {%- comment -%}The rail starts below the ruler row: it distributes
             its three labels over the lanes, not over the scale, and leaving
@@ -120,9 +133,9 @@ layout: default
                     style="grid-row: 4; grid-column: 11 / 14; --o: 11;" data-project="07-sspi">
               <strong>IRLE &middot; SSPI Research</strong>
             </button>
-            <!-- Still running, so it ends on the computed now line rather than
-                 on a date that would have to be edited to stay true. -->
-            <a class="arc-quiet" style="grid-row: 2; grid-column: 8 / {{ arc_now }}; --o: 8;"
+            <!-- Still running, so it runs out to the end of the scale and into
+                 the junction rather than stopping on a date. -->
+            <a class="arc-quiet" style="grid-row: 2; grid-column: 8 / {{ work_end }}; --o: 8;"
                href="https://quasioptimal.io" target="_blank" rel="noopener">
               Quasioptimal &mdash; independent research &middot; 2023&ndash;Present
             </a>
@@ -164,9 +177,9 @@ layout: default
               {%- endif -%}
             {%- endfor -%}
 
-            <div class="arc-junction" style="grid-column: {{ arc_now }};"></div>
-            <div class="arc-node" style="grid-column: {{ arc_now | plus: 1 }}; --o: 99;">
-              <h3>Software Engineering<br>+ AI Research</h3>
+            <div class="arc-junction" style="grid-column: {{ work_end }};"></div>
+            <div class="arc-node" style="grid-column: {{ work_end | plus: 1 }}; --o: 99;">
+              <h3>Software Engineering</h3>
               {%- for p in site.projects -%}
                 {%- if p.arc.node -%}
               <button type="button" class="arc-chip arc-chip--software"
@@ -187,9 +200,10 @@ layout: default
       </p>
     </div>
 
-    <!-- The waterfall: same ruler, one bar per tool, all sourced from
-         _data/tools.yml. Columns 2–14 are half-years 2020.0–2026.5 and column 15
-         is the "now" gutter, so a bar ending at line 15 runs to the present.
+    <!-- The waterfall: one bar per tool, all sourced from _data/tools.yml, on a
+         scale that runs from 2020 out to the build date. Unlike the work grid,
+         which stops at a fixed 2026, this one has a live "now" line — the bars
+         are a running inventory, so an ongoing one should keep growing.
 
          Every view in the data file draws into this one tab, on one grid, so
          they share a time axis: the first is the chart proper, and each one
@@ -316,8 +330,8 @@ layout: default
     <!-- The view switch sits under the chart: it reads as a footer control for
          the thing above it rather than competing with the section header. -->
     <div class="arc-toggle reveal" role="tablist" aria-label="Trajectory view">
-      <button type="button" class="arc-toggle-btn is-active" role="tab" data-view="projects"
-              id="arc-tab-projects" aria-controls="arc-view-projects" aria-selected="true">Projects</button>
+      <button type="button" class="arc-toggle-btn is-active" role="tab" data-view="work"
+              id="arc-tab-work" aria-controls="arc-view-work" aria-selected="true">Work</button>
       <button type="button" class="arc-toggle-btn" role="tab" data-view="{{ primary.id }}" tabindex="-1"
               id="arc-tab-{{ primary.id }}" aria-controls="arc-view-{{ primary.id }}"
               aria-selected="false">{{ primary.tab }}</button>
@@ -335,9 +349,10 @@ layout: default
       });
     });
     // ---- Trajectory view switch ------------------------------------------
-    // Readings of the same 2020–2026 ruler: what I built, and what I built it
-    // with. Standard tablist semantics — arrows move between tabs, the
-    // inactive tabs stay out of the tab order.
+    // Two readings of the same years: what I built, on a fixed 2020–2026 scale,
+    // and what I built it with, on one that runs out to the build date.
+    // Standard tablist semantics — arrows move between tabs, the inactive tabs
+    // stay out of the tab order.
     const arcTabs = Array.from(document.querySelectorAll("#arc-card .arc-toggle-btn"));
     if (arcTabs.length) {
       const showView = (view) => {
