@@ -1,25 +1,28 @@
 // Trajectory card — converging swimlanes. Three labeled streams (research /
-// data / software) over a shared 2018–2026 ruler, converging through a
+// data / software) over a shared 2020–2026 ruler, converging through a
 // junction into the 2026 node. Streams share one palette: research gray,
 // econometrics steel, software orange — the arc warms from gray to the site
 // accent as it approaches now. Chips with project files are generated from
 // front matter (see the loop in home.html) and click through to their cards.
 
-// Every timeline hides its first three half-year columns (2018.0, 2018.5,
-// 2019.0) behind a fixed-width overhang: the grid is exactly $arc-overhang
-// wider than its scroll container, so parking the scroller fully right (see
-// parkScroller in home.html) opens the view at mid-2019 while those years stay
-// reachable by scrolling left. Fixed rather than fractional so the hidden
-// amount doesn't drift with viewport width.
-$arc-overhang-cols: 3;
-$arc-overhang-col: 66px;
-$arc-overhang: $arc-overhang-cols * $arc-overhang-col;
+// The ruler starts at 2020 and the grid is exactly as wide as its container, so
+// at full width nothing scrolls off and there is no scrollbar to park. The few
+// spans that predate 2020 — the degree, the first spreadsheets, the first
+// laptop — are clamped to the left edge and marked .is-clipped, which squares
+// that edge so it reads as running in from off-chart rather than starting
+// there. Their true dates stay in the bar's own copy.
 
 $arc-research: rgb(200, 200, 204);
 $arc-data: rgb(110, 150, 185);
 $arc-software: $homepage-accent-color;
 $arc-dim: rgba(225, 225, 225, 0.55);
 $arc-faint: rgba(225, 225, 225, 0.16);
+// Fainter than $arc-faint, which only ever draws short segments: a year rule
+// runs the full height of the chart, where the same alpha reads as foreground
+// rather than backdrop.
+$arc-rule: rgba(225, 225, 225, 0.09);
+// Height of the ruler row, shared by both grids.
+$arc-ruler-h: 28px;
 
 .arc-container {
   font-size: 1rem;
@@ -93,7 +96,11 @@ $arc-faint: rgba(225, 225, 225, 0.16);
 // The grid scrolls inside its own container on narrow viewports; the page
 // body itself never scrolls horizontally.
 .arc-scroll { overflow-x: auto; padding-bottom: 4px; }
-.arc-scroll > * { min-width: 1132px; }
+// Below this the columns get too tight to label, so the grid scrolls inside its
+// own container instead of compressing. Sized to the same per-column density the
+// 2018-based ruler had, which is why dropping four columns lowered it from
+// 1132px: the scroller now only appears under ~900px.
+.arc-scroll > * { min-width: 880px; }
 
 .arc-throughline {
   font-family: "IBM Plex Mono";
@@ -104,44 +111,49 @@ $arc-faint: rgba(225, 225, 225, 0.16);
   line-height: 1.55;
   margin: 0.35rem 0 0;
 }
-
-@keyframes arc-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
-.arc-live-dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: $homepage-accent-color;
-  margin-right: 6px;
-  animation: arc-pulse 2s var(--ease-out) infinite;
+// A minor band's throughline, subordinate to the one for the chart proper.
+.arc-throughline--minor {
+  font-size: 0.76rem;
+  color: rgba(225, 225, 225, 0.38);
+  max-width: 60ch;
+  margin: 0.15rem 0 0;
 }
 
 // ---- Swimlane grid ---------------------------------------------------------
-// Columns: 1 lane label · 2–17 half-years 2018–2026 · 18 junction · 19 node,
-// with 2–4 as the overhang described at the top of this file (so the view
-// opens at mid-2019 and the start of college is reachable by scrolling left).
+// Columns: 1 lane label · half-years from 2020 · the part-column running out to
+// today · junction · node. As in the waterfall, the count depends on the build
+// date, so grid-template-columns and the junction/node columns are emitted
+// inline by home.html.
 // Rows: 1 ruler · 2 college+quasioptimal · 3 theses · 4 SSPI research ·
 // 5 data (BRG) · 6–7 software.
 .arc-lanes {
   display: grid;
-  width: calc(100% + #{$arc-overhang});
-  grid-template-columns:
-    104px repeat($arc-overhang-cols, $arc-overhang-col) repeat(13, 1fr) 18px 220px;
-  grid-template-rows: 28px repeat(6, auto);
+  width: 100%;
+  grid-template-rows: $arc-ruler-h repeat(6, auto);
   row-gap: 10px;
   align-items: stretch;
   font-family: "IBM Plex Mono";
 }
+// The year ruler, shared by both grids (see _includes/arc-year-ruler.html): a
+// label sitting on each year's grid line, and a faint rule under it carrying
+// that line down through the chart. The two are separate elements so the rule
+// can start a row lower — run up into the ruler row it would strike through its
+// own label.
 .arc-ruler-tick {
   grid-row: 1;
-  border-left: 1px solid $arc-faint;
   color: $arc-dim;
   font-size: 0.74rem;
-  padding-left: 5px;
   align-self: end;
+  // The tick's box starts on the grid line, so pulling the label half its own
+  // width to the left centers it on that line.
+  > span {
+    display: inline-block;
+    transform: translateX(-50%);
+  }
+}
+.arc-rule {
+  border-left: 1px solid $arc-rule;
+  pointer-events: none;
 }
 // One wrapper distributes the three lane labels evenly over the full grid
 // height, independent of individual row heights. Pinned to the left edge of
@@ -212,13 +224,6 @@ button.arc-chip:focus-visible {
   border-left-color: $arc-software;
   background: rgba(250, 130, 30, 0.07);
 }
-.arc-chip--ramp {
-  border-style: dashed;
-  border-left: 3px dashed $arc-software;
-  background: transparent;
-  color: $arc-dim;
-}
-
 // ---- Mini chips: icon + hover popover (short projects: papers, CLI tools) --
 .arc-chip--mini {
   position: relative;
@@ -337,9 +342,9 @@ button.arc-chip:focus-visible {
   color: $arc-dim;
 }
 
-// ---- Junction + 2026 node --------------------------------------------------
+// ---- Junction + node -------------------------------------------------------
+// Both sit past the now line, so their columns come from home.html.
 .arc-junction {
-  grid-column: 18;
   grid-row: 2 / 8;
   border-right: 1px solid $arc-faint;
   position: relative;
@@ -357,7 +362,6 @@ button.arc-chip:focus-visible {
 // a dashed convergence outline holding one chip per project, matching the
 // lane treatment on the left.
 .arc-node {
-  grid-column: 19;
   grid-row: 2 / 8;
   border: 1px dashed rgba(250, 130, 30, 0.5);
   border-radius: 8px;
@@ -378,25 +382,24 @@ button.arc-chip:focus-visible {
   }
   .arc-chip { margin: 0; align-self: stretch; }
 }
-.arc-node-status {
-  margin: 2px 0 0;
-  font-size: 0.74rem;
-  color: $arc-dim;
-  text-align: center;
-}
-
 // ---- Tools waterfall -------------------------------------------------------
 // Same ruler, read the other way: one bar per tool, stacked in the order they
-// were picked up. Columns: 1 group rail · 2–18 half-years 2018.0–2026.0 · 19
-// the "now" gutter, with the same 2–4 overhang as the swimlanes. Rows are
-// implicit (one per tool in _data/tools.yml), which keeps adding a group a
-// data-only change.
+// were picked up. Rows are implicit (one per tool in _data/tools.yml), which
+// keeps adding a group — or a whole band — a data-only change.
+//
+// grid-template-columns is emitted inline by home.html, because the count
+// depends on the build date: a group rail, one 1fr column per whole half-year
+// since 2020, a fractional column carrying the axis the rest of the way to
+// today, then the "now" gutter. repeat() can't take a var(), so the template
+// has to come from Liquid rather than from here.
+//
+// Auto rows are floored at the minor band's height; a full-size bar sets its own
+// min-height and pushes its row up from there. Sizing it the other way round
+// would let the floor override the minor bars and flatten the distinction.
 .arc-lanes--tools {
-  width: calc(100% + #{$arc-overhang});
-  grid-template-columns:
-    104px repeat($arc-overhang-cols, $arc-overhang-col) repeat(14, 1fr) 46px;
-  grid-template-rows: 28px;
-  grid-auto-rows: minmax(30px, auto);
+  width: 100%;
+  grid-template-rows: $arc-ruler-h;
+  grid-auto-rows: minmax(22px, auto);
   row-gap: 6px;
   // Room for the last row's popover, which opens downward: reserving it here
   // keeps the scroller from growing a vertical scrollbar on hover (overflow-x
@@ -418,14 +421,32 @@ button.arc-chip:focus-visible {
   backdrop-filter: none;
   span { padding-right: 14px; }
 }
-.arc-ruler-tick--now {
-  border-left-color: rgba(250, 130, 30, 0.45);
-  color: $homepage-accent-color;
-}
+// "now" labels the present the way the years label theirs; the line under it is
+// .arc-now-line, dashed and accented.
+.arc-ruler-tick--now { color: $homepage-accent-color; }
+// Column comes from home.html — it lands on the computed now line.
 .arc-now-line {
-  grid-column: 19;
   border-left: 1px dashed rgba(250, 130, 30, 0.3);
   pointer-events: none;
+}
+
+// ---- Minor band -------------------------------------------------------------
+// Views after the first share the primary's grid rather than their own tab, so
+// they read against the same time axis. They are context, not the argument, so
+// they sit below a divider at reduced weight.
+.arc-band-divider {
+  // Columns come from home.html: it stops at the now line rather than running
+  // 1 / -1, which would carry it out through the gutter past every bar.
+  align-self: stretch;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid $arc-faint;
+  margin: 16px 0 2px;
+  pointer-events: none;
+}
+.arc-lane-labels--group.is-minor span {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
 }
 
 .arc-chip--tool {
@@ -434,9 +455,16 @@ button.arc-chip:focus-visible {
   display: flex;
   align-items: center;
   margin: 0;
+  min-height: 30px;
   padding: 4px 10px;
   font-size: 0.78rem;
   white-space: nowrap;
+}
+.arc-chip--tool.is-minor {
+  min-height: 0;
+  padding: 1px 8px;
+  font-size: 0.68rem;
+  strong { font-weight: 400; }
 }
 .arc-chip--analysis {
   border-left-color: $arc-data;
@@ -472,6 +500,18 @@ button.arc-chip:focus-visible {
   border-style: dashed;
   background: none;
   strong { color: $arc-dim; }
+}
+// Began before the ruler does. The 3px accent border marks where something
+// started, so a bar the 2020 edge cuts into drops it and squares that corner:
+// it should read as running in from off-chart. Last of the edge rules so it
+// outranks the family colors and the dashed occasional border, and desktop-only
+// — the mobile feed has no axis to be cut off by. True dates stay in the copy.
+@media screen and (min-width: 701px) {
+  .arc-chip.is-clipped {
+    border-left: 1px solid $arc-faint;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 }
 .arc-chip--tool:hover,
 .arc-chip--tool:focus-visible {
@@ -515,20 +555,9 @@ button.arc-chip:focus-visible {
     border-radius: 50%;
     margin-right: 6px;
   }
-  .arc-legend--research::before,
-  .arc-legend--environment::before { background: $arc-research; }
-  .arc-legend--data::before,
-  .arc-legend--analysis::before { background: $arc-data; }
-  .arc-legend--software::before,
-  .arc-legend--language::before { background: $arc-software; }
-}
-// The waterfall views spend their rail on group names, so the color key has to
-// stay visible on desktop too (the projects view keeps its lane rail instead).
-// A view with only one family emits an empty legend rather than none, so the
-// reserved height has to come from the box itself.
-.arc-view--waterfall .arc-legend {
-  display: flex;
-  min-height: 1.1rem;
+  .arc-legend--research::before { background: $arc-research; }
+  .arc-legend--data::before { background: $arc-data; }
+  .arc-legend--software::before { background: $arc-software; }
 }
 
 // ---- Mobile: vertical chronological feed ------------------------------------
@@ -555,11 +584,15 @@ button.arc-chip:focus-visible {
   // No horizontal scroller on mobile — the page would become the sticky
   // container and shove titles rightward. Pin them back down.
   .arc-chip > strong { position: static; left: auto; }
+  // Rules are a property of the horizontal scale, which the feed doesn't have.
+  .arc-rule { display: none; }
   .arc-ruler-tick {
-    border-left: none;
     border-bottom: 1px solid $arc-faint;
     padding: 8px 0 3px;
     align-self: stretch;
+    // A divider spans the feed, so its label sits at the start rather than
+    // straddling a line that no longer exists.
+    > span { transform: none; }
   }
   .arc-chip--mini {
     display: flex;
@@ -588,6 +621,16 @@ button.arc-chip:focus-visible {
   // note inline (there is no hover to reveal them on touch).
   .arc-lanes--tools { padding-bottom: 0; }
   .arc-now-line { display: none; }
+  // The feed is one chronological run, so a minor band can't sit "below" the
+  // chart — its entries interleave by date like everything else. The divider
+  // would land mid-sequence, and the reduced bar weight would read as a
+  // distinction the ordering no longer supports.
+  .arc-band-divider { display: none; }
+  .arc-chip--tool.is-minor {
+    padding: 7px 11px;
+    font-size: 0.8rem;
+    strong { font-weight: 600; }
+  }
   .arc-chip--tool {
     flex-direction: column;
     align-items: flex-start;

@@ -1,33 +1,35 @@
-# Waterfall views for the Trajectory card (see _layouts/home.html). Each entry
-# under `views` becomes its own tab beside Projects, drawn on the same
-# 2018–2026 ruler; each tool under it is one bar.
+# Waterfall for the Trajectory card (see _layouts/home.html), drawn on a ruler
+# running from 2020 to today; each tool is one bar. "Today" is resolved from
+# site.time when the site is built, so the now line moves with each publish and
+# no date here has to stand in for it.
+#
+# All the entries under `views` share one tab and one grid, so they read against
+# the same time axis. The first is the chart proper. Each one after it is a minor
+# band below a divider, drawn at reduced weight — context rather than argument,
+# so add a view here only for something meant to sit under the main story.
 #
 #   start / end   decimal half-years; 2024.5 means mid-2024. They map to grid
-#                 columns as (year - 2018) * 2 + 2, so only .0 and .5 land on
-#                 a column boundary. `end: 2026.5` is the "now" line.
-#   ongoing       true if still in use — draws the bar into the now line.
+#                 columns as (year - 2020) * 2 + 2, so only .0 and .5 land on
+#                 a column boundary. Anything starting before 2020 is clamped to
+#                 the left edge and drawn clipped; keep its true dates in `span`.
+#   ongoing       true if still in use. The bar then runs to the computed now
+#                 line and `end` is not read — leave it off rather than writing
+#                 a date that will go stale.
 #   occasional    true for reach-for-it-sometimes tools (dashed, dimmer).
 #   continues     true to share the previous tool's row instead of starting a
 #                 new one. For things you switch between rather than accumulate
 #                 (editors, operating systems) the spans don't overlap, so a
 #                 staircase would be misleading — they belong on one row as a
 #                 relay of segments. Set it on every entry after the first.
-#   family        one of `families` below; drives bar color and the legend,
-#                 which is derived per view and hidden when a view uses only
-#                 one family.
+#   family        `analysis`, `language`, or `environment`; drives bar color
+#                 through .arc-chip--<family>. There is no color key — the bar
+#                 names carry the distinction — so adding a family here means
+#                 adding a rule for it in _sass/arc.scss.
 #   span / note   display strings for the hover popover (and the mobile feed).
 #
 # Bars render top-to-bottom in file order, so keep each group roughly
-# chronological by `start`. Adding a group — or a whole view — is a change
-# here only; rows, rail labels, and tabs are all derived.
-
-families:
-  - id: analysis
-    label: analysis
-  - id: language
-    label: languages
-  - id: environment
-    label: environment
+# chronological by `start`. Adding a group — or a whole band — is a change here
+# only; rows, rail labels, and dividers are all derived.
 
 views:
   - id: tools
@@ -62,23 +64,27 @@ views:
           - name: Python
             family: language
             start: 2020.5
-            end: 2026.5
             span: 2020 – now
             ongoing: true
             note: Primary language. ETL pipelines, Flask backends, CLIs, analysis.
 
           - name: HTML / CSS / JavaScript
             family: language
-            start: 2023
-            end: 2026.5
-            span: 2023 – now
+            start: 2022
+            span: 2022 – now
             ongoing: true
             note: Browser interfaces — the sspi.world front end, charts, this site.
+
+          - name: Bash
+            family: language
+            start: 2023.5
+            span: 2023 – now
+            ongoing: true
+            note: Glue and automation — dotfiles, build and deploy scripts, the first taskbuffer.
 
           - name: TypeScript
             family: language
             start: 2024.5
-            end: 2026.5
             span: 2024 – now
             ongoing: true
             occasional: true
@@ -87,7 +93,6 @@ views:
           - name: Go
             family: language
             start: 2024.5
-            end: 2026.5
             span: 2024 – now
             ongoing: true
             note: Concurrent daemons and CLIs — Switchboard, Arachne's process layer.
@@ -95,7 +100,6 @@ views:
           - name: C
             family: language
             start: 2025.5
-            end: 2026.5
             span: 2025 – now
             ongoing: true
             note: Systems fundamentals — memory, pointers, what the layers above sit on.
@@ -103,7 +107,6 @@ views:
           - name: Rust
             family: language
             start: 2026
-            end: 2026.5
             span: 2026 – now
             ongoing: true
             note: Current study — ownership, lifetimes, safe systems programming.
@@ -114,7 +117,7 @@ views:
       The environment the work happens in — editor, notes, and the machine underneath. It has
       moved steadily toward plain text I own and configuration I wrote myself.
     groups:
-      - group: Editors
+      - group: Editor
         tools:
           - name: Atom
             family: environment
@@ -131,11 +134,10 @@ views:
             span: 2022 – 2024
             note: Everyday editor through the SSPI build and the start of BRG.
 
-          - name: Vim / Neovim
+          - name: Neovim
             family: environment
             continues: true
             start: 2024
-            end: 2026.5
             span: 2024 – now
             ongoing: true
             note: Primary editor, configured from scratch; Lua plugins of my own.
@@ -153,12 +155,11 @@ views:
             family: environment
             continues: true
             start: 2023.5
-            end: 2026.5
             span: 2023 – now
             ongoing: true
             note: Plain-text notes and linked research knowledge base.
 
-      - group: Operating Systems
+      - group: Operating System
         tools:
           - name: macOS
             family: environment
@@ -179,7 +180,6 @@ views:
             family: environment
             continues: true
             start: 2024.5
-            end: 2026.5
             span: 2024 – now
             ongoing: true
             note: Fedora Asahi Remix on Apple Silicon; primary machine since mid-2024.

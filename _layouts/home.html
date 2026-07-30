@@ -51,6 +51,28 @@ layout: default
 <div class="homepage-card" id="arc-card">
   {%- include section-nav.html dir="up" target="#greeting-card" label="Home" -%}
   <div class="arc-container">
+    {%- comment -%}
+    "now" is resolved at build time from site.time, so the marker tracks the last
+    publish instead of a date baked into the source. Everything downstream is
+    derived from these:
+
+      arc_full   whole half-year columns from 2020 up to the last boundary at or
+                 before today — the 1fr columns of the grid.
+      arc_tail   the part-column after them, emitted as a fractional fr so the
+                 axis ends exactly on today rather than on a half-year boundary.
+      arc_now    the grid line where those two meet: today. Ongoing bars run to
+                 it, and the now rule and label sit on it.
+
+    Day-of-year over 365 is close enough at this scale — a leap year moves the
+    line by a third of a pixel.
+    {%- endcomment -%}
+    {%- assign arc_now_year = site.time | date: "%Y" | plus: 0 -%}
+    {%- assign arc_doy = site.time | date: "%j" | plus: 0 -%}
+    {%- assign arc_dec = arc_doy | minus: 1 | divided_by: 365.0 | plus: arc_now_year -%}
+    {%- assign arc_units = arc_dec | minus: 2020 | times: 2 -%}
+    {%- assign arc_full = arc_units | floor -%}
+    {%- assign arc_tail = arc_units | minus: arc_full | round: 4 -%}
+    {%- assign arc_now = arc_full | plus: 3 -%}
     <h1 class="site-header reveal">Trajectory</h1>
     <!-- Every view lives inside one .reveal stage: a view that is hidden when
          the IntersectionObserver runs would never receive .is-visible and
@@ -64,58 +86,76 @@ layout: default
       </div>
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
-          <div class="arc-lanes">
-            <div class="arc-ruler-tick" style="grid-column: 2; --o: 2;">2018</div>
-            <div class="arc-ruler-tick" style="grid-column: 6; --o: 6;">2020</div>
-            <div class="arc-ruler-tick" style="grid-column: 10; --o: 10;">2022</div>
-            <div class="arc-ruler-tick" style="grid-column: 14; --o: 14;">2024</div>
-            <div class="arc-ruler-tick" style="grid-column: 18 / 20; --o: 18;">2026</div>
+          <div class="arc-lanes"
+               style="grid-template-columns: 104px repeat({{ arc_full }}, 1fr) {{ arc_tail }}fr 18px 220px;">
+            {%- comment -%}Rows are 1 ruler + 6 content, so the rules run to
+            line 8.{%- endcomment -%}
+            {%- include arc-year-ruler.html end=8 last=arc_now_year -%}
 
-            <div class="arc-lane-labels" style="grid-row: 1 / 8;">
+            {%- comment -%}The rail starts below the ruler row: it distributes
+            its three labels over the lanes, not over the scale, and leaving
+            row 1 clear keeps it off the 2020 label, which overhangs its own
+            grid line to the left.{%- endcomment %}
+            <div class="arc-lane-labels" style="grid-row: 2 / 8;">
               <span>RESEARCH</span>
               <span>DATA</span>
               <span>SOFTWARE</span>
             </div>
 
             <!-- honors-thesis outline, in its own row above SSPI research -->
-            <div class="arc-group arc-group--thesis" style="grid-row: 3; grid-column: 9 / 11;">
+            <div class="arc-group arc-group--thesis" style="grid-row: 3; grid-column: 5 / 7;">
               <span class="arc-group-label arc-group-label--below">Honors Thesis</span>
             </div>
 
             <!-- Items without project files stay hard-coded here; every chip
                  with a project file is sourced from its front matter (p.arc)
                  in the loop below, and clicking it opens that project. -->
-            <div class="arc-chip" style="grid-row: 2; grid-column: 3 / 11; --o: 3;">
+            <!-- The degree runs from mid-2018, before the ruler starts, so it is
+                 clamped to the left edge and marked is-clipped. --o keeps the
+                 unclamped column so the mobile feed files it by when it began. -->
+            <div class="arc-chip is-clipped" style="grid-row: 2; grid-column: 2 / 7; --o: -1;">
               <strong>BA Applied Math + Economics &middot; UC Berkeley</strong>
             </div>
             <button type="button" class="arc-chip arc-chip--data"
-                    style="grid-row: 4; grid-column: 15 / 18; --o: 15;" data-project="07-sspi">
+                    style="grid-row: 4; grid-column: 11 / 14; --o: 11;" data-project="07-sspi">
               <strong>IRLE &middot; SSPI Research</strong>
             </button>
-            <a class="arc-quiet" style="grid-row: 2; grid-column: 12 / 18; --o: 12;"
+            <!-- Still running, so it ends on the computed now line rather than
+                 on a date that would have to be edited to stay true. -->
+            <a class="arc-quiet" style="grid-row: 2; grid-column: 8 / {{ arc_now }}; --o: 8;"
                href="https://quasioptimal.io" target="_blank" rel="noopener">
               Quasioptimal &mdash; independent research &middot; 2023&ndash;Present
             </a>
-            <div class="arc-chip arc-chip--data" style="grid-row: 5; grid-column: 13 / 15; --o: 13;">
+            <div class="arc-chip arc-chip--data" style="grid-row: 5; grid-column: 9 / 11; --o: 9;">
               <strong>BRG &middot; Antitrust Econometrics</strong>
             </div>
 
             {%- for p in site.projects -%}
               {%- if p.arc.lane -%}
-                {%- assign col_start = p.arc.start | minus: 2018 | times: 2 | plus: 2 | round -%}
-                {%- assign col_end = p.arc.end | minus: 2018 | times: 2 | plus: 2 | round -%}
+                {%- assign col_raw = p.arc.start | minus: 2020 | times: 2 | plus: 2 | round -%}
+                {%- assign col_end = p.arc.end | minus: 2020 | times: 2 | plus: 2 | round -%}
+                {%- comment -%}Nothing in _projects predates the ruler today, but
+                clamp anyway so backdating a project can't emit a column 0 or a
+                negative one and silently break the grid. --o keeps the unclamped
+                column for the mobile feed's ordering.{%- endcomment -%}
+                {%- assign col_start = col_raw -%}
+                {%- assign clipped = "" -%}
+                {%- if col_raw < 2 -%}
+                  {%- assign col_start = 2 -%}
+                  {%- assign clipped = " is-clipped" -%}
+                {%- endif -%}
                 {%- if p.arc.kind -%}
             <button type="button"
-                    class="arc-chip arc-chip--{{ p.arc.lane }} arc-chip--mini"
-                    style="grid-row: {{ p.arc.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_start }};"
+                    class="arc-chip arc-chip--{{ p.arc.lane }} arc-chip--mini{{ clipped }}"
+                    style="grid-row: {{ p.arc.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
                     data-project="{{ p.slug }}" aria-label="{{ p.arc.label }}">
               <span class="arc-ico arc-ico--{{ p.arc.kind }}" aria-hidden="true"></span>
               <span class="arc-pop"><strong>{{ p.arc.label }}</strong><small>{{ p.arc.sub }}</small></span>
             </button>
                 {%- else -%}
             <button type="button"
-                    class="arc-chip arc-chip--{{ p.arc.tone | default: p.arc.lane }}"
-                    style="grid-row: {{ p.arc.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_start }};"
+                    class="arc-chip arc-chip--{{ p.arc.tone | default: p.arc.lane }}{{ clipped }}"
+                    style="grid-row: {{ p.arc.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
                     data-project="{{ p.slug }}">
               <strong>{{ p.arc.label }}</strong>
               {%- if p.arc.sub %}<small>{{ p.arc.sub }}</small>{% endif -%}
@@ -124,8 +164,8 @@ layout: default
               {%- endif -%}
             {%- endfor -%}
 
-            <div class="arc-junction"></div>
-            <div class="arc-node" style="--o: 99;">
+            <div class="arc-junction" style="grid-column: {{ arc_now }};"></div>
+            <div class="arc-node" style="grid-column: {{ arc_now | plus: 1 }}; --o: 99;">
               <h3>Software Engineering<br>+ AI Research</h3>
               {%- for p in site.projects -%}
                 {%- if p.arc.node -%}
@@ -136,10 +176,6 @@ layout: default
               </button>
                 {%- endif -%}
               {%- endfor -%}
-              <div class="arc-chip arc-chip--ramp">
-                Rust + systems fundamentals &middot; AI study
-              </div>
-              <p class="arc-node-status"><span class="arc-live-dot"></span>In progress</p>
             </div>
           </div>
         </div>
@@ -151,65 +187,103 @@ layout: default
       </p>
     </div>
 
-    <!-- Waterfall views (Tools, Toolchain, …): same ruler, one bar per tool,
-         all sourced from _data/tools.yml. Columns 2–18 are half-years
-         2018.0–2026.0 and column 19 is the "now" gutter, so a bar ending at
-         line 19 runs to the present. -->
-    {%- for v in site.data.tools.views -%}
-      {%- comment -%}The legend is derived from the families actually used, and
-      dropped entirely when a view only has one — a single dot explains nothing.
-      {%- endcomment -%}
-      {%- assign view_tools = "" | split: "" -%}
-      {%- for g in v.groups -%}
-        {%- assign view_tools = view_tools | concat: g.tools -%}
-      {%- endfor -%}
-      {%- assign view_families = view_tools | map: "family" | uniq -%}
-    <div class="arc-view arc-view--waterfall" id="arc-view-{{ v.id }}" role="tabpanel"
-         aria-labelledby="arc-tab-{{ v.id }}" hidden>
-      {%- comment -%}The container is emitted even when empty so every view's
-      chart starts at the same y and the switch below doesn't shift between
-      tabs.{%- endcomment %}
-      <div class="arc-legend" aria-hidden="true">
-        {%- if view_families.size > 1 -%}
-          {%- for f in site.data.tools.families -%}
-            {%- if view_families contains f.id %}
-        <span class="arc-legend--{{ f.id }}">{{ f.label }}</span>
-            {%- endif -%}
-          {%- endfor %}
-        {%- endif %}
-      </div>
+    <!-- The waterfall: same ruler, one bar per tool, all sourced from
+         _data/tools.yml. Columns 2–14 are half-years 2020.0–2026.5 and column 15
+         is the "now" gutter, so a bar ending at line 15 runs to the present.
+
+         Every view in the data file draws into this one tab, on one grid, so
+         they share a time axis: the first is the chart proper, and each one
+         after it is a minor band below a divider — related context, drawn at
+         reduced weight so it doesn't compete with the argument above it. -->
+    {%- assign primary = site.data.tools.views | first -%}
+    {%- comment -%}No color key: the bar names carry the distinction the colors
+    draw (spreadsheets and stats packages against general-purpose languages,
+    with the environment band set off below the divider), so naming it again
+    only adds a row of dots.{%- endcomment -%}
+    <div class="arc-view arc-view--waterfall" id="arc-view-{{ primary.id }}" role="tabpanel"
+         aria-labelledby="arc-tab-{{ primary.id }}" hidden>
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
-          <div class="arc-lanes arc-lanes--tools">
-            <div class="arc-ruler-tick" style="grid-column: 2; --o: 2;">2018</div>
-            <div class="arc-ruler-tick" style="grid-column: 6; --o: 6;">2020</div>
-            <div class="arc-ruler-tick" style="grid-column: 10; --o: 10;">2022</div>
-            <div class="arc-ruler-tick" style="grid-column: 14; --o: 14;">2024</div>
-            <div class="arc-ruler-tick" style="grid-column: 18; --o: 18;">2026</div>
-            <div class="arc-ruler-tick arc-ruler-tick--now" style="grid-column: 19; --o: 19;">now</div>
+          <div class="arc-lanes arc-lanes--tools"
+               style="grid-template-columns: 104px repeat({{ arc_full }}, 1fr) {{ arc_tail }}fr 46px;">
+            {%- comment -%}The row count has to be known before the bars are
+            emitted: every year rule spans the full chart, so it needs the last
+            row's grid line up front. Each band after the first also spends a row
+            on its divider.{%- endcomment -%}
+            {%- assign tool_rows = 0 -%}
+            {%- for v in site.data.tools.views -%}
+              {%- unless forloop.first -%}
+                {%- assign tool_rows = tool_rows | plus: 1 -%}
+              {%- endunless -%}
+              {%- for g in v.groups -%}
+                {%- for t in g.tools -%}
+                  {%- unless t.continues -%}
+                    {%- assign tool_rows = tool_rows | plus: 1 -%}
+                  {%- endunless -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            {%- endfor -%}
+            {%- assign grid_end = tool_rows | plus: 2 -%}
+            {%- include arc-year-ruler.html end=grid_end last=arc_now_year %}
+            <div class="arc-ruler-tick arc-ruler-tick--now"
+                 style="grid-column: {{ arc_now }}; --o: {{ arc_now }};"><span>now</span></div>
 
             {%- assign tool_row = 1 -%}
-            {%- for g in v.groups -%}
-              {%- assign group_first = tool_row | plus: 1 -%}
-              {%- for t in g.tools -%}
-                {%- comment -%}A tool marked `continues` shares the previous
-                tool's row, turning a non-overlapping succession (editors,
-                operating systems) into one row of adjacent segments instead of
-                a staircase.{%- endcomment -%}
-                {%- unless t.continues -%}
-                  {%- assign tool_row = tool_row | plus: 1 -%}
-                {%- endunless -%}
-                {%- assign col_start = t.start | minus: 2018 | times: 2 | plus: 2 | round -%}
-                {%- assign col_end = t.end | minus: 2018 | times: 2 | plus: 2 | round -%}
-            <div class="arc-chip arc-chip--tool arc-chip--{{ t.family }}
+            {%- for v in site.data.tools.views -%}
+              {%- comment -%}Captured here because forloop.first inside the
+              group and tool loops below refers to those, not to this one.
+              {%- endcomment -%}
+              {%- assign minor = "" -%}
+              {%- unless forloop.first -%}
+                {%- assign minor = " is-minor" -%}
+                {%- assign tool_row = tool_row | plus: 1 -%}
+            {%- comment -%}Rule only, no band label: the group rails below it
+            (EDITORS, NOTES, …) already say what the band is.{%- endcomment %}
+            <div class="arc-band-divider"
+                 style="grid-row: {{ tool_row }}; grid-column: 1 / {{ arc_now }};"></div>
+              {%- endunless -%}
+              {%- for g in v.groups -%}
+                {%- assign group_first = tool_row | plus: 1 -%}
+                {%- for t in g.tools -%}
+                  {%- comment -%}A tool marked `continues` shares the previous
+                  tool's row, turning a non-overlapping succession (editors,
+                  operating systems) into one row of adjacent segments instead of
+                  a staircase.{%- endcomment -%}
+                  {%- unless t.continues -%}
+                    {%- assign tool_row = tool_row | plus: 1 -%}
+                  {%- endunless -%}
+                  {%- assign col_raw = t.start | minus: 2020 | times: 2 | plus: 2 | round -%}
+                  {%- comment -%}Still in use means "runs to today", so the bar
+                  ends on the computed now line rather than on a date in the data
+                  that would quietly go stale.{%- endcomment -%}
+                  {%- if t.ongoing -%}
+                    {%- assign col_end = arc_now -%}
+                  {%- else -%}
+                    {%- assign col_end = t.end | minus: 2020 | times: 2 | plus: 2 | round -%}
+                  {%- endif -%}
+                  {%- comment -%}Picked up before the ruler starts: clamp to the
+                  left edge and mark it, so the bar reads as running in from
+                  off-chart rather than starting in 2020. The popover still
+                  carries the real dates — and --o keeps the unclamped column, so
+                  the mobile feed still files it by when it actually began rather
+                  than under the 2020 heading.{%- endcomment -%}
+                  {%- assign col_start = col_raw -%}
+                  {%- assign clipped = "" -%}
+                  {%- if col_raw < 2 -%}
+                    {%- assign col_start = 2 -%}
+                    {%- assign clipped = " is-clipped" -%}
+                  {%- endif -%}
+            <div class="arc-chip arc-chip--tool arc-chip--{{ t.family }}{{ minor }}{{ clipped }}
                         {%- if t.ongoing %} is-ongoing{% endif -%}
                         {%- if t.occasional %} is-occasional{% endif -%}
                         {%- if t.continues %} is-continuation{% endif -%}
-                        {%- comment -%}Bars in the right half flip their popover
-                        anchor so it opens inward instead of off the grid.
-                        {%- endcomment -%}
-                        {%- if col_start >= 13 %} is-late{% endif %}"
-                 style="grid-row: {{ tool_row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_start }};"
+                        {%- comment -%}Bars past roughly two-thirds across flip
+                        their popover anchor so it opens inward instead of off
+                        the grid. Derived from the column count, which now grows
+                        with the calendar.{%- endcomment -%}
+                        {%- assign arc_late = arc_full | times: 2 | divided_by: 3 | plus: 2 -%}
+                        {%- if col_start >= arc_late %} is-late{% endif %}"
+                 style="grid-row: {{ tool_row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
                  tabindex="0">
               <strong>{{ t.name }}</strong>
               <span class="arc-pop arc-pop--tool">
@@ -217,22 +291,26 @@ layout: default
                 <small>{{ t.note }}</small>
               </span>
             </div>
-              {%- endfor -%}
-              {%- comment -%}Emitted after its rows so the span can use the row
-              counter; grid placement is explicit, so DOM order is free.
-              {%- endcomment %}
-            <div class="arc-lane-labels arc-lane-labels--group"
+                {%- endfor -%}
+                {%- comment -%}Emitted after its rows so the span can use the row
+                counter; grid placement is explicit, so DOM order is free.
+                {%- endcomment %}
+            <div class="arc-lane-labels arc-lane-labels--group{{ minor }}"
                  style="grid-row: {{ group_first }} / {{ tool_row | plus: 1 }};">
               <span>{{ g.group | upcase }}</span>
             </div>
+              {%- endfor -%}
             {%- endfor -%}
-            <div class="arc-now-line" style="grid-row: 2 / {{ tool_row | plus: 1 }};"></div>
+            <div class="arc-now-line"
+                 style="grid-row: 2 / {{ grid_end }}; grid-column: {{ arc_now }};"></div>
           </div>
         </div>
       </div>
-      <p class="arc-throughline">{{ v.throughline }}</p>
+      <p class="arc-throughline">{{ primary.throughline }}</p>
+      {%- for v in site.data.tools.views offset: 1 %}
+      <p class="arc-throughline arc-throughline--minor">{{ v.throughline }}</p>
+      {%- endfor %}
     </div>
-    {%- endfor -%}
     </div>
 
     <!-- The view switch sits under the chart: it reads as a footer control for
@@ -240,10 +318,9 @@ layout: default
     <div class="arc-toggle reveal" role="tablist" aria-label="Trajectory view">
       <button type="button" class="arc-toggle-btn is-active" role="tab" data-view="projects"
               id="arc-tab-projects" aria-controls="arc-view-projects" aria-selected="true">Projects</button>
-      {%- for v in site.data.tools.views %}
-      <button type="button" class="arc-toggle-btn" role="tab" data-view="{{ v.id }}" tabindex="-1"
-              id="arc-tab-{{ v.id }}" aria-controls="arc-view-{{ v.id }}" aria-selected="false">{{ v.tab }}</button>
-      {%- endfor %}
+      <button type="button" class="arc-toggle-btn" role="tab" data-view="{{ primary.id }}" tabindex="-1"
+              id="arc-tab-{{ primary.id }}" aria-controls="arc-view-{{ primary.id }}"
+              aria-selected="false">{{ primary.tab }}</button>
     </div>
   </div>
   <script>
@@ -257,21 +334,8 @@ layout: default
         if (card) card.click();
       });
     });
-    // Every grid carries a fixed overhang for 2018 through early 2019, so
-    // parking its scroller fully right opens the view at mid-2019 with the
-    // earlier years reachable by scrolling left. A hidden view measures zero,
-    // so each one is parked the first time it's shown — and only the first
-    // time, so tabbing away and back doesn't discard where a visitor scrolled.
-    const parkScroller = (view) => {
-      const scroller = document.querySelector("#arc-view-" + view + " .arc-scroll");
-      if (!scroller || scroller.dataset.parked) return;
-      scroller.scrollLeft = scroller.scrollWidth;
-      scroller.dataset.parked = "1";
-    };
-    parkScroller("projects");
-
     // ---- Trajectory view switch ------------------------------------------
-    // Readings of the same 2018–2026 ruler: what I built, and what I built it
+    // Readings of the same 2020–2026 ruler: what I built, and what I built it
     // with. Standard tablist semantics — arrows move between tabs, the
     // inactive tabs stay out of the tab order.
     const arcTabs = Array.from(document.querySelectorAll("#arc-card .arc-toggle-btn"));
@@ -284,7 +348,6 @@ layout: default
           tab.tabIndex = isActive ? 0 : -1;
           document.getElementById("arc-view-" + tab.dataset.view).hidden = !isActive;
         });
-        parkScroller(view); // now measurable — the view is on screen
       };
       arcTabs.forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
       document.querySelector("#arc-card .arc-toggle").addEventListener("keydown", (e) => {
