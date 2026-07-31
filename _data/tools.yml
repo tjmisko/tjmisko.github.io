@@ -56,9 +56,9 @@ views:
 
           - name: Stata
             family: analysis
-            start: 2024
+            start: 2023.5
             end: 2024.5
-            span: 2024
+            span: 2023 – 2024
             note: Antitrust econometrics at BRG, on the case teams that used it.
 
           - name: Python
@@ -95,7 +95,7 @@ views:
             start: 2024.5
             span: 2024 – now
             ongoing: true
-            note: Concurrent daemons and CLIs — Switchboard, Arachne's process layer.
+            note: Concurrent daemons and CLIs — taskbuffer's Go era hand-written; Switchboard's daemon agent-built to my direction.
 
           - name: C
             family: language
