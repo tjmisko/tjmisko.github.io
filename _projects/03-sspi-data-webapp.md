@@ -14,18 +14,18 @@ tags:
 arc:
   lane: software
   row: 7
-  start: 2024
+  start: 2024.5
   end: 2026
-  label: "sspi.world — hand-built full stack (~2 yrs)"
+  label: "sspi.world — hand-built full stack"
   sub: "Flask · Mongo · ETL DAG · CLI · CI/CD"
 ---
 * **What it is.** The web application behind sspi.world, which collects, cleans, and serves a large policy dataset as an interactive index people can explore by country and indicator. I built the application end-to-end as lead engineer: automated data ingestion and ETL, a Flask backend, a command-line tool for running the pipeline, and the browser interface.
-* **Why it matters.** It takes research that used to live in spreadsheets and makes it public, queryable, and reproducible — and along the way the pipeline expanded the dataset's time coverage 20× and country coverage by a third.
+* **Why it matters.** It takes research that used to live in spreadsheets and makes it public, queryable, and reproducible — and along the way the pipeline expanded coverage from a single 2018 snapshot to 2000–present, and from 49 pre-selected countries to 100+ collected.
 
 **Technical details**
 
 * Built reproducible data-processing workflows and internal data models for large, longitudinal policy datasets
 * Developed a CLI tool for orchestrating ETL operations, supporting both human use and programmatic access by AI assistants
-* Implemented CI/CD with GitHub Actions and handled Linux-based deployment (Apache + mod_wsgi) on Linode
-* Expanded temporal coverage 20× (2018 → 2000–present) and increased country coverage by 34%
+* Implemented CI/CD with GitHub Actions and handled Linux-based deployment (Apache + mod_wsgi, later NGINX) on Linode
+* Expanded temporal coverage from a single 2018 snapshot to 2000–present, and country coverage from 49 pre-selected countries to 100+ collected (67 at >80% coverage)
 * Led undergraduate contributors on engineering tasks, reviewing code, establishing GitHub workflows, and maintaining consistent development standards

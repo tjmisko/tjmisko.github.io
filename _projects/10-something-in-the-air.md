@@ -19,11 +19,11 @@ arc:
   label: "Something in the Air (Honors Thesis)"
   sub: "Policy × air quality · time series · R"
 ---
-* **What it is.** A study that built a 60,000-observation dataset of air-quality policies across OECD countries and used time-series regression to estimate which categories of policy actually moved six different air-pollution metrics.
+* **What it is.** A study that built a dataset of over 40,000 air-quality policies and regulations across 38 OECD countries and used time-series regression to estimate which categories of policy actually moved six different air-pollution metrics.
 * **Why it matters.** Governments adopt many environmental policies but rarely know which ones work. This separates the effective levers from the symbolic ones, pointing to where regulation delivers the biggest air-quality gains.
 
 **Technical details**
 
-* Scraped HTML and JSON data in Python to construct and categorize a 60,000-observation dataset on national-level policies and regulations on air quality across the OECD
+* Scraped HTML and JSON data in Python from the ECOLEX database to construct and categorize a dataset of over 40,000 national-level air-quality policies and regulations across 38 OECD countries
 * Developed a model for separately estimating the effect of different policy categories on different pathways for the reduction of air pollution
 * Conducted a time-series regression analysis of the relationship between air-quality policy data and air-quality outcomes in R to evaluate which policy categories were most effective at reducing air pollution in the period
