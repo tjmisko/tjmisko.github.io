@@ -119,6 +119,37 @@ $arc-ruler-h: 28px;
   margin: 0.15rem 0 0;
 }
 
+// ---- Cadence key (waterfall only) -------------------------------------------
+// Names the one encoding a bar's label can't carry: solid fill = daily driver,
+// hatch = occasional. Hidden in the mobile feed, where the textures are too and
+// each phase names its cadence inline instead.
+.arc-cadence-key {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.1rem;
+  font-family: "IBM Plex Mono";
+  font-size: 0.72rem;
+  color: $arc-dim;
+  // Tuck it toward the ruler row: it's chart apparatus, not copy.
+  margin-bottom: -0.35rem;
+  span::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 9px;
+    margin-right: 7px;
+    border: 1px solid $arc-faint;
+    border-radius: 2px;
+    vertical-align: -1px;
+  }
+  .arc-cadence-key--daily::before { background: rgba(225, 225, 225, 0.14); }
+  .arc-cadence-key--occasional::before {
+    background: repeating-linear-gradient(
+      -45deg, rgba(225, 225, 225, 0.35) 0 1px, transparent 1px 6px);
+  }
+}
+
 // ---- Swimlane grid ---------------------------------------------------------
 // Columns: 1 lane label · half-years from 2020 to a fixed 2026 · junction ·
 // node. The count comes from that end year rather than from the build date —
@@ -459,6 +490,16 @@ button.arc-chip:focus-visible {
   padding: 4px 10px;
   font-size: 0.78rem;
   white-space: nowrap;
+  // Fill comes from the segment track, never the chip: every bar carries at
+  // least one segment (a full-width one when the data lists no phases), so
+  // solid-vs-hatched is one visual language across the chart.
+  background: none;
+}
+// The title floats above the segment layer but must not eat its hovers — the
+// phase under the lettering should still highlight and pop.
+.arc-chip--tool > strong {
+  z-index: 2;
+  pointer-events: none;
 }
 .arc-chip--tool.is-minor {
   min-height: 0;
@@ -466,17 +507,23 @@ button.arc-chip:focus-visible {
   font-size: 0.68rem;
   strong { font-weight: 400; }
 }
+// Families keep their accent edge and lend the segment layer its colors:
+// a translucent fill for daily-driver phases, a denser stripe color for the
+// occasional hatch (1px-in-6 stripes need the extra alpha to read).
 .arc-chip--analysis {
   border-left-color: $arc-data;
-  background: rgba(110, 150, 185, 0.09);
+  --seg-fill: rgba(110, 150, 185, 0.16);
+  --seg-hatch: rgba(110, 150, 185, 0.42);
 }
 .arc-chip--language {
   border-left-color: $arc-software;
-  background: rgba(250, 130, 30, 0.07);
+  --seg-fill: rgba(250, 130, 30, 0.13);
+  --seg-hatch: rgba(250, 130, 30, 0.4);
 }
 .arc-chip--environment {
   border-left-color: $arc-research;
-  background: rgba(225, 225, 225, 0.05);
+  --seg-fill: rgba(225, 225, 225, 0.09);
+  --seg-hatch: rgba(225, 225, 225, 0.32);
 }
 // Still in use: the bar runs into the now line, so accent its trailing edge.
 .arc-chip--tool.is-ongoing {
@@ -495,10 +542,10 @@ button.arc-chip:focus-visible {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-// Reach-for-it-sometimes tools read lighter than daily drivers.
+// A tool that has only ever been reach-for-it-sometimes: the hatch (via its
+// full-width segment) carries the cadence; the dimmed title sets it back a
+// step further from the daily drivers.
 .arc-chip--tool.is-occasional {
-  border-style: dashed;
-  background: none;
   strong { color: $arc-dim; }
 }
 // Began before the ruler does. The 3px accent border marks where something
@@ -514,13 +561,55 @@ button.arc-chip:focus-visible {
   }
 }
 .arc-chip--tool:hover,
-.arc-chip--tool:focus-visible {
+.arc-chip--tool:focus-visible,
+.arc-chip--tool:focus-within {
   border-color: rgba(225, 225, 225, 0.4);
   z-index: 3;
 }
 
+// ---- Usage segments ----------------------------------------------------------
+// The phases of a tool's life, drawn inside its bar: solid fill for a daily
+// driver, 45° hatch for reach-for-it-sometimes. Positions are inline percentages
+// of the bar's visible span (the grid columns underneath are proportional fr
+// units, so percent-of-width is percent-of-time); a bar without phase data gets
+// one full-width segment from the defaults below.
+.arc-seg-track {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; // the segments re-enable their own
+}
+.arc-seg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;      // full-width defaults for the synthesized single segment;
+  width: 100%;  // real phases override both inline
+  pointer-events: auto;
+}
+.arc-seg.is-daily { background: var(--seg-fill); }
+.arc-seg.is-occasional {
+  background: repeating-linear-gradient(
+    -45deg, var(--seg-hatch) 0 1px, transparent 1px 6px);
+}
+// A hairline of page background between adjacent phases, so the texture change
+// reads as a deliberate boundary rather than a rendering seam.
+.arc-seg + .arc-seg { border-left: 1px solid $homepage-background-color; }
+// Highlight the hovered/focused phase alone: a uniform veil brightens either
+// texture, and the inset line pins down its exact extent.
+.arc-seg:hover::after,
+.arc-seg:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 0 1px rgba(225, 225, 225, 0.3);
+}
+.arc-seg:focus-visible { outline: none; } // the ::after ring stands in for it
+
 // Tool popovers open downward (upward would clip against the ruler in the
 // scroll container) and flip their anchor for bars close to the right edge.
+// Child combinators throughout: a bar's own popover and its phases' popovers
+// nest, and a bar hover must not fan out every phase note at once.
 .arc-pop--tool {
   top: calc(100% + 6px);
   bottom: auto;
@@ -528,12 +617,22 @@ button.arc-chip:focus-visible {
   pointer-events: none;
   z-index: 3;
 }
-.arc-chip--tool.is-late .arc-pop--tool {
+.arc-chip--tool.is-late > .arc-pop--tool,
+.arc-seg.is-late > .arc-pop--tool {
   left: auto;
   right: 0;
 }
-.arc-chip--tool:hover .arc-pop--tool,
-.arc-chip--tool:focus-visible .arc-pop--tool { display: block; }
+.arc-chip--tool:hover > .arc-pop--tool,
+.arc-chip--tool:focus-visible > .arc-pop--tool { display: block; }
+.arc-seg:hover > .arc-pop--tool,
+.arc-seg:focus-visible > .arc-pop--tool { display: block; }
+// A bar with phases speaks through them: its own popover would double up
+// behind whichever phase the pointer is on, so it stays quiet on desktop.
+// Scoped to desktop widths — in the mobile feed it's the card's summary line,
+// and a tap's lingering :hover must not blank it.
+@media screen and (min-width: 701px) {
+  .arc-chip--tool.has-segments:hover > .arc-pop--tool { display: none; }
+}
 .arc-tool-span {
   color: $homepage-accent-color !important;
   letter-spacing: 0.04em;
@@ -640,4 +739,32 @@ button.arc-chip:focus-visible {
   }
   .arc-chip--tool.is-ongoing { border-radius: 4px; }
   .arc-pop--tool { pointer-events: auto; }
+
+  // Textures are a property of the bars, which the feed doesn't have: the
+  // segment track becomes a list of phase lines under the card's summary,
+  // each popover printed inline (the base .arc-pop rule above unhides them)
+  // behind a solid or dashed cadence edge in the family color.
+  .arc-cadence-key { display: none; }
+  .arc-seg-track {
+    position: static;
+    pointer-events: auto;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .arc-seg {
+    position: static;
+    // Real phases carry inline left/width percentages for the bar layout;
+    // only !important can strip an inline style once the feed goes vertical.
+    width: auto !important;
+  }
+  .arc-seg.is-daily,
+  .arc-seg.is-occasional { background: none; }
+  .arc-seg + .arc-seg { border-left: none; }
+  .arc-seg > .arc-pop--tool {
+    border-left: 2px solid var(--seg-hatch);
+    padding-left: 8px;
+  }
+  .arc-seg.is-occasional > .arc-pop--tool { border-left-style: dashed; }
 }

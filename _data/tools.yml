@@ -15,7 +15,22 @@
 #   ongoing       true if still in use. The bar then runs to the computed now
 #                 line and `end` is not read — leave it off rather than writing
 #                 a date that will go stale.
-#   occasional    true for reach-for-it-sometimes tools (dashed, dimmer).
+#   occasional    true for reach-for-it-sometimes tools (hatched, dimmer) —
+#                 shorthand for a single occasional segment covering the bar.
+#   segments      optional list of phases within one bar, for tools whose use
+#                 has waxed and waned. Solid fill = daily driver, diagonal
+#                 hatch = reached for occasionally. Each phase takes:
+#                   start     decimal half-year the phase begins
+#                   end       optional — defaults to the next phase's start, so
+#                             a contiguous history only dates each turn
+#                   cadence   daily (default) or occasional
+#                   ongoing   true on the last phase if it runs to now
+#                   span      display string for the phase popover's date line
+#                   note      a sentence on what was going on in that phase
+#                 When segments are present the bar's extent derives from them
+#                 (first start → last end/now), and tool-level start / end /
+#                 ongoing are not read. Keep the tool-level span and note: they
+#                 head the tool's card in the mobile feed.
 #   continues     true to share the previous tool's row instead of starting a
 #                 new one. For things you switch between rather than accumulate
 #                 (editors, operating systems) the spans don't overlap, so a
@@ -63,10 +78,26 @@ views:
 
           - name: Python
             family: language
-            start: 2020.5
             span: 2020 – now
-            ongoing: true
             note: Primary language. ETL pipelines, Flask backends, CLIs, analysis.
+            segments:
+              - start: 2020.5
+                cadence: daily
+                span: mid-2020 – end 2020
+                note: Picked up for SSPI data work — the first collection scripts and ETL pipelines.
+              - start: 2021
+                cadence: occasional
+                span: "2021"
+                note: On and off through 2021 — reached for when the research needed a script, while R carried the analysis.
+              - start: 2022
+                cadence: daily
+                span: 2022 – 2025
+                note: Every day for four years — the sspi.world Flask backend, ETL pipelines, CLIs.
+              - start: 2026
+                cadence: occasional
+                ongoing: true
+                span: 2026 – now
+                note: Still the language I think in, now reached for on and off — agent fleets write most of the routine Python to spec.
 
           - name: HTML / CSS / JavaScript
             family: language
