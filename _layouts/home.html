@@ -95,6 +95,11 @@ layout: default
          would stay invisible after being switched to. -->
     <div class="arc-stage reveal">
     <div class="arc-view" id="arc-view-work" role="tabpanel" aria-labelledby="arc-tab-work">
+      <p class="arc-throughline">
+        One thread through all of it: computational systems that must be correct on the inside and
+        stand up to scrutiny from the outside &mdash; good research &middot; supportable cases &middot;
+        trustworthy AI output.
+      </p>
       <div class="arc-legend" aria-hidden="true">
         <span class="arc-legend--research">research</span>
         <span class="arc-legend--data">econometrics</span>
@@ -196,11 +201,6 @@ layout: default
           </div>
         </div>
       </div>
-      <p class="arc-throughline">
-        One thread through all of it: computational systems that must be correct on the inside and
-        stand up to scrutiny from the outside &mdash; good research &middot; supportable cases &middot;
-        trustworthy AI output.
-      </p>
     </div>
 
     <!-- The waterfall: one bar per tool, all sourced from _data/tools.yml, on a
@@ -219,6 +219,10 @@ layout: default
     only adds a row of dots.{%- endcomment -%}
     <div class="arc-view arc-view--waterfall" id="arc-view-{{ primary.id }}" role="tabpanel"
          aria-labelledby="arc-tab-{{ primary.id }}" hidden>
+      <p class="arc-throughline">{{ primary.throughline }}</p>
+      {%- for v in site.data.tools.views offset: 1 %}
+      <p class="arc-throughline arc-throughline--minor">{{ v.throughline }}</p>
+      {%- endfor %}
       {%- comment -%}The one encoding a bar's name can't carry: what the fill
       texture means. Family colors still go unnamed.{%- endcomment %}
       <div class="arc-cadence-key" aria-hidden="true">
@@ -394,10 +398,6 @@ layout: default
           </div>
         </div>
       </div>
-      <p class="arc-throughline">{{ primary.throughline }}</p>
-      {%- for v in site.data.tools.views offset: 1 %}
-      <p class="arc-throughline arc-throughline--minor">{{ v.throughline }}</p>
-      {%- endfor %}
     </div>
     </div>
 
