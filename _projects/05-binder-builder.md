@@ -2,7 +2,7 @@
 project-title: "BinderBuilder"
 project-type: "Software - Automation - Internal Tool"
 project-status: "Completed Mar 2024"
-project-headline: A command-line tool that automates footnote-checking and binder assembly for expert reports, cutting a slow manual task by 80–90%.
+project-headline: A command-line tool that automates footnote-checking and binder assembly for expert reports, cutting the common case from ~60 to ~25 seconds per footnote.
 tags:
   - "all"
   - "software"
@@ -18,7 +18,7 @@ arc:
   sub: "Python CLI · NLP footnote-checker · built at BRG"
 ---
 * **What it is.** A Python tool that reads an expert report, extracts every footnote and its citation, finds the matching source document, and assembles a verified, highlighted binder of supporting materials — work that was previously done by hand.
-* **Why it matters.** Footnote verification is slow, error-prone, and high-stakes in legal and expert work. The tool cut the time spent by 80–90% in testing while making the checks more consistent.
+* **Why it matters.** Footnote verification is slow, error-prone, and high-stakes in legal and expert work. The tool cut the common case from ~60 to ~25 seconds per footnote against timecard baselines, while making the checks more consistent.
 
 **Technical details**
 
