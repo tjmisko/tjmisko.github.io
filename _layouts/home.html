@@ -285,13 +285,48 @@ layout: default
                   {%- if t.segments -%}
                     {%- assign seg_first = t.segments | first -%}
                     {%- assign seg_last = t.segments | last -%}
-                    {%- assign t_start = seg_first.start -%}
-                    {%- assign t_end = seg_last.end -%}
+                    {%- assign t_start_date = seg_first.start -%}
+                    {%- assign t_end_date = seg_last.end -%}
                     {%- assign t_ongoing = seg_last.ongoing -%}
                   {%- else -%}
-                    {%- assign t_start = t.start -%}
-                    {%- assign t_end = t.end -%}
+                    {%- assign t_start_date = t.start -%}
+                    {%- assign t_end_date = t.end -%}
                     {%- assign t_ongoing = t.ongoing -%}
+                  {%- endif -%}
+                  {%- comment -%}Data errors stop the build here rather than
+                  drawing something quietly wrong: each guard "includes" a file
+                  that doesn't exist, so the build dies with a missing-include
+                  error whose name says which tool to fix and which rule it
+                  broke.{%- endcomment -%}
+                  {%- if t_end_date == nil and t_ongoing != true -%}
+                    {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--needs-an-end-date-or-ongoing{%- endcapture -%}
+                    {% include {{ arc_fail }} %}
+                  {%- endif -%}
+                  {%- comment -%}Dates are authored yyyy-mm-dd and mapped to
+                  decimal years by the same day-of-year arithmetic as the now
+                  line, then bar edges snap to the nearest half-year column —
+                  Jan 1 and Jul 1 land exactly on grid lines.{%- endcomment -%}
+                  {%- assign t_year = t_start_date | date: "%Y" | plus: 0 -%}
+                  {%- assign t_start = t_start_date | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: t_year -%}
+                  {%- if t_end_date -%}
+                    {%- assign t_year = t_end_date | date: "%Y" | plus: 0 -%}
+                    {%- assign t_end = t_end_date | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: t_year -%}
+                    {%- if t_end <= t_start -%}
+                      {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--ends-on-or-before-its-start{%- endcapture -%}
+                      {% include {{ arc_fail }} %}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- comment -%}Relay rows (`continues`) hold successions, so
+                  a bar reaching back past its predecessor's end is a data
+                  error, not a drawing choice.{%- endcomment -%}
+                  {%- if t.continues and t_start < relay_prev_end -%}
+                    {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--overlaps-the-previous-bar-in-its-row{%- endcapture -%}
+                    {% include {{ arc_fail }} %}
+                  {%- endif -%}
+                  {%- if t_ongoing -%}
+                    {%- assign relay_prev_end = 9999 -%}
+                  {%- else -%}
+                    {%- assign relay_prev_end = t_end -%}
                   {%- endif -%}
                   {%- assign col_raw = t_start | minus: 2020 | times: 2 | plus: 2 | round -%}
                   {%- comment -%}Still in use means "runs to today", so the bar
@@ -341,18 +376,40 @@ layout: default
                   {%- assign vis_end = t_end -%}
                 {%- endif -%}
                 {%- assign vis_len = vis_end | minus: vis_start -%}
+                {%- assign prev_seg_end = 0 -%}
               <span class="arc-seg-track">
                 {%- for s in t.segments -%}
-                  {%- assign s_start = s.start | at_least: vis_start -%}
+                  {%- assign seg_year = s.start | date: "%Y" | plus: 0 -%}
+                  {%- assign seg_start = s.start | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: seg_year -%}
                   {%- if s.end -%}
-                    {%- assign s_end = s.end -%}
+                    {%- assign seg_year = s.end | date: "%Y" | plus: 0 -%}
+                    {%- assign seg_end = s.end | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: seg_year -%}
                   {%- elsif forloop.last != true -%}
                     {%- assign s_next = t.segments[forloop.index] -%}
-                    {%- assign s_end = s_next.start -%}
+                    {%- assign seg_year = s_next.start | date: "%Y" | plus: 0 -%}
+                    {%- assign seg_end = s_next.start | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: seg_year -%}
                   {%- else -%}
-                    {%- assign s_end = vis_end -%}
+                    {%- assign seg_end = vis_end -%}
                   {%- endif -%}
-                  {%- assign s_end = s_end | at_most: vis_end -%}
+                  {%- comment -%}Phases must be in date order and disjoint
+                  (touching is fine, gaps are fine), and only the last may run
+                  on. Violations stop the build the same way the bar-level
+                  guards do.{%- endcomment -%}
+                  {%- assign seg_error = "" -%}
+                  {%- if s.ongoing and forloop.last != true -%}
+                    {%- assign seg_error = "ongoing-before-the-last-phase" -%}
+                  {%- elsif seg_end <= seg_start -%}
+                    {%- assign seg_error = "phase-ends-on-or-before-its-start" -%}
+                  {%- elsif seg_start < prev_seg_end -%}
+                    {%- assign seg_error = "phases-overlap" -%}
+                  {%- endif -%}
+                  {%- if seg_error != "" -%}
+                    {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--{{ seg_error }}{%- endcapture -%}
+                    {% include {{ arc_fail }} %}
+                  {%- endif -%}
+                  {%- assign prev_seg_end = seg_end -%}
+                  {%- assign s_start = seg_start | at_least: vis_start -%}
+                  {%- assign s_end = seg_end | at_most: vis_end -%}
                   {%- if s_end > s_start -%}
                     {%- assign seg_left = s_start | minus: vis_start | times: 100.0 | divided_by: vis_len | round: 2 -%}
                     {%- assign seg_width = s_end | minus: s_start | times: 100.0 | divided_by: vis_len | round: 2 -%}
@@ -362,7 +419,7 @@ layout: default
                     {%- else -%}
                       {%- assign cadence_label = "occasional" -%}
                     {%- endif -%}
-                    {%- assign seg_col = s.start | minus: 2020 | times: 2 | plus: 2 | round -%}
+                    {%- assign seg_col = seg_start | minus: 2020 | times: 2 | plus: 2 | round -%}
                 <span class="arc-seg is-{{ cadence }}{% if seg_col >= arc_late %} is-late{% endif %}"
                       style="left: {{ seg_left }}%; width: {{ seg_width }}%;" tabindex="0"
                       aria-label="{{ t.name }}: {{ s.span | escape }}, {{ cadence_label }}">
