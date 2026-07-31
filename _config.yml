@@ -1,7 +1,7 @@
 title: Tristan Misko
 author:
   name: Tristan Misko
-  email: tristanmisko@gmail.com
+  email: tjmisko@quasioptimal.io
 description: > # this means to ignore newlines until "show_excerpts:"
   View my software and data engineering portfolio.
 show_excerpts: false # set to true to show excerpts on the homepage
@@ -34,9 +34,8 @@ minima:
 
   # generate social links in footer
   social_links:
-    email: tjmisko@quasioptimal.com
+    email: tjmisko@quasioptimal.io
     github:  tjmisko
-    facebook: tristanmisko
     linkedin: tristanmisko
     spotify: tristanmisko
     substack: quasioptimal
