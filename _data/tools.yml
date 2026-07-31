@@ -8,14 +8,36 @@
 # band below a divider, drawn at reduced weight — context rather than argument,
 # so add a view here only for something meant to sit under the main story.
 #
-#   start / end   decimal half-years; 2024.5 means mid-2024. They map to grid
-#                 columns as (year - 2020) * 2 + 2, so only .0 and .5 land on
-#                 a column boundary. Anything starting before 2020 is clamped to
-#                 the left edge and drawn clipped; keep its true dates in `span`.
+#   start / end   real dates, yyyy-mm-dd. The grid's columns are half-years, so
+#                 a bar's edges snap to the nearest half-year line — Jan 1 and
+#                 Jul 1 land exactly; segment boundaries inside a bar keep their
+#                 exact date positions. Anything starting before 2020 is clamped
+#                 to the left edge and drawn clipped; keep the display dates in
+#                 `span`. An end on or before its start fails the build, as does
+#                 a `continues` bar starting before the previous bar's end.
 #   ongoing       true if still in use. The bar then runs to the computed now
 #                 line and `end` is not read — leave it off rather than writing
 #                 a date that will go stale.
-#   occasional    true for reach-for-it-sometimes tools (dashed, dimmer).
+#   occasional    true for reach-for-it-sometimes tools (hatched, dimmer) —
+#                 shorthand for a single occasional segment covering the bar.
+#   segments      optional list of phases within one bar, for tools whose use
+#                 has waxed and waned. Solid fill = daily driver, diagonal
+#                 hatch = reached for occasionally. Each phase takes:
+#                   start     yyyy-mm-dd date the phase begins
+#                   end       optional — defaults to the next phase's start, so
+#                             a contiguous history only dates each turn
+#                   cadence   daily (default) or occasional
+#                   ongoing   true on the last phase if it runs to now
+#                   span      display string for the phase popover's date line
+#                   note      a sentence on what was going on in that phase
+#                 When segments are present the bar's extent derives from them
+#                 (first start → last end/now), and tool-level start / end /
+#                 ongoing are not read. Keep the tool-level span and note: they
+#                 head the tool's card in the mobile feed.
+#                 Phases must be in date order and disjoint (touching is fine,
+#                 gaps are fine), only the last may be ongoing, and the last
+#                 must either end or be ongoing. Any violation fails the build
+#                 with a missing-include error naming the tool and the rule.
 #   continues     true to share the previous tool's row instead of starting a
 #                 new one. For things you switch between rather than accumulate
 #                 (editors, operating systems) the spans don't overlap, so a
@@ -42,49 +64,65 @@ views:
         tools:
           - name: Excel / Google Sheets
             family: analysis
-            start: 2018
-            end: 2024.5
+            start: 2018-01-01
+            end: 2024-07-01
             span: 2018 – 2024
             note: Modeling, case exhibits, and everyday analysis through BRG.
 
           - name: R
             family: analysis
-            start: 2020
-            end: 2024.5
+            start: 2020-01-01
+            end: 2024-07-01
             span: 2020 – 2024
             note: Econometrics and causal inference — regressions, panel data, ggplot.
 
           - name: Stata
             family: analysis
-            start: 2023.5
-            end: 2024.5
+            start: 2023-07-01
+            end: 2024-07-01
             span: 2023 – 2024
             note: Antitrust econometrics at BRG, on the case teams that used it.
 
           - name: Python
             family: language
-            start: 2020.5
             span: 2020 – now
-            ongoing: true
             note: Primary language. ETL pipelines, Flask backends, CLIs, analysis.
+            segments:
+              - start: 2020-07-01
+                cadence: daily
+                span: mid-2020 – end 2020
+                note: Picked up for SSPI data work — the first collection scripts and ETL pipelines.
+              - start: 2021-01-01
+                cadence: occasional
+                span: "2021"
+                note: On and off through 2021 — reached for when the research needed a script, while R carried the analysis.
+              - start: 2022-01-01
+                cadence: daily
+                span: 2022 – 2025
+                note: Every day for four years — the sspi.world Flask backend, ETL pipelines, CLIs.
+              - start: 2026-01-01
+                cadence: occasional
+                ongoing: true
+                span: 2026 – now
+                note: Still the language I think in, now reached for on and off — agent fleets write most of the routine Python to spec.
 
           - name: HTML / CSS / JavaScript
             family: language
-            start: 2022
+            start: 2022-01-01
             span: 2022 – now
             ongoing: true
             note: Browser interfaces — the sspi.world front end, charts, this site.
 
           - name: Bash
             family: language
-            start: 2023.5
+            start: 2023-07-01
             span: 2023 – now
             ongoing: true
             note: Glue and automation — dotfiles, build and deploy scripts, the first taskbuffer.
 
           - name: TypeScript
             family: language
-            start: 2024.5
+            start: 2024-07-01
             span: 2024 – now
             ongoing: true
             occasional: true
@@ -92,21 +130,21 @@ views:
 
           - name: Go
             family: language
-            start: 2024.5
+            start: 2024-07-01
             span: 2024 – now
             ongoing: true
             note: Concurrent daemons and CLIs — taskbuffer's Go era hand-written; Switchboard's daemon agent-built to my direction.
 
           - name: C
             family: language
-            start: 2025.5
+            start: 2025-07-01
             span: 2025 – now
             ongoing: true
             note: Systems fundamentals — memory, pointers, what the layers above sit on.
 
           - name: Rust
             family: language
-            start: 2026
+            start: 2026-01-01
             span: 2026 – now
             ongoing: true
             note: Current study — ownership, lifetimes, safe systems programming.
@@ -121,23 +159,23 @@ views:
         tools:
           - name: Atom
             family: environment
-            start: 2019
-            end: 2022
+            start: 2019-01-01
+            end: 2022-01-01
             span: 2019 – 2022
             note: First editor — the coursework and early econometrics years.
 
           - name: VS Code
             family: environment
             continues: true
-            start: 2022
-            end: 2024
+            start: 2022-01-01
+            end: 2024-01-01
             span: 2022 – 2024
             note: Everyday editor through the SSPI build and the start of BRG.
 
           - name: Neovim
             family: environment
             continues: true
-            start: 2024
+            start: 2024-01-01
             span: 2024 – now
             ongoing: true
             note: Primary editor, configured from scratch; Lua plugins of my own.
@@ -146,15 +184,15 @@ views:
         tools:
           - name: Apple Notes
             family: environment
-            start: 2018
-            end: 2023.5
+            start: 2018-01-01
+            end: 2023-07-01
             span: 2018 – 2023
             note: Default notes app through college and the SSPI research years.
 
           - name: Obsidian
             family: environment
             continues: true
-            start: 2023.5
+            start: 2023-07-01
             span: 2023 – now
             ongoing: true
             note: Plain-text notes and linked research knowledge base.
@@ -163,23 +201,23 @@ views:
         tools:
           - name: macOS
             family: environment
-            start: 2018
-            end: 2023.5
+            start: 2018-01-01
+            end: 2023-07-01
             span: 2018 – 2023
             note: Personal machine through college and the SSPI research years.
 
           - name: Windows
             family: environment
             continues: true
-            start: 2023.5
-            end: 2024.5
+            start: 2023-07-01
+            end: 2024-07-01
             span: 2023 – 2024
             note: Issued machine at BRG; the case work ran on it.
 
           - name: Linux
             family: environment
             continues: true
-            start: 2024.5
+            start: 2024-07-01
             span: 2024 – now
             ongoing: true
             note: Fedora Asahi Remix on Apple Silicon; primary machine since mid-2024.

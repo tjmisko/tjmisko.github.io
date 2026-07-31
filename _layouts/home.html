@@ -83,12 +83,20 @@ layout: default
     {%- assign arc_full = arc_units | floor -%}
     {%- assign arc_tail = arc_units | minus: arc_full | round: 4 -%}
     {%- assign arc_now = arc_full | plus: 3 -%}
+    {%- comment -%}Bars and segments past roughly two-thirds across flip their
+    popover anchor so it opens inward instead of off the grid.{%- endcomment -%}
+    {%- assign arc_late = arc_full | times: 2 | divided_by: 3 | plus: 2 -%}
     <h1 class="site-header reveal">Trajectory</h1>
     <!-- Every view lives inside one .reveal stage: a view that is hidden when
          the IntersectionObserver runs would never receive .is-visible and
          would stay invisible after being switched to. -->
     <div class="arc-stage reveal">
     <div class="arc-view" id="arc-view-work" role="tabpanel" aria-labelledby="arc-tab-work">
+      <p class="arc-throughline">
+        One thread through all of it: computational systems that must be correct on the inside and
+        stand up to scrutiny from the outside &mdash; good research &middot; supportable cases &middot;
+        trustworthy AI output.
+      </p>
       <div class="arc-legend" aria-hidden="true">
         <span class="arc-legend--research">research</span>
         <span class="arc-legend--data">econometrics</span>
@@ -190,11 +198,6 @@ layout: default
           </div>
         </div>
       </div>
-      <p class="arc-throughline">
-        One thread through all of it: computational systems that must be correct on the inside and
-        stand up to scrutiny from the outside &mdash; good research &middot; supportable cases &middot;
-        trustworthy AI output.
-      </p>
     </div>
 
     <!-- The waterfall: one bar per tool, all sourced from _data/tools.yml, on a
@@ -213,6 +216,16 @@ layout: default
     only adds a row of dots.{%- endcomment -%}
     <div class="arc-view arc-view--waterfall" id="arc-view-{{ primary.id }}" role="tabpanel"
          aria-labelledby="arc-tab-{{ primary.id }}" hidden>
+      <p class="arc-throughline">{{ primary.throughline }}</p>
+      {%- for v in site.data.tools.views offset: 1 %}
+      <p class="arc-throughline arc-throughline--minor">{{ v.throughline }}</p>
+      {%- endfor %}
+      {%- comment -%}The one encoding a bar's name can't carry: what the fill
+      texture means. Family colors still go unnamed.{%- endcomment %}
+      <div class="arc-cadence-key" aria-hidden="true">
+        <span class="arc-cadence-key--daily">daily driver</span>
+        <span class="arc-cadence-key--occasional">occasional</span>
+      </div>
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
           <div class="arc-lanes arc-lanes--tools"
@@ -263,14 +276,63 @@ layout: default
                   {%- unless t.continues -%}
                     {%- assign tool_row = tool_row | plus: 1 -%}
                   {%- endunless -%}
-                  {%- assign col_raw = t.start | minus: 2020 | times: 2 | plus: 2 | round -%}
+                  {%- comment -%}A tool with `segments` derives its extent from
+                  them — first phase's start to last phase's end (or now) — so
+                  the bar and its phases can never disagree.{%- endcomment -%}
+                  {%- if t.segments -%}
+                    {%- assign seg_first = t.segments | first -%}
+                    {%- assign seg_last = t.segments | last -%}
+                    {%- assign t_start_date = seg_first.start -%}
+                    {%- assign t_end_date = seg_last.end -%}
+                    {%- assign t_ongoing = seg_last.ongoing -%}
+                  {%- else -%}
+                    {%- assign t_start_date = t.start -%}
+                    {%- assign t_end_date = t.end -%}
+                    {%- assign t_ongoing = t.ongoing -%}
+                  {%- endif -%}
+                  {%- comment -%}Data errors stop the build here rather than
+                  drawing something quietly wrong: each guard "includes" a file
+                  that doesn't exist, so the build dies with a missing-include
+                  error whose name says which tool to fix and which rule it
+                  broke.{%- endcomment -%}
+                  {%- if t_end_date == nil and t_ongoing != true -%}
+                    {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--needs-an-end-date-or-ongoing{%- endcapture -%}
+                    {% include {{ arc_fail }} %}
+                  {%- endif -%}
+                  {%- comment -%}Dates are authored yyyy-mm-dd and mapped to
+                  decimal years by the same day-of-year arithmetic as the now
+                  line, then bar edges snap to the nearest half-year column —
+                  Jan 1 and Jul 1 land exactly on grid lines.{%- endcomment -%}
+                  {%- assign t_year = t_start_date | date: "%Y" | plus: 0 -%}
+                  {%- assign t_start = t_start_date | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: t_year -%}
+                  {%- if t_end_date -%}
+                    {%- assign t_year = t_end_date | date: "%Y" | plus: 0 -%}
+                    {%- assign t_end = t_end_date | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: t_year -%}
+                    {%- if t_end <= t_start -%}
+                      {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--ends-on-or-before-its-start{%- endcapture -%}
+                      {% include {{ arc_fail }} %}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- comment -%}Relay rows (`continues`) hold successions, so
+                  a bar reaching back past its predecessor's end is a data
+                  error, not a drawing choice.{%- endcomment -%}
+                  {%- if t.continues and t_start < relay_prev_end -%}
+                    {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--overlaps-the-previous-bar-in-its-row{%- endcapture -%}
+                    {% include {{ arc_fail }} %}
+                  {%- endif -%}
+                  {%- if t_ongoing -%}
+                    {%- assign relay_prev_end = 9999 -%}
+                  {%- else -%}
+                    {%- assign relay_prev_end = t_end -%}
+                  {%- endif -%}
+                  {%- assign col_raw = t_start | minus: 2020 | times: 2 | plus: 2 | round -%}
                   {%- comment -%}Still in use means "runs to today", so the bar
                   ends on the computed now line rather than on a date in the data
                   that would quietly go stale.{%- endcomment -%}
-                  {%- if t.ongoing -%}
+                  {%- if t_ongoing -%}
                     {%- assign col_end = arc_now -%}
                   {%- else -%}
-                    {%- assign col_end = t.end | minus: 2020 | times: 2 | plus: 2 | round -%}
+                    {%- assign col_end = t_end | minus: 2020 | times: 2 | plus: 2 | round -%}
                   {%- endif -%}
                   {%- comment -%}Picked up before the ruler starts: clamp to the
                   left edge and mark it, so the bar reads as running in from
@@ -285,22 +347,95 @@ layout: default
                     {%- assign clipped = " is-clipped" -%}
                   {%- endif -%}
             <div class="arc-chip arc-chip--tool arc-chip--{{ t.family }}{{ minor }}{{ clipped }}
-                        {%- if t.ongoing %} is-ongoing{% endif -%}
+                        {%- if t_ongoing %} is-ongoing{% endif -%}
                         {%- if t.occasional %} is-occasional{% endif -%}
                         {%- if t.continues %} is-continuation{% endif -%}
-                        {%- comment -%}Bars past roughly two-thirds across flip
-                        their popover anchor so it opens inward instead of off
-                        the grid. Derived from the column count, which now grows
-                        with the calendar.{%- endcomment -%}
-                        {%- assign arc_late = arc_full | times: 2 | divided_by: 3 | plus: 2 -%}
+                        {%- if t.segments %} has-segments{% endif -%}
                         {%- if col_start >= arc_late %} is-late{% endif %}"
                  style="grid-row: {{ tool_row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
-                 tabindex="0">
+                 {%- unless t.segments %} tabindex="0"{% endunless %}>
               <strong>{{ t.name }}</strong>
               <span class="arc-pop arc-pop--tool">
                 <small class="arc-tool-span">{{ t.span }}</small>
                 <small>{{ t.note }}</small>
               </span>
+              {%- if t.segments -%}
+                {%- comment -%}Phase positions are percentages of the bar's
+                visible span. Every column under the bar is a proportional fr
+                unit (the fractional tail included), so percent-of-width equals
+                percent-of-time — no column math needed. Clamps mirror the
+                bar-level clipping: a phase reaching past either edge is cut at
+                the edge, not wrapped.{%- endcomment -%}
+                {%- assign vis_start = t_start | at_least: 2020 -%}
+                {%- if t_ongoing -%}
+                  {%- assign vis_end = arc_dec -%}
+                {%- else -%}
+                  {%- assign vis_end = t_end -%}
+                {%- endif -%}
+                {%- assign vis_len = vis_end | minus: vis_start -%}
+                {%- assign prev_seg_end = 0 -%}
+              <span class="arc-seg-track">
+                {%- for s in t.segments -%}
+                  {%- assign seg_year = s.start | date: "%Y" | plus: 0 -%}
+                  {%- assign seg_start = s.start | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: seg_year -%}
+                  {%- if s.end -%}
+                    {%- assign seg_year = s.end | date: "%Y" | plus: 0 -%}
+                    {%- assign seg_end = s.end | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: seg_year -%}
+                  {%- elsif forloop.last != true -%}
+                    {%- assign s_next = t.segments[forloop.index] -%}
+                    {%- assign seg_year = s_next.start | date: "%Y" | plus: 0 -%}
+                    {%- assign seg_end = s_next.start | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: seg_year -%}
+                  {%- else -%}
+                    {%- assign seg_end = vis_end -%}
+                  {%- endif -%}
+                  {%- comment -%}Phases must be in date order and disjoint
+                  (touching is fine, gaps are fine), and only the last may run
+                  on. Violations stop the build the same way the bar-level
+                  guards do.{%- endcomment -%}
+                  {%- assign seg_error = "" -%}
+                  {%- if s.ongoing and forloop.last != true -%}
+                    {%- assign seg_error = "ongoing-before-the-last-phase" -%}
+                  {%- elsif seg_end <= seg_start -%}
+                    {%- assign seg_error = "phase-ends-on-or-before-its-start" -%}
+                  {%- elsif seg_start < prev_seg_end -%}
+                    {%- assign seg_error = "phases-overlap" -%}
+                  {%- endif -%}
+                  {%- if seg_error != "" -%}
+                    {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--{{ seg_error }}{%- endcapture -%}
+                    {% include {{ arc_fail }} %}
+                  {%- endif -%}
+                  {%- assign prev_seg_end = seg_end -%}
+                  {%- assign s_start = seg_start | at_least: vis_start -%}
+                  {%- assign s_end = seg_end | at_most: vis_end -%}
+                  {%- if s_end > s_start -%}
+                    {%- assign seg_left = s_start | minus: vis_start | times: 100.0 | divided_by: vis_len | round: 2 -%}
+                    {%- assign seg_width = s_end | minus: s_start | times: 100.0 | divided_by: vis_len | round: 2 -%}
+                    {%- assign cadence = s.cadence | default: "daily" -%}
+                    {%- if cadence == "daily" -%}
+                      {%- assign cadence_label = "daily driver" -%}
+                    {%- else -%}
+                      {%- assign cadence_label = "occasional" -%}
+                    {%- endif -%}
+                    {%- assign seg_col = seg_start | minus: 2020 | times: 2 | plus: 2 | round -%}
+                <span class="arc-seg is-{{ cadence }}{% if seg_col >= arc_late %} is-late{% endif %}"
+                      style="left: {{ seg_left }}%; width: {{ seg_width }}%;" tabindex="0"
+                      aria-label="{{ t.name }}: {{ s.span | escape }}, {{ cadence_label }}">
+                  <span class="arc-pop arc-pop--tool">
+                    <small class="arc-tool-span">{{ s.span }}{% if s.span %} &middot; {% endif %}{{ cadence_label }}</small>
+                    {%- if s.note %}<small>{{ s.note }}</small>{% endif -%}
+                  </span>
+                </span>
+                  {%- endif -%}
+                {%- endfor -%}
+              </span>
+              {%- else -%}
+              {%- comment -%}No phases: one full-width segment (CSS defaults to
+              left 0, width 100%) so every bar speaks the same solid-vs-hatched
+              language.{%- endcomment -%}
+              <span class="arc-seg-track" aria-hidden="true">
+                <span class="arc-seg is-{% if t.occasional %}occasional{% else %}daily{% endif %}"></span>
+              </span>
+              {%- endif -%}
             </div>
                 {%- endfor -%}
                 {%- comment -%}Emitted after its rows so the span can use the row
@@ -317,10 +452,6 @@ layout: default
           </div>
         </div>
       </div>
-      <p class="arc-throughline">{{ primary.throughline }}</p>
-      {%- for v in site.data.tools.views offset: 1 %}
-      <p class="arc-throughline arc-throughline--minor">{{ v.throughline }}</p>
-      {%- endfor %}
     </div>
     </div>
 
