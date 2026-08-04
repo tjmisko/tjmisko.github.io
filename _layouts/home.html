@@ -212,8 +212,13 @@ layout: default
     <div class="arc-view arc-view--waterfall" id="arc-view-{{ primary.id }}" role="tabpanel"
          aria-labelledby="arc-tab-{{ primary.id }}" hidden>
       <p class="arc-throughline">{{ primary.throughline }}</p>
-      {%- for v in site.data.tools.views offset: 1 %}
+      {%- comment -%}A minor band's summary is optional: without the guard a band
+      that doesn't want one still emits an empty paragraph, and its negative
+      top margin pulls the chart up into the line above.{%- endcomment -%}
+      {%- for v in site.data.tools.views offset: 1 -%}
+        {%- if v.throughline %}
       <p class="arc-throughline arc-throughline--minor">{{ v.throughline }}</p>
+        {%- endif -%}
       {%- endfor %}
       {%- comment -%}The one encoding a bar's name can't carry: what the fill
       texture means. Family colors still go unnamed.{%- endcomment %}

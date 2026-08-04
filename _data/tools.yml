@@ -151,9 +151,6 @@ views:
 
   - id: toolchain
     tab: Toolchain
-    throughline: >-
-      The environment the work happens in — editor, notes, and the machine underneath. It has
-      moved steadily toward plain text I own and configuration I wrote myself.
     groups:
       - group: Editor
         tools:
