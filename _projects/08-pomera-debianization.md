@@ -8,7 +8,7 @@ tags:
   - "software"
 arc:
   lane: software
-  row: 6
+  row: 5
   start: 2025
   end: 2025.5
   kind: cli

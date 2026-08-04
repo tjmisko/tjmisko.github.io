@@ -8,6 +8,7 @@ arc:
   lane: research
   tone: data
   row: 4
+  relay: true
   start: 2024.5
   end: 2026
   label: "IRLE &middot; Software &amp; Data Engineer"

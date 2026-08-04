@@ -14,6 +14,7 @@ arc:
   lane: research
   tone: data
   row: 4
+  relay: true
   start: 2020
   end: 2023.5
   label: "IRLE · SSPI Research"

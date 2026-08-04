@@ -99,9 +99,9 @@ layout: default
         <div class="arc-scroll">
           <div class="arc-lanes"
                style="grid-template-columns: 104px repeat({{ work_cols }}, 1fr) 18px 220px;">
-            {%- comment -%}Rows are 1 ruler + 6 content, so the rules run to
-            line 8.{%- endcomment -%}
-            {%- include arc-year-ruler.html end=8 last=work_last_year -%}
+            {%- comment -%}Rows are 1 ruler + 5 content, so the rules run to
+            line 7.{%- endcomment -%}
+            {%- include arc-year-ruler.html end=7 last=work_last_year -%}
 
             {%- comment -%}The rail starts below the ruler row: it distributes
             its three labels over the lanes, not over the scale, and leaving

@@ -10,7 +10,13 @@ and a one-line description, and a click that opens the document's detail modal.
 Front matter read here:
   arc.lane     research | data | software — which color family the chip takes
   arc.tone     overrides lane for color only (a research role in the data palette)
-  arc.row      grid row, 2–7
+  arc.row      grid row, 2–6
+  arc.relay    true for chips that share a row as one continuous succession
+               (SSPI research → BRG → IRLE engineering). They stretch to a
+               common height instead of each hugging its own text, so a
+               two-line label can't leave its neighbours sitting short — the
+               run should read as one line across the chart. Set it on every
+               chip in the row, not just the tall one.
   arc.start    decimal year the chip begins (2023.5 = mid-2023)
   arc.end      decimal year it ends; omitted when arc.ongoing is set
   arc.ongoing  runs off the fixed scale into the junction instead of ending
@@ -91,6 +97,7 @@ popover carries only what the chip can't: the dates and the description.
 {%- endcomment -%}
 <button type="button"
         class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ clipped }}
+               {%- if a.relay %} is-relay{% endif -%}
                {%- if a.phases %} has-phases{% endif %}"
         style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
         data-project="{{ include.p.slug }}">

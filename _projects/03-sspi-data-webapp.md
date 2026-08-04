@@ -13,7 +13,7 @@ tags:
   - "software"
 arc:
   lane: software
-  row: 7
+  row: 6
   start: 2023.2
   end: 2026
   label: "sspi.world — hand-built full stack"
