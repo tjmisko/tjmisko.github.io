@@ -248,6 +248,11 @@ layout: default
               {%- endfor -%}
             {%- endfor -%}
             {%- assign grid_end = tool_rows | plus: 2 -%}
+            {%- comment -%}Popovers open downward, which for the bottom rows would
+            mean reserving a band of dead space under the chart — enough of it to
+            push the view switch off a normal screen. Bars from here down open
+            upward instead, into rows that are already drawn.{%- endcomment -%}
+            {%- assign tools_flip = tool_rows | minus: 3 -%}
             {%- include arc-year-ruler.html end=grid_end last=arc_now_year %}
             <div class="arc-ruler-tick arc-ruler-tick--now"
                  style="grid-column: {{ arc_now }}; --o: {{ arc_now }};"><span>now</span></div>
@@ -351,7 +356,8 @@ layout: default
                         {%- if t.occasional %} is-occasional{% endif -%}
                         {%- if t.continues %} is-continuation{% endif -%}
                         {%- if t.segments %} has-segments{% endif -%}
-                        {%- if col_start >= arc_late %} is-late{% endif %}"
+                        {%- if col_start >= arc_late %} is-late{% endif -%}
+                        {%- if tool_row >= tools_flip %} is-up{% endif %}"
                  style="grid-row: {{ tool_row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
                  {%- unless t.segments %} tabindex="0"{% endunless %}>
               <strong>{{ t.name }}</strong>

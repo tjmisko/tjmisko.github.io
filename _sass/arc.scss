@@ -520,13 +520,15 @@ button.arc-chip:focus-visible {
   width: 100%;
   grid-template-rows: $arc-ruler-h;
   grid-auto-rows: minmax(22px, auto);
-  row-gap: 6px;
-  // Room for the last row's popover, which opens downward: reserving it here
-  // keeps the scroller from growing a vertical scrollbar on hover (overflow-x
-  // on .arc-scroll makes overflow-y a scroller too, so anything past the grid
-  // box would otherwise be clipped). Sized to the tallest last-row popover with
-  // a line to spare — the deepest today needs 87px.
-  padding-bottom: 104px;
+  // The waterfall carries three times the rows the work grid does, and the view
+  // switch sits under it: every pixel of rhythm here is multiplied by fifteen
+  // and spent on whether the switch clears the fold.
+  row-gap: 4px;
+  // The bottom rows open their popovers upward (see .is-up), so there is
+  // nothing to reserve room for down here beyond the last bar's own edge —
+  // overflow-x on .arc-scroll makes overflow-y a scroller too, and a tall
+  // reserve pushed the view switch below the fold.
+  padding-bottom: 10px;
 }
 // One rail label per group, spanning that group's rows. The negative margin
 // closes the row-gap between adjacent groups: bars whose start is scrolled off
@@ -576,7 +578,7 @@ button.arc-chip:focus-visible {
   display: flex;
   align-items: center;
   margin: 0;
-  min-height: 30px;
+  min-height: 26px;
   padding: 4px 10px;
   font-size: 0.78rem;
   white-space: nowrap;
@@ -711,6 +713,14 @@ button.arc-chip:focus-visible {
 .arc-seg.is-late > .arc-pop--tool {
   left: auto;
   right: 0;
+}
+// Bars near the foot of the chart open upward, into rows already drawn. The
+// alternative is a band of reserved dead space below the last bar, which is
+// what pushed the view switch under the fold.
+.arc-chip--tool.is-up > .arc-pop--tool,
+.arc-chip--tool.is-up .arc-seg > .arc-pop--tool {
+  top: auto;
+  bottom: calc(100% + 6px);
 }
 .arc-chip--tool:hover > .arc-pop--tool,
 .arc-chip--tool:focus-visible > .arc-pop--tool { display: block; }
