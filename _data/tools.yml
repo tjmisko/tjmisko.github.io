@@ -124,10 +124,18 @@ views:
 
           - name: HTML / CSS / JavaScript
             family: language
-            start: 2022-01-01
             span: 2022 – now
-            ongoing: true
             note: Browser interfaces — the sspi.world front end, charts, this site.
+            segments:
+              - start: 2022-01-01
+                cadence: daily
+                span: 2022 – mid-2025
+                note: Hand-written browser interfaces — the sspi.world front end, the charts, this site.
+              - start: 2025-07-01
+                cadence: occasional
+                ongoing: true
+                span: mid-2025 – now
+                note: Mostly agent-driven since — I set the structure and review the result rather than typing the markup and styles.
 
           - name: Bash
             family: language
