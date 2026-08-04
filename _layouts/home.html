@@ -103,13 +103,25 @@ layout: default
             line 7.{%- endcomment -%}
             {%- include arc-year-ruler.html end=7 last=work_last_year -%}
 
-            {%- comment -%}The rail starts below the ruler row: it distributes
-            its three labels over the lanes, not over the scale, and leaving
-            row 1 clear keeps it off the 2020 label, which overhangs its own
-            grid line to the left.{%- endcomment %}
-            <div class="arc-lane-labels" style="grid-row: 2 / 8;">
+            {%- comment -%}The rail starts below the ruler row: leaving row 1
+            clear keeps it off the 2020 label, which overhangs its own grid line
+            to the left.
+
+            Backdrop and labels are separate elements. One label per band, each
+            spanning the rows it actually names, so it centers on its own lanes
+            rather than on a fraction of the chart's height — with rows of
+            unequal height the second is only accidentally the first. The
+            backdrop stays one full-height panel: three of them would leave the
+            row gaps between bands unmasked for chips to show through, and would
+            stack their own alpha wherever they did cover.{%- endcomment %}
+            <div class="arc-lane-rail" style="grid-row: 2 / 7;" aria-hidden="true"></div>
+            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 2 / 4;">
               <span>RESEARCH</span>
+            </div>
+            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 4 / 5;">
               <span>DATA</span>
+            </div>
+            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 5 / 7;">
               <span>SOFTWARE</span>
             </div>
 

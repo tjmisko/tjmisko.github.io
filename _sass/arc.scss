@@ -194,10 +194,22 @@ $arc-ruler-h: 28px;
   border-left: 1px solid $arc-rule;
   pointer-events: none;
 }
-// One wrapper distributes the three lane labels evenly over the full grid
-// height, independent of individual row heights. Pinned to the left edge of
-// the scroll viewport so the key stays visible at any scroll position; the
-// translucent backdrop masks chips sliding underneath.
+// The rail's backdrop: one full-height panel behind the per-band labels, so the
+// row gaps between them stay masked and no two translucent layers stack. Pinned
+// to the left edge of the scroll viewport, like the labels it sits behind.
+.arc-lane-rail {
+  grid-column: 1;
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  background: rgba(25, 25, 27, 0.82);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+// A lane label, centered in whatever rows it is given. On the work grid that is
+// one element per band (see home.html); on the waterfall it is one per tool
+// group. Pinned to the left edge of the scroll viewport so the key stays visible
+// at any scroll position.
 .arc-lane-labels {
   grid-column: 1;
   position: sticky;
@@ -216,6 +228,15 @@ $arc-ruler-h: 28px;
     padding-right: 12px;
     text-align: right;
   }
+}
+// Work-grid bands ride on the shared .arc-lane-rail backdrop, so they carry none
+// of their own — two translucent panels over each other would darken the banded
+// rows and leave the gaps between them lighter.
+.arc-lane-labels--band {
+  background: none;
+  backdrop-filter: none;
+  justify-content: center;
+  z-index: 5; // above the rail it sits on
 }
 
 // Chips are <button>s when they cross-link to a project, <div>s otherwise —
@@ -867,6 +888,7 @@ button.arc-chip:focus-visible {
   }
   .arc-lanes > * { order: var(--o, 0); }
   .arc-lane-labels,
+  .arc-lane-rail,
   .arc-group,
   .arc-junction { display: none; }
   .arc-chip { margin: 0; align-self: stretch; }
