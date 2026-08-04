@@ -687,9 +687,14 @@ button.arc-chip:focus-visible {
   display: flex;
   align-items: center;
   margin: 0;
-  min-height: 26px;
-  padding: 4px 10px;
+  // Stays above the auto-row floor so the full-size/minor distinction holds,
+  // but it is the padding and line-height below that actually set the height —
+  // a one-line nowrap bar has no use for the 1.4 leading .arc-chip gives body
+  // copy, and every pixel here is multiplied by fifteen rows.
+  min-height: 23px;
+  padding: 3px 10px;
   font-size: 0.78rem;
+  line-height: 1.25;
   white-space: nowrap;
   // Fill comes from the segment track, never the chip: every bar carries at
   // least one segment (a full-width one when the data lists no phases), so
