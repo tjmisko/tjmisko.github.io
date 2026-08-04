@@ -527,10 +527,11 @@ button.arc-chip:focus-visible {
   position: relative;
   justify-self: start;
   align-self: center;
-  // Its cell anchors it a quarter of the way across the scale; this settles it
-  // off that cell's corner and into the middle of the open triangle, which no
-  // grid line runs through.
-  transform: translate(12px, -28px);
+  // Its cell anchors it a quarter of the way across the scale; this offset
+  // walks it off that anchor into the open space the chips leave, which no
+  // grid line runs through. Tuned by eye — the cell is a starting point, not
+  // the intended resting place.
+  transform: translate(-18px, 9px);
   display: inline-flex;
   align-items: center;
   gap: 7px;
