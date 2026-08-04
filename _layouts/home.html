@@ -99,9 +99,9 @@ layout: default
         <div class="arc-scroll">
           <div class="arc-lanes"
                style="grid-template-columns: 104px repeat({{ work_cols }}, 1fr) 18px 220px;">
-            {%- comment -%}Rows are 1 ruler + 5 content, so the rules run to
-            line 7.{%- endcomment -%}
-            {%- include arc-year-ruler.html end=7 last=work_last_year -%}
+            {%- comment -%}Rows are 1 ruler + 6 content, so the rules run to
+            line 8.{%- endcomment -%}
+            {%- include arc-year-ruler.html end=8 last=work_last_year -%}
 
             {%- comment -%}The rail starts below the ruler row: leaving row 1
             clear keeps it off the 2020 label, which overhangs its own grid line
@@ -114,14 +114,14 @@ layout: default
             backdrop stays one full-height panel: three of them would leave the
             row gaps between bands unmasked for chips to show through, and would
             stack their own alpha wherever they did cover.{%- endcomment %}
-            <div class="arc-lane-rail" style="grid-row: 2 / 7;" aria-hidden="true"></div>
+            <div class="arc-lane-rail" style="grid-row: 2 / 8;" aria-hidden="true"></div>
             <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 2 / 4;">
               <span>RESEARCH</span>
             </div>
             <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 4 / 5;">
               <span>DATA</span>
             </div>
-            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 5 / 7;">
+            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 5 / 8;">
               <span>SOFTWARE</span>
             </div>
 
@@ -183,7 +183,7 @@ layout: default
                  below their own descending staircase, with its arrow running the
                  same way they do. Column 5 of 2–14 puts it a quarter of the way
                  across the scale. -->
-            <div class="arc-descent" style="grid-row: 5; grid-column: 5 / 11; --o: 100;"
+            <div class="arc-descent" style="grid-row: 7; grid-column: 5 / 11; --o: 100;"
                  tabindex="0" role="note">
               <span>Down the Tech Stack</span>
               <svg class="arc-descent-arrow" width="15" height="15" viewBox="0 0 13 13"
