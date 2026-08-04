@@ -150,9 +150,11 @@ $arc-ruler-h: 28px;
     vertical-align: -1px;
   }
   .arc-cadence-key--daily::before { background: rgba(225, 225, 225, 0.14); }
+  // Denser than the bars' own hatch: a 20px swatch only fits two stripes at the
+  // chart's spacing, so it carries a little more alpha to register at all.
   .arc-cadence-key--occasional::before {
     background: repeating-linear-gradient(
-      -45deg, rgba(225, 225, 225, 0.35) 0 1px, transparent 1px 6px);
+      -45deg, rgba(225, 225, 225, 0.28) 0 1px, transparent 1px 7px);
   }
 }
 
@@ -600,22 +602,22 @@ button.arc-chip:focus-visible {
   strong { font-weight: 400; }
 }
 // Families keep their accent edge and lend the segment layer its colors:
-// a translucent fill for daily-driver phases, a denser stripe color for the
-// occasional hatch (1px-in-6 stripes need the extra alpha to read).
+// a translucent fill for daily-driver phases, and the stripe color for the
+// occasional hatch.
 .arc-chip--analysis {
   border-left-color: $arc-data;
   --seg-fill: rgba(110, 150, 185, 0.16);
-  --seg-hatch: rgba(110, 150, 185, 0.42);
+  --seg-hatch: rgba(110, 150, 185, 0.25);
 }
 .arc-chip--language {
   border-left-color: $arc-software;
   --seg-fill: rgba(250, 130, 30, 0.13);
-  --seg-hatch: rgba(250, 130, 30, 0.4);
+  --seg-hatch: rgba(250, 130, 30, 0.24);
 }
 .arc-chip--environment {
   border-left-color: $arc-research;
   --seg-fill: rgba(225, 225, 225, 0.09);
-  --seg-hatch: rgba(225, 225, 225, 0.32);
+  --seg-hatch: rgba(225, 225, 225, 0.20);
 }
 // Still in use: the bar runs into the now line, so accent its trailing edge.
 .arc-chip--tool.is-ongoing {
@@ -679,9 +681,11 @@ button.arc-chip:focus-visible {
   pointer-events: auto;
 }
 .arc-seg.is-daily { background: var(--seg-fill); }
+// Hard stops on both edges of every stripe, same as the work chart's phases:
+// flat band, empty gap, no ramp between them.
 .arc-seg.is-occasional {
   background: repeating-linear-gradient(
-    -45deg, var(--seg-hatch) 0 1px, transparent 1px 6px);
+    -45deg, var(--seg-hatch) 0 1px, transparent 1px 9px);
 }
 // A hairline of page background between adjacent phases, so the texture change
 // reads as a deliberate boundary rather than a rendering seam.
