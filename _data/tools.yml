@@ -64,17 +64,33 @@ views:
         tools:
           - name: Excel / Google Sheets
             family: analysis
-            start: 2018-01-01
-            end: 2024-07-01
-            span: 2018 – 2024
-            note: Modeling, case exhibits, and everyday analysis through BRG.
+            span: 2018 – now
+            note: Modeling, case exhibits, and everyday analysis.
+            segments:
+              - start: 2018-01-01
+                cadence: daily
+                span: 2018 – 2024
+                note: Modeling, case exhibits, and everyday analysis through BRG.
+              - start: 2024-07-01
+                cadence: occasional
+                ongoing: true
+                span: 2024 – now
+                note: Still where a quick table or a shared sheet goes, but the analysis itself moved into code.
 
           - name: R
             family: analysis
-            start: 2020-01-01
-            end: 2024-07-01
             span: 2020 – 2024
             note: Econometrics and causal inference — regressions, panel data, ggplot.
+            segments:
+              - start: 2020-01-01
+                cadence: daily
+                span: 2020 – mid-2023
+                note: The analysis language through the SSPI research years — regressions, panel data, ggplot.
+              - start: 2023-07-01
+                end: 2024-07-01
+                cadence: occasional
+                span: mid-2023 – 2024
+                note: Stata took the case work at BRG; R reached for when a plot or a quick model was faster in it.
 
           - name: Stata
             family: analysis
