@@ -18,6 +18,8 @@ arc:
   kind: paper
   label: "Do Homeowners Care About Air Quality?"
   sub: "Wildfire smoke × home prices · causal inference · R"
+  span: "Completed Fall 2021"
+  blurb: "Wildfire smoke as a natural experiment for what clean air is worth in home prices."
 ---
 * **What it is.** An empirical study that uses wildfire smoke as a natural experiment: I matched ~28 million satellite smoke observations to ~98,000 home prices at the county-month level and ran a regression analysis to estimate whether worse air quality pushes housing prices down.
 * **Why it matters.** It asks what clean air is worth, as revealed by what people pay for homes. The estimates came back null — itself an informative result about what county-month price data can and cannot detect.

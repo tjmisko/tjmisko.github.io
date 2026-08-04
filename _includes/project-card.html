@@ -1,0 +1,34 @@
+{%- comment -%}
+One detail card. Rendered twice over: as the visible face in the portfolio
+rolodex, and as the hidden source the Trajectory clones into its modal. Both
+_projects and _experience documents carry the same fields, so an employer or a
+degree opens the same card format a project does.
+
+  p  the document to render (a project or an experience)
+{%- endcomment -%}
+<button class="project-card {{ include.p.tags | join }}" data-project="{{ include.p.slug }}">
+    <div class="project-flex-wrapper">
+        <div class="project-upper">
+            <h1 class="project-title"> {{ include.p.project-title }}</h1>
+            <h2 class="project-type"> {{ include.p.project-type }} </h2>
+            <p class="project-headline"> {{ include.p.project-headline }} </p>
+            <div class="project-description" style="display: none;"> {{ include.p.content }}</div>
+        </div>
+        <div class="project-footer">
+            <ul class="project-linkbox">
+                {%- if include.p.github -%}<li><a rel="me" href="https://github.com/tjmisko/{{ include.p.github | cgi_escape | escape }}" target="_blank" title="{{ include.p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                {%- if include.p.external-github -%}<li><a rel="me" href="https://github.com/{{ include.p.external-github | escape }}" target="_blank" title="{{ include.p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                {%- if include.p.youtube-playlist -%}<li><a rel="me" href="https://www.youtube.com/playlist?list={{ include.p.youtube-playlist | cgi_escape | escape }}" target="_blank" title="Youtube Playlist"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#youtube' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                {%- if include.p.pdf -%}<li><a rel="me" href="./{{ include.p.pdf }}.pdf" target="_blank" title="{{ include.p.pdf | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#pdf' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                {%- if include.p.html -%}<li><a rel="me" href="./{{ include.p.html }}.html" target="_blank" title="{{ include.p.html | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#html' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                {%- if include.p.website -%}<li><a rel="me" href="https://{{ include.p.website | escape }}" target="_blank" title="{{ include.p.website | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#website' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                {%- if include.p.google-drive -%}<li><a rel="me" href="https://drive.google.com/drive/{{ include.p.google-drive | escape }}" target="_blank" title="https://drive.google.com/drive/{{ include.p.google-drive  | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#google-drive' | relative_url }}"></use></svg></a></li>{%- endif -%}
+            </ul>
+            <div class="project-type-box">
+              <p class="project-status {% if include.p.project-status contains 'Active' %}is-active{% else %}is-done{% endif %}" title="Status: {{ include.p.project-status }}">{{ include.p.project-status }}</p>
+              {% if include.p.project-supervisor %}<p class="project-type project-supervisor" style="display: none;"> <b> Supervisor: </b> {{ include.p.project-supervisor }} </p> {% endif %}
+              {% if include.p.project-collaborators %}<p class="project-type project-collaborators" style="display: none;"> <b> Collaborators: </b> {{ include.p.project-collaborators }} </p> {% endif %}
+            </div>
+        </div>
+    </div>
+</button>

@@ -12,6 +12,8 @@ arc:
   node:
     label: "taskbuffer"
     sub: "Pure-Lua rewrite · agent-directed"
+    span: "2025 – Present"
+    blurb: "Gathers the to-dos scattered through your markdown notes into one time-sorted buffer."
 ---
 * **What it is.** A Neovim plugin that scans your plain-text markdown files, pulls out every task — checkboxes, dates, tags, durations — and collects them into a single buffer grouped by when they're due (Overdue, Today, This Week). You can complete, defer, or time tasks right from that view.
 * **Why it matters.** Notes accumulate to-dos everywhere. This brings them together without leaving the editor or adopting a separate task app, so your tasks stay in plain text you own.

@@ -9,12 +9,14 @@ tags:
   - "tooling"
 arc:
   lane: software
-  row: 6
+  row: 7
   start: 2024.5
   end: 2025
   kind: cli
   label: "Configuration"
   sub: "Dotfiles + reproducible dev environment"
+  span: "2024 – 2025"
+  blurb: "Setup scripts that bring a bare machine to a working development environment."
 ---
 * **What it is.** A single repository holding my editor, shell, window-manager, and tooling configuration, plus setup scripts that bring a fresh machine to a fully working development environment.
 * **Why it matters.** It makes my setup reproducible and portable — a new machine is productive in minutes, and every change to how I work is tracked, reversible, and documented.

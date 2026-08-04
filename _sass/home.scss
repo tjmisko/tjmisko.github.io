@@ -415,12 +415,6 @@ p, ul {
   margin-top: 15px;
 }
 
-// Skills is the last section: drop the inter-card margin so the page ends at a
-// hard bottom with no trailing whitespace.
-#skills-card {
-  margin-bottom: 0;
-}
-
 // Keep the Skills section within one screen on a standard monitor as a single
 // column: widen it so bullets wrap to fewer lines, and tighten the type and
 // spacing so the whole thing clears the fold.
@@ -452,6 +446,8 @@ p, ul {
 }
 
 /** Project Box and Card Styling */
+// Portfolio is the last section, so the inter-card margin goes: the page ends
+// at a hard bottom with no trailing whitespace.
 #projects-card {
   flex-direction: column;
   margin-bottom: 0;

@@ -64,17 +64,33 @@ views:
         tools:
           - name: Excel / Google Sheets
             family: analysis
-            start: 2018-01-01
-            end: 2024-07-01
-            span: 2018 – 2024
-            note: Modeling, case exhibits, and everyday analysis through BRG.
+            span: 2018 – now
+            note: Modeling, case exhibits, and everyday analysis.
+            segments:
+              - start: 2018-01-01
+                cadence: daily
+                span: 2018 – 2024
+                note: Modeling, case exhibits, and everyday analysis through BRG.
+              - start: 2024-07-01
+                cadence: occasional
+                ongoing: true
+                span: 2024 – now
+                note: Still where a quick table or a shared sheet goes, but the analysis itself moved into code.
 
           - name: R
             family: analysis
-            start: 2020-01-01
-            end: 2024-07-01
-            span: 2020 – 2024
+            span: 2020 – 2025
             note: Econometrics and causal inference — regressions, panel data, ggplot.
+            segments:
+              - start: 2020-01-01
+                cadence: daily
+                span: 2020 – mid-2023
+                note: The analysis language through the SSPI research years — regressions, panel data, ggplot.
+              - start: 2023-07-01
+                end: 2026-01-01
+                cadence: occasional
+                span: mid-2023 – 2025
+                note: Stata took the case work at BRG, but R stayed in reach for a plot or a quick model — on and off until the SSPI work wrapped at the end of 2025.
 
           - name: Stata
             family: analysis
@@ -108,10 +124,18 @@ views:
 
           - name: HTML / CSS / JavaScript
             family: language
-            start: 2022-01-01
             span: 2022 – now
-            ongoing: true
             note: Browser interfaces — the sspi.world front end, charts, this site.
+            segments:
+              - start: 2022-01-01
+                cadence: daily
+                span: 2022 – mid-2025
+                note: Hand-written browser interfaces — the sspi.world front end, the charts, this site.
+              - start: 2025-07-01
+                cadence: occasional
+                ongoing: true
+                span: mid-2025 – now
+                note: Mostly agent-driven since — I set the structure and review the result rather than typing the markup and styles.
 
           - name: Bash
             family: language
@@ -130,17 +154,30 @@ views:
 
           - name: Go
             family: language
-            start: 2024-07-01
             span: 2024 – now
-            ongoing: true
             note: Concurrent daemons and CLIs — taskbuffer's Go era hand-written; Switchboard's daemon agent-built to my direction.
+            segments:
+              - start: 2024-07-01
+                cadence: daily
+                span: mid-2024 – 2025
+                note: The opening burst — taskbuffer's Go rewrite, hand-written end to end.
+              - start: 2025-01-01
+                cadence: occasional
+                span: "2025"
+                note: Off the daily rotation for a year — reached for when a job wanted a single static binary, not much else.
+              - start: 2026-01-01
+                cadence: daily
+                ongoing: true
+                span: 2026 – now
+                note: Back in daily use — Switchboard's daemon, agent-built to my direction.
 
           - name: C
             family: language
-            start: 2025-07-01
-            span: 2025 – now
+            start: 2024-12-01
+            span: late 2024 – now
             ongoing: true
-            note: Systems fundamentals — memory, pointers, what the layers above sit on.
+            occasional: true
+            note: Occasional — systems fundamentals, memory, pointers, what the layers above sit on.
 
           - name: Rust
             family: language
@@ -151,9 +188,6 @@ views:
 
   - id: toolchain
     tab: Toolchain
-    throughline: >-
-      The environment the work happens in — editor, notes, and the machine underneath. It has
-      moved steadily toward plain text I own and configuration I wrote myself.
     groups:
       - group: Editor
         tools:
@@ -221,3 +255,20 @@ views:
             span: 2024 – now
             ongoing: true
             note: Fedora Asahi Remix on Apple Silicon; primary machine since mid-2024.
+
+      - group: AI Tooling
+        tools:
+          - name: ChatGPT
+            family: environment
+            start: 2023-07-01
+            end: 2025-07-01
+            span: 2023 – 2025
+            note: Chat window alongside the editor — questions answered, snippets drafted, code pasted back by hand.
+
+          - name: Claude Code
+            family: environment
+            continues: true
+            start: 2025-07-01
+            span: 2025 – now
+            ongoing: true
+            note: Agents in the repo rather than a chat window; now the fleets that built Arachne to my specification.

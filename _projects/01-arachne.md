@@ -11,6 +11,8 @@ arc:
   node:
     label: "Arachne"
     sub: "Auditable AI-pipeline canvas · directing agent fleets"
+    span: "Apr 2026 – Present"
+    blurb: "An agent drafts an automation as a graph you audit before it runs; every output cites its source."
 ---
 * **What it is.** A desktop platform where you describe a task in plain language and an AI agent assembles it as a visual graph of small, inspectable steps. You review the graph before it runs, and every result links back to the source data that produced it.
 * **Why it matters.** Most AI tools ask you to trust a black box. Arachne is designed so a non-programmer can build, audit, and verify an automation before it runs — it runs locally, and every output carries its provenance.

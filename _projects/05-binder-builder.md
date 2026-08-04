@@ -10,12 +10,14 @@ tags:
   - "automation"
 arc:
   lane: software
-  row: 6
+  row: 5
   start: 2024
   end: 2024.5
   kind: cli
   label: "BinderBuilder"
   sub: "Python CLI · NLP footnote-checker · built at BRG"
+  span: "Jan – Mar 2024"
+  blurb: "Matches every footnote in an expert report to its source and highlights the cited passage."
 ---
 * **What it is.** A Python tool that reads an expert report, extracts every footnote and its citation, finds the matching source document, and assembles a verified, highlighted binder of supporting materials — work that was previously done by hand.
 * **Why it matters.** Footnote verification is slow, error-prone, and high-stakes in legal and expert work. The tool cut the common case from ~60 to ~25 seconds per footnote against timecard baselines, while making the checks more consistent.

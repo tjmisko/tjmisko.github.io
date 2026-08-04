@@ -16,6 +16,9 @@ $arc-research: rgb(200, 200, 204);
 $arc-data: rgb(110, 150, 185);
 $arc-software: $homepage-accent-color;
 $arc-dim: rgba(225, 225, 225, 0.55);
+// Popover body copy. Read once, deliberately, on a panel — so it sits well
+// above the resting weight the chart's own labels carry.
+$arc-pop-text: rgba(232, 232, 234, 0.9);
 $arc-faint: rgba(225, 225, 225, 0.16);
 // Fainter than $arc-faint, which only ever draws short segments: a year rule
 // runs the full height of the chart, where the same alpha reads as foreground
@@ -147,9 +150,11 @@ $arc-ruler-h: 28px;
     vertical-align: -1px;
   }
   .arc-cadence-key--daily::before { background: rgba(225, 225, 225, 0.14); }
+  // Denser than the bars' own hatch: a 20px swatch only fits two stripes at the
+  // chart's spacing, so it carries a little more alpha to register at all.
   .arc-cadence-key--occasional::before {
     background: repeating-linear-gradient(
-      -45deg, rgba(225, 225, 225, 0.35) 0 1px, transparent 1px 6px);
+      -45deg, rgba(225, 225, 225, 0.28) 0 1px, transparent 1px 7px);
   }
 }
 
@@ -158,8 +163,10 @@ $arc-ruler-h: 28px;
 // node. The count comes from that end year rather than from the build date —
 // this scale stops where the current work sits — but grid-template-columns and
 // the junction/node columns are still emitted inline by home.html.
-// Rows: 1 ruler · 2 college+quasioptimal · 3 theses · 4 SSPI research ·
-// 5 data (BRG) · 6–7 software.
+// Rows: 1 ruler · 2 college+quasioptimal · 3 theses · 4 the employment relay
+// (SSPI research → BRG → IRLE engineering) · 5 BinderBuilder, on its own row
+// under BRG because it was built during it · 6 sspi.world · 7 the rest of the
+// software.
 .arc-lanes {
   display: grid;
   width: 100%;
@@ -189,10 +196,22 @@ $arc-ruler-h: 28px;
   border-left: 1px solid $arc-rule;
   pointer-events: none;
 }
-// One wrapper distributes the three lane labels evenly over the full grid
-// height, independent of individual row heights. Pinned to the left edge of
-// the scroll viewport so the key stays visible at any scroll position; the
-// translucent backdrop masks chips sliding underneath.
+// The rail's backdrop: one full-height panel behind the per-band labels, so the
+// row gaps between them stay masked and no two translucent layers stack. Pinned
+// to the left edge of the scroll viewport, like the labels it sits behind.
+.arc-lane-rail {
+  grid-column: 1;
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  background: rgba(25, 25, 27, 0.82);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+// A lane label, centered in whatever rows it is given. On the work grid that is
+// one element per band (see home.html); on the waterfall it is one per tool
+// group. Pinned to the left edge of the scroll viewport so the key stays visible
+// at any scroll position.
 .arc-lane-labels {
   grid-column: 1;
   position: sticky;
@@ -212,6 +231,15 @@ $arc-ruler-h: 28px;
     text-align: right;
   }
 }
+// Work-grid bands ride on the shared .arc-lane-rail backdrop, so they carry none
+// of their own — two translucent panels over each other would darken the banded
+// rows and leave the gaps between them lighter.
+.arc-lane-labels--band {
+  background: none;
+  backdrop-filter: none;
+  justify-content: center;
+  z-index: 5; // above the rail it sits on
+}
 
 // Chips are <button>s when they cross-link to a project, <div>s otherwise —
 // style both identically and reserve the pointer for the clickable ones.
@@ -220,6 +248,8 @@ $arc-ruler-h: 28px;
   font: inherit;
   font-family: "IBM Plex Mono";
   text-align: left;
+  // Anchors the hover popover every chip carries.
+  position: relative;
   align-self: center; // hug content — never stretch to the row's tallest item
   background: $project-card-color;
   border: 1px solid $arc-faint;
@@ -241,6 +271,17 @@ $arc-ruler-h: 28px;
   position: sticky;
   left: 118px;
 }
+// A row of chips that read as one succession rather than as separate items:
+// they take the row's full height instead of each hugging its own text, so a
+// label that wraps to two lines can't leave its neighbours sitting short and
+// break the run. Vertical centering still comes from the flex rules on .arc-chip
+// itself, so a one-line title sits on the same line as a two-line one.
+.arc-chip.is-relay {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 button.arc-chip { cursor: pointer; }
 button.arc-chip:hover,
 button.arc-chip:focus-visible {
@@ -249,43 +290,148 @@ button.arc-chip:focus-visible {
 }
 // Color families carry domain relationships (there is no grouping box):
 // steel = economics/econometrics work, orange = software, gray = neutral.
-.arc-chip--research { border-left-color: $arc-research; }
+// Each also lends the phase layer its hatch color, and the popover's phase
+// lines the same color for their edge.
+.arc-chip--research {
+  border-left-color: $arc-research;
+  --phase-hatch: rgba(200, 200, 204, 0.18);
+}
 .arc-chip--data {
   border-left-color: $arc-data;
   background: rgba(110, 150, 185, 0.09);
+  --phase-hatch: rgba(110, 150, 185, 0.25);
 }
 .arc-chip--software {
   border-left-color: $arc-software;
   background: rgba(250, 130, 30, 0.07);
+  --phase-hatch: rgba(250, 130, 30, 0.24);
 }
-// ---- Mini chips: icon + hover popover (short projects: papers, CLI tools) --
-.arc-chip--mini {
+
+// ---- Activity phases (work chart) -------------------------------------------
+// A stretch of a project's life drawn at a different pitch: the chip keeps its
+// family fill for active phases and takes a hatch — over a scrim that knocks the
+// fill back toward the page — where the work went to the backburner. Positions
+// are inline percentages of the bar's drawn span (the columns underneath are
+// proportional fr units, so percent-of-width is percent-of-time).
+//
+// Unlike the toolchain band's segments, these are decoration only: a work chip
+// is one button that opens a modal, so the phases carry no hover of their own
+// and are spelled out in the chip's popover instead.
+.arc-phase-track {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden; // clip the phase fills to the chip's rounded corners
+  pointer-events: none;
+  z-index: 0;
+}
+.arc-phase {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+// Active is the chip's own fill, undisturbed — the hatch is what marks the
+// exception, so the baseline state paints nothing.
+.arc-phase.is-active { background: none; }
+// Backburner: a 45° hatch over a scrim that knocks the family fill back toward
+// the page. Both color stops of each stripe are hard — `X 0 1px, transparent
+// 1px 9px` puts the stop positions flush, so the band is one flat color and the
+// gap is empty. Nothing here ramps between the two; it is a gradient function
+// drawing stripes, not a gradient.
+.arc-phase.is-backburner {
+  background:
+    repeating-linear-gradient(-45deg, var(--phase-hatch) 0 1px, transparent 1px 9px),
+    rgba($homepage-background-color, 0.55);
+}
+// A hairline of page background at each pitch change, so the texture boundary
+// reads as deliberate rather than as a rendering seam.
+.arc-phase + .arc-phase { border-left: 1px solid $homepage-background-color; }
+// Lettering rides above the phase layer. `strong` is already positioned
+// (sticky, for the horizontal scroller); `small` needs a position to stack.
+.arc-chip.has-phases > strong { z-index: 2; }
+.arc-chip.has-phases > small {
   position: relative;
+  z-index: 2;
+}
+// The phase breakdown inside the popover: one line per phase behind a cadence
+// edge in the family color — solid for active, dashed for backburner — echoing
+// the textures on the bar itself.
+.arc-pop-phases {
+  display: block;
+  margin-top: 7px;
+  padding-top: 6px;
+  border-top: 1px solid $arc-faint;
+}
+.arc-pop-phase {
+  display: block;
+  border-left: 2px solid var(--phase-hatch);
+  padding-left: 8px;
+  & + & { margin-top: 5px; }
+  // Tighter than the popover's body copy: this is a breakdown under the
+  // summary, not a second summary.
+  small { font-size: 0.84em; }
+  .arc-pop-span { margin-bottom: 0; }
+}
+.arc-pop-phase.is-backburner { border-left-style: dashed; }
+// ---- Mini chips: icon only, the title lives in the popover ------------------
+// (Short projects: papers, CLI tools.)
+.arc-chip--mini {
   text-align: center;
   padding: 11px 6px;
   align-self: center;
 }
-.arc-chip--mini:hover,
-.arc-chip--mini:focus-visible { z-index: 3; }
+// ---- Hover popovers --------------------------------------------------------
+// Every item on the chart carries one: its dates and a one-line description,
+// the summary a click expands into the full detail modal. Full-size chips leave
+// their title and tagline on the chip itself and put only the new information
+// here; mini chips, which show nothing but an icon, repeat the title first.
 .arc-pop {
   display: none;
   position: absolute;
   bottom: calc(100% + 8px);
   left: 0;
   width: max-content;
-  max-width: 250px;
+  max-width: 300px;
   text-align: left;
   background: $project-card-color;
   border: 1px solid rgba(225, 225, 225, 0.3);
   border-radius: 4px;
-  padding: 7px 11px;
-  font-size: 0.78rem;
-  line-height: 1.4;
+  padding: 9px 13px;
+  // Larger than the chips it explains, not smaller: a chip is scanned at a
+  // glance, but this is the thing actually being read, and it only exists while
+  // the pointer holds still. The wider box keeps the longer measure from
+  // wrapping into a column.
+  font-size: 0.9rem;
+  line-height: 1.5;
+  // The chip under it stays hoverable: a popover that opens under the pointer
+  // would otherwise flicker itself off and on.
+  pointer-events: none;
+  z-index: 3;
   strong { display: block; font-weight: 600; }
-  small { display: block; color: $arc-dim; font-size: 0.88em; }
+  // Brighter than $arc-dim, which is a resting weight for labels sitting on the
+  // chart all the time. This is body copy on a panel you opened on purpose, so
+  // it reads at near-full contrast.
+  small { display: block; color: $arc-pop-text; font-size: 0.92em; }
 }
-.arc-chip--mini:hover .arc-pop,
-.arc-chip--mini:focus-visible .arc-pop { display: block; }
+// Chips on the top two rows open downward instead: upward they would run into
+// the ruler and be cut off by the scroll container.
+.arc-pop--down {
+  top: calc(100% + 8px);
+  bottom: auto;
+}
+// The node sits hard against the right edge of the grid, so its chips open
+// their popovers leftward into the chart rather than off the end of it.
+.arc-node .arc-pop {
+  left: auto;
+  right: calc(100% + 10px);
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+}
+.arc-chip:hover,
+.arc-chip:focus-visible { z-index: 3; }
+.arc-chip:hover > .arc-pop,
+.arc-chip:focus-visible > .arc-pop { display: block; }
 
 // Terminal-styled glyph icons for the mini chips.
 .arc-ico { display: block; margin: 0 auto; }
@@ -349,7 +495,11 @@ button.arc-chip:focus-visible {
 }
 
 // ---- Quiet marker (Quasioptimal) -------------------------------------------
+// The one item that is a destination rather than a card: it opens the site
+// directly. It still gets the hover popover every other item has — only the
+// click differs.
 .arc-quiet {
+  position: relative;
   align-self: center; // level with the Berkeley chip in the same row
   margin: 0 6px 0 0;
   padding: 3px 2px; // symmetric, so the text center matches the chip text
@@ -361,7 +511,54 @@ button.arc-chip:focus-visible {
   transition: color var(--dur-fast) var(--ease-out);
 }
 .arc-quiet:hover,
-.arc-quiet:focus-visible { color: $homepage-accent-color; }
+.arc-quiet:focus-visible {
+  color: $homepage-accent-color;
+  z-index: 3;
+}
+.arc-quiet:hover > .arc-pop,
+.arc-quiet:focus-visible > .arc-pop { display: block; }
+
+// ---- Descent marker --------------------------------------------------------
+// Everything else on the chart is placed by a date. This one is placed by an
+// argument: the lanes run research → data → software because each one is what
+// taking the one above it seriously turns into. The chart can draw the descent
+// but not its reason, so the reason sits inside the chart, in the open triangle
+// under the chips' own descending staircase, where the arrow reads as the line
+// they trace.
+.arc-descent {
+  position: relative;
+  justify-self: start;
+  align-self: center;
+  // Its cell anchors it a quarter of the way across the scale; this offset
+  // walks it off that anchor into the open space the chips leave, which no
+  // grid line runs through. Tuned by eye — the cell is a starting point, not
+  // the intended resting place.
+  transform: translate(-18px, 9px);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 4px;
+  padding: 3px 2px;
+  // A step up from the chart's annotation sizes: it is the only label making an
+  // argument rather than naming a span, and it has to hold its own against the
+  // chips around it without becoming one.
+  font-size: 0.82rem;
+  color: $arc-dim;
+  cursor: help;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.arc-descent:hover,
+.arc-descent:focus-visible {
+  color: $homepage-accent-color;
+  z-index: 3;
+}
+.arc-descent:hover > .arc-pop,
+.arc-descent:focus-visible > .arc-pop { display: block; }
+// It carries a paragraph rather than a line, so it gets more room than a chip's.
+// The default upward, left-anchored opening is right for the bottom-left corner:
+// the lanes above it are empty at that end of the scale.
+.arc-descent > .arc-pop { max-width: 360px; }
+.arc-descent-arrow { flex: 0 0 auto; }
 
 // ---- Narrative notes (the "why" bubbles) -----------------------------------
 .arc-note {
@@ -434,12 +631,15 @@ button.arc-chip:focus-visible {
   width: 100%;
   grid-template-rows: $arc-ruler-h;
   grid-auto-rows: minmax(22px, auto);
-  row-gap: 6px;
-  // Room for the last row's popover, which opens downward: reserving it here
-  // keeps the scroller from growing a vertical scrollbar on hover (overflow-x
-  // on .arc-scroll makes overflow-y a scroller too, so anything past the grid
-  // box would otherwise be clipped).
-  padding-bottom: 80px;
+  // The waterfall carries three times the rows the work grid does, and the view
+  // switch sits under it: every pixel of rhythm here is multiplied by fifteen
+  // and spent on whether the switch clears the fold.
+  row-gap: 4px;
+  // The bottom rows open their popovers upward (see .is-up), so there is
+  // nothing to reserve room for down here beyond the last bar's own edge —
+  // overflow-x on .arc-scroll makes overflow-y a scroller too, and a tall
+  // reserve pushed the view switch below the fold.
+  padding-bottom: 10px;
 }
 // One rail label per group, spanning that group's rows. The negative margin
 // closes the row-gap between adjacent groups: bars whose start is scrolled off
@@ -489,9 +689,14 @@ button.arc-chip:focus-visible {
   display: flex;
   align-items: center;
   margin: 0;
-  min-height: 30px;
-  padding: 4px 10px;
+  // Stays above the auto-row floor so the full-size/minor distinction holds,
+  // but it is the padding and line-height below that actually set the height —
+  // a one-line nowrap bar has no use for the 1.4 leading .arc-chip gives body
+  // copy, and every pixel here is multiplied by fifteen rows.
+  min-height: 23px;
+  padding: 3px 10px;
   font-size: 0.78rem;
+  line-height: 1.25;
   white-space: nowrap;
   // Fill comes from the segment track, never the chip: every bar carries at
   // least one segment (a full-width one when the data lists no phases), so
@@ -511,22 +716,22 @@ button.arc-chip:focus-visible {
   strong { font-weight: 400; }
 }
 // Families keep their accent edge and lend the segment layer its colors:
-// a translucent fill for daily-driver phases, a denser stripe color for the
-// occasional hatch (1px-in-6 stripes need the extra alpha to read).
+// a translucent fill for daily-driver phases, and the stripe color for the
+// occasional hatch.
 .arc-chip--analysis {
   border-left-color: $arc-data;
   --seg-fill: rgba(110, 150, 185, 0.16);
-  --seg-hatch: rgba(110, 150, 185, 0.42);
+  --seg-hatch: rgba(110, 150, 185, 0.25);
 }
 .arc-chip--language {
   border-left-color: $arc-software;
   --seg-fill: rgba(250, 130, 30, 0.13);
-  --seg-hatch: rgba(250, 130, 30, 0.4);
+  --seg-hatch: rgba(250, 130, 30, 0.24);
 }
 .arc-chip--environment {
   border-left-color: $arc-research;
   --seg-fill: rgba(225, 225, 225, 0.09);
-  --seg-hatch: rgba(225, 225, 225, 0.32);
+  --seg-hatch: rgba(225, 225, 225, 0.20);
 }
 // Still in use: the bar runs into the now line, so accent its trailing edge.
 .arc-chip--tool.is-ongoing {
@@ -590,9 +795,11 @@ button.arc-chip:focus-visible {
   pointer-events: auto;
 }
 .arc-seg.is-daily { background: var(--seg-fill); }
+// Hard stops on both edges of every stripe, same as the work chart's phases:
+// flat band, empty gap, no ramp between them.
 .arc-seg.is-occasional {
   background: repeating-linear-gradient(
-    -45deg, var(--seg-hatch) 0 1px, transparent 1px 6px);
+    -45deg, var(--seg-hatch) 0 1px, transparent 1px 9px);
 }
 // A hairline of page background between adjacent phases, so the texture change
 // reads as a deliberate boundary rather than a rendering seam.
@@ -625,6 +832,14 @@ button.arc-chip:focus-visible {
   left: auto;
   right: 0;
 }
+// Bars near the foot of the chart open upward, into rows already drawn. The
+// alternative is a band of reserved dead space below the last bar, which is
+// what pushed the view switch under the fold.
+.arc-chip--tool.is-up > .arc-pop--tool,
+.arc-chip--tool.is-up .arc-seg > .arc-pop--tool {
+  top: auto;
+  bottom: calc(100% + 6px);
+}
 .arc-chip--tool:hover > .arc-pop--tool,
 .arc-chip--tool:focus-visible > .arc-pop--tool { display: block; }
 .arc-seg:hover > .arc-pop--tool,
@@ -636,7 +851,8 @@ button.arc-chip:focus-visible {
 @media screen and (min-width: 701px) {
   .arc-chip--tool.has-segments:hover > .arc-pop--tool { display: none; }
 }
-.arc-tool-span {
+// The dates line, first in every popover on either chart.
+.arc-pop-span {
   color: $homepage-accent-color !important;
   letter-spacing: 0.04em;
   margin-bottom: 2px;
@@ -680,6 +896,7 @@ button.arc-chip:focus-visible {
   }
   .arc-lanes > * { order: var(--o, 0); }
   .arc-lane-labels,
+  .arc-lane-rail,
   .arc-group,
   .arc-junction { display: none; }
   .arc-chip { margin: 0; align-self: stretch; }
@@ -704,6 +921,7 @@ button.arc-chip:focus-visible {
     padding: 6px 11px;
   }
   .arc-ico { margin: 0; flex: 0 0 auto; }
+  // No hover on touch, so every popover prints inline as part of its card.
   .arc-pop {
     display: block;
     position: static;
@@ -713,7 +931,38 @@ button.arc-chip:focus-visible {
     width: auto;
     max-width: none;
   }
-  .arc-quiet { align-self: flex-start; }
+  // The centering transform belongs to the node's leftward desktop anchor, and
+  // a transform survives position: static — left in place it drags the text back
+  // over the line above it. Matches that rule's specificity so it wins here.
+  .arc-node .arc-pop { transform: none; }
+  // Full-size chips print title, tagline, then the popover's dates and
+  // description — the same reading order the card gives them.
+  .arc-chip > .arc-pop { margin-top: 2px; }
+  // Phase textures are a property of the bar, which the feed doesn't have. The
+  // breakdown in the popover — now printed inline by the rule above — carries
+  // the same information in words.
+  .arc-phase-track { display: none; }
+  .arc-quiet {
+    align-self: flex-start;
+    // Its popover is now a second line under the link text, so the two need to
+    // stack rather than run together inline.
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  // Last in the feed (--o: 100), where it closes the sequence the way it closes
+  // the chart. The caption and arrow stay on one line above the note. The
+  // optical nudge belongs to the grid the feed just dissolved.
+  .arc-descent {
+    transform: none;
+    align-self: stretch;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid $arc-faint;
+    > .arc-pop { flex: 1 0 100%; }
+  }
   .arc-node {
     margin: 6px 0 0;
     align-self: stretch;

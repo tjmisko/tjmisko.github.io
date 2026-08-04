@@ -12,6 +12,8 @@ arc:
   node:
     label: "Switchboard"
     sub: "Agent-session daemon · shipped"
+    span: "Mar – May 2026"
+    blurb: "Finds every running agent session and puts each one a single keystroke away."
 ---
 * **What it is.** A lightweight Go daemon that automatically discovers every Claude Code session running across your terminals and windows, shows each one's live status — working, idle, or waiting for input — and lets you switch to any of them from a status-bar chip.
 * **Why it matters.** When you run many AI agents at once it's easy to lose track of which one needs attention. Switchboard turns a scattered set of sessions into one glanceable, clickable list, with zero configuration.
