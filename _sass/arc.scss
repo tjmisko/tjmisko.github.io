@@ -402,13 +402,13 @@ button.arc-chip:focus-visible {
 // Everything else on the chart is placed by a date. This one is placed by an
 // argument: the lanes run research → data → software because each one is what
 // taking the one above it seriously turns into. The chart can draw the descent
-// but not its reason, so the reason goes in the bottom-left corner — the open
-// canvas of the software lane in the years before any software, the stretch the
-// note is there to account for.
+// but not its reason, so the reason sits inside the chart, in the open triangle
+// under the chips' own descending staircase, where the arrow reads as the line
+// they trace.
 .arc-descent {
   position: relative;
   justify-self: start;
-  align-self: end;
+  align-self: center;
   display: inline-flex;
   align-items: center;
   gap: 7px;
