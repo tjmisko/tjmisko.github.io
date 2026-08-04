@@ -137,10 +137,11 @@ views:
 
           - name: C
             family: language
-            start: 2025-07-01
-            span: 2025 – now
+            start: 2024-12-01
+            span: late 2024 – now
             ongoing: true
-            note: Systems fundamentals — memory, pointers, what the layers above sit on.
+            occasional: true
+            note: Occasional — systems fundamentals, memory, pointers, what the layers above sit on.
 
           - name: Rust
             family: language
