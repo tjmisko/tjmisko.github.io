@@ -146,10 +146,22 @@ views:
 
           - name: Go
             family: language
-            start: 2024-07-01
             span: 2024 – now
-            ongoing: true
             note: Concurrent daemons and CLIs — taskbuffer's Go era hand-written; Switchboard's daemon agent-built to my direction.
+            segments:
+              - start: 2024-07-01
+                cadence: daily
+                span: mid-2024 – 2025
+                note: The opening burst — taskbuffer's Go rewrite, hand-written end to end.
+              - start: 2025-01-01
+                cadence: occasional
+                span: "2025"
+                note: Off the daily rotation for a year — reached for when a job wanted a single static binary, not much else.
+              - start: 2026-01-01
+                cadence: daily
+                ongoing: true
+                span: 2026 – now
+                note: Back in daily use — Switchboard's daemon, agent-built to my direction.
 
           - name: C
             family: language
