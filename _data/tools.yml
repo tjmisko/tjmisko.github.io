@@ -79,7 +79,7 @@ views:
 
           - name: R
             family: analysis
-            span: 2020 – 2024
+            span: 2020 – 2025
             note: Econometrics and causal inference — regressions, panel data, ggplot.
             segments:
               - start: 2020-01-01
@@ -87,10 +87,10 @@ views:
                 span: 2020 – mid-2023
                 note: The analysis language through the SSPI research years — regressions, panel data, ggplot.
               - start: 2023-07-01
-                end: 2024-07-01
+                end: 2026-01-01
                 cadence: occasional
-                span: mid-2023 – 2024
-                note: Stata took the case work at BRG; R reached for when a plot or a quick model was faster in it.
+                span: mid-2023 – 2025
+                note: Stata took the case work at BRG, but R stayed in reach for a plot or a quick model — on and off until the SSPI work wrapped at the end of 2025.
 
           - name: Stata
             family: analysis
