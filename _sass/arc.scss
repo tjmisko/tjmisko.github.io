@@ -16,6 +16,9 @@ $arc-research: rgb(200, 200, 204);
 $arc-data: rgb(110, 150, 185);
 $arc-software: $homepage-accent-color;
 $arc-dim: rgba(225, 225, 225, 0.55);
+// Popover body copy. Read once, deliberately, on a panel — so it sits well
+// above the resting weight the chart's own labels carry.
+$arc-pop-text: rgba(232, 232, 234, 0.9);
 $arc-faint: rgba(225, 225, 225, 0.16);
 // Fainter than $arc-faint, which only ever draws short segments: a year rule
 // runs the full height of the chart, where the same alpha reads as foreground
@@ -278,20 +281,27 @@ button.arc-chip:focus-visible {
   bottom: calc(100% + 8px);
   left: 0;
   width: max-content;
-  max-width: 250px;
+  max-width: 300px;
   text-align: left;
   background: $project-card-color;
   border: 1px solid rgba(225, 225, 225, 0.3);
   border-radius: 4px;
-  padding: 7px 11px;
-  font-size: 0.78rem;
-  line-height: 1.4;
+  padding: 9px 13px;
+  // Larger than the chips it explains, not smaller: a chip is scanned at a
+  // glance, but this is the thing actually being read, and it only exists while
+  // the pointer holds still. The wider box keeps the longer measure from
+  // wrapping into a column.
+  font-size: 0.9rem;
+  line-height: 1.5;
   // The chip under it stays hoverable: a popover that opens under the pointer
   // would otherwise flicker itself off and on.
   pointer-events: none;
   z-index: 3;
   strong { display: block; font-weight: 600; }
-  small { display: block; color: $arc-dim; font-size: 0.88em; }
+  // Brighter than $arc-dim, which is a resting weight for labels sitting on the
+  // chart all the time. This is body copy on a panel you opened on purpose, so
+  // it reads at near-full contrast.
+  small { display: block; color: $arc-pop-text; font-size: 0.92em; }
 }
 // Chips on the top two rows open downward instead: upward they would run into
 // the ruler and be cut off by the scroll container.
@@ -436,7 +446,7 @@ button.arc-chip:focus-visible {
 // It carries a paragraph rather than a line, so it gets more room than a chip's.
 // The default upward, left-anchored opening is right for the bottom-left corner:
 // the lanes above it are empty at that end of the scale.
-.arc-descent > .arc-pop { max-width: 330px; }
+.arc-descent > .arc-pop { max-width: 360px; }
 .arc-descent-arrow { flex: 0 0 auto; }
 
 // ---- Narrative notes (the "why" bubbles) -----------------------------------
@@ -514,8 +524,9 @@ button.arc-chip:focus-visible {
   // Room for the last row's popover, which opens downward: reserving it here
   // keeps the scroller from growing a vertical scrollbar on hover (overflow-x
   // on .arc-scroll makes overflow-y a scroller too, so anything past the grid
-  // box would otherwise be clipped).
-  padding-bottom: 80px;
+  // box would otherwise be clipped). Sized to the tallest last-row popover with
+  // a line to spare — the deepest today needs 87px.
+  padding-bottom: 104px;
 }
 // One rail label per group, spanning that group's rows. The negative margin
 // closes the row-gap between adjacent groups: bars whose start is scrolled off
