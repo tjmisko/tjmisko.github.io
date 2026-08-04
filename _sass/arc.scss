@@ -256,15 +256,89 @@ button.arc-chip:focus-visible {
 }
 // Color families carry domain relationships (there is no grouping box):
 // steel = economics/econometrics work, orange = software, gray = neutral.
-.arc-chip--research { border-left-color: $arc-research; }
+// Each also lends the phase layer its hatch color, and the popover's phase
+// lines the same color for their edge.
+.arc-chip--research {
+  border-left-color: $arc-research;
+  --phase-hatch: rgba(200, 200, 204, 0.18);
+}
 .arc-chip--data {
   border-left-color: $arc-data;
   background: rgba(110, 150, 185, 0.09);
+  --phase-hatch: rgba(110, 150, 185, 0.25);
 }
 .arc-chip--software {
   border-left-color: $arc-software;
   background: rgba(250, 130, 30, 0.07);
+  --phase-hatch: rgba(250, 130, 30, 0.24);
 }
+
+// ---- Activity phases (work chart) -------------------------------------------
+// A stretch of a project's life drawn at a different pitch: the chip keeps its
+// family fill for active phases and takes a hatch — over a scrim that knocks the
+// fill back toward the page — where the work went to the backburner. Positions
+// are inline percentages of the bar's drawn span (the columns underneath are
+// proportional fr units, so percent-of-width is percent-of-time).
+//
+// Unlike the toolchain band's segments, these are decoration only: a work chip
+// is one button that opens a modal, so the phases carry no hover of their own
+// and are spelled out in the chip's popover instead.
+.arc-phase-track {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden; // clip the phase fills to the chip's rounded corners
+  pointer-events: none;
+  z-index: 0;
+}
+.arc-phase {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+// Active is the chip's own fill, undisturbed — the hatch is what marks the
+// exception, so the baseline state paints nothing.
+.arc-phase.is-active { background: none; }
+// Backburner: a 45° hatch over a scrim that knocks the family fill back toward
+// the page. Both color stops of each stripe are hard — `X 0 1px, transparent
+// 1px 9px` puts the stop positions flush, so the band is one flat color and the
+// gap is empty. Nothing here ramps between the two; it is a gradient function
+// drawing stripes, not a gradient.
+.arc-phase.is-backburner {
+  background:
+    repeating-linear-gradient(-45deg, var(--phase-hatch) 0 1px, transparent 1px 9px),
+    rgba($homepage-background-color, 0.55);
+}
+// A hairline of page background at each pitch change, so the texture boundary
+// reads as deliberate rather than as a rendering seam.
+.arc-phase + .arc-phase { border-left: 1px solid $homepage-background-color; }
+// Lettering rides above the phase layer. `strong` is already positioned
+// (sticky, for the horizontal scroller); `small` needs a position to stack.
+.arc-chip.has-phases > strong { z-index: 2; }
+.arc-chip.has-phases > small {
+  position: relative;
+  z-index: 2;
+}
+// The phase breakdown inside the popover: one line per phase behind a cadence
+// edge in the family color — solid for active, dashed for backburner — echoing
+// the textures on the bar itself.
+.arc-pop-phases {
+  display: block;
+  margin-top: 7px;
+  padding-top: 6px;
+  border-top: 1px solid $arc-faint;
+}
+.arc-pop-phase {
+  display: block;
+  border-left: 2px solid var(--phase-hatch);
+  padding-left: 8px;
+  & + & { margin-top: 5px; }
+  // Tighter than the popover's body copy: this is a breakdown under the
+  // summary, not a second summary.
+  small { font-size: 0.84em; }
+  .arc-pop-span { margin-bottom: 0; }
+}
+.arc-pop-phase.is-backburner { border-left-style: dashed; }
 // ---- Mini chips: icon only, the title lives in the popover ------------------
 // (Short projects: papers, CLI tools.)
 .arc-chip--mini {
@@ -823,6 +897,10 @@ button.arc-chip:focus-visible {
   // Full-size chips print title, tagline, then the popover's dates and
   // description — the same reading order the card gives them.
   .arc-chip > .arc-pop { margin-top: 2px; }
+  // Phase textures are a property of the bar, which the feed doesn't have. The
+  // breakdown in the popover — now printed inline by the rule above — carries
+  // the same information in words.
+  .arc-phase-track { display: none; }
   .arc-quiet {
     align-self: flex-start;
     // Its popover is now a second line under the link text, so the two need to

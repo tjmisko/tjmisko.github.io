@@ -19,6 +19,22 @@ Front matter read here:
   arc.sub      short technical tagline under the title
   arc.span     human-readable dates, shown in the popover
   arc.blurb    one sentence, shown in the popover
+  arc.phases   optional list of activity phases inside one chip, for work that
+               ran hot and cold rather than at one pitch throughout. Solid =
+               active, diagonal hatch = backburner. Each phase takes:
+                 start    decimal year the phase begins
+                 end      optional — defaults to the next phase's start, so a
+                          contiguous history only has to date each turn; the
+                          last phase defaults to the chip's own end
+                 cadence  active (default) or backburner
+                 span     display string for the phase's line in the popover
+                 note     a sentence on what the work looked like in that phase
+               Unlike the toolchain band's `segments`, phases do NOT set the
+               chip's extent — arc.start / arc.end still do, and phases only
+               texture what is already drawn, clipped to it. Phases must be in
+               date order and disjoint (touching is fine, gaps are fine); a
+               violation, or phases on an arc.kind mini, fails the build with a
+               missing-include error naming the document and the rule.
 {%- endcomment -%}
 {%- assign a = include.p.arc -%}
 {%- assign col_raw = a.start | minus: 2020 | times: 2 | plus: 2 | round -%}
@@ -42,6 +58,17 @@ be clipped by the scroll container, so those two rows open downward instead.
 {%- endcomment -%}
 {%- assign pop_dir = "" -%}
 {%- if a.row < 4 -%}{%- assign pop_dir = " arc-pop--down" -%}{%- endif -%}
+{%- comment -%}Phase geometry is measured against the bar as *drawn*, not against
+the raw front-matter dates: both edges snapped to the nearest half-year column on
+the way in, so measuring against the unsnapped years would slide every phase
+boundary off the fill it is supposed to divide.{%- endcomment -%}
+{%- assign bar_start_year = col_start | minus: 2 | times: 0.5 | plus: 2020 -%}
+{%- assign bar_end_year = col_end | minus: 2 | times: 0.5 | plus: 2020 -%}
+{%- assign bar_len = bar_end_year | minus: bar_start_year -%}
+{%- if a.phases and a.kind -%}
+  {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--phases-are-not-drawable-on-an-icon-only-mini-chip{%- endcapture -%}
+  {% include {{ arc_fail }} %}
+{%- endif -%}
 {%- if a.kind -%}
 <button type="button"
         class="arc-chip arc-chip--{{ a.tone | default: a.lane }} arc-chip--mini{{ clipped }}"
@@ -63,15 +90,76 @@ be clipped by the scroll container, so those two rows open downward instead.
 popover carries only what the chip can't: the dates and the description.
 {%- endcomment -%}
 <button type="button"
-        class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ clipped }}"
+        class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ clipped }}
+               {%- if a.phases %} has-phases{% endif %}"
         style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
         data-project="{{ include.p.slug }}">
+  {%- comment -%}The phase layer sits under the lettering and takes no pointer
+  events of its own: a work chip is a single button that opens a modal, so the
+  phases explain themselves through the chip's one popover rather than each
+  carrying an interactive popover of their own (a focusable descendant would
+  make the button invalid).{%- endcomment -%}
+  {%- if a.phases and bar_len > 0 -%}
+  <span class="arc-phase-track" aria-hidden="true">
+    {%- assign prev_phase_end = 0 -%}
+    {%- for ph in a.phases -%}
+      {%- assign p_start = ph.start -%}
+      {%- if ph.end -%}
+        {%- assign p_end = ph.end -%}
+      {%- elsif forloop.last != true -%}
+        {%- assign ph_next = a.phases[forloop.index] -%}
+        {%- assign p_end = ph_next.start -%}
+      {%- else -%}
+        {%- assign p_end = bar_end_year -%}
+      {%- endif -%}
+      {%- comment -%}Same contract as the toolchain band's segments: in date
+      order, disjoint, each one ending after it starts. Violations stop the
+      build rather than drawing a phase on top of its neighbour.{%- endcomment -%}
+      {%- assign phase_error = "" -%}
+      {%- if p_end <= p_start -%}
+        {%- assign phase_error = "phase-ends-on-or-before-its-start" -%}
+      {%- elsif p_start < prev_phase_end -%}
+        {%- assign phase_error = "phases-overlap" -%}
+      {%- endif -%}
+      {%- if phase_error != "" -%}
+        {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--{{ phase_error }}{%- endcapture -%}
+        {% include {{ arc_fail }} %}
+      {%- endif -%}
+      {%- assign prev_phase_end = p_end -%}
+      {%- comment -%}Clipped to the drawn bar the same way the bar is clipped to
+      the ruler: a phase reaching past either edge is cut at the edge.
+      {%- endcomment -%}
+      {%- assign p_l = p_start | at_least: bar_start_year -%}
+      {%- assign p_r = p_end | at_most: bar_end_year -%}
+      {%- if p_r > p_l -%}
+        {%- assign p_left = p_l | minus: bar_start_year | times: 100.0 | divided_by: bar_len | round: 2 -%}
+        {%- assign p_width = p_r | minus: p_l | times: 100.0 | divided_by: bar_len | round: 2 -%}
+        {%- assign cadence = ph.cadence | default: "active" -%}
+    <span class="arc-phase is-{{ cadence }}" style="left: {{ p_left }}%; width: {{ p_width }}%;"></span>
+      {%- endif -%}
+    {%- endfor -%}
+  </span>
+  {%- endif -%}
   <strong>{{ a.label }}</strong>
   {%- if a.sub %}<small>{{ a.sub }}</small>{% endif -%}
-  {%- if a.span or a.blurb -%}
+  {%- if a.span or a.blurb or a.phases -%}
   <span class="arc-pop{{ pop_dir }}">
     {%- if a.span %}<small class="arc-pop-span">{{ a.span }}</small>{% endif -%}
     {%- if a.blurb %}<small>{{ a.blurb }}</small>{% endif -%}
+    {%- comment -%}The phase breakdown, since the textures on the bar can say
+    that the pitch changed but not what changed or when. On mobile, where the
+    bar and its textures are gone, this list is the whole story.{%- endcomment -%}
+    {%- if a.phases -%}
+    <span class="arc-pop-phases">
+      {%- for ph in a.phases -%}
+        {%- assign cadence = ph.cadence | default: "active" -%}
+      <span class="arc-pop-phase is-{{ cadence }}">
+        <small class="arc-pop-span">{{ ph.span }}{% if ph.span %} &middot; {% endif %}{{ cadence }}</small>
+        {%- if ph.note %}<small>{{ ph.note }}</small>{% endif -%}
+      </span>
+      {%- endfor -%}
+    </span>
+    {%- endif -%}
   </span>
   {%- endif -%}
 </button>
