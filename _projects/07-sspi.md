@@ -17,6 +17,8 @@ arc:
   start: 2020
   end: 2023.5
   label: "IRLE · SSPI Research"
+  span: "2020 – 2023"
+  blurb: "Led undergraduate teams building 57 policy indicators scoring 49 countries."
 ---
 * **What it is.** A research project building the Sustainable and Shared Prosperity Index: 57 original indicators that measure what countries' policies actually do across sustainability, market structure, and public goods, aggregated into a single comparable score for 49 countries. I led teams of undergraduates collecting, validating, and stress-testing the data.
 * **Why it matters.** Most country rankings measure outcomes; the SSPI measures the policies themselves — giving researchers and policymakers a way to see which choices, not just which results, set nations apart.

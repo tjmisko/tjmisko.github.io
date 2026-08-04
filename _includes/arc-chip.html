@@ -1,0 +1,78 @@
+{%- comment -%}
+One chip on the Trajectory work grid, drawn from a document's `arc` front
+matter. Projects and experiences render through here identically, so every item
+on the chart carries the same two affordances: a hover popover with its dates
+and a one-line description, and a click that opens the document's detail modal.
+
+  p            the document (a _projects or _experience entry)
+  work_end     the grid line the fixed scale ends on, for arc.ongoing chips
+
+Front matter read here:
+  arc.lane     research | data | software — which color family the chip takes
+  arc.tone     overrides lane for color only (a research role in the data palette)
+  arc.row      grid row, 2–7
+  arc.start    decimal year the chip begins (2023.5 = mid-2023)
+  arc.end      decimal year it ends; omitted when arc.ongoing is set
+  arc.ongoing  runs off the fixed scale into the junction instead of ending
+  arc.kind     paper | cli — draws the chip as an icon-only mini instead
+  arc.label    the chip's title
+  arc.sub      short technical tagline under the title
+  arc.span     human-readable dates, shown in the popover
+  arc.blurb    one sentence, shown in the popover
+{%- endcomment -%}
+{%- assign a = include.p.arc -%}
+{%- assign col_raw = a.start | minus: 2020 | times: 2 | plus: 2 | round -%}
+{%- if a.ongoing -%}
+  {%- assign col_end = include.work_end -%}
+{%- else -%}
+  {%- assign col_end = a.end | minus: 2020 | times: 2 | plus: 2 | round -%}
+{%- endif -%}
+{%- comment -%}Nothing in _projects predates the ruler today, but clamp anyway so
+backdating an entry can't emit a column 0 or a negative one and silently break
+the grid. --o keeps the unclamped column for the mobile feed's ordering.
+{%- endcomment -%}
+{%- assign col_start = col_raw -%}
+{%- assign clipped = "" -%}
+{%- if col_raw < 2 -%}
+  {%- assign col_start = 2 -%}
+  {%- assign clipped = " is-clipped" -%}
+{%- endif -%}
+{%- comment -%}A popover on one of the top rows would open up into the ruler and
+be clipped by the scroll container, so those two rows open downward instead.
+{%- endcomment -%}
+{%- assign pop_dir = "" -%}
+{%- if a.row < 4 -%}{%- assign pop_dir = " arc-pop--down" -%}{%- endif -%}
+{%- if a.kind -%}
+<button type="button"
+        class="arc-chip arc-chip--{{ a.tone | default: a.lane }} arc-chip--mini{{ clipped }}"
+        style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
+        data-project="{{ include.p.slug }}" aria-label="{{ a.label }}">
+  <span class="arc-ico arc-ico--{{ a.kind }}" aria-hidden="true"></span>
+  {%- comment -%}Title, tagline, dates, description — the order a full-size chip
+  reads in once the mobile feed prints its popover inline under it.
+  {%- endcomment -%}
+  <span class="arc-pop{{ pop_dir }}">
+    <strong>{{ a.label }}</strong>
+    {%- if a.sub %}<small>{{ a.sub }}</small>{% endif -%}
+    {%- if a.span %}<small class="arc-pop-span">{{ a.span }}</small>{% endif -%}
+    {%- if a.blurb %}<small>{{ a.blurb }}</small>{% endif -%}
+  </span>
+</button>
+{%- else -%}
+{%- comment -%}A full-size chip already shows its title and tagline, so its
+popover carries only what the chip can't: the dates and the description.
+{%- endcomment -%}
+<button type="button"
+        class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ clipped }}"
+        style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
+        data-project="{{ include.p.slug }}">
+  <strong>{{ a.label }}</strong>
+  {%- if a.sub %}<small>{{ a.sub }}</small>{% endif -%}
+  {%- if a.span or a.blurb -%}
+  <span class="arc-pop{{ pop_dir }}">
+    {%- if a.span %}<small class="arc-pop-span">{{ a.span }}</small>{% endif -%}
+    {%- if a.blurb %}<small>{{ a.blurb }}</small>{% endif -%}
+  </span>
+  {%- endif -%}
+</button>
+{%- endif -%}

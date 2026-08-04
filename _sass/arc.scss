@@ -220,6 +220,8 @@ $arc-ruler-h: 28px;
   font: inherit;
   font-family: "IBM Plex Mono";
   text-align: left;
+  // Anchors the hover popover every chip carries.
+  position: relative;
   align-self: center; // hug content — never stretch to the row's tallest item
   background: $project-card-color;
   border: 1px solid $arc-faint;
@@ -258,15 +260,18 @@ button.arc-chip:focus-visible {
   border-left-color: $arc-software;
   background: rgba(250, 130, 30, 0.07);
 }
-// ---- Mini chips: icon + hover popover (short projects: papers, CLI tools) --
+// ---- Mini chips: icon only, the title lives in the popover ------------------
+// (Short projects: papers, CLI tools.)
 .arc-chip--mini {
-  position: relative;
   text-align: center;
   padding: 11px 6px;
   align-self: center;
 }
-.arc-chip--mini:hover,
-.arc-chip--mini:focus-visible { z-index: 3; }
+// ---- Hover popovers --------------------------------------------------------
+// Every item on the chart carries one: its dates and a one-line description,
+// the summary a click expands into the full detail modal. Full-size chips leave
+// their title and tagline on the chip itself and put only the new information
+// here; mini chips, which show nothing but an icon, repeat the title first.
 .arc-pop {
   display: none;
   position: absolute;
@@ -281,11 +286,32 @@ button.arc-chip:focus-visible {
   padding: 7px 11px;
   font-size: 0.78rem;
   line-height: 1.4;
+  // The chip under it stays hoverable: a popover that opens under the pointer
+  // would otherwise flicker itself off and on.
+  pointer-events: none;
+  z-index: 3;
   strong { display: block; font-weight: 600; }
   small { display: block; color: $arc-dim; font-size: 0.88em; }
 }
-.arc-chip--mini:hover .arc-pop,
-.arc-chip--mini:focus-visible .arc-pop { display: block; }
+// Chips on the top two rows open downward instead: upward they would run into
+// the ruler and be cut off by the scroll container.
+.arc-pop--down {
+  top: calc(100% + 8px);
+  bottom: auto;
+}
+// The node sits hard against the right edge of the grid, so its chips open
+// their popovers leftward into the chart rather than off the end of it.
+.arc-node .arc-pop {
+  left: auto;
+  right: calc(100% + 10px);
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+}
+.arc-chip:hover,
+.arc-chip:focus-visible { z-index: 3; }
+.arc-chip:hover > .arc-pop,
+.arc-chip:focus-visible > .arc-pop { display: block; }
 
 // Terminal-styled glyph icons for the mini chips.
 .arc-ico { display: block; margin: 0 auto; }
@@ -349,7 +375,11 @@ button.arc-chip:focus-visible {
 }
 
 // ---- Quiet marker (Quasioptimal) -------------------------------------------
+// The one item that is a destination rather than a card: it opens the site
+// directly. It still gets the hover popover every other item has — only the
+// click differs.
 .arc-quiet {
+  position: relative;
   align-self: center; // level with the Berkeley chip in the same row
   margin: 0 6px 0 0;
   padding: 3px 2px; // symmetric, so the text center matches the chip text
@@ -361,7 +391,12 @@ button.arc-chip:focus-visible {
   transition: color var(--dur-fast) var(--ease-out);
 }
 .arc-quiet:hover,
-.arc-quiet:focus-visible { color: $homepage-accent-color; }
+.arc-quiet:focus-visible {
+  color: $homepage-accent-color;
+  z-index: 3;
+}
+.arc-quiet:hover > .arc-pop,
+.arc-quiet:focus-visible > .arc-pop { display: block; }
 
 // ---- Narrative notes (the "why" bubbles) -----------------------------------
 .arc-note {
@@ -636,7 +671,8 @@ button.arc-chip:focus-visible {
 @media screen and (min-width: 701px) {
   .arc-chip--tool.has-segments:hover > .arc-pop--tool { display: none; }
 }
-.arc-tool-span {
+// The dates line, first in every popover on either chart.
+.arc-pop-span {
   color: $homepage-accent-color !important;
   letter-spacing: 0.04em;
   margin-bottom: 2px;
@@ -704,6 +740,7 @@ button.arc-chip:focus-visible {
     padding: 6px 11px;
   }
   .arc-ico { margin: 0; flex: 0 0 auto; }
+  // No hover on touch, so every popover prints inline as part of its card.
   .arc-pop {
     display: block;
     position: static;
@@ -713,7 +750,21 @@ button.arc-chip:focus-visible {
     width: auto;
     max-width: none;
   }
-  .arc-quiet { align-self: flex-start; }
+  // The centering transform belongs to the node's leftward desktop anchor, and
+  // a transform survives position: static — left in place it drags the text back
+  // over the line above it. Matches that rule's specificity so it wins here.
+  .arc-node .arc-pop { transform: none; }
+  // Full-size chips print title, tagline, then the popover's dates and
+  // description — the same reading order the card gives them.
+  .arc-chip > .arc-pop { margin-top: 2px; }
+  .arc-quiet {
+    align-self: flex-start;
+    // Its popover is now a second line under the link text, so the two need to
+    // stack rather than run together inline.
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
   .arc-node {
     margin: 6px 0 0;
     align-self: stretch;

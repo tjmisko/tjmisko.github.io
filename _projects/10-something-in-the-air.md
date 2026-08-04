@@ -18,6 +18,8 @@ arc:
   kind: paper
   label: "Something in the Air (Honors Thesis)"
   sub: "Policy × air quality · time series · R"
+  span: "Completed Spring 2022"
+  blurb: "Which of 40,000 air-quality policies across 38 OECD countries actually moved pollution."
 ---
 * **What it is.** A study that built a dataset of over 40,000 air-quality policies and regulations across 38 OECD countries and used time-series regression to estimate which categories of policy actually moved six different air-pollution metrics.
 * **Why it matters.** Governments adopt many environmental policies but rarely know which ones work. This separates the effective levers from the symbolic ones, pointing to where regulation delivers the biggest air-quality gains.

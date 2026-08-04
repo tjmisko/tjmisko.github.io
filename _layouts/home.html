@@ -125,62 +125,32 @@ layout: default
               <span class="arc-group-label arc-group-label--below">Honors Thesis</span>
             </div>
 
-            <!-- Items without project files stay hard-coded here; every chip
-                 with a project file is sourced from its front matter (p.arc)
-                 in the loop below, and clicking it opens that project. -->
-            <!-- The degree runs from mid-2018, before the ruler starts, so it is
-                 clamped to the left edge and marked is-clipped. --o keeps the
-                 unclamped column so the mobile feed files it by when it began. -->
-            <div class="arc-chip is-clipped" style="grid-row: 2; grid-column: 2 / 7; --o: -1;">
-              <strong>BA Applied Math + Economics &middot; UC Berkeley</strong>
-            </div>
-            <button type="button" class="arc-chip arc-chip--data"
-                    style="grid-row: 4; grid-column: 11 / 14; --o: 11;" data-project="07-sspi">
-              <strong>IRLE &middot; SSPI Research</strong>
-            </button>
-            <!-- Still running, so it runs out to the end of the scale and into
-                 the junction rather than stopping on a date. -->
+            <!-- Every chip on the grid is generated from a document's front
+                 matter (p.arc) by _includes/arc-chip.html: projects from
+                 _projects, roles and schooling from _experience. Each one
+                 hovers to a popover with its dates and a one-line description,
+                 and clicks through to that document's detail modal. -->
+            {%- for p in site.experience -%}
+              {%- if p.arc.lane -%}{%- include arc-chip.html p=p work_end=work_end -%}{%- endif -%}
+            {%- endfor -%}
+            {%- for p in site.projects -%}
+              {%- if p.arc.lane -%}{%- include arc-chip.html p=p work_end=work_end -%}{%- endif -%}
+            {%- endfor -%}
+
+            <!-- The one item that is a destination rather than a card: it opens
+                 quasioptimal.io directly, so it keeps the quiet link treatment
+                 and gets a hover popover but no modal. Still running, so it runs
+                 out to the end of the scale and into the junction rather than
+                 stopping on a date. -->
             <a class="arc-quiet" style="grid-row: 2; grid-column: 8 / {{ work_end }}; --o: 8;"
                href="https://quasioptimal.io" target="_blank" rel="noopener">
               Quasioptimal &mdash; independent research &middot; 2023&ndash;Present
+              <span class="arc-pop arc-pop--down">
+                <small class="arc-pop-span">2023 &ndash; Present</small>
+                <small>Interdisciplinary writing on the possibilities, limits, and dangers of
+                optimization. Opens quasioptimal.io.</small>
+              </span>
             </a>
-            <div class="arc-chip arc-chip--data" style="grid-row: 5; grid-column: 9 / 11; --o: 9;">
-              <strong>BRG &middot; Antitrust Econometrics</strong>
-            </div>
-
-            {%- for p in site.projects -%}
-              {%- if p.arc.lane -%}
-                {%- assign col_raw = p.arc.start | minus: 2020 | times: 2 | plus: 2 | round -%}
-                {%- assign col_end = p.arc.end | minus: 2020 | times: 2 | plus: 2 | round -%}
-                {%- comment -%}Nothing in _projects predates the ruler today, but
-                clamp anyway so backdating a project can't emit a column 0 or a
-                negative one and silently break the grid. --o keeps the unclamped
-                column for the mobile feed's ordering.{%- endcomment -%}
-                {%- assign col_start = col_raw -%}
-                {%- assign clipped = "" -%}
-                {%- if col_raw < 2 -%}
-                  {%- assign col_start = 2 -%}
-                  {%- assign clipped = " is-clipped" -%}
-                {%- endif -%}
-                {%- if p.arc.kind -%}
-            <button type="button"
-                    class="arc-chip arc-chip--{{ p.arc.lane }} arc-chip--mini{{ clipped }}"
-                    style="grid-row: {{ p.arc.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
-                    data-project="{{ p.slug }}" aria-label="{{ p.arc.label }}">
-              <span class="arc-ico arc-ico--{{ p.arc.kind }}" aria-hidden="true"></span>
-              <span class="arc-pop"><strong>{{ p.arc.label }}</strong><small>{{ p.arc.sub }}</small></span>
-            </button>
-                {%- else -%}
-            <button type="button"
-                    class="arc-chip arc-chip--{{ p.arc.tone | default: p.arc.lane }}{{ clipped }}"
-                    style="grid-row: {{ p.arc.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
-                    data-project="{{ p.slug }}">
-              <strong>{{ p.arc.label }}</strong>
-              {%- if p.arc.sub %}<small>{{ p.arc.sub }}</small>{% endif -%}
-            </button>
-                {%- endif -%}
-              {%- endif -%}
-            {%- endfor -%}
 
             <div class="arc-junction" style="grid-column: {{ work_end }};"></div>
             <div class="arc-node" style="grid-column: {{ work_end | plus: 1 }}; --o: 99;">
@@ -191,6 +161,12 @@ layout: default
                       data-project="{{ p.slug }}">
                 <strong>{{ p.arc.node.label }}</strong>
                 <small>{{ p.arc.node.sub }}</small>
+                {%- if p.arc.node.span or p.arc.node.blurb -%}
+                <span class="arc-pop">
+                  {%- if p.arc.node.span %}<small class="arc-pop-span">{{ p.arc.node.span }}</small>{% endif -%}
+                  {%- if p.arc.node.blurb %}<small>{{ p.arc.node.blurb }}</small>{% endif -%}
+                </span>
+                {%- endif -%}
               </button>
                 {%- endif -%}
               {%- endfor -%}
@@ -356,7 +332,7 @@ layout: default
                  {%- unless t.segments %} tabindex="0"{% endunless %}>
               <strong>{{ t.name }}</strong>
               <span class="arc-pop arc-pop--tool">
-                <small class="arc-tool-span">{{ t.span }}</small>
+                <small class="arc-pop-span">{{ t.span }}</small>
                 <small>{{ t.note }}</small>
               </span>
               {%- if t.segments -%}
@@ -421,7 +397,7 @@ layout: default
                       style="left: {{ seg_left }}%; width: {{ seg_width }}%;" tabindex="0"
                       aria-label="{{ t.name }}: {{ s.span | escape }}, {{ cadence_label }}">
                   <span class="arc-pop arc-pop--tool">
-                    <small class="arc-tool-span">{{ s.span }}{% if s.span %} &middot; {% endif %}{{ cadence_label }}</small>
+                    <small class="arc-pop-span">{{ s.span }}{% if s.span %} &middot; {% endif %}{{ cadence_label }}</small>
                     {%- if s.note %}<small>{{ s.note }}</small>{% endif -%}
                   </span>
                 </span>
@@ -464,16 +440,27 @@ layout: default
               id="arc-tab-{{ primary.id }}" aria-controls="arc-view-{{ primary.id }}"
               aria-selected="false">{{ primary.tab }}</button>
     </div>
+    {%- comment -%}Detail cards for the experience chips. A project chip finds
+    its card in the portfolio rolodex; a role or a degree has no card there (and
+    should not — the rolodex is projects), so its card is rendered here, hidden,
+    for the modal to clone. Same include as the rolodex, so both open in the same
+    format.{%- endcomment %}
+    <div class="arc-detail-sources" hidden>
+      {%- for p in site.experience -%}{%- include project-card.html p=p -%}{%- endfor -%}
+    </div>
   </div>
   <script>
-  // Arc chips and node entries cross-link into the portfolio: clicking one
-  // opens the matching project card's modal (cards carry data-project slugs,
-  // so the project files stay the single source of truth).
+  // Arc chips and node entries open the matching detail card's modal — from the
+  // portfolio rolodex for a project, from the hidden sources above for a role or
+  // a degree. Cards carry data-project slugs, so the documents stay the single
+  // source of truth. openProjectModal is published by the portfolio script
+  // further down the page; both run on DOMContentLoaded, so it is defined long
+  // before any click can land here.
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".arc-chip[data-project], .arc-node-link[data-project]").forEach(function (el) {
       el.addEventListener("click", function () {
         const card = document.querySelector('.project-card[data-project="' + el.dataset.project + '"]');
-        if (card) card.click();
+        if (card && window.openProjectModal) window.openProjectModal(card);
       });
     });
     // ---- Trajectory view switch ------------------------------------------
@@ -545,6 +532,8 @@ layout: default
     // Flip to the open state on the next frame so the transition runs.
     requestAnimationFrame(() => modalParent.classList.add("is-open"));
   }
+  // The Trajectory opens these too, from a script block earlier in the page.
+  window.openProjectModal = openModal;
 
   function closeModal() {
     if (!modalParent.classList.contains("is-open")) return;

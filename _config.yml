@@ -17,6 +17,12 @@ collections:
     output: true
   projects:
     output: true
+  # Roles and schooling that place a chip on the Trajectory chart but are not
+  # portfolio projects, so they never enter the rolodex. Same front matter as
+  # _projects (project-title, -type, -status, -headline, arc) so one card
+  # include renders both into the same detail modal.
+  experience:
+    output: false
   pages:
     output: true
   archives:
