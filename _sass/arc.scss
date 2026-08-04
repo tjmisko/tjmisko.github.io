@@ -409,12 +409,19 @@ button.arc-chip:focus-visible {
   position: relative;
   justify-self: start;
   align-self: center;
+  // Its cell anchors it a quarter of the way across the scale; this settles it
+  // off that cell's corner and into the middle of the open triangle, which no
+  // grid line runs through.
+  transform: translate(30px, -16px);
   display: inline-flex;
   align-items: center;
   gap: 7px;
   margin-top: 4px;
   padding: 3px 2px;
-  font-size: 0.72rem;
+  // A step up from the chart's annotation sizes: it is the only label making an
+  // argument rather than naming a span, and it has to hold its own against the
+  // chips around it without becoming one.
+  font-size: 0.82rem;
   color: $arc-dim;
   cursor: help;
   transition: color var(--dur-fast) var(--ease-out);
@@ -800,8 +807,10 @@ button.arc-chip:focus-visible {
     gap: 2px;
   }
   // Last in the feed (--o: 100), where it closes the sequence the way it closes
-  // the chart. The caption and arrow stay on one line above the note.
+  // the chart. The caption and arrow stay on one line above the note. The
+  // optical nudge belongs to the grid the feed just dissolved.
   .arc-descent {
+    transform: none;
     align-self: stretch;
     flex-wrap: wrap;
     gap: 6px;
