@@ -218,3 +218,20 @@ views:
             span: 2024 – now
             ongoing: true
             note: Fedora Asahi Remix on Apple Silicon; primary machine since mid-2024.
+
+      - group: AI Tooling
+        tools:
+          - name: ChatGPT
+            family: environment
+            start: 2023-07-01
+            end: 2025-07-01
+            span: 2023 – 2025
+            note: Chat window alongside the editor — questions answered, snippets drafted, code pasted back by hand.
+
+          - name: Claude Code
+            family: environment
+            continues: true
+            start: 2025-07-01
+            span: 2025 – now
+            ongoing: true
+            note: Agents in the repo rather than a chat window; now the fleets that built Arachne to my specification.
