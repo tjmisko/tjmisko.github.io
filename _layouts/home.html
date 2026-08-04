@@ -20,8 +20,8 @@ layout: default
           most needed and automating the rest. View
           <a class="homepage-link" href="#projects-card">Arachne</a>
           (latest automation project), or look through my
-          <a class="homepage-link" href="#projects-card">portfolio</a>, and
-          <a class="homepage-link" href="#skills-card"> skills </a> below.
+          <a class="homepage-link" href="#skills-card">skills</a>, and
+          <a class="homepage-link" href="#projects-card"> portfolio </a> below.
         </p>
         <p class="reveal">
           I also write as an interdisciplinary researcher on the possibilities, limits, and
@@ -522,11 +522,24 @@ layout: default
     }
   });
   </script>
-  {%- include section-nav.html dir="down" target="#projects-card" label="Portfolio" -%}
+  {%- include section-nav.html dir="down" target="#skills-card" label="Skills" -%}
+</div>
+
+<div class="homepage-card" id="skills-card">
+    {%- include section-nav.html dir="up" target="#arc-card" label="Trajectory" -%}
+    <div class="info-container" id="skills">
+        <h1 class="site-header reveal"> Skills </h1>
+        {% for a in site.about %}
+            {% if a.id contains 'skills' %}
+            <div class="skills-content reveal" id="{{a.id}}"> {{ a.content }} </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {%- include section-nav.html dir="down" target="#projects-card" label="Portfolio" -%}
 </div>
 
 <div class="homepage-card" id="projects-card">
-  {%- include section-nav.html dir="up" target="#arc-card" label="Trajectory" -%}
+  {%- include section-nav.html dir="up" target="#skills-card" label="Skills" -%}
   <div class="project-modal-parent"></div>
   <h1 class="site-header reveal"> Portfolio </h1>
   <div class="rolodex reveal" id="rolodex">
@@ -535,12 +548,11 @@ layout: default
     </div>
     <div class="rolodex-track" id="rolodex-track" aria-hidden="true"></div>
   </div>
-  {%- include section-nav.html dir="down" target="#skills-card" label="Skills" -%}
-  </div>
   <script>
-  // This script sits in the document before #skills-card, so defer setup until
-  // the whole DOM is parsed — otherwise querySelectorAll(".reveal") misses the
-  // skills section and it never gets revealed.
+  // Setup is deferred to DOMContentLoaded so querySelectorAll(".reveal") sees
+  // every section. Portfolio is now the last card, so the sections above are
+  // already parsed either way, but the guard costs nothing and survives a
+  // reorder.
   document.addEventListener("DOMContentLoaded", function () {
   // ---- Project modal ----------------------------------------------------
   const modalParent = document.querySelector(".project-modal-parent");
@@ -726,9 +738,9 @@ layout: default
       }
     }
     // threshold 0 + default margin: an element reveals as soon as any part of
-    // it enters the viewport. This guarantees the last section (skills), whose
-    // content is centered low in a tall card at the page bottom, can't get
-    // stranded below a raised trigger line and stay invisible.
+    // it enters the viewport. This guarantees content centered low in a tall
+    // card at the page bottom can't get stranded below a raised trigger line
+    // and stay invisible.
   }, { threshold: 0 });
 
   // ---- Hero ASCII typing animation (fresh loads only) -------------------
@@ -1085,18 +1097,6 @@ layout: default
 
   }); // end DOMContentLoaded
   </script>
-</div>
-
-<div class="homepage-card" id="skills-card">
-    {%- include section-nav.html dir="up" target="#projects-card" label="Portfolio" -%}
-    <div class="info-container" id="skills">
-        <h1 class="site-header reveal"> Skills </h1>
-        {% for a in site.about %}
-            {% if a.id contains 'skills' %}
-            <div class="skills-content reveal" id="{{a.id}}"> {{ a.content }} </div>
-            {% endif %}
-        {% endfor %}
-    </div>
 </div>
 
 <div class="resume-modal-parent" id="resume-modal" role="dialog" aria-modal="true" aria-label="Resume" aria-hidden="true">
