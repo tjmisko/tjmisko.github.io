@@ -736,6 +736,47 @@ layout: default
       });
     }
 
+    // ---- The descent note (narrow chart only) -----------------------------
+    // On the wide chart this is a caption you hover for the paragraph behind
+    // it. On the narrow one it is the same caption, tapped: the paragraph opens
+    // into the clear block the note already sits in, so the staircase keeps the
+    // outline that clear block draws around it until you ask.
+    //
+    // The role changes with the width because the behaviour does — a note you
+    // can only read is not a control, and a disclosure that never says whether
+    // it is open is not one either. Both are set from here rather than in the
+    // markup, since only one of the two widths has anything to disclose.
+    const arcDescent = document.querySelector("#arc-card .arc-descent");
+    if (arcDescent) {
+      const narrow = window.matchMedia("(max-width: 700px)");
+      const syncRole = () => {
+        if (narrow.matches) {
+          arcDescent.setAttribute("role", "button");
+          arcDescent.setAttribute("aria-expanded",
+            String(arcDescent.classList.contains("is-open")));
+        } else {
+          arcDescent.setAttribute("role", "note");
+          arcDescent.removeAttribute("aria-expanded");
+          arcDescent.classList.remove("is-open");
+        }
+      };
+      const toggle = () => {
+        if (!narrow.matches) return;
+        arcDescent.classList.toggle("is-open");
+        syncRole();
+      };
+      arcDescent.addEventListener("click", toggle);
+      arcDescent.addEventListener("keydown", (e) => {
+        // It carries a tabindex on both charts, so on this one it has to answer
+        // the keys its new role promises.
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        toggle();
+      });
+      narrow.addEventListener("change", syncRole);
+      syncRole();
+    }
+
     // ---- Elided titles ----------------------------------------------------
     // A chip narrower than one word of its own title cuts the title off rather
     // than spilling it past its border (see .arc-chip > strong in arc.scss).

@@ -1273,9 +1273,13 @@ a.arc-chip:focus-visible {
     }
 
     // The descent note, in the clear ground above the staircase (see home.html).
-    // It is the one thing on the chart with no dates, so it is also the one
-    // thing whose popover prints: there is no card behind it to tap through to,
-    // and the empty block is the room the argument wants.
+    // The caption stands there the way it stands on the wide chart, and the
+    // paragraph behind it stays behind it: a chart's negative space is doing
+    // work, and filling it with body copy on sight would cost the staircase the
+    // very outline that makes the argument visible. So it opens on a tap, into
+    // the block it already occupies — no panel over the chart, because unlike a
+    // tool bar this one has somewhere of its own to expand into. The dotted rule
+    // under the caption is what says so, the same mark .arc-quiet wears.
     .arc-descent {
       align-self: start;
       display: block;
@@ -1283,7 +1287,16 @@ a.arc-chip:focus-visible {
       margin: 0;
       padding: 0 2px;
       font-size: 0.62rem;
-      cursor: default;
+      cursor: pointer;
+      > span:first-of-type {
+        border-bottom: 1px dotted rgba(225, 225, 225, 0.3);
+      }
+      // Outranks the hover and focus rules on the wide chart, which would
+      // otherwise open this on the tap's lingering focus.
+      > .arc-pop { display: none; }
+    }
+    .arc-descent.is-open {
+      color: $homepage-accent-color;
       > .arc-pop {
         display: block;
         position: static;
