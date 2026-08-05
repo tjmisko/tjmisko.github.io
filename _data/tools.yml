@@ -147,7 +147,7 @@ views:
             start: 2023-07-01
             span: 2023 – now
             ongoing: true
-            note: Glue and automation — dotfiles, build and deploy scripts, the first taskbuffer.
+            note: The locus of work shifted to the terminal in 2023; bash is the <i>lingua franca</i> of daily computing tasks, integrating naturally into the Vim, Obsidian, and plaintext tools ecosystem. I issue commands, use CLIs, and write scripts including the first iteration of Taskbuffer. The depth in writing and reading Bash has become doubly handy in the era of coding agents, making supervision at a glance effortless.
 
           - name: TypeScript
             family: language
