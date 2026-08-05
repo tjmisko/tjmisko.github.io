@@ -460,6 +460,19 @@ button.arc-chip:focus-visible {
   // it reads at near-full contrast.
   small { display: block; color: $arc-pop-text; font-size: 0.92em; }
 }
+// The full title, carried by every popover but printed only where the chip's
+// own lettering ran out of room and had to elide (.is-elided is set by the
+// marking pass in home.html, which measures rather than guesses). Everywhere
+// else the chip is already saying it, and a popover that opened with a line the
+// eye had just read would be noise.
+// Both selectors carry the parent class deliberately: .arc-pop's own `strong`
+// rule above is a class plus a type, and a bare .arc-pop-title would lose to it
+// and print on every chip.
+.arc-pop > .arc-pop-title { display: none; }
+.arc-chip.is-elided > .arc-pop > .arc-pop-title {
+  display: block;
+  margin-bottom: 2px;
+}
 // Chips on the top two rows open downward instead: upward they would run into
 // the ruler and be cut off by the scroll container.
 .arc-pop--down {

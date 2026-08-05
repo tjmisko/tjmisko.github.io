@@ -93,7 +93,8 @@ boundary off the fill it is supposed to divide.{%- endcomment -%}
 </button>
 {%- else -%}
 {%- comment -%}A full-size chip already shows its title and tagline, so its
-popover carries only what the chip can't: the dates and the description.
+popover carries only what the chip can't: the dates and the description — plus
+the title itself, held back until the chip is too narrow to finish saying it.
 {%- endcomment -%}
 <button type="button"
         class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ clipped }}
@@ -156,6 +157,9 @@ popover carries only what the chip can't: the dates and the description.
   {%- if a.sub %}<small>{{ a.sub }}</small>{% endif -%}
   {%- if a.span or a.blurb or a.phases -%}
   <span class="arc-pop{{ pop_dir }}">
+    {%- comment -%}Shown only when the chip's own title had to be cut — see the
+    marking pass in home.html.{%- endcomment -%}
+    <strong class="arc-pop-title">{{ a.label }}</strong>
     {%- if a.span %}<small class="arc-pop-span">{{ a.span }}</small>{% endif -%}
     {%- if a.blurb %}<small>{{ a.blurb }}</small>{% endif -%}
     {%- comment -%}The phase breakdown, since the textures on the bar can say

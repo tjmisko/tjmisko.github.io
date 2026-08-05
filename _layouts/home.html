@@ -168,6 +168,9 @@ layout: default
                 <small>{{ p.arc.node.sub }}</small>
                 {%- if p.arc.node.span or p.arc.node.blurb -%}
                 <span class="arc-pop">
+                  {%- comment -%}Shown only when the chip's own title had to be
+                  cut — see the marking pass in the script below.{%- endcomment -%}
+                  <strong class="arc-pop-title">{{ p.arc.node.label }}</strong>
                   {%- if p.arc.node.span %}<small class="arc-pop-span">{{ p.arc.node.span }}</small>{% endif -%}
                   {%- if p.arc.node.blurb %}<small>{{ p.arc.node.blurb }}</small>{% endif -%}
                 </span>
@@ -372,6 +375,13 @@ layout: default
                  {%- unless t.segments %} tabindex="0"{% endunless %}>
               <strong>{{ t.name }}</strong>
               <span class="arc-pop arc-pop--tool">
+                {%- comment -%}Shown only when the bar's own title had to be cut
+                — see the marking pass in the script below. A segmented bar
+                suppresses this popover on desktop in favour of its phases', so
+                its name is the one that can't come back this way; the bars long
+                enough to carry segments are the wide ones, which don't
+                clip.{%- endcomment -%}
+                <strong class="arc-pop-title">{{ t.name }}</strong>
                 <small class="arc-pop-span">{{ t.span }}</small>
                 <small>{{ t.note }}</small>
               </span>
@@ -503,6 +513,35 @@ layout: default
         if (card && window.openProjectModal) window.openProjectModal(card);
       });
     });
+    // ---- Elided titles ----------------------------------------------------
+    // A chip narrower than one word of its own title cuts the title off rather
+    // than spilling it past its border (see .arc-chip > strong in arc.scss).
+    // The name is the one thing a full-size chip's popover leaves out, on the
+    // grounds that the chip is already saying it — true right up until it
+    // isn't. So mark the chips whose lettering doesn't fit and let CSS print
+    // the full name in the popover for exactly those.
+    //
+    // Measured, not assumed: which titles clip depends on the text, the font
+    // and the column width, so there is no breakpoint to write it as. A hidden
+    // view measures 0/0 and reads as fitting, which is why switching tabs
+    // re-runs this alongside resizes and the webfonts landing.
+    const markElided = () => {
+      document.querySelectorAll("#arc-card .arc-chip").forEach((chip) => {
+        const title = chip.querySelector(":scope > strong");
+        // A pixel of tolerance: sub-pixel text metrics round either way, and a
+        // chip that fits exactly should not claim to have been cut.
+        const cut = !!title && title.scrollWidth > title.clientWidth + 1;
+        chip.classList.toggle("is-elided", cut);
+      });
+    };
+    markElided();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(markElided);
+    let elideTimer = 0;
+    window.addEventListener("resize", () => {
+      clearTimeout(elideTimer);
+      elideTimer = setTimeout(markElided, 150);
+    });
+
     // ---- Trajectory view switch ------------------------------------------
     // Two readings of the same years: what I built, on a fixed 2020–2026 scale,
     // and what I built it with, on one that runs out to the build date.
@@ -518,6 +557,8 @@ layout: default
           tab.tabIndex = isActive ? 0 : -1;
           document.getElementById("arc-view-" + tab.dataset.view).hidden = !isActive;
         });
+        // The view that was hidden had no dimensions to measure until now.
+        markElided();
       };
       arcTabs.forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
       document.querySelector("#arc-card .arc-toggle").addEventListener("keydown", (e) => {
