@@ -168,6 +168,9 @@ layout: default
                 <small>{{ p.arc.node.sub }}</small>
                 {%- if p.arc.node.span or p.arc.node.blurb -%}
                 <span class="arc-pop">
+                  {%- comment -%}Shown only when the chip's own title had to be
+                  cut — see the marking pass in the script below.{%- endcomment -%}
+                  <strong class="arc-pop-title">{{ p.arc.node.label }}</strong>
                   {%- if p.arc.node.span %}<small class="arc-pop-span">{{ p.arc.node.span }}</small>{% endif -%}
                   {%- if p.arc.node.blurb %}<small>{{ p.arc.node.blurb }}</small>{% endif -%}
                 </span>
@@ -232,12 +235,10 @@ layout: default
       <p class="arc-throughline arc-throughline--minor">{{ v.throughline }}</p>
         {%- endif -%}
       {%- endfor %}
-      {%- comment -%}The one encoding a bar's name can't carry: what the fill
-      texture means. Family colors still go unnamed.{%- endcomment %}
-      <div class="arc-cadence-key" aria-hidden="true">
-        <span class="arc-cadence-key--daily">daily driver</span>
-        <span class="arc-cadence-key--occasional">occasional</span>
-      </div>
+      {%- comment -%}No standing key, for the textures any more than for the
+      colors: every bar and every phase names its own cadence in the popover the
+      pointer is already on, which is where the question gets asked. A legend
+      answered it in advance, at the cost of a row above the chart.{%- endcomment %}
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
           <div class="arc-lanes arc-lanes--tools"
@@ -363,7 +364,17 @@ layout: default
                     {%- assign col_start = 2 -%}
                     {%- assign clipped = " is-clipped" -%}
                   {%- endif -%}
-            <div class="arc-chip arc-chip--tool arc-chip--{{ t.family }}{{ minor }}{{ clipped }}
+                  {%- comment -%}A bar with a `link` is the anchor itself rather
+                  than a div: it is the whole target, and it gets its focus from
+                  the href instead of a tabindex. A bar with phases can't be one
+                  — its segments are focusable, and interactive content nested
+                  inside a link is neither valid nor operable.{%- endcomment -%}
+                  {%- if t.link and t.segments -%}
+                    {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--a-linked-bar-cannot-also-carry-segments{%- endcapture -%}
+                    {% include {{ arc_fail }} %}
+                  {%- endif -%}
+                  {%- if t.link -%}{%- assign tool_tag = "a" -%}{%- else -%}{%- assign tool_tag = "div" -%}{%- endif -%}
+            <{{ tool_tag }} class="arc-chip arc-chip--tool arc-chip--{{ t.family }}{{ minor }}{{ clipped }}
                         {%- if t_ongoing %} is-ongoing{% endif -%}
                         {%- if t.occasional %} is-occasional{% endif -%}
                         {%- if t.continues %} is-continuation{% endif -%}
@@ -371,9 +382,17 @@ layout: default
                         {%- if col_start >= arc_late %} is-late{% endif -%}
                         {%- if tool_row >= tools_flip %} is-up{% endif %}"
                  style="grid-row: {{ tool_row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
-                 {%- unless t.segments %} tabindex="0"{% endunless %}>
+                 {%- if t.link %} href="{{ t.link }}" target="_blank" rel="noopener"
+                 {%- else -%}{%- unless t.segments %} tabindex="0"{% endunless %}{% endif %}>
               <strong>{{ t.name }}</strong>
               <span class="arc-pop arc-pop--tool">
+                {%- comment -%}Shown only when the bar's own title had to be cut
+                — see the marking pass in the script below. A segmented bar
+                suppresses this popover on desktop in favour of its phases', so
+                its name is the one that can't come back this way; the bars long
+                enough to carry segments are the wide ones, which don't
+                clip.{%- endcomment -%}
+                <strong class="arc-pop-title">{{ t.name }}</strong>
                 <small class="arc-pop-span">{{ t.span }}</small>
                 <small>{{ t.note }}</small>
               </span>
@@ -454,7 +473,7 @@ layout: default
                 <span class="arc-seg is-{% if t.occasional %}occasional{% else %}daily{% endif %}"></span>
               </span>
               {%- endif -%}
-            </div>
+            </{{ tool_tag }}>
                 {%- endfor -%}
                 {%- comment -%}Emitted after its rows so the span can use the row
                 counter; grid placement is explicit, so DOM order is free.
@@ -505,6 +524,35 @@ layout: default
         if (card && window.openProjectModal) window.openProjectModal(card);
       });
     });
+    // ---- Elided titles ----------------------------------------------------
+    // A chip narrower than one word of its own title cuts the title off rather
+    // than spilling it past its border (see .arc-chip > strong in arc.scss).
+    // The name is the one thing a full-size chip's popover leaves out, on the
+    // grounds that the chip is already saying it — true right up until it
+    // isn't. So mark the chips whose lettering doesn't fit and let CSS print
+    // the full name in the popover for exactly those.
+    //
+    // Measured, not assumed: which titles clip depends on the text, the font
+    // and the column width, so there is no breakpoint to write it as. A hidden
+    // view measures 0/0 and reads as fitting, which is why switching tabs
+    // re-runs this alongside resizes and the webfonts landing.
+    const markElided = () => {
+      document.querySelectorAll("#arc-card .arc-chip").forEach((chip) => {
+        const title = chip.querySelector(":scope > strong");
+        // A pixel of tolerance: sub-pixel text metrics round either way, and a
+        // chip that fits exactly should not claim to have been cut.
+        const cut = !!title && title.scrollWidth > title.clientWidth + 1;
+        chip.classList.toggle("is-elided", cut);
+      });
+    };
+    markElided();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(markElided);
+    let elideTimer = 0;
+    window.addEventListener("resize", () => {
+      clearTimeout(elideTimer);
+      elideTimer = setTimeout(markElided, 150);
+    });
+
     // ---- Trajectory view switch ------------------------------------------
     // Two readings of the same years: what I built, on a fixed 2020–2026 scale,
     // and what I built it with, on one that runs out to the build date.
@@ -520,6 +568,8 @@ layout: default
           tab.tabIndex = isActive ? 0 : -1;
           document.getElementById("arc-view-" + tab.dataset.view).hidden = !isActive;
         });
+        // The view that was hidden had no dimensions to measure until now.
+        markElided();
       };
       arcTabs.forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
       document.querySelector("#arc-card .arc-toggle").addEventListener("keydown", (e) => {
