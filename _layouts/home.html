@@ -113,29 +113,32 @@ layout: default
             clear keeps it off the 2020 label, which overhangs its own grid line
             to the left.
 
-            Backdrop and labels are separate elements. One label per band, each
-            spanning the rows it actually names, so it centers on its own lanes
-            rather than on a fraction of the chart's height — with rows of
-            unequal height the second is only accidentally the first. The
-            backdrop stays one full-height panel: three of them would leave the
-            row gaps between bands unmasked for chips to show through, and would
-            stack their own alpha wherever they did cover.
+            Backdrop and labels are separate elements. The backdrop is one
+            full-height panel: several of them would leave the row gaps between
+            bands unmasked for chips to show through, and would stack their own
+            alpha wherever they did cover.
 
-            Row 3 is deliberately left out of every band. The honors thesis was
-            both the last of the coursework and the first of the research, and
-            the row it sits on says so by belonging to neither of the bands it
-            lies between.{%- endcomment %}
+            The labels are one stack rather than one element per band. Centering
+            each on the rows it named put them where the row heights happened to
+            fall — RESEARCH and DATA 48px apart, with more than twice that of
+            empty rail above and below the pair. They step evenly instead, and
+            the stack takes the relay's own row (5) so that row's midpoint lands
+            between RESEARCH and DATA: the names straddle the turn from research
+            into data work two to a side. The step is sized so the two above the
+            turn land on rows rather than between them — COURSEWORK on the
+            degree, RESEARCH on Quasioptimal — which is also why the research row
+            carries a little air under it (.arc-quiet). DATA and SOFTWARE take
+            the step from there. See .arc-lane-labels--band.
+
+            Row 3 belongs to no band. The honors thesis was both the last of the
+            coursework and the first of the research, and the row it sits on
+            says so by belonging to neither of the bands it lies between.
+            {%- endcomment %}
             <div class="arc-lane-rail" style="grid-row: 2 / 9;" aria-hidden="true"></div>
-            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 2 / 3;">
-              <span>COURSEWORK</span>
-            </div>
-            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 4 / 5;">
-              <span>RESEARCH</span>
-            </div>
             <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 5 / 6;">
+              <span>COURSEWORK</span>
+              <span>RESEARCH</span>
               <span>DATA</span>
-            </div>
-            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 6 / 9;">
               <span>SOFTWARE</span>
             </div>
 
