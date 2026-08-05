@@ -259,10 +259,27 @@ $arc-ruler-h: 28px;
 // A bar whose start is scrolled off keeps its title visible: the text pins
 // just right of the lane rail (104px + border/padding) and, on scrolling the
 // start back into view, seeks left until it rests at the bar's own edge.
+// Block rather than inline-block, which is what it was before it had to clip:
+// an inline-block with hidden overflow takes its bottom margin edge as its
+// baseline instead of its last line's, and every title on both charts sat a few
+// pixels off from that alone. Nothing here wanted the shrink-to-fit width.
 .arc-chip > strong {
-  display: inline-block;
+  display: block;
   position: sticky;
   left: 118px;
+}
+// Between the mobile feed and the width where the columns get roomy, a chip can
+// be narrower than one word of its own title (Econometrics, Apprentice), and
+// the word ran out past the border into whatever sat next to it. Elide instead:
+// the lettering is what clips, never the chip, which has to keep its overflow
+// visible for the popover it anchors. Wrapping is untouched — a title that fits
+// on two lines still takes them, and the ellipsis only appears on the line that
+// can't fit at all. The full title is in the popover either way.
+.arc-chip > strong,
+.arc-chip > small {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 // A row of chips that read as one succession rather than as separate items:
 // they take the row's full height instead of each hugging its own text, so a
