@@ -105,9 +105,9 @@ layout: default
         <div class="arc-scroll">
           <div class="arc-lanes"
                style="grid-template-columns: 104px repeat({{ work_cols }}, 1fr) 18px 220px;">
-            {%- comment -%}Rows are 1 ruler + 6 content, so the rules run to
-            line 8.{%- endcomment -%}
-            {%- include arc-year-ruler.html end=8 last=work_last_year -%}
+            {%- comment -%}Rows are 1 ruler + 7 content, so the rules run to
+            line 9.{%- endcomment -%}
+            {%- include arc-year-ruler.html end=9 last=work_last_year -%}
 
             {%- comment -%}The rail starts below the ruler row: leaving row 1
             clear keeps it off the 2020 label, which overhangs its own grid line
@@ -119,19 +119,28 @@ layout: default
             unequal height the second is only accidentally the first. The
             backdrop stays one full-height panel: three of them would leave the
             row gaps between bands unmasked for chips to show through, and would
-            stack their own alpha wherever they did cover.{%- endcomment %}
-            <div class="arc-lane-rail" style="grid-row: 2 / 8;" aria-hidden="true"></div>
-            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 2 / 4;">
-              <span>RESEARCH</span>
+            stack their own alpha wherever they did cover.
+
+            Row 3 is deliberately left out of every band. The honors thesis was
+            both the last of the coursework and the first of the research, and
+            the row it sits on says so by belonging to neither of the bands it
+            lies between.{%- endcomment %}
+            <div class="arc-lane-rail" style="grid-row: 2 / 9;" aria-hidden="true"></div>
+            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 2 / 3;">
+              <span>COURSEWORK</span>
             </div>
             <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 4 / 5;">
+              <span>RESEARCH</span>
+            </div>
+            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 5 / 6;">
               <span>DATA</span>
             </div>
-            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 5 / 8;">
+            <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 6 / 9;">
               <span>SOFTWARE</span>
             </div>
 
-            <!-- honors-thesis outline, in its own row above SSPI research -->
+            <!-- honors-thesis outline, on the unbanded row between the degree
+                 above it and the research below -->
             <div class="arc-group arc-group--thesis" style="grid-row: 3; grid-column: 5 / 7;">
               <span class="arc-group-label arc-group-label--below">Honors Thesis</span>
             </div>
@@ -152,8 +161,9 @@ layout: default
                  quasioptimal.io directly, so it keeps the quiet link treatment
                  and gets a hover popover but no modal. Still running, so it runs
                  out to the end of the scale and into the junction rather than
-                 stopping on a date. -->
-            <a class="arc-quiet" style="grid-row: 2; grid-column: 8 / {{ work_end }}; --o: 8;"
+                 stopping on a date. It sits on the research row: the writing is
+                 research of its own, and the row above is the degree. -->
+            <a class="arc-quiet" style="grid-row: 4; grid-column: 8 / {{ work_end }}; --o: 8;"
                href="https://quasioptimal.io" target="_blank" rel="noopener">
               Quasioptimal &mdash; independent research &middot; 2023&ndash;Present
               <span class="arc-pop arc-pop--down">
@@ -192,7 +202,7 @@ layout: default
                  below their own descending staircase, with its arrow running the
                  same way they do. Column 5 of 2–14 puts it a quarter of the way
                  across the scale. -->
-            <div class="arc-descent" style="grid-row: 7; grid-column: 5 / 11; --o: 100;"
+            <div class="arc-descent" style="grid-row: 8; grid-column: 5 / 11; --o: 100;"
                  tabindex="0" role="note">
               <span>Down the Tech Stack</span>
               <svg class="arc-descent-arrow" width="15" height="15" viewBox="0 0 13 13"

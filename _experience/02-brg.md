@@ -5,7 +5,7 @@ project-status: "Completed Jul 2024"
 project-headline: A year building the empirical record behind expert reports — Stata pipelines shipped to opposing counsel to re-run.
 arc:
   lane: data
-  row: 4
+  row: 5
   relay: true
   start: 2023.5
   end: 2024.5
