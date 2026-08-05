@@ -142,7 +142,12 @@ popover carries only what the chip can't: the dates and the description.
         {%- assign p_left = p_l | minus: bar_start_year | times: 100.0 | divided_by: bar_len | round: 2 -%}
         {%- assign p_width = p_r | minus: p_l | times: 100.0 | divided_by: bar_len | round: 2 -%}
         {%- assign cadence = ph.cadence | default: "active" -%}
-    <span class="arc-phase is-{{ cadence }}" style="left: {{ p_left }}%; width: {{ p_width }}%;"></span>
+    {%- comment -%}data-phase pairs the stretch of bar with its line in the
+    popover, so hovering one lifts the other. Indexed rather than positional: a
+    phase clipped out of the drawn bar is skipped here but still listed there,
+    and counting siblings would slip by one from that point on.{%- endcomment %}
+    <span class="arc-phase is-{{ cadence }}" data-phase="{{ forloop.index }}"
+          style="left: {{ p_left }}%; width: {{ p_width }}%;"></span>
       {%- endif -%}
     {%- endfor -%}
   </span>
@@ -160,8 +165,11 @@ popover carries only what the chip can't: the dates and the description.
     <span class="arc-pop-phases">
       {%- for ph in a.phases -%}
         {%- assign cadence = ph.cadence | default: "active" -%}
-      <span class="arc-pop-phase is-{{ cadence }}">
-        <small class="arc-pop-span">{{ ph.span }}{% if ph.span %} &middot; {% endif %}{{ cadence }}</small>
+      {%- comment -%}Dates only: the cadence names itself in the edge beside the
+      line (solid or dashed, matching the bar's own fill) and again in the note,
+      so spelling it out a third time only crowded the date.{%- endcomment %}
+      <span class="arc-pop-phase is-{{ cadence }}" data-phase="{{ forloop.index }}">
+        <small class="arc-pop-span">{{ ph.span }}</small>
         {%- if ph.note %}<small>{{ ph.note }}</small>{% endif -%}
       </span>
       {%- endfor -%}
