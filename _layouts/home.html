@@ -232,12 +232,10 @@ layout: default
       <p class="arc-throughline arc-throughline--minor">{{ v.throughline }}</p>
         {%- endif -%}
       {%- endfor %}
-      {%- comment -%}The one encoding a bar's name can't carry: what the fill
-      texture means. Family colors still go unnamed.{%- endcomment %}
-      <div class="arc-cadence-key" aria-hidden="true">
-        <span class="arc-cadence-key--daily">daily driver</span>
-        <span class="arc-cadence-key--occasional">occasional</span>
-      </div>
+      {%- comment -%}No standing key, for the textures any more than for the
+      colors: every bar and every phase names its own cadence in the popover the
+      pointer is already on, which is where the question gets asked. A legend
+      answered it in advance, at the cost of a row above the chart.{%- endcomment %}
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
           <div class="arc-lanes arc-lanes--tools"

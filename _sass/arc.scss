@@ -53,10 +53,10 @@ $arc-ruler-h: 28px;
 .arc-lanes-wrap { width: 100%; }
 // The switch sits below the chart, so a short view (Toolchain) would otherwise
 // yank it upward on every tab change. Floor the chart area so the switch holds
-// still: 440px puts a waterfall's legend + chart at the same total height as
-// the projects lanes, which have no legend row on desktop. Not on mobile, where
-// the transposed feed is long and variable and a floor would only add dead
-// space.
+// still: 440px is roughly what the projects lanes stand at, and a waterfall
+// carrying its full roster of bars clears it anyway — the floor is there for
+// the short view, not the tall one. Not on mobile, where the transposed feed is
+// long and variable and a floor would only add dead space.
 @media screen and (min-width: 701px) {
   .arc-view--waterfall .arc-lanes-wrap {
     min-height: 440px;
@@ -149,39 +149,6 @@ $arc-ruler-h: 28px;
   color: rgba(225, 225, 225, 0.38);
   max-width: 60ch;
   margin: -0.55rem 0 0;
-}
-
-// ---- Cadence key (waterfall only) -------------------------------------------
-// Names the one encoding a bar's label can't carry: solid fill = daily driver,
-// hatch = occasional. Hidden in the mobile feed, where the textures are too and
-// each phase names its cadence inline instead.
-.arc-cadence-key {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  gap: 1.1rem;
-  font-family: "IBM Plex Mono";
-  font-size: 0.72rem;
-  color: $arc-dim;
-  // Tuck it toward the ruler row: it's chart apparatus, not copy.
-  margin-bottom: -0.35rem;
-  span::before {
-    content: "";
-    display: inline-block;
-    width: 20px;
-    height: 9px;
-    margin-right: 7px;
-    border: 1px solid $arc-faint;
-    border-radius: 2px;
-    vertical-align: -1px;
-  }
-  .arc-cadence-key--daily::before { background: rgba(225, 225, 225, 0.14); }
-  // Denser than the bars' own hatch: a 20px swatch only fits two stripes at the
-  // chart's spacing, so it carries a little more alpha to register at all.
-  .arc-cadence-key--occasional::before {
-    background: repeating-linear-gradient(
-      -45deg, rgba(225, 225, 225, 0.28) 0 1px, transparent 1px 7px);
-  }
 }
 
 // ---- Swimlane grid ---------------------------------------------------------
@@ -1059,7 +1026,6 @@ button.arc-chip:focus-visible {
   // segment track becomes a list of phase lines under the card's summary,
   // each popover printed inline (the base .arc-pop rule above unhides them)
   // behind a solid or dashed cadence edge in the family color.
-  .arc-cadence-key { display: none; }
   .arc-seg-track {
     position: static;
     pointer-events: auto;
