@@ -1,5 +1,5 @@
 ---
-project-title: "taskbuffer.nvim"
+project-title: "Taskbuffer"
 project-type: "Software - Neovim Plugin - Go & Lua"
 project-status: "Active Development"
 project-headline: A Neovim plugin that gathers to-dos scattered across your markdown notes into one unified, time-sorted task list.
@@ -10,7 +10,7 @@ tags:
   - "tooling"
 arc:
   node:
-    label: "taskbuffer"
+    label: "Taskbuffer"
     sub: "Pure-Lua rewrite · agent-directed"
     span: "2025 – Present"
     blurb: "Gathers the to-dos scattered through your markdown notes into one time-sorted buffer."
