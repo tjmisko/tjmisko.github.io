@@ -236,6 +236,24 @@ views:
             ongoing: true
             note: Plain-text notes and linked research knowledge base.
 
+      - group: Terminal
+        tools:
+          - name: Terminal
+            family: environment
+            start: 2018-01-01
+            end: 2023-10-01
+            span: 2018 – late 2023
+            occasional: true
+            note: The macOS default, taken as it came — a terminal was still just where commands went, not somewhere to work.
+
+          - name: WezTerm
+            family: environment
+            continues: true
+            start: 2023-10-01
+            span: late 2023 – now
+            ongoing: true
+            note: Configured from scratch in Lua, and the same config has followed the machine from Windows to Linux.
+
       - group: Operating System
         tools:
           - name: macOS
@@ -277,3 +295,13 @@ views:
             span: 2025 – now
             ongoing: true
             note: Agents in the repo rather than a chat window; now the fleets that built Arachne to my specification.
+
+      - group: Keyboard
+        tools:
+          - name: ZSA Voyager
+            family: environment
+            start: 2023-11-01
+            span: late 2023 – now
+            ongoing: true
+            link: https://configure.zsa.io/voyager/layouts/3aeEA/latest/0
+            note: Split ergonomic board on Colemak-DH, with custom layers in place of reaching. Opens the layout in ZSA's configurator.
