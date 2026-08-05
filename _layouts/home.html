@@ -3,7 +3,13 @@ layout: default
 ---
 <div class="homepage-card" id="greeting-card">
     <div class="info-container" id="greeting">
-        <button class="resume-button" id="resume-trigger" type="button" aria-haspopup="dialog">Resume</button>
+        {%- comment -%}The resume is just another document for the PDF viewer at
+        the foot of this page; it carries its own source and cache-buster here so
+        the viewer itself knows nothing about which file it is showing.
+        {%- endcomment -%}
+        <button class="resume-button" id="resume-trigger" type="button" aria-haspopup="dialog"
+                data-pdf="/resume.pdf?v=2026-07-30" data-pdf-title="Resume"
+                data-pdf-download="resume.pdf">Resume</button>
         <p class="reveal">
           Welcome! I'm
         </p>
@@ -649,20 +655,24 @@ layout: default
 
   modalParent.addEventListener("click", closeModal);
 
-  // ---- Resume PDF modal --------------------------------------------------
-  // The resume button opens a popover that renders /resume.pdf inline. We
-  // render the PDF ourselves with pdf.js into a <canvas> rather than pointing
-  // an <iframe> at the file: browsers configured to "save" PDFs (common on
-  // Linux/Firefox) would otherwise download the file and leave the frame
-  // blank. Fetching + drawing means no navigation, so nothing auto-downloads,
-  // and we control the output so it's never blank. The Download / open-in-new-
-  // tab links in the header remain as fallbacks (and on render failure).
-  (function resumeModal() {
-    const trigger = document.getElementById("resume-trigger");
-    const overlay = document.getElementById("resume-modal");
-    if (!trigger || !overlay) return;
-    const frame = overlay.querySelector(".resume-modal-frame");
-    const closeBtn = overlay.querySelector(".resume-modal-close");
+  // ---- PDF viewer --------------------------------------------------------
+  // One overlay shows every PDF the site links to: the resume from the hero
+  // button, the papers from the cards in the portfolio. We render the PDF
+  // ourselves with pdf.js into a <canvas> rather than pointing an <iframe> at
+  // the file: browsers configured to "save" PDFs (common on Linux/Firefox)
+  // would otherwise download the file and leave the frame blank. Fetching +
+  // drawing means no navigation, so nothing auto-downloads, and we control the
+  // output so it's never blank. Every trigger keeps a working href underneath,
+  // and the Download / open-in-new-tab links in the header stay as fallbacks
+  // (and on render failure).
+  (function pdfViewer() {
+    const overlay = document.getElementById("pdf-modal");
+    if (!overlay) return;
+    const frame = overlay.querySelector(".pdf-modal-frame");
+    const titleEl = overlay.querySelector(".pdf-modal-title");
+    const downloadLink = overlay.querySelector('.pdf-modal-action[data-role="download"]');
+    const newTabLink = overlay.querySelector('.pdf-modal-action[data-role="new-tab"]');
+    const closeBtn = overlay.querySelector(".pdf-modal-close");
     let lastFocus = null;
 
     // pdf.js (UMD build) is loaded lazily on first open from a CDN; the worker
@@ -673,11 +683,13 @@ layout: default
 
     let pdfjsPromise = null;
     let pdfDoc = null;
+    let docSrc = "";          // the document currently laid out, so reopening it is free
     let renderState = "idle"; // idle | done | error
-    let isRendering = false;
+    let renderToken = 0;      // see renderDoc: which layout run the frame belongs to
+    let pageObserver = null;
 
     function setStatus(message) {
-      frame.innerHTML = '<p class="resume-modal-status"></p>';
+      frame.innerHTML = '<p class="pdf-modal-status"></p>';
       frame.firstChild.textContent = message;
     }
 
@@ -701,71 +713,172 @@ layout: default
       return pdfjsPromise;
     }
 
-    async function renderResume(force) {
-      if (isRendering) return;
-      if ((renderState === "done" || renderState === "error") && !force) return;
-      isRendering = true;
-      if (!pdfDoc) setStatus("Loading resume…");
+    // Draw one page into the box already standing in for it. The resume is a
+    // single page, but a paper runs to dozens: rendering them all up front
+    // would spend hundreds of megabytes of canvas on pages nobody has scrolled
+    // to, so each one waits until it comes within range of the viewport.
+    async function drawPage(pageEl) {
+      if (pageEl.dataset.state) return; // already drawn, or drawing
+      pageEl.dataset.state = "drawing";
       try {
-        const pdfjsLib = await loadPdfJs();
-        if (!pdfDoc) pdfDoc = await pdfjsLib.getDocument(frame.dataset.src).promise;
+        const page = await pdfDoc.getPage(Number(pageEl.dataset.page));
         const dpr = window.devicePixelRatio || 1;
-        const styles = getComputedStyle(frame);
-        const padX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-        const available = Math.max(frame.clientWidth - padX, 120);
-        frame.innerHTML = "";
-        for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
-          const page = await pdfDoc.getPage(pageNum);
-          const base = page.getViewport({ scale: 1 });
-          const viewport = page.getViewport({ scale: (available / base.width) * dpr });
-          const canvas = document.createElement("canvas");
-          canvas.width = Math.floor(viewport.width);
-          canvas.height = Math.floor(viewport.height);
-          canvas.style.width = available + "px"; // height stays auto -> keeps aspect
-          const pageEl = document.createElement("div");
-          pageEl.className = "resume-page"; // un-filtered wrapper holds the shadow
-          pageEl.appendChild(canvas);
-          frame.appendChild(pageEl);
-          await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
-        }
-        renderState = "done";
+        const base = page.getViewport({ scale: 1 });
+        const viewport = page.getViewport({ scale: (pageEl.clientWidth / base.width) * dpr });
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.floor(viewport.width);
+        canvas.height = Math.floor(viewport.height);
+        canvas.style.width = "100%"; // height stays auto -> keeps aspect
+        pageEl.appendChild(canvas);
+        await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+        pageEl.dataset.state = "drawn";
       } catch (err) {
-        renderState = "error";
-        setStatus("Couldn’t display the resume here. Use “Open in new tab” or “Download” above.");
-      } finally {
-        isRendering = false;
+        // One page that won't draw leaves its empty box behind rather than
+        // taking down the document around it; the fallback links still work.
+        pageEl.dataset.state = "failed";
       }
     }
 
-    function openResume() {
+    // Lay the document out as one empty box per page, each at that page's own
+    // aspect ratio so the scrollbar tells the truth before a single page has
+    // been drawn.
+    //
+    // Every run carries a token. Asking for another document (or resizing)
+    // partway through starts a newer run, and the older one drops out at its
+    // next checkpoint instead of laying its pages into a frame that has moved
+    // on to something else.
+    async function renderDoc(force) {
+      if (!docSrc) return;
+      if ((renderState === "done" || renderState === "error") && !force) return;
+      const token = ++renderToken;
+      const src = docSrc;
+      if (!pdfDoc) setStatus("Loading…");
+      try {
+        const pdfjsLib = await loadPdfJs();
+        if (token !== renderToken) return;
+        if (!pdfDoc) {
+          const doc = await pdfjsLib.getDocument(src).promise;
+          if (token !== renderToken) { doc.destroy(); return; }
+          pdfDoc = doc;
+        }
+        const styles = getComputedStyle(frame);
+        const padX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+        const available = Math.max(frame.clientWidth - padX, 120);
+        // Hold the reader's place across a re-layout (a rotate, a resize):
+        // measured as a fraction, since the new layout is a different height.
+        const wasAt = frame.scrollHeight > frame.clientHeight
+          ? frame.scrollTop / frame.scrollHeight
+          : 0;
+        if (pageObserver) pageObserver.disconnect();
+        frame.innerHTML = "";
+        pageObserver = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            pageObserver.unobserve(entry.target);
+            drawPage(entry.target);
+          }
+          // A page and a half of margin: scrolling at a normal clip finds the
+          // next page already drawn, without running far ahead of the reader.
+        }, { root: frame, rootMargin: "150% 0px" });
+        for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+          const page = await pdfDoc.getPage(pageNum);
+          if (token !== renderToken) return;
+          const base = page.getViewport({ scale: 1 });
+          const pageEl = document.createElement("div");
+          pageEl.className = "pdf-page"; // un-filtered wrapper holds the shadow
+          pageEl.dataset.page = String(pageNum);
+          pageEl.style.width = available + "px";
+          pageEl.style.aspectRatio = base.width + " / " + base.height;
+          frame.appendChild(pageEl);
+          pageObserver.observe(pageEl);
+        }
+        if (wasAt) frame.scrollTop = wasAt * frame.scrollHeight;
+        renderState = "done";
+      } catch (err) {
+        if (token !== renderToken) return; // a superseded run's failure isn't news
+        renderState = "error";
+        setStatus("Couldn’t display this document here. Use “Open in new tab” or “Download” above.");
+      }
+    }
+
+    // src   the file to show
+    // meta  title for the header, and the filename a download should land under
+    function openPdf(src, meta) {
+      if (!src) return;
+      const info = meta || {};
+      const title = info.title || "Document";
       lastFocus = document.activeElement;
+      titleEl.textContent = title;
+      overlay.setAttribute("aria-label", title);
+      frame.setAttribute("aria-label", title + " (PDF)");
+      downloadLink.href = src;
+      downloadLink.setAttribute("download", info.download || "");
+      newTabLink.href = src;
+      // A second look at the document already loaded costs nothing: the pages
+      // are still drawn. A different one starts over, and lets go of the last.
+      if (src !== docSrc) {
+        if (pdfDoc) { pdfDoc.destroy(); pdfDoc = null; }
+        docSrc = src;
+        renderState = "idle";
+        frame.scrollTop = 0;
+      }
       overlay.classList.add("is-open");
       overlay.setAttribute("aria-hidden", "false");
       (closeBtn || overlay).focus();
-      renderResume(false);
+      renderDoc(false);
     }
-    function closeResume() {
-      if (!overlay.classList.contains("is-open")) return;
+    // Reports whether it had anything to close, so the one Escape handler
+    // further down can offer the key here first and stop if it was taken. The
+    // viewer opens over the project modal — a card's own paper is one click
+    // away inside it — and one Escape should only ever close the top layer.
+    function closePdf() {
+      if (!overlay.classList.contains("is-open")) return false;
       overlay.classList.remove("is-open");
       overlay.setAttribute("aria-hidden", "true");
       if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+      return true;
     }
+    window.closePdfModal = closePdf;
 
-    trigger.addEventListener("click", openResume);
-    if (closeBtn) closeBtn.addEventListener("click", closeResume);
+    const trigger = document.getElementById("resume-trigger");
+    if (trigger) {
+      trigger.addEventListener("click", () => openPdf(trigger.dataset.pdf, {
+        title: trigger.dataset.pdfTitle,
+        download: trigger.dataset.pdfDownload,
+      }));
+    }
+    // Every PDF link on a card opens here instead of handing the file to the
+    // browser, which is as likely to drop it in Downloads as to show it.
+    // Capture rather than bubble: a card cloned into the project modal stops
+    // click propagation at the modal, so a listener on document would never
+    // hear about the links inside it.
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+      const link = target instanceof Element ? target.closest("a.pdf-link") : null;
+      if (!link) return;
+      // Modified clicks stay the browser's: ctrl/cmd-click still opens the file
+      // in a tab of its own, and a middle click still goes to the background.
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      event.stopPropagation(); // the card underneath shouldn't open as well
+      openPdf(link.getAttribute("href"), {
+        title: link.dataset.pdfTitle,
+        download: link.dataset.pdfDownload,
+      });
+    }, true);
+
+    if (closeBtn) closeBtn.addEventListener("click", closePdf);
     // Close when the backdrop (not the panel) is clicked.
     overlay.addEventListener("click", (event) => {
-      if (event.target === overlay) closeResume();
+      if (event.target === overlay) closePdf();
     });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeResume();
-    });
+    // Escape arrives by way of the keyboard handler at the foot of this script.
     // Re-render at the new width when the viewport changes (e.g. phone rotate).
     let resizeTimer = null;
     window.addEventListener("resize", () => {
       if (renderState !== "done" || !overlay.classList.contains("is-open")) return;
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => renderResume(true), 200);
+      resizeTimer = setTimeout(() => renderDoc(true), 200);
     });
   })();
 
@@ -1106,10 +1219,14 @@ layout: default
   // ---- Keyboard handling -------------------------------------------------
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
+      // Top layer first: the PDF viewer sits over the project modal, so while
+      // it is up the key is spent closing it and nothing else. It says whether
+      // it took the key — asking it here, rather than letting it listen for
+      // Escape itself, is what keeps one press from closing two layers.
+      if (window.closePdfModal && window.closePdfModal()) return;
       // Modal close takes priority: when a project modal is open the card that
       // opened it is usually still the focused element, so check open-state
-      // first to avoid blurring the card instead of closing the modal. (The
-      // resume modal closes itself in its own Escape handler.)
+      // first to avoid blurring the card instead of closing the modal.
       if (modalParent.classList.contains("is-open")) {
         closeModal();
         return;
@@ -1161,17 +1278,24 @@ layout: default
   </script>
 </div>
 
-<div class="resume-modal-parent" id="resume-modal" role="dialog" aria-modal="true" aria-label="Resume" aria-hidden="true">
-  <div class="resume-modal">
-    <div class="resume-modal-header">
-      <h2 class="resume-modal-title">Resume</h2>
-      <div class="resume-modal-actions">
-        <a class="resume-modal-action" href="/resume.pdf?v=2026-07-30" download="resume.pdf">Download</a>
-        <a class="resume-modal-action" href="/resume.pdf?v=2026-07-30" target="_blank" rel="noopener">Open in new tab</a>
-        <button class="resume-modal-close" type="button" aria-label="Close resume">&times;</button>
+{%- comment -%}One viewer for every PDF the site links to: the resume from the
+hero button, the papers from the cards in the portfolio. Title, source and both
+fallback links are filled in by whatever opened it, so nothing here names a
+document.{%- endcomment -%}
+<div class="pdf-modal-parent" id="pdf-modal" role="dialog" aria-modal="true" aria-label="Document" aria-hidden="true">
+  <div class="pdf-modal">
+    <div class="pdf-modal-header">
+      <h2 class="pdf-modal-title"></h2>
+      <div class="pdf-modal-actions">
+        <a class="pdf-modal-action" data-role="download" href="#" download>Download</a>
+        <a class="pdf-modal-action" data-role="new-tab" href="#" target="_blank" rel="noopener">Open in new tab</a>
       </div>
+      {%- comment -%}Outside the actions, so that on a phone — where the two
+      links drop to a row of their own — the close stays up on the title's row,
+      in the corner it is looked for in.{%- endcomment -%}
+      <button class="pdf-modal-close" type="button" aria-label="Close document">&times;</button>
     </div>
-    <div class="resume-modal-frame" data-src="/resume.pdf?v=2026-07-30" role="document" aria-label="Resume (PDF)" tabindex="0"></div>
+    <div class="pdf-modal-frame" role="document" tabindex="0"></div>
   </div>
 </div>
 
