@@ -11,6 +11,13 @@ Front matter read here:
   arc.lane     research | data | software — which color family the chip takes
   arc.tone     overrides lane for color only (a research role in the data palette)
   arc.row      grid row, 2–8
+  arc.between  the chip hangs centered in the clear space between the bars above
+               and below it rather than on its own row's midline. For the
+               unbanded row, whose whole point is that what sits there belongs to
+               neither side of it. Purely visual: the chip keeps its row and only
+               overhangs into the next one's band, so set it on every chip in the
+               row — and on whatever else is drawn around them, or the outline
+               slides off what it encloses. See .arc-chip.is-between.
   arc.relay    true for chips that share a row as one continuous succession
                (SSPI research → BRG → IRLE engineering). They stretch to a
                common height instead of each hugging its own text, so a
@@ -157,6 +164,7 @@ along the row.{%- endcomment -%}
   {%- endif -%}
 <button type="button"
         class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ pt_clipped }}
+               {%- if a.between %} is-between{% endif -%}
                {%- if a.relay %} is-relay{% endif %}"
         style="grid-row: {{ a.row }}; grid-column: {{ pt_col_start }} / {{ pt_col_end }}; --o: {{ pt_col_raw }};"
         data-project="{{ include.p.slug }}">
@@ -179,7 +187,8 @@ along the row.{%- endcomment -%}
 {%- endfor -%}
 {%- elsif a.kind -%}
 <button type="button"
-        class="arc-chip arc-chip--{{ a.tone | default: a.lane }} arc-chip--mini{{ clipped }}"
+        class="arc-chip arc-chip--{{ a.tone | default: a.lane }} arc-chip--mini{{ clipped }}
+               {%- if a.between %} is-between{% endif %}"
         style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
         data-project="{{ include.p.slug }}" aria-label="{{ a.label }}">
   <span class="arc-ico arc-ico--{{ a.kind }}" aria-hidden="true"></span>
@@ -200,6 +209,7 @@ the title itself, held back until the chip is too narrow to finish saying it.
 {%- endcomment -%}
 <button type="button"
         class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ clipped }}
+               {%- if a.between %} is-between{% endif -%}
                {%- if a.relay %} is-relay{% endif -%}
                {%- if a.phases %} has-phases{% endif %}"
         style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"

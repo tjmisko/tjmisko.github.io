@@ -131,8 +131,11 @@ layout: default
             the step from there. See .arc-lane-labels--band.
 
             Row 3 belongs to no band. The honors thesis was both the last of the
-            coursework and the first of the research, and the row it sits on
-            says so by belonging to neither of the bands it lies between.
+            coursework and the first of the research, and the row it sits on says
+            so by belonging to neither of the bands it lies between — and by
+            hanging in the clear between them rather than sitting on its own
+            midline, which is what arc.between does for the papers and
+            .arc-group--thesis for the outline around them.
             {%- endcomment %}
             <div class="arc-lane-rail" style="grid-row: 2 / 9;" aria-hidden="true"></div>
             <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 5 / 6;">
@@ -143,7 +146,8 @@ layout: default
             </div>
 
             <!-- honors-thesis outline, on the unbanded row between the degree
-                 above it and the research below -->
+                 above it and the research below, and hung with the papers it
+                 encloses (see .arc-group--thesis) -->
             <div class="arc-group arc-group--thesis" style="grid-row: 3; grid-column: 5 / 7;">
               <span class="arc-group-label arc-group-label--below">Honors Thesis</span>
             </div>

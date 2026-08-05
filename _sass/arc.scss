@@ -592,6 +592,27 @@ a.arc-chip:focus-visible {
   border-style: solid;
   border-color: rgba(110, 150, 185, 0.25);
 }
+// ---- The thesis block, hung between the bars rather than on its row ---------
+// The thesis belongs to neither band, and what it should look like is a block
+// sitting in the clear space between the degree and the employment relay, evenly
+// off both. Its own row can't put it there: the space between those two bars is
+// rows 3 and 4 together, and centering in row 3 alone left it 12px under the
+// degree and 52px over the relay.
+//
+// That span and the space between the bars share a center — each row line stands
+// the same 12px off the bar beside it (a 10px row gap plus the 2px margin every
+// chip carries) — so the move is from one center to the other: half of row 4 and
+// the gap above it, which is what the research row and its 8.6px of trailing air
+// add below. Nothing here is a layout change; the block overhangs into row 4's
+// band, where the only occupant is Quasioptimal, five columns to the right.
+//
+// The outline and the papers inside it move as one. The papers carry arc.between
+// (see arc-chip.html) to say they hang with it — the outline is drawn around
+// them and would otherwise slide off what it encloses.
+.arc-group--thesis,
+.arc-chip.is-between {
+  transform: translateY(20.3px);
+}
 .arc-group-label {
   position: absolute;
   top: -9px;
@@ -1023,6 +1044,9 @@ a.arc-chip:focus-visible {
   .arc-lane-rail,
   .arc-group,
   .arc-junction { display: none; }
+  // Hung between two rows the feed no longer has — here it would only push one
+  // card down over the next.
+  .arc-chip.is-between { transform: none; }
   .arc-chip { margin: 0; align-self: stretch; }
   // No horizontal scroller on mobile — the page would become the sticky
   // container and shove titles rightward. Pin them back down.
