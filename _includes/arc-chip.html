@@ -25,6 +25,28 @@ Front matter read here:
   arc.sub      short technical tagline under the title
   arc.span     human-readable dates, shown in the popover
   arc.blurb    one sentence, shown in the popover
+  arc.parts    optional list of sections of one document drawn as separate boxes
+               on its row rather than as one bar, for work that changed in kind
+               partway through — a role that became a different role over the
+               same project. Each part is a chip in its own right: its own
+               extent, its own title, its own hover popover, all clicking
+               through to this one document's card. Unlike phases, which only
+               texture the bar, parts replace it — declaring both fails the
+               build, and so does declaring parts on an arc.kind mini. Each
+               takes:
+                 start    decimal year the part begins
+                 end      optional — defaults to the next part's start, so a
+                          contiguous succession only has to date each turn; the
+                          last part defaults to the chip's own end (or runs to
+                          the junction under arc.ongoing)
+                 label    the part's title; falls back to arc.label
+                 sub      short tagline under it; falls back to arc.sub
+                 span     human-readable dates for the popover; falls back to
+                          arc.span
+                 blurb    one sentence for the popover; falls back to arc.blurb
+               Parts must be in date order and disjoint (touching is fine, gaps
+               are fine); a violation fails the build with a missing-include
+               error naming the document and the rule.
   arc.phases   optional list of activity phases inside one chip, for work that
                ran hot and cold rather than at one pitch throughout. Solid =
                active, diagonal hatch = backburner. Each phase takes:
@@ -75,7 +97,87 @@ boundary off the fill it is supposed to divide.{%- endcomment -%}
   {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--phases-are-not-drawable-on-an-icon-only-mini-chip{%- endcapture -%}
   {% include {{ arc_fail }} %}
 {%- endif -%}
-{%- if a.kind -%}
+{%- if a.parts and a.kind -%}
+  {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--parts-are-not-drawable-on-an-icon-only-mini-chip{%- endcapture -%}
+  {% include {{ arc_fail }} %}
+{%- endif -%}
+{%- if a.parts and a.phases -%}
+  {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--parts-replace-the-bar-so-they-cannot-carry-phases{%- endcapture -%}
+  {% include {{ arc_fail }} %}
+{%- endif -%}
+{%- if a.parts -%}
+{%- comment -%}One box per part, each placed on the row by its own dates. They
+are siblings on the grid rather than divisions of one element, so each takes its
+own hover — and each carries the document's slug, so wherever the pointer lands
+the click opens the same card. The 6px right margin every chip carries is what
+sets one part off from the next, the same gap that separates the roles further
+along the row.{%- endcomment -%}
+{%- assign prev_part_end = 0 -%}
+{%- for pt in a.parts -%}
+  {%- assign pt_start = pt.start -%}
+  {%- if pt.end -%}
+    {%- assign pt_end = pt.end -%}
+  {%- elsif forloop.last != true -%}
+    {%- assign pt_next = a.parts[forloop.index] -%}
+    {%- assign pt_end = pt_next.start -%}
+  {%- else -%}
+    {%- assign pt_end = a.end -%}
+  {%- endif -%}
+  {%- comment -%}Same contract as phases: in date order, disjoint, each one
+  ending after it starts. A violation stops the build rather than drawing one
+  part on top of its neighbour.{%- endcomment -%}
+  {%- assign part_error = "" -%}
+  {%- if a.ongoing and forloop.last -%}
+    {%- comment -%}The last part runs off the scale with the chip, so it needs no
+    end of its own.{%- endcomment -%}
+  {%- elsif pt_end == nil -%}
+    {%- assign part_error = "part-needs-an-end-date" -%}
+  {%- elsif pt_end <= pt_start -%}
+    {%- assign part_error = "part-ends-on-or-before-its-start" -%}
+  {%- endif -%}
+  {%- if part_error == "" and pt_start < prev_part_end -%}
+    {%- assign part_error = "parts-overlap" -%}
+  {%- endif -%}
+  {%- if part_error != "" -%}
+    {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--{{ part_error }}{%- endcapture -%}
+    {% include {{ arc_fail }} %}
+  {%- endif -%}
+  {%- assign prev_part_end = pt_end -%}
+  {%- assign pt_col_raw = pt_start | minus: 2020 | times: 2 | plus: 2 | round -%}
+  {%- if a.ongoing and forloop.last -%}
+    {%- assign pt_col_end = include.work_end -%}
+  {%- else -%}
+    {%- assign pt_col_end = pt_end | minus: 2020 | times: 2 | plus: 2 | round -%}
+  {%- endif -%}
+  {%- assign pt_col_start = pt_col_raw -%}
+  {%- assign pt_clipped = "" -%}
+  {%- if pt_col_raw < 2 -%}
+    {%- assign pt_col_start = 2 -%}
+    {%- assign pt_clipped = " is-clipped" -%}
+  {%- endif -%}
+<button type="button"
+        class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ pt_clipped }}
+               {%- if a.relay %} is-relay{% endif %}"
+        style="grid-row: {{ a.row }}; grid-column: {{ pt_col_start }} / {{ pt_col_end }}; --o: {{ pt_col_raw }};"
+        data-project="{{ include.p.slug }}">
+  {%- assign pt_label = pt.label | default: a.label -%}
+  <strong>{{ pt_label }}</strong>
+  {%- assign pt_sub = pt.sub | default: a.sub -%}
+  {%- if pt_sub %}<small>{{ pt_sub }}</small>{% endif -%}
+  {%- assign pt_span = pt.span | default: a.span -%}
+  {%- assign pt_blurb = pt.blurb | default: a.blurb -%}
+  {%- if pt_span or pt_blurb -%}
+  <span class="arc-pop{{ pop_dir }}">
+    {%- comment -%}Shown only when the part's own title had to be cut — see the
+    marking pass in home.html.{%- endcomment -%}
+    <strong class="arc-pop-title">{{ pt_label }}</strong>
+    {%- if pt_span %}<small class="arc-pop-span">{{ pt_span }}</small>{% endif -%}
+    {%- if pt_blurb %}<small>{{ pt_blurb }}</small>{% endif -%}
+  </span>
+  {%- endif -%}
+</button>
+{%- endfor -%}
+{%- elsif a.kind -%}
 <button type="button"
         class="arc-chip arc-chip--{{ a.tone | default: a.lane }} arc-chip--mini{{ clipped }}"
         style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
