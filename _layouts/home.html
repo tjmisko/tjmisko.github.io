@@ -221,6 +221,12 @@ layout: default
                 {%- for p in node_small -%}
                 <button type="button" class="arc-chip arc-chip--software arc-chip--node-small"
                         data-project="{{ p.slug }}">
+                  {%- comment -%}The same glyph the small builds on the chart
+                  carry, so the panel's short entries and the row of minis down
+                  in the software band read as the same class of thing — these
+                  two are only in the panel rather than on a row because 2026 is
+                  past the end of the fixed scale.{%- endcomment -%}
+                  <span class="arc-ico arc-ico--{{ p.arc.node.kind | default: 'cli' }}" aria-hidden="true"></span>
                   <strong>{{ p.arc.node.label }}</strong>
                   <span class="arc-pop">
                     {%- comment -%}Always printed here, not only when the title

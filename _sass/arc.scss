@@ -271,9 +271,12 @@ $arc-ruler-h: 28px;
   // outgrows them it sets their heights instead, the two distances grow with it,
   // and this number is wrong. That is what pairing the short builds at the foot
   // of the panel buys (see .arc-node-pair): the panel stays under the chart, and
-  // this stays a property of the chart. There is about 68px of clearance, which
-  // is not another full-width card — a sixth of those wants pairing too, or this
-  // has to be re-measured.
+  // this stays a property of the chart. The clearance is about 9px — the glyphs
+  // on the paired cards spent most of what the pairing bought — so anything
+  // added to the panel at all, a sixth entry or another line in an existing one,
+  // will push past it and this will have to be re-measured. What it was before
+  // the panel outgrew the chart is 113px; what it becomes is whatever the new
+  // distance from the degree's row to the research row measures.
   gap: 99px;
   z-index: 5; // above the rail it sits on
   // Everything above lines the names up by their boxes, and by their boxes they
@@ -810,7 +813,20 @@ a.arc-chip:focus-visible {
 // regardless.
 .arc-chip--node-small {
   padding: 7px 5px;
+  text-align: center; // the glyph is centered, and a title beside it should be
+  // A button centres its contents when it is taller than they are, and the row
+  // stretches both cards to the taller one. One title runs to two lines and the
+  // other to one, so that centring dropped the shorter card's glyph below its
+  // neighbour's — two of the same icon side by side, level with nothing. Anchor
+  // the content to the top instead and they line up across the row.
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   > strong { font-size: 0.7rem; }
+  // Stacked rather than beside the title: inline, the glyph and its gap would
+  // take 30 of the 75px inside the card and leave the title less than it needs
+  // for one word of itself.
+  > .arc-ico { margin: 0 auto 5px; }
 }
 // Every other chip holds its title back from its own popover, on the grounds
 // that the chip is already saying it — true where the popover adds a tagline
@@ -1199,8 +1215,14 @@ a.arc-chip:focus-visible {
   // down from the rest for no reason the reader can see.
   .arc-chip--node-small {
     padding: 6px 11px; // .arc-chip's own, which the panel had tightened
+    text-align: left;
     > strong { font-size: inherit; }
     > .arc-pop > .arc-pop-title { display: none; }
+    // The centering was the panel's, where the glyph sits over the title in a
+    // card too narrow to hold both on a line. Here there is width to spare, so
+    // it goes where the minis put theirs in the feed: at the left, ahead of the
+    // name it belongs to.
+    > .arc-ico { margin: 0 0 4px; }
   }
 
   // Tools feed: same transpose, but bars become cards carrying their span and
