@@ -9,7 +9,7 @@ tags:
   - "tooling"
 arc:
   lane: software
-  row: 7
+  row: 8
   start: 2024.5
   end: 2025
   kind: cli
