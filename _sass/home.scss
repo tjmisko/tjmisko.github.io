@@ -172,9 +172,11 @@ p, ul {
   color: $homepage-background-color;
 }
 
-// Resume popover: full-screen fade overlay holding a panel that renders the
-// PDF in an iframe, with Download / open-in-new-tab fallbacks.
-.resume-modal-parent {
+// PDF popover: full-screen fade overlay holding a panel that renders any of the
+// site's PDFs — the resume, a paper off a card — page by page onto canvas, with
+// Download / open-in-new-tab fallbacks. Above the project modal (z-index 3),
+// which is one of the places it opens from.
+.pdf-modal-parent {
   position: fixed;
   inset: 0;
   z-index: 5;
@@ -189,13 +191,13 @@ p, ul {
   transition: opacity var(--dur-fast) var(--ease-out),
               visibility 0s linear var(--dur-fast);
 }
-.resume-modal-parent.is-open {
+.pdf-modal-parent.is-open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transition: opacity var(--dur-fast) var(--ease-out);
 }
-.resume-modal {
+.pdf-modal {
   display: flex;
   flex-direction: column;
   width: min(900px, 100%);
@@ -209,41 +211,52 @@ p, ul {
   transition: transform var(--dur-fast) var(--ease-out),
               opacity var(--dur-fast) var(--ease-out);
 }
-.resume-modal-parent.is-open .resume-modal {
+.pdf-modal-parent.is-open .pdf-modal {
   transform: scale(1);
   opacity: 1;
 }
-.resume-modal-header {
+.pdf-modal-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1em;
   padding: 0.55em 0.9em;
   border-bottom: 1px solid rgba(225, 225, 225, 0.12);
 }
-.resume-modal-title {
+.pdf-modal-title {
   margin: 0;
+  // Takes the space the actions and the close don't, so they stay at the far
+  // end and a long title never pushes them off it — least of all onto a line of
+  // their own on a phone, where the header wraps.
+  flex: 1 1 0;
+  // "Resume" is one word; a paper's title is a sentence. Let it wrap rather
+  // than run under the actions, but spend at most two lines of header on it —
+  // the whole title is on the card that opened this, and on page one.
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   font-family: "Courier Prime";
   font-size: 1.1rem;
   color: $homepage-font-color;
 }
-.resume-modal-actions {
+.pdf-modal-actions {
   display: flex;
   align-items: center;
   gap: 1em;
 }
-.resume-modal-action {
+.pdf-modal-action {
   font-family: "IBM Plex Mono";
   font-size: 0.85rem;
   color: $homepage-accent-color;
   text-decoration: none;
   white-space: nowrap;
 }
-.resume-modal-action:hover,
-.resume-modal-action:focus-visible {
+.pdf-modal-action:hover,
+.pdf-modal-action:focus-visible {
   text-decoration: underline;
 }
-.resume-modal-close {
+.pdf-modal-close {
   all: unset;
   cursor: pointer;
   font-size: 1.5rem;
@@ -252,11 +265,27 @@ p, ul {
   color: $homepage-font-color;
   transition: color var(--dur-fast) var(--ease-out);
 }
-.resume-modal-close:hover,
-.resume-modal-close:focus-visible {
+.pdf-modal-close:hover,
+.pdf-modal-close:focus-visible {
   color: $homepage-accent-color;
 }
-.resume-modal-frame {
+// A phone's header can't hold a paper's title and both fallback links on one
+// line — the title ends up clamped to a word and a half. Give the links a row
+// of their own under it, and keep the close in the corner.
+@media screen and (max-width: $on-palm) {
+  .pdf-modal-header {
+    flex-wrap: wrap;
+    row-gap: 0.35em;
+  }
+  .pdf-modal-title { font-size: 1rem; }
+  .pdf-modal-close { order: 1; }
+  .pdf-modal-actions {
+    order: 2;
+    flex: 1 0 100%;
+    justify-content: flex-end;
+  }
+}
+.pdf-modal-frame {
   flex: 1 1 auto;
   width: 100%;
   border: 0;
@@ -270,19 +299,26 @@ p, ul {
 // inverted (below), and a CSS filter applies to the element's own box-shadow
 // too — so a shadow on the canvas would invert into a light glow. Keeping the
 // shadow on the un-filtered wrapper keeps it a real, dark drop shadow.
-.resume-page {
-  width: fit-content;
+//
+// It also stands in for its page before that page is drawn: the viewer sets the
+// width and the page's own aspect ratio inline, so a thirty-page paper has its
+// full length under the scrollbar from the first frame, and each box is filled
+// in as it nears the viewport. Border box, so the width it is given is the
+// width it occupies and no page can nudge out a horizontal scrollbar.
+.pdf-page {
+  box-sizing: border-box;
   max-width: 100%;
   margin: 0 auto 1rem;
+  background: rgba(255, 255, 255, 0.04); // a page waiting to be drawn
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 2px;
   overflow: hidden; // clip the canvas corners to the rounded border
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
 }
-.resume-page:last-child {
+.pdf-page:last-child {
   margin-bottom: 0;
 }
-.resume-modal-frame canvas {
+.pdf-modal-frame canvas {
   display: block;
   height: auto;
   max-width: 100%;
@@ -292,7 +328,7 @@ p, ul {
   // always one click away via the Download / Open-in-new-tab links above.
   filter: invert(0.92) hue-rotate(180deg);
 }
-.resume-modal-status {
+.pdf-modal-status {
   margin: 0;
   padding: 2rem 1rem;
   text-align: center;
