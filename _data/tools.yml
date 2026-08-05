@@ -43,6 +43,11 @@
 #                 (editors, operating systems) the spans don't overlap, so a
 #                 staircase would be misleading — they belong on one row as a
 #                 relay of segments. Set it on every entry after the first.
+#   link          optional URL. The bar becomes that link — the whole bar, in a
+#                 new tab — instead of a plain span, so say where it goes in the
+#                 `note`. Not available to a bar with segments: those are
+#                 focusable in their own right, and nesting them inside a link
+#                 fails the build.
 #   family        `analysis`, `language`, or `environment`; drives bar color
 #                 through .arc-chip--<family>. There is no color key — the bar
 #                 names carry the distinction — so adding a family here means

@@ -364,7 +364,17 @@ layout: default
                     {%- assign col_start = 2 -%}
                     {%- assign clipped = " is-clipped" -%}
                   {%- endif -%}
-            <div class="arc-chip arc-chip--tool arc-chip--{{ t.family }}{{ minor }}{{ clipped }}
+                  {%- comment -%}A bar with a `link` is the anchor itself rather
+                  than a div: it is the whole target, and it gets its focus from
+                  the href instead of a tabindex. A bar with phases can't be one
+                  — its segments are focusable, and interactive content nested
+                  inside a link is neither valid nor operable.{%- endcomment -%}
+                  {%- if t.link and t.segments -%}
+                    {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--a-linked-bar-cannot-also-carry-segments{%- endcapture -%}
+                    {% include {{ arc_fail }} %}
+                  {%- endif -%}
+                  {%- if t.link -%}{%- assign tool_tag = "a" -%}{%- else -%}{%- assign tool_tag = "div" -%}{%- endif -%}
+            <{{ tool_tag }} class="arc-chip arc-chip--tool arc-chip--{{ t.family }}{{ minor }}{{ clipped }}
                         {%- if t_ongoing %} is-ongoing{% endif -%}
                         {%- if t.occasional %} is-occasional{% endif -%}
                         {%- if t.continues %} is-continuation{% endif -%}
@@ -372,7 +382,8 @@ layout: default
                         {%- if col_start >= arc_late %} is-late{% endif -%}
                         {%- if tool_row >= tools_flip %} is-up{% endif %}"
                  style="grid-row: {{ tool_row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
-                 {%- unless t.segments %} tabindex="0"{% endunless %}>
+                 {%- if t.link %} href="{{ t.link }}" target="_blank" rel="noopener"
+                 {%- else -%}{%- unless t.segments %} tabindex="0"{% endunless %}{% endif %}>
               <strong>{{ t.name }}</strong>
               <span class="arc-pop arc-pop--tool">
                 {%- comment -%}Shown only when the bar's own title had to be cut
@@ -462,7 +473,7 @@ layout: default
                 <span class="arc-seg is-{% if t.occasional %}occasional{% else %}daily{% endif %}"></span>
               </span>
               {%- endif -%}
-            </div>
+            </{{ tool_tag }}>
                 {%- endfor -%}
                 {%- comment -%}Emitted after its rows so the span can use the row
                 counter; grid placement is explicit, so DOM order is free.

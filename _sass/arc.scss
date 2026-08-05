@@ -292,9 +292,17 @@ $arc-ruler-h: 28px;
   flex-direction: column;
   justify-content: center;
 }
-button.arc-chip { cursor: pointer; }
+// A chip that goes somewhere — a project's card, or a bar carrying a `link` —
+// says so the same way whichever it is, and a bar that goes nowhere still reads
+// as a bar. Anchors also take the chip's own color rather than the page's link
+// orange, which would break the family palette the chart is drawn in.
+button.arc-chip,
+a.arc-chip { cursor: pointer; }
+a.arc-chip { color: $homepage-font-color; text-decoration: none; }
 button.arc-chip:hover,
-button.arc-chip:focus-visible {
+button.arc-chip:focus-visible,
+a.arc-chip:hover,
+a.arc-chip:focus-visible {
   border-color: rgba(225, 225, 225, 0.4);
   border-left-width: 3px;
 }
