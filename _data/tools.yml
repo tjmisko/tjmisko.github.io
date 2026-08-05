@@ -151,7 +151,7 @@ views:
 
           - name: TypeScript
             family: language
-            start: 2024-07-01
+            start: 2024-01-01
             span: 2024 – now
             ongoing: true
             occasional: true
