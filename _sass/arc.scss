@@ -537,10 +537,18 @@ a.arc-chip:focus-visible {
   pointer-events: none;
 }
 .arc-group--thesis {
-  // Hug the mini chips instead of stretching to the row height.
+  // Hug the mini chips instead of stretching to the row height: one even 8px
+  // gap outside them on all four sides. A mini is 48px tall (24px icon + 11px
+  // padding + 1px border, doubled), so 62px of content plus this box's own
+  // borders leaves that gap above and below. Sideways the arithmetic comes out
+  // lopsided and has to be corrected: the box is placed on the same column
+  // lines as the chips, but a chip's left edge rests on its first line while
+  // its right edge stops 6px short of its last one, for the margin every chip
+  // carries. So the left inset is the whole gap, and the right one is what is
+  // left of it after crossing back over that margin.
   align-self: center;
   height: 62px;
-  margin: 0;
+  margin: 0 -2px 0 -8px;
   border-style: solid;
   border-color: rgba(110, 150, 185, 0.25);
 }
