@@ -10,7 +10,8 @@ and a one-line description, and a click that opens the document's detail modal.
 Front matter read here:
   arc.lane     research | data | software — which color family the chip takes
   arc.tone     overrides lane for color only (a research role in the data palette)
-  arc.row      grid row, 2–8
+  arc.row      grid row, 2–8. Also picks the lane column on the narrow chart,
+               where several rows share one — see the packing table below.
   arc.between  the chip hangs centered in the clear space between the bars above
                and below it rather than on its own row's midline. For the
                unbanded row, whose whole point is that what sits there belongs to
@@ -80,14 +81,64 @@ Front matter read here:
 {%- endif -%}
 {%- comment -%}Nothing in _projects predates the ruler today, but clamp anyway so
 backdating an entry can't emit a column 0 or a negative one and silently break
-the grid. --o keeps the unclamped column for the mobile feed's ordering.
-{%- endcomment -%}
+the grid.{%- endcomment -%}
 {%- assign col_start = col_raw -%}
 {%- assign clipped = "" -%}
 {%- if col_raw < 2 -%}
   {%- assign col_start = 2 -%}
   {%- assign clipped = " is-clipped" -%}
 {%- endif -%}
+{%- comment -%}---- The same chip, placed on the narrow chart ------------------
+Below 700px the grid turns a quarter turn: time runs down the page and the lanes
+run across it (see "Mobile: the transposed chart" in arc.scss). Both placements
+are computed here and both ride out on the element — the wide one as grid-row /
+grid-column, the narrow one as the custom properties the media query reads,
+since a stylesheet can't outrank an inline style without them.
+
+  --m0 / --m1  the half-year rows the chip spans, on a 2018 origin. Vertical room
+               is what a phone has, so the narrow scale starts where the work
+               does: the degree runs from its true 2018 start and nothing is
+               clipped. arc.ongoing runs to the foot of the fixed scale (2026),
+               which is row 18.
+  --ln         the lane column.
+
+Lanes are packed rather than one-per-row: seven columns at this width would be
+51px each, which no title survives. Two desktop rows can share a column when
+nothing on one ever runs at the same time as anything on the other, and after
+the half-year snapping three pairs qualify:
+
+  2 the degree + 4 Quasioptimal    → 2  RESEARCH   (2018–2022, then 2023–now)
+  3 the theses                     → 3  the strip between research and data,
+                                        which is where the honors thesis belongs
+                                        for the same reason arc.between hangs it
+                                        between the bars on the wide chart
+  5 the employment relay           → 4  DATA       (already one contiguous run)
+  6 side projects + 8 the CLIs     → 5  SOFTWARE   (Lindy → Retend → the CLIs,
+                                        each starting where the last stopped)
+  7 sspi.world                     → 6  SOFTWARE, second track: the one thing
+                                        that ran under everything else
+
+A new row has to be told which column it joins, and told deliberately — landing
+in column 0 would silently stack it on the year gutter — so an unmapped row
+stops the build.{%- endcomment -%}
+{%- assign m_start = a.start | minus: 2018 | times: 2 | plus: 2 | round -%}
+{%- if a.ongoing -%}
+  {%- assign m_end = 18 -%}
+{%- else -%}
+  {%- assign m_end = a.end | minus: 2018 | times: 2 | plus: 2 | round -%}
+{%- endif -%}
+{%- case a.row -%}
+  {%- when 2 -%}{%- assign m_lane = 2 -%}
+  {%- when 3 -%}{%- assign m_lane = 3 -%}
+  {%- when 4 -%}{%- assign m_lane = 2 -%}
+  {%- when 5 -%}{%- assign m_lane = 4 -%}
+  {%- when 6 -%}{%- assign m_lane = 5 -%}
+  {%- when 7 -%}{%- assign m_lane = 6 -%}
+  {%- when 8 -%}{%- assign m_lane = 5 -%}
+  {%- else -%}
+    {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--row-{{ a.row }}-has-no-lane-column-on-the-narrow-chart{%- endcapture -%}
+    {% include {{ arc_fail }} %}
+{%- endcase -%}
 {%- comment -%}A popover on one of the top rows would open up into the ruler and
 be clipped by the scroll container, so those two rows open downward instead.
 {%- endcomment -%}
@@ -162,11 +213,21 @@ along the row.{%- endcomment -%}
     {%- assign pt_col_start = 2 -%}
     {%- assign pt_clipped = " is-clipped" -%}
   {%- endif -%}
+  {%- comment -%}Each part takes its own stretch of the narrow chart's time axis;
+  the lane column is the chip's, since parts are a succession within one row.
+  {%- endcomment -%}
+  {%- assign pt_m_start = pt_start | minus: 2018 | times: 2 | plus: 2 | round -%}
+  {%- if a.ongoing and forloop.last -%}
+    {%- assign pt_m_end = 18 -%}
+  {%- else -%}
+    {%- assign pt_m_end = pt_end | minus: 2018 | times: 2 | plus: 2 | round -%}
+  {%- endif -%}
 <button type="button"
         class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ pt_clipped }}
                {%- if a.between %} is-between{% endif -%}
                {%- if a.relay %} is-relay{% endif %}"
-        style="grid-row: {{ a.row }}; grid-column: {{ pt_col_start }} / {{ pt_col_end }}; --o: {{ pt_col_raw }};"
+        style="grid-row: {{ a.row }}; grid-column: {{ pt_col_start }} / {{ pt_col_end }};
+               --m0: {{ pt_m_start }}; --m1: {{ pt_m_end }}; --ln: {{ m_lane }};"
         data-project="{{ include.p.slug }}">
   {%- assign pt_label = pt.label | default: a.label -%}
   <strong>{{ pt_label }}</strong>
@@ -189,12 +250,12 @@ along the row.{%- endcomment -%}
 <button type="button"
         class="arc-chip arc-chip--{{ a.tone | default: a.lane }} arc-chip--mini{{ clipped }}
                {%- if a.between %} is-between{% endif %}"
-        style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
+        style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }};
+               --m0: {{ m_start }}; --m1: {{ m_end }}; --ln: {{ m_lane }};"
         data-project="{{ include.p.slug }}" aria-label="{{ a.label }}">
   <span class="arc-ico arc-ico--{{ a.kind }}" aria-hidden="true"></span>
-  {%- comment -%}Title, tagline, dates, description — the order a full-size chip
-  reads in once the mobile feed prints its popover inline under it.
-  {%- endcomment -%}
+  {%- comment -%}A mini shows nothing but its icon on either chart, so its
+  popover opens with the title the chip never says.{%- endcomment -%}
   <span class="arc-pop{{ pop_dir }}">
     <strong>{{ a.label }}</strong>
     {%- if a.sub %}<small>{{ a.sub }}</small>{% endif -%}
@@ -212,7 +273,8 @@ the title itself, held back until the chip is too narrow to finish saying it.
                {%- if a.between %} is-between{% endif -%}
                {%- if a.relay %} is-relay{% endif -%}
                {%- if a.phases %} has-phases{% endif %}"
-        style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
+        style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }};
+               --m0: {{ m_start }}; --m1: {{ m_end }}; --ln: {{ m_lane }};"
         data-project="{{ include.p.slug }}">
   {%- comment -%}The phase layer sits under the lettering and takes no pointer
   events of its own: a work chip is a single button that opens a modal, so the
@@ -258,9 +320,17 @@ the title itself, held back until the chip is too narrow to finish saying it.
     {%- comment -%}data-phase pairs the stretch of bar with its line in the
     popover, so hovering one lifts the other. Indexed rather than positional: a
     phase clipped out of the drawn bar is skipped here but still listed there,
-    and counting siblings would slip by one from that point on.{%- endcomment %}
+    and counting siblings would slip by one from that point on.
+
+    One offset, two axes. The percentages are of the bar's drawn span, which runs
+    across it on the wide chart and down it on the narrow one, so the same pair
+    of numbers rides out twice: as left/width for the first and as --pt/--ph for
+    the second, which the media query reads into top/height. They agree because
+    both charts snap to the same half-years — only the origin differs, and an
+    origin cancels out of a proportion.{%- endcomment %}
     <span class="arc-phase is-{{ cadence }}" data-phase="{{ forloop.index }}"
-          style="left: {{ p_left }}%; width: {{ p_width }}%;"></span>
+          style="left: {{ p_left }}%; width: {{ p_width }}%;
+                 --pt: {{ p_left }}%; --ph: {{ p_width }}%;"></span>
       {%- endif -%}
     {%- endfor -%}
   </span>
@@ -275,8 +345,7 @@ the title itself, held back until the chip is too narrow to finish saying it.
     {%- if a.span %}<small class="arc-pop-span">{{ a.span }}</small>{% endif -%}
     {%- if a.blurb %}<small>{{ a.blurb }}</small>{% endif -%}
     {%- comment -%}The phase breakdown, since the textures on the bar can say
-    that the pitch changed but not what changed or when. On mobile, where the
-    bar and its textures are gone, this list is the whole story.{%- endcomment -%}
+    that the pitch changed but not what changed or when.{%- endcomment -%}
     {%- if a.phases -%}
     <span class="arc-pop-phases">
       {%- for ph in a.phases -%}
