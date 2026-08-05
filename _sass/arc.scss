@@ -104,6 +104,32 @@ $arc-ruler-h: 28px;
 // 2018-based ruler had, which is why dropping four columns lowered it from
 // 1132px: the scroller now only appears under ~900px.
 .arc-scroll > * { min-width: 880px; }
+// A scroller clips at its padding edge, and the lower rows open their popovers
+// upward — tall ones (a phase breakdown runs to a dozen lines) reach past the
+// ruler and get cut in half by that edge. Two answers, because the container
+// only has to scroll for part of the range:
+//
+// From the width where the grid fits (96vw ≥ 880px) there is nothing to scroll,
+// so the container stops being one and clips nothing. Popovers overhang the
+// chart freely; they stay inside its box either way, since the ones on the
+// right-hand columns already open inward (.is-late, and the node's own rule).
+@media screen and (min-width: 920px) {
+  .arc-scroll { overflow-x: visible; }
+}
+// Below that the scroller has to stay, so the box reaches up past the chart
+// instead: the padding is what it will paint, and the matching negative margin
+// hands that space straight back to the layout — the chart sits exactly where it
+// did and nothing below it moves. Deep enough for the tallest phase breakdown
+// opening off the middle of the grid. The reserve is empty, but it does lie over
+// the throughline, so the prose under it can't be selected at these widths;
+// giving the container `pointer-events: none` would fix that and cost the
+// scrollbar its grab, which is the one thing these widths need.
+@media screen and (min-width: 701px) and (max-width: 919px) {
+  .arc-scroll {
+    padding-top: 240px;
+    margin-top: -240px;
+  }
+}
 
 // Sits above its chart (both tabs), framing the story before the bars tell it.
 .arc-throughline {
