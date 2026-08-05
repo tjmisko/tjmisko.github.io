@@ -10,7 +10,7 @@ tags:
   - "automation"
 arc:
   lane: software
-  row: 6
+  row: 8
   start: 2024
   end: 2024.5
   kind: cli
