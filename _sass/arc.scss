@@ -685,6 +685,13 @@ a.arc-chip:focus-visible {
 .arc-quiet {
   position: relative;
   align-self: center; // level with the Berkeley chip in the same row
+  // Off the centering above, by eye: the box centers, but what the eye lines up
+  // is the lettering, and the dotted rule hanging under it carries the box's
+  // center below the type's. A transform rather than a smaller bottom margin,
+  // because that 8.6px is load-bearing — the rail's even step reads the research
+  // row and the relay under it as one relation, and trimming the air between
+  // them to move this line would move the band names with it.
+  transform: translateY(-7px);
   margin: 0 6px 8.6px 0;
   padding: 3px 2px; // symmetric, so the text center matches the chip text
 
@@ -717,7 +724,7 @@ a.arc-chip:focus-visible {
   // walks it off that anchor into the open space the chips leave, which no
   // grid line runs through. Tuned by eye — the cell is a starting point, not
   // the intended resting place.
-  transform: translate(-18px, 9px);
+  transform: translate(-18px, -51px);
   display: inline-flex;
   align-items: center;
   gap: 7px;
