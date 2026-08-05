@@ -1092,13 +1092,13 @@ a.arc-chip:focus-visible {
     // lines, and "Quasioptima/l" is worse than anything the space buys back.
     // (Hyphenation would be the civilised answer and isn't available: these are
     // proper nouns and a monospace face, and Chrome won't hyphenate either.) So
-    // the budget goes where the long words are, and the fixed tracks are cut to
-    // the bone to free it up:
+    // the budget goes where the long words are, and the tracks that hold no
+    // words are cut to what their contents measure:
     //
     //   20px  the year gutter — "2018" at 0.5rem
-    //   28px  the thesis strip — a paper icon (18px) plus its padding, exactly
-    //   46px  the floor under the side-projects lane, which has nothing longer
-    //         than "Sproul" in it and so is the one that can be squeezed
+    //   30px  the thesis strip — a paper glyph (18px) and its padding
+    //   36px  the floor under the side-projects lane, which is all minis now
+    //         (Lindy, Retend, and the three CLIs) and so holds a 24px glyph
     //
     // What is left goes to the three lanes that carry sentences: research and
     // data both have to hold twelve characters ("Quasioptimal",
@@ -1107,7 +1107,7 @@ a.arc-chip:focus-visible {
     // lane is a fixed fraction of the chart, so the two are in a straight line
     // against each other — which is what the type size below solves for.
     grid-template-columns:
-      20px minmax(0, 1fr) 28px minmax(0, 1fr) minmax(46px, 0.55fr) minmax(0, 0.9fr) !important;
+      20px minmax(0, 1fr) 30px minmax(0, 1fr) minmax(36px, 0.5fr) minmax(0, 0.9fr) !important;
     // A fixed step, so a row is a half-year everywhere on the chart and two bars
     // of the same length covered the same amount of time. auto would let a
     // wordy chip stretch its own rows and quietly lie about its duration.
@@ -1183,14 +1183,15 @@ a.arc-chip:focus-visible {
       margin: 0 0 3px;
       padding: 4px;
       // The size that makes twelve characters fit the research and data lanes at
-      // any chart width. Those lanes come out at 0.345 of the chart less 49.6px
+      // any chart width. Those lanes come out at 0.294 of the chart less 30.5px
       // of padding and borders, and twelve characters want 7.2 times the type
-      // size, so the widest size that still fits is 0.0479 of the chart less
-      // 6.9px — which, rounded off its own margin, is the calc() below. The
+      // size, so the widest size that still fits is 0.0409 of the chart less
+      // 4.2px — which, rounded off its own margin, is the calc() below. The
       // floor gives up at about 320px and lets one word wrap rather than shrink
-      // the whole chart past reading; the ceiling is what keeps "Sproul" inside
-      // the 46px lane as the breakpoint approaches.
-      font-size: clamp(0.46rem, calc(4.6cqw - 6.6px), 0.58rem);
+      // the whole chart past reading; the ceiling is just a resting size, since
+      // past about 450px of chart there is room to spare and no reason to keep
+      // growing toward the wide chart's weight.
+      font-size: clamp(0.46rem, calc(4cqw - 4.4px), 0.68rem);
       line-height: 1.25;
       // The columns are the scale, so the words give way: a title too long for
       // its lane wraps, and a single word too long for it hyphenates rather than
@@ -1235,11 +1236,13 @@ a.arc-chip:focus-visible {
     }
 
     // Minis are icon-only on both charts; here they fill their single half-year.
+    // Padding is trimmed to 3px because the thesis strip is sized to the glyph
+    // it holds and there is nothing else in its 30px to give.
     .arc-chip--mini {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 4px;
+      padding: 3px;
     }
     .arc-ico { margin: 0; }
 
@@ -1275,7 +1278,7 @@ a.arc-chip:focus-visible {
       min-width: 0;
       margin: 0 0 3px;
       padding: 4px;
-      font-size: clamp(0.46rem, calc(4.6cqw - 6.6px), 0.58rem);
+      font-size: clamp(0.46rem, calc(4cqw - 4.4px), 0.68rem);
       line-height: 1.25;
       overflow-wrap: break-word;
       hyphens: auto;
