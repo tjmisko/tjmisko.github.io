@@ -13,6 +13,7 @@ arc:
   row: 6
   start: 2022.75
   end: 2024.1
+  kind: cli
   label: "Retend"
   sub: "Time tracking · Bash + nvim"
   span: "Late 2022 – Early 2024"
