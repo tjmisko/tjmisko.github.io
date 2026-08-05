@@ -260,7 +260,15 @@ $arc-ruler-h: 28px;
   background: none;
   backdrop-filter: none;
   justify-content: center;
-  gap: 99px; // 113px name to name, over a 14px line box
+  // 128px name to name, over a 14px line box. The number is not free: it has to
+  // be the distance from the degree's row to the research row, and half of it
+  // has to be the distance from the research row to the relay under it — one
+  // fit, not two, which holds only because the research row sits at exactly half
+  // the degree's remove (see .arc-quiet). Both distances are set by the height
+  // of the tallest thing spanning the chart, which is the node column, so a
+  // project added there moves them and this has to be re-measured. It was 113px
+  // when the node carried four entries.
+  gap: 114px;
   z-index: 5; // above the rail it sits on
   // Everything above lines the names up by their boxes, and by their boxes they
   // were level: the degree's title and COURSEWORK put their cap tops on the same
