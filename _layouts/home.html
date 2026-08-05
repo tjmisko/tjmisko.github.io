@@ -182,9 +182,23 @@ layout: default
 
             <div class="arc-junction" style="grid-column: {{ work_end }};"></div>
             <div class="arc-node" style="grid-column: {{ work_end | plus: 1 }}; --o: 99;">
+              {%- comment -%}Two passes over the same documents. A node entry is a
+              full-width card by default; one marked arc.node.small is held back
+              for the paired row at the foot of the panel, where two of them sit
+              side by side. The small ones are the shorter builds, and pairing
+              them says so without giving each the width of a year's work — and
+              keeps the panel, which is the tallest thing spanning the chart and
+              therefore what sets every row's height, from growing a whole card
+              taller for each one.
+
+              A small card shows its title and nothing else: at half the width
+              there is no room for a tagline that isn't four lines of wrapping,
+              so the tagline joins the dates and the description in the popover,
+              the same trade the icon-only minis on the chart make.
+              {%- endcomment -%}
               <h3>Software Engineering</h3>
               {%- for p in site.projects -%}
-                {%- if p.arc.node -%}
+                {%- if p.arc.node and p.arc.node.small != true -%}
               <button type="button" class="arc-chip arc-chip--software"
                       data-project="{{ p.slug }}">
                 <strong>{{ p.arc.node.label }}</strong>
@@ -201,6 +215,26 @@ layout: default
               </button>
                 {%- endif -%}
               {%- endfor -%}
+              {%- assign node_small = site.projects | where_exp: "p", "p.arc.node.small" -%}
+              {%- if node_small.size > 0 -%}
+              <div class="arc-node-pair">
+                {%- for p in node_small -%}
+                <button type="button" class="arc-chip arc-chip--software arc-chip--node-small"
+                        data-project="{{ p.slug }}">
+                  <strong>{{ p.arc.node.label }}</strong>
+                  <span class="arc-pop">
+                    {%- comment -%}Always printed here, not only when the title
+                    clips: a small card holds nothing but its title, so the
+                    popover is where the rest of it lives.{%- endcomment -%}
+                    <strong class="arc-pop-title">{{ p.arc.node.label }}</strong>
+                    {%- if p.arc.node.sub %}<small>{{ p.arc.node.sub }}</small>{% endif -%}
+                    {%- if p.arc.node.span %}<small class="arc-pop-span">{{ p.arc.node.span }}</small>{% endif -%}
+                    {%- if p.arc.node.blurb %}<small>{{ p.arc.node.blurb }}</small>{% endif -%}
+                  </span>
+                </button>
+                {%- endfor -%}
+              </div>
+              {%- endif -%}
             </div>
 
             <!-- The lanes descend research → data → software, and the descent is

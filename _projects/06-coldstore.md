@@ -11,6 +11,7 @@ tags:
   - "automation"
 arc:
   node:
+    small: true
     label: "Coldstore"
     sub: "Syncthing cold storage · Go + React + ZFS"
     span: "Jan – Mar 2026"

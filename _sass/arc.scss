@@ -260,15 +260,21 @@ $arc-ruler-h: 28px;
   background: none;
   backdrop-filter: none;
   justify-content: center;
-  // 128px name to name, over a 14px line box. The number is not free: it has to
+  // 113px name to name, over a 14px line box. The number is not free: it has to
   // be the distance from the degree's row to the research row, and half of it
   // has to be the distance from the research row to the relay under it — one
   // fit, not two, which holds only because the research row sits at exactly half
-  // the degree's remove (see .arc-quiet). Both distances are set by the height
-  // of the tallest thing spanning the chart, which is the node column, so a
-  // project added there moves them and this has to be re-measured. It was 113px
-  // when the node carried four entries.
-  gap: 114px;
+  // the degree's remove (see .arc-quiet).
+  //
+  // Both distances are the chart's own, but only while the chart is taller than
+  // the node column beside it. The node spans every content row, so once it
+  // outgrows them it sets their heights instead, the two distances grow with it,
+  // and this number is wrong. That is what pairing the short builds at the foot
+  // of the panel buys (see .arc-node-pair): the panel stays under the chart, and
+  // this stays a property of the chart. There is about 68px of clearance, which
+  // is not another full-width card — a sixth of those wants pairing too, or this
+  // has to be re-measured.
+  gap: 99px;
   z-index: 5; // above the rail it sits on
   // Everything above lines the names up by their boxes, and by their boxes they
   // were level: the degree's title and COURSEWORK put their cap tops on the same
@@ -783,6 +789,37 @@ a.arc-chip:focus-visible {
   }
   .arc-chip { margin: 0; align-self: stretch; }
 }
+// The paired row at the foot of the panel: two short builds sharing the width
+// one long one gets. `flex: 1 1 0` splits it evenly whatever the titles are, so
+// the pair reads as one row rather than as two cards that happened to fit, and
+// `min-width: 0` lets a long title wrap inside its half instead of forcing the
+// half wider. Stretch keeps both at the taller one's height.
+.arc-node-pair {
+  display: flex;
+  gap: 8px;
+  align-self: stretch;
+  > .arc-chip { flex: 1 1 0; min-width: 0; }
+}
+// A small card carries its title and nothing else, so it needs less around it
+// than a card with a tagline under the title does — and it has to hold a title
+// in half the width, which at the panel's 220px is 87px a card. The full size
+// leaves "Coldstore" and "Dashboard" each about 5px over their line, which the
+// chip answers by eliding rather than by spilling, so the card would open on a
+// truncated name. A step down in size and a little off the sides clears both
+// with room to spare; the pair is meant to read smaller than the cards above it
+// regardless.
+.arc-chip--node-small {
+  padding: 7px 5px;
+  > strong { font-size: 0.7rem; }
+}
+// Every other chip holds its title back from its own popover, on the grounds
+// that the chip is already saying it — true where the popover adds a tagline
+// the chip doesn't have, false here, where the popover is the only place the
+// tagline lives and would otherwise open on a line with no subject.
+.arc-chip--node-small > .arc-pop > .arc-pop-title {
+  display: block;
+  margin-bottom: 2px;
+}
 // ---- Tools waterfall -------------------------------------------------------
 // Same ruler, read the other way: one bar per tool, stacked in the order they
 // were picked up. Rows are implicit (one per tool in _data/tools.yml), which
@@ -1142,6 +1179,28 @@ a.arc-chip:focus-visible {
   .arc-node {
     margin: 6px 0 0;
     align-self: stretch;
+  }
+  // The pair exists to save vertical room in a panel whose height is a
+  // constraint. The feed has no such constraint and no hover, so each card
+  // prints its popover inline and needs the full width to do it: the row
+  // becomes a column and the two cards rejoin the stack above them.
+  .arc-node-pair {
+    flex-direction: column;
+    gap: 8px;
+  }
+  // A small card repeats its title into its popover because on desktop the
+  // popover opens away from the card and would otherwise start on a tagline
+  // with no subject. Here the popover is printed inline directly under that
+  // title, so the repeat lands as the same name twice.
+  //
+  // The card's smaller type and tighter sides go back to the stack's as well:
+  // both were bought to fit a title into half of a 220px panel, and the feed
+  // has no panel. Left in place they would print two of the five cards a size
+  // down from the rest for no reason the reader can see.
+  .arc-chip--node-small {
+    padding: 6px 11px; // .arc-chip's own, which the panel had tightened
+    > strong { font-size: inherit; }
+    > .arc-pop > .arc-pop-title { display: none; }
   }
 
   // Tools feed: same transpose, but bars become cards carrying their span and
