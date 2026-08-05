@@ -12,6 +12,13 @@
 // that edge so it reads as running in from off-chart rather than starting
 // there. Their true dates stay in the bar's own copy.
 
+// All of the above is the chart at full width. Below 700px both grids are
+// redrawn from the same markup — the work grid turned a quarter turn so that
+// time runs down the page and the lanes run across it, the toolchain waterfall
+// narrowed into a matrix with its names in a gutter — and both scales start at
+// 2018 there, where the work does, so neither clips anything. See "Mobile: the
+// transposed chart" at the foot of this file.
+
 $arc-research: rgb(200, 200, 204);
 $arc-data: rgb(110, 150, 185);
 $arc-software: $homepage-accent-color;
@@ -1020,170 +1027,537 @@ a.arc-chip:focus-visible {
   margin-bottom: 2px;
 }
 
-// ---- Legend (mobile only — replaces the lane rail) --------------------------
-.arc-legend {
-  display: none;
-  gap: 1.1rem;
-  font-family: "IBM Plex Mono";
-  font-size: 0.72rem;
-  color: $arc-dim;
-  span::before {
-    content: "";
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 6px;
-  }
-  .arc-legend--research::before { background: $arc-research; }
-  .arc-legend--data::before { background: $arc-data; }
-  .arc-legend--software::before { background: $arc-software; }
-}
+// ---- Elements only one of the two charts draws ------------------------------
+// The narrow chart's scales reach back two years further than the wide one can
+// afford, so the ruler emits ticks and rules the wide grid has no column for.
+.is-narrow-only { display: none; }
 
-// ---- Mobile: vertical chronological feed ------------------------------------
-// Below 700px the grid transposes into a single time-ordered column: every
-// item carries --o (its half-year start column) as a flex order, ruler ticks
-// become year dividers, minis expand their popover content inline, and the
-// 2026 node closes the feed. Same front-matter source of truth; no
-// horizontal scrolling anywhere.
+// The lane key for the narrow work chart, at the head of each lane column
+// instead of down the side of the grid. It carries the lane's own color, which
+// is the whole job the standing legend used to do above the chart.
+.arc-lane-head { display: none; }
+
+// A tool's name, in the matrix's left gutter. Wide, the name is inside its bar
+// (and sticks to the rail as the bar scrolls off), so this stays out of the way.
+.arc-tool-name { display: none; }
+
+// ---- Mobile: the transposed chart -------------------------------------------
+// Below 700px the work grid turns a quarter turn rather than dissolving: time
+// runs down the page, which is the axis a phone actually has, and the lanes run
+// across it. Everything the wide chart says by shape survives the turn — a bar's
+// length is still its duration, two bars level with each other still ran at the
+// same time, and the staircase from research through data into software still
+// descends, now down and to the right.
+//
+// It replaces a linear feed that ordered the same items by start date and
+// printed every popover inline. That feed cost 2,900px to say less: one card
+// looks like the next whether it covers four years or one semester, nothing can
+// overlap anything, and the lane rail — the argument the chart exists to make —
+// had to be dropped for a row of legend dots. The chart below costs about 800px.
+//
+// Placement comes from custom properties (--m0/--m1 for the time span, --ln for
+// the lane, --ln-end for the two-column software band) because the wide
+// placement is an inline style and a stylesheet can't outrank one. Everything
+// here that reads a plain grid-row/grid-column takes !important for the same
+// reason; where a rule is only in this file, it doesn't.
 @media screen and (max-width: 700px) {
-  .arc-legend { display: flex; }
+  .is-narrow-only { display: block; }
+  // Nothing scrolls sideways: both charts are drawn to the width they are given.
   .arc-scroll { overflow-x: visible; }
   .arc-scroll > * { min-width: 0; }
-  .arc-lanes {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
-  }
-  .arc-lanes > * { order: var(--o, 0); }
-  .arc-lane-labels,
-  .arc-lane-rail,
-  .arc-group,
-  .arc-junction { display: none; }
-  // Hung between two rows the feed no longer has — here it would only push one
-  // card down over the next.
-  .arc-chip.is-between { transform: none; }
-  .arc-chip { margin: 0; align-self: stretch; }
-  // No horizontal scroller on mobile — the page would become the sticky
-  // container and shove titles rightward. Pin them back down.
-  .arc-chip > strong { position: static; left: auto; }
-  // Rules are a property of the horizontal scale, which the feed doesn't have.
-  .arc-rule { display: none; }
-  .arc-ruler-tick {
-    border-bottom: 1px solid $arc-faint;
-    padding: 8px 0 3px;
-    align-self: stretch;
-    // A divider spans the feed, so its label sits at the start rather than
-    // straddling a line that no longer exists.
-    > span { transform: none; }
-  }
-  .arc-chip--mini {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-align: left;
-    padding: 6px 11px;
-  }
-  .arc-ico { margin: 0; flex: 0 0 auto; }
-  // No hover on touch, so every popover prints inline as part of its card.
-  .arc-pop {
-    display: block;
-    position: static;
-    border: none;
-    background: none;
-    padding: 0;
-    width: auto;
-    max-width: none;
-  }
-  // The centering transform belongs to the node's leftward desktop anchor, and
-  // a transform survives position: static — left in place it drags the text back
-  // over the line above it. Matches that rule's specificity so it wins here.
-  .arc-node .arc-pop { transform: none; }
-  // Full-size chips print title, tagline, then the popover's dates and
-  // description — the same reading order the card gives them.
-  .arc-chip > .arc-pop { margin-top: 2px; }
-  // Phase textures are a property of the bar, which the feed doesn't have. The
-  // breakdown in the popover — now printed inline by the rule above — carries
-  // the same information in words.
-  .arc-phase-track { display: none; }
-  .arc-quiet {
-    align-self: flex-start;
-    // The bottom margin spaces two grid rows the feed no longer has, and it
-    // would read here as one item set off from the rest for no reason.
-    margin-bottom: 0;
-    // Its popover is now a second line under the link text, so the two need to
-    // stack rather than run together inline.
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  // Last in the feed (--o: 100), where it closes the sequence the way it closes
-  // the chart. The caption and arrow stay on one line above the note. The
-  // optical nudge belongs to the grid the feed just dissolved.
-  .arc-descent {
-    transform: none;
-    align-self: stretch;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid $arc-faint;
-    > .arc-pop { flex: 1 0 100%; }
-  }
-  .arc-node {
-    margin: 6px 0 0;
-    align-self: stretch;
+  // What has to fit is a fixed number of characters into a lane that is a
+  // fraction of the chart, so the type below is sized against the chart rather
+  // than against the viewport: cqw, not vw. The two are not the same number —
+  // the card's own padding takes some 50px out of the viewport before the chart
+  // sees any of it — and sizing against the wrong one is how a lane that fits
+  // "Econometrics" at one width breaks it at another.
+  .arc-lanes-wrap { container-type: inline-size; }
+
+  .arc-lanes:not(.arc-lanes--tools) {
+    // year gutter · research · the thesis strip · data · software ×2.
+    // See the packing table in arc-chip.html for why seven rows fit in four
+    // lanes. The ratios are not even: the side-projects lane has nothing longer
+    // than "Sproul" to fit, where research and data have to carry
+    // "Quasioptimal" and "Econometrics".
+    //
+    // minmax(0, …) on every flexible track, because 1fr on its own is
+    // minmax(auto, 1fr) and that auto is the widest unbreakable word in the
+    // column. Left alone, "Econometrics" set the width of the data lane,
+    // "Quasioptimal" the research one, and the four of them together pushed the
+    // chart 60px wider than the phone. The columns are a scale and the text has
+    // to fit them, not the other way round.
+    //
+    // Which leaves how wide each one has to be, and the answer is: as wide as
+    // its longest word. A lane narrower than that breaks the word across two
+    // lines, and "Quasioptima/l" is worse than anything the space buys back.
+    // (Hyphenation would be the civilised answer and isn't available: these are
+    // proper nouns and a monospace face, and Chrome won't hyphenate either.) So
+    // the budget goes where the long words are, and the tracks that hold no
+    // words are cut to what their contents measure:
+    //
+    //   20px  the year gutter — "2018" at 0.5rem
+    //   30px  the thesis strip — a paper glyph (18px) and its padding
+    //   36px  the floor under the side-projects lane, which is all minis now
+    //         (Lindy, Retend, and the three CLIs) and so holds a 24px glyph
+    //
+    // What is left goes to the three lanes that carry sentences: research and
+    // data both have to hold twelve characters ("Quasioptimal",
+    // "Econometrics") and sspi.world's lane ten, which is the 1 : 1 : 0.9.
+    // Twelve characters of IBM Plex Mono want 7.2 times the type size, and the
+    // lane is a fixed fraction of the chart, so the two are in a straight line
+    // against each other — which is what the type size below solves for.
+    grid-template-columns:
+      20px minmax(0, 1fr) 30px minmax(0, 1fr) minmax(36px, 0.5fr) minmax(0, 0.9fr) !important;
+    // A fixed step, so a row is a half-year everywhere on the chart and two bars
+    // of the same length covered the same amount of time. auto would let a
+    // wordy chip stretch its own rows and quietly lie about its duration.
+    grid-template-rows: 18px repeat(16, 46px);
+    // Time is continuous: a gap between rows would draw months that don't exist.
+    // What sets one bar off from the next in a lane is its own bottom margin,
+    // which takes the same 3px from every bar and so distorts nothing.
+    row-gap: 0;
+    column-gap: 3px;
   }
 
-  // Tools feed: same transpose, but bars become cards carrying their span and
-  // note inline (there is no hover to reveal them on touch).
-  .arc-lanes--tools { padding-bottom: 0; }
-  .arc-now-line { display: none; }
-  // The feed is one chronological run, so a minor band can't sit "below" the
-  // chart — its entries interleave by date like everything else. The divider
-  // would land mid-sequence, and the reduced bar weight would read as a
-  // distinction the ordering no longer supports.
-  .arc-band-divider { display: none; }
-  .arc-chip--tool.is-minor {
-    padding: 7px 11px;
+  // ---- The turned axis ------------------------------------------------------
+  // A year's rule is the top edge of the row that year begins, drawn across
+  // every lane; its label sits in the gutter just under it. Emitted before the
+  // chips, so the bars paint over both.
+  .arc-lanes:not(.arc-lanes--tools) {
+    .arc-rule {
+      grid-row: var(--m0) !important;
+      grid-column: 1 / -1 !important;
+      border-left: 0;
+      border-top: 1px solid $arc-rule;
+    }
+    .arc-ruler-tick {
+      grid-row: var(--m0) !important;
+      grid-column: 1 !important;
+      align-self: start;
+      font-size: 0.5rem;
+      text-align: right;
+      // The label hangs off the line rather than sitting on it: the wide chart's
+      // half-width nudge centers a tick on a vertical line, and there is no
+      // vertical line here.
+      > span { transform: none; }
+    }
+    .arc-lane-head {
+      grid-row: 1;
+      grid-column: var(--ln) / var(--ln-end, span 1);
+      align-self: end;
+      font-family: "Courier Prime";
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      padding-bottom: 2px;
+    }
+    .arc-lane-head--research { color: rgba(200, 200, 204, 0.75); }
+    .arc-lane-head--data { color: rgba(110, 150, 185, 0.9); }
+    .arc-lane-head--software { color: rgba(250, 130, 30, 0.85); }
+    // The rail and its stack of band names are the wide chart's key; the column
+    // heads above are the narrow one's.
+    .arc-lane-rail,
+    .arc-lane-labels { display: none; }
+  }
+
+  // ---- Bars -----------------------------------------------------------------
+  .arc-lanes:not(.arc-lanes--tools) {
+    .arc-chip,
+    .arc-quiet,
+    .arc-group,
+    .arc-descent {
+      grid-row: var(--m0) / var(--m1) !important;
+      grid-column: var(--ln) / var(--ln-end, span 1) !important;
+    }
+    .arc-chip {
+      align-self: stretch; // height is duration — never hug the text
+      justify-self: stretch;
+      // A chip is a <button>, and a button centers its own content: left alone,
+      // the degree's title floated to the middle of a nine-row bar, four years
+      // adrift of the year it began. A column box puts the title back at the top
+      // edge, which on this axis is the same claim the wide chart makes by
+      // setting it against the bar's left edge — the work started here.
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-width: 0; // let the track's minmax(0, …) actually bind
+      margin: 0 0 3px;
+      padding: 4px;
+      // The size that makes twelve characters fit the research and data lanes at
+      // any chart width. Those lanes come out at 0.294 of the chart less 30.5px
+      // of padding and borders, and twelve characters want 7.2 times the type
+      // size, so the widest size that still fits is 0.0409 of the chart less
+      // 4.2px — which, rounded off its own margin, is the calc() below. The
+      // floor gives up at about 320px and lets one word wrap rather than shrink
+      // the whole chart past reading; the ceiling is just a resting size, since
+      // past about 450px of chart there is room to spare and no reason to keep
+      // growing toward the wide chart's weight.
+      font-size: clamp(0.46rem, calc(4cqw - 4.4px), 0.68rem);
+      line-height: 1.25;
+      // The columns are the scale, so the words give way: a title too long for
+      // its lane wraps, and a single word too long for it hyphenates rather than
+      // widening the chart or losing its tail to an ellipsis.
+      overflow-wrap: break-word;
+      hyphens: auto;
+      // A title with more lines than its bar has room for is still cut by the
+      // bar, the same way a wide-chart title too long for its column is cut by
+      // the column. The full text is a tap away either way.
+      overflow: hidden;
+      // The tagline is the first thing to go: at this width it doubles a title's
+      // height to repeat what the card says better.
+      > small { display: none; }
+      // Set for a one-line title clipping sideways in a narrow column. Here the
+      // title has as many lines as its bar has room for, and an ellipsis at the
+      // end of every one of them is just noise.
+      > strong { overflow: visible; text-overflow: clip; }
+    }
+    // Hung between two rows on the wide chart. Here the argument is made by the
+    // column the thesis sits in, not by an offset within one.
+    .arc-chip.is-between { transform: none; }
+    // Sticky titles belong to a horizontal scroller, which this isn't.
+    .arc-chip > strong { position: static; left: auto; }
+    // No hover on a touch screen and no room for a panel besides: everything the
+    // popover carries is in the card a tap opens. The node below is the
+    // exception — it is read, not scanned.
+    .arc-chip > .arc-pop { display: none; }
+
+    // A phase is a stretch of the bar, and the bar now runs downward, so the
+    // same proportions are read into the other axis (see --pt/--ph in
+    // arc-chip.html). The hatch keeps its 45°, which reads the same either way.
+    .arc-phase {
+      left: 0 !important;
+      width: 100% !important;
+      top: var(--pt);
+      height: var(--ph);
+      bottom: auto;
+    }
+    .arc-phase + .arc-phase {
+      border-left: 0;
+      border-top: 1px solid $homepage-background-color;
+    }
+
+    // Minis are icon-only on both charts; here they fill their single half-year.
+    // Padding is trimmed to 3px because the thesis strip is sized to the glyph
+    // it holds and there is nothing else in its 30px to give.
+    .arc-chip--mini {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px;
+    }
+    .arc-ico { margin: 0; }
+
+    // The honors-thesis outline, now a tall box around the strip the papers sit
+    // in. Its label won't lie under a 28px box and there are lanes hard against
+    // both sides of it, so it stands the label on end and runs it up the strip
+    // into the clear column above — reading bottom to top, toward the box it
+    // names, the way an axis label does.
+    .arc-group--thesis {
+      align-self: stretch;
+      height: auto;
+      margin: 0;
+      transform: none;
+    }
+    .arc-group-label--below {
+      top: auto;
+      bottom: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%) rotate(180deg);
+      writing-mode: vertical-rl;
+      background: none;
+      padding: 0;
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+    }
+
+    // Quasioptimal reads as a bar here rather than as a line of text: it holds a
+    // lane for six half-years, and a dotted underline down a 70px column would
+    // be the only thing on the chart not drawn to its dates.
+    .arc-quiet {
+      align-self: stretch;
+      display: block;
+      min-width: 0;
+      margin: 0 0 3px;
+      padding: 4px;
+      font-size: clamp(0.46rem, calc(4cqw - 4.4px), 0.68rem);
+      line-height: 1.25;
+      overflow-wrap: break-word;
+      hyphens: auto;
+      overflow: hidden;
+      border: 1px solid $arc-faint;
+      border-left: 3px solid $arc-research;
+      border-radius: 4px;
+      background: $project-card-color;
+      // Its own copy already ends in the dates, so the popover would only say
+      // them twice.
+      > .arc-pop { display: none; }
+    }
+
+    // The descent note, in the clear ground above the staircase (see home.html).
+    // The caption stands there the way it stands on the wide chart, and the
+    // paragraph behind it stays behind it: a chart's negative space is doing
+    // work, and filling it with body copy on sight would cost the staircase the
+    // very outline that makes the argument visible. So it opens on a tap, into
+    // the block it already occupies — no panel over the chart, because unlike a
+    // tool bar this one has somewhere of its own to expand into. The dotted rule
+    // under the caption is what says so, the same mark .arc-quiet wears.
+    .arc-descent {
+      align-self: start;
+      display: block;
+      transform: none;
+      margin: 0;
+      padding: 0 2px;
+      font-size: 0.62rem;
+      cursor: pointer;
+      > span:first-of-type {
+        border-bottom: 1px dotted rgba(225, 225, 225, 0.3);
+      }
+      // Outranks the hover and focus rules on the wide chart, which would
+      // otherwise open this on the tap's lingering focus.
+      > .arc-pop { display: none; }
+    }
+    .arc-descent.is-open {
+      color: $homepage-accent-color;
+      > .arc-pop {
+        display: block;
+        position: static;
+        max-width: none;
+        width: auto;
+        border: 0;
+        background: none;
+        padding: 6px 0 0;
+        font-size: 0.62rem;
+        line-height: 1.45;
+      }
+    }
+    .arc-descent-arrow { vertical-align: -2px; }
+
+    // ---- The foot of the descent --------------------------------------------
+    // Past the last half-year both take a row of their own across every lane, so
+    // the convergence closes the chart instead of standing beside it.
+    .arc-junction {
+      grid-row: 18;
+      grid-column: 1 / -1 !important;
+      border-right: 0;
+      height: 20px;
+      &::after {
+        content: "\25BC"; // ▼
+        right: auto;
+        left: 50%;
+        top: auto;
+        bottom: 0;
+        transform: translateX(-50%);
+      }
+    }
+    .arc-node {
+      grid-row: 19;
+      grid-column: 1 / -1 !important;
+      margin: 0;
+      .arc-chip {
+        margin: 0;
+        padding: 6px 10px;
+        font-size: 0.76rem;
+        line-height: 1.35;
+        overflow: visible;
+        > small { display: block; }
+        // The destination is the one place that is read rather than scanned, so
+        // its entries carry their dates and description on the face of the card.
+        > .arc-pop {
+          display: block;
+          position: static;
+          width: auto;
+          max-width: none;
+          transform: none;
+          border: 0;
+          background: none;
+          padding: 2px 0 0;
+          font-size: 0.72rem;
+        }
+      }
+    }
+  }
+
+  // ---- Mobile: the toolchain matrix -----------------------------------------
+  // The waterfall keeps its axis — time still runs left to right — and gives up
+  // the one thing that doesn't survive the width: the names inside the bars.
+  // "ZSA Voyager" needs 80px and its bar is 63px wide. So the names move to a
+  // gutter, the bars get the four columns back that clipping used to cost, and
+  // what is left is a matrix: one row per tool, one cell per half-year, the fill
+  // carrying the cadence exactly as it does on the wide chart.
+  //
+  // It replaces 3,800px of cards, each printing its note and every phase, with
+  // about 700px that can be read across as well as down: which years were dense,
+  // where one tool handed off to the next, what was picked up and put down.
+  .arc-lanes--tools {
+    grid-template-columns: var(--m-template) !important;
+    grid-template-rows: 14px;
+    // Bars are a fixed height so a run of them reads as a block of years rather
+    // than as a stack of unrelated rows; group heads take what they need.
+    grid-auto-rows: minmax(19px, auto);
+    row-gap: 2px;
+    padding-bottom: 0;
+
+    // Relays are broken up: VS Code and Neovim share one row on the wide chart,
+    // where each bar is wide enough to name itself. In the gutter they need a
+    // line each, so every tool takes a row of its own here (--tr, counted in
+    // home.html) and the succession is read off the dates instead.
+    .arc-chip--tool {
+      grid-row: var(--tr) !important;
+      grid-column: var(--m0) / var(--m1) !important;
+      // Back to a bar: the feed made these column-flowed cards.
+      flex-direction: row;
+      align-items: center;
+      align-self: stretch;
+      padding: 0;
+      white-space: nowrap;
+      // The name is in the gutter now, so the bar is pure fill.
+      > strong { display: none; }
+    }
+    .arc-chip--tool.is-minor { min-height: 0; padding: 0; }
+    // Every bar starts where it started: with four more columns there is nothing
+    // left to clip.
+    .arc-chip--tool.is-ongoing,
+    .arc-chip--tool.is-continuation { border-radius: 4px; }
+
+    .arc-tool-name {
+      display: block;
+      grid-column: 1;
+      grid-row: var(--tr);
+      align-self: center;
+      font-size: 0.62rem;
+      line-height: 1.15;
+      color: $homepage-font-color;
+      padding-right: 6px;
+      text-align: right;
+      // One line per tool is what makes the matrix a matrix; a name too long for
+      // the gutter loses its tail rather than its row.
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    // A tool that was only ever reached for sometimes reads back a step, the
+    // same distinction the wide chart draws with its dimmed bar title.
+    .arc-tool-name.is-occasional { color: $arc-dim; }
+
+    // Group rails become headers over the rows they name: a 112px gutter can't
+    // hold a rail and a name side by side.
+    .arc-lane-labels--group {
+      grid-row: var(--tr) !important;
+      grid-column: 1 / -1 !important;
+      justify-content: flex-end;
+      align-items: flex-end;
+      margin: 4px 0 0;
+      background: none;
+      span {
+        padding: 0;
+        font-size: 0.56rem;
+        letter-spacing: 0.12em;
+        text-align: left;
+        width: 100%;
+      }
+    }
+    .arc-lane-labels--group.is-minor span { font-size: 0.56rem; }
+    // The bands stay: the environment is context under the computing work, and
+    // on one shared axis that reads the same way it does wide.
+    .arc-band-divider {
+      grid-row: var(--tr) !important;
+      grid-column: 1 / -1 !important;
+      margin: 6px 0 0;
+    }
+    // --m-rows rather than -1: every row past the ruler is implicit here, and a
+    // negative line only counts back through the explicit grid (see home.html).
+    .arc-rule {
+      grid-column: var(--m0) !important;
+      grid-row: 2 / var(--m-rows) !important;
+      border-left: 1px solid $arc-rule;
+      border-top: 0;
+    }
+    .arc-ruler-tick {
+      grid-row: 1 !important;
+      grid-column: var(--m0) !important;
+      font-size: 0.56rem;
+      > span { transform: translateX(-50%); }
+    }
+    .arc-now-line {
+      display: block;
+      grid-column: var(--m0) !important;
+      grid-row: 2 / var(--m-rows) !important;
+    }
+    // The segment layer is left exactly as the wide chart draws it. Time still
+    // runs across a bar here, so left/width still mean what they meant — this is
+    // the one part of the chart the narrow view doesn't have to rethink.
+    //
+    // Nothing to open on hover, and at 19px there is nowhere to put it: a tap
+    // anywhere on a row raises the sheet below with the note and the phases.
+    .arc-pop--tool { display: none !important; }
+  }
+
+  // ---- The detail sheet -----------------------------------------------------
+  // What the pointer gets for free on the wide chart, a tap gets here. Work
+  // chips already had somewhere to go — their document's card, through the same
+  // modal the portfolio uses — but a tool is a row in a data file with no card
+  // behind it, so its note and phases come up in a sheet of their own.
+  .arc-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 16px 18px 22px;
+    background: $project-card-color;
+    border-top: 1px solid rgba(225, 225, 225, 0.3);
+    box-shadow: 0 -12px 34px rgba(0, 0, 0, 0.55);
+    font-family: "IBM Plex Mono";
     font-size: 0.8rem;
-    strong { font-weight: 600; }
+    line-height: 1.5;
+    color: $homepage-font-color;
+    transform: translateY(100%);
+    transition: transform var(--dur-med, 220ms) var(--ease-out);
+    &[hidden] { display: none; }
+    &.is-open { transform: translateY(0); }
+    strong { display: block; font-weight: 600; margin-bottom: 2px; }
+    small { display: block; color: $arc-pop-text; font-size: 0.92em; }
+    // The phase lines keep the cadence edge they carry everywhere else.
+    .arc-seg-note {
+      display: block;
+      border-left: 2px solid var(--seg-hatch, #{$arc-faint});
+      padding-left: 9px;
+      margin-top: 8px;
+    }
+    .arc-seg-note.is-occasional { border-left-style: dashed; }
   }
-  .arc-chip--tool {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-    padding: 7px 11px;
-    white-space: normal;
+  .arc-sheet-close {
+    appearance: none;
+    background: none;
+    border: 0;
+    font: inherit;
+    color: $arc-dim;
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    padding: 4px 8px;
+    cursor: pointer;
   }
-  .arc-chip--tool.is-ongoing { border-radius: 4px; }
-  .arc-pop--tool { pointer-events: auto; }
+  .arc-sheet-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: $homepage-accent-color;
+  }
 
-  // Textures are a property of the bars, which the feed doesn't have: the
-  // segment track becomes a list of phase lines under the card's summary,
-  // each popover printed inline (the base .arc-pop rule above unhides them)
-  // behind a solid or dashed cadence edge in the family color.
-  .arc-seg-track {
-    position: static;
-    pointer-events: auto;
-    align-self: stretch;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
+  // A chart nobody knows to touch is a picture. One line, under each chart,
+  // where the wide view has nothing to say.
+  .arc-hint {
+    font-family: "IBM Plex Mono";
+    font-size: 0.62rem;
+    color: rgba(225, 225, 225, 0.34);
+    text-align: center;
+    margin: 2px 0 0;
   }
-  .arc-seg {
-    position: static;
-    // Real phases carry inline left/width percentages for the bar layout;
-    // only !important can strip an inline style once the feed goes vertical.
-    width: auto !important;
-  }
-  .arc-seg.is-daily,
-  .arc-seg.is-occasional { background: none; }
-  .arc-seg + .arc-seg { border-left: none; }
-  .arc-seg > .arc-pop--tool {
-    border-left: 2px solid var(--seg-hatch);
-    padding-left: 8px;
-  }
-  .arc-seg.is-occasional > .arc-pop--tool { border-left-style: dashed; }
+}
+
+// The hint and the sheet are narrow-chart furniture: the pointer needs neither.
+@media screen and (min-width: 701px) {
+  .arc-hint { display: none; }
+  .arc-sheet { display: none !important; }
 }
