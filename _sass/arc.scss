@@ -203,9 +203,9 @@ $arc-ruler-h: 28px;
   pointer-events: none;
 }
 // A lane label, centered in whatever rows it is given. On the work grid that is
-// one element per band (see home.html); on the waterfall it is one per tool
-// group. Pinned to the left edge of the scroll viewport so the key stays visible
-// at any scroll position.
+// one stack for the whole rail (see home.html); on the waterfall it is one
+// element per tool group. Pinned to the left edge of the scroll viewport so the
+// key stays visible at any scroll position.
 .arc-lane-labels {
   grid-column: 1;
   position: sticky;
@@ -228,11 +228,50 @@ $arc-ruler-h: 28px;
 // Work-grid bands ride on the shared .arc-lane-rail backdrop, so they carry none
 // of their own — two translucent panels over each other would darken the banded
 // rows and leave the gaps between them lighter.
+//
+// One stack for all four names, at an even step: the rail is read as the descent
+// it names (research → data → software, each one the one above it taken
+// seriously), and a descent looks like an even step. Centering each name on the
+// rows it labels instead put the step wherever the row heights happened to fall —
+// the research lane is a single 22px row against the software band's three, which
+// pinched RESEARCH and DATA to 48px apart with more than twice that of empty rail
+// above and below the pair.
+//
+// So the stack is anchored to the chart rather than to the rail's own box: it is
+// given the employment relay's row (see home.html), the row where the research
+// turns into data work, and centers on it — which puts that row's midpoint
+// exactly between RESEARCH and DATA, the four names straddling the turn two to a
+// side. Grid does the anchoring, so it holds at any width; the box's own height
+// is zeroed so the stack it carries — some eight times that row — can't feed
+// back into the row's size.
+//
+// The step is then the one constant, and it is set to land the top two names on
+// rows rather than between them: COURSEWORK on the degree's midline and RESEARCH
+// on Quasioptimal's, one step apart. That reads as a key naming what it sits
+// beside instead of a ruler that only happens to start there. The two fits are
+// one fit, not two — half a step above the relay is where RESEARCH goes, and a
+// whole one is where COURSEWORK does, so the step can only satisfy both if the
+// research row sits at exactly half the distance the degree does. It doesn't, by
+// 8.6px, and .arc-quiet carries that as its bottom margin. DATA and SOFTWARE
+// then fall where the step puts them, which is what the descent asks of them.
 .arc-lane-labels--band {
+  align-self: center;
+  height: 0;
   background: none;
   backdrop-filter: none;
   justify-content: center;
+  gap: 99px; // 113px name to name, over a 14px line box
   z-index: 5; // above the rail it sits on
+  // Everything above lines the names up by their boxes, and by their boxes they
+  // were level: the degree's title and COURSEWORK put their cap tops on the same
+  // pixel. They still read high, because a name in capitals is all the ink it
+  // has, where the titles beside it hang p's and y's below the baseline and carry
+  // their weight lower for it — the degree's ink runs 51.25 to 63.50 against this
+  // one's 51.25 to 59.25. So the stack takes 2px of optical correction, which is
+  // most of the way to centering on that ink for the degree and effectively all
+  // of it for Quasioptimal, whose descenders are shallower. On the spans rather
+  // than the box, which is sticky and stays a matter of layout.
+  span { transform: translateY(2px); }
 }
 
 // Chips are <button>s when they cross-link to a project, <div>s otherwise —
@@ -553,6 +592,27 @@ a.arc-chip:focus-visible {
   border-style: solid;
   border-color: rgba(110, 150, 185, 0.25);
 }
+// ---- The thesis block, hung between the bars rather than on its row ---------
+// The thesis belongs to neither band, and what it should look like is a block
+// sitting in the clear space between the degree and the employment relay, evenly
+// off both. Its own row can't put it there: the space between those two bars is
+// rows 3 and 4 together, and centering in row 3 alone left it 12px under the
+// degree and 52px over the relay.
+//
+// That span and the space between the bars share a center — each row line stands
+// the same 12px off the bar beside it (a 10px row gap plus the 2px margin every
+// chip carries) — so the move is from one center to the other: half of row 4 and
+// the gap above it, which is what the research row and its 8.6px of trailing air
+// add below. Nothing here is a layout change; the block overhangs into row 4's
+// band, where the only occupant is Quasioptimal, five columns to the right.
+//
+// The outline and the papers inside it move as one. The papers carry arc.between
+// (see arc-chip.html) to say they hang with it — the outline is drawn around
+// them and would otherwise slide off what it encloses.
+.arc-group--thesis,
+.arc-chip.is-between {
+  transform: translateY(20.3px);
+}
 .arc-group-label {
   position: absolute;
   top: -9px;
@@ -575,10 +635,18 @@ a.arc-chip:focus-visible {
 // The one item that is a destination rather than a card: it opens the site
 // directly. It still gets the hover popover every other item has — only the
 // click differs.
+// It is the only thing on the research row, so its box is that row: the bottom
+// margin is 8.6px of air between the research row and the relay under it, and
+// nothing else. That air is what lets the rail's even step land on both rows at
+// once — see .arc-lane-labels--band, which reads the two as one relation. It is
+// margin rather than a taller row because the row grows around a centered item
+// from both ends: 8.6px of height would carry this line 4.3px down with it,
+// where 8.6px of margin below leaves it exactly where it is and moves only what
+// comes after.
 .arc-quiet {
   position: relative;
   align-self: center; // level with the Berkeley chip in the same row
-  margin: 0 6px 0 0;
+  margin: 0 6px 8.6px 0;
   padding: 3px 2px; // symmetric, so the text center matches the chip text
 
   font-size: 0.74rem;
@@ -976,6 +1044,9 @@ a.arc-chip:focus-visible {
   .arc-lane-rail,
   .arc-group,
   .arc-junction { display: none; }
+  // Hung between two rows the feed no longer has — here it would only push one
+  // card down over the next.
+  .arc-chip.is-between { transform: none; }
   .arc-chip { margin: 0; align-self: stretch; }
   // No horizontal scroller on mobile — the page would become the sticky
   // container and shove titles rightward. Pin them back down.
@@ -1021,6 +1092,9 @@ a.arc-chip:focus-visible {
   .arc-phase-track { display: none; }
   .arc-quiet {
     align-self: flex-start;
+    // The bottom margin spaces two grid rows the feed no longer has, and it
+    // would read here as one item set off from the rest for no reason.
+    margin-bottom: 0;
     // Its popover is now a second line under the link text, so the two need to
     // stack rather than run together inline.
     display: flex;
