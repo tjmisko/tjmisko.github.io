@@ -2,29 +2,52 @@
 Year ruler, shared by every Trajectory grid (projects swimlanes and each
 waterfall view) so the scale doesn't change when the view switch is used.
 
-Column N carries half-year 2020 + (N-2)/2, so year Y lands on grid line
-2 + (Y-2020)*2 — the same mapping the chips use. The scale starts at 2020: the
-little that predates it is clamped to the left edge and marked .is-clipped.
+Every grid here is drawn twice over: once wide, with time running left to right,
+and once narrow, with time running top to bottom (see "Mobile: the transposed
+chart" in arc.scss). The two read different scales, so a tick carries both.
 
-Label and rule are separate elements: the rule starts at row 2, below the ruler
-row, because a line drawn the full height would strike through its own label.
-Both are unpositioned and emitted ahead of the chips, so everything in the chart
-paints over them without needing a z-index.
+  Wide.     Column N carries half-year 2020 + (N-2)/2, so year Y lands on grid
+            line 2 + (Y-2020)*2. The scale starts at 2020 and the little that
+            predates it is clamped to the left edge and marked .is-clipped —
+            there is no room for four more columns at that density.
+  Narrow.   Track M carries half-year 2018 + (M-2)/2, so year Y lands on grid
+            line 2 + (Y-2018)*2, carried as --m0. Both narrow charts have room
+            the wide one doesn't, so both start where the work does and neither
+            clips anything: the work chart because a phone is tall and time runs
+            down it, the toolchain matrix because its bars gave up their titles
+            to a name gutter and got four more columns back. Which axis --m0
+            names is the chart's business — a row on the work chart, a column on
+            the matrix. The two years the wide scale can't afford are emitted as
+            .is-narrow-only: they have no column to sit in over there.
 
-Every year gets a rule; only even years get a label. Nine labels crowd the
+Label and rule are separate elements: the rule starts one track in, past the
+ruler track, because a line drawn the full length would strike through its own
+label. Both are unpositioned and emitted ahead of the chips, so everything in
+the chart paints over them without needing a z-index.
+
+Every year gets a rule; only even years get a label. Nine labels crowd the wide
 scale, but the rules are what the eye reads a bar's extent against, so they stay
 at full resolution.
 
   end  — the grid line to run the rules down to (one past the last content row).
+         Wide only; narrow rules span the lanes with 1 / -1.
   last — the last year to label. Pass the build year so the scale grows with the
          calendar; pass a literal only for a grid whose columns are fixed.
 {%- endcomment -%}
 {%- assign last_year = include.last | default: 2026 -%}
-{%- for y in (2020..last_year) -%}
+{%- for y in (2018..last_year) -%}
   {%- assign year_col = y | minus: 2020 | times: 2 | plus: 2 -%}
-<div class="arc-rule" style="grid-column: {{ year_col }}; grid-row: 2 / {{ include.end }};"></div>
+  {%- assign year_line = y | minus: 2018 | times: 2 | plus: 2 -%}
   {%- assign odd_year = y | modulo: 2 -%}
-  {%- if odd_year == 0 %}
-<div class="arc-ruler-tick" style="grid-column: {{ year_col }}; --o: {{ year_col }};"><span>{{ y }}</span></div>
+  {%- if y < 2020 -%}
+<div class="arc-rule is-narrow-only" style="--m0: {{ year_line }};"></div>
+    {%- if odd_year == 0 %}
+<div class="arc-ruler-tick is-narrow-only" style="--m0: {{ year_line }};"><span>{{ y }}</span></div>
+    {%- endif -%}
+  {%- else -%}
+<div class="arc-rule" style="grid-column: {{ year_col }}; grid-row: 2 / {{ include.end }}; --m0: {{ year_line }};"></div>
+    {%- if odd_year == 0 %}
+<div class="arc-ruler-tick" style="grid-column: {{ year_col }}; --m0: {{ year_line }};"><span>{{ y }}</span></div>
+    {%- endif -%}
   {%- endif -%}
 {%- endfor -%}

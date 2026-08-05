@@ -82,6 +82,14 @@ layout: default
     {%- assign arc_full = arc_units | floor -%}
     {%- assign arc_tail = arc_units | minus: arc_full | round: 4 -%}
     {%- assign arc_now = arc_full | plus: 3 -%}
+    {%- comment -%}The same arithmetic on the narrow scale, which starts at 2018
+    rather than 2020: with the names out of the bars and in a gutter, the matrix
+    can afford the four columns the wide waterfall spends on density, and every
+    bar starts where it started instead of clamping to the left edge. The
+    fractional tail is the same either way — the two origins differ by a whole
+    number of half-years, which cancels out of the fraction.{%- endcomment -%}
+    {%- assign arc_full_m = arc_dec | minus: 2018 | times: 2 | floor -%}
+    {%- assign arc_now_m = arc_full_m | plus: 3 -%}
     {%- comment -%}Bars and segments past roughly two-thirds across flip their
     popover anchor so it opens inward instead of off the grid.{%- endcomment -%}
     {%- assign arc_late = arc_full | times: 2 | divided_by: 3 | plus: 2 -%}
@@ -96,11 +104,6 @@ layout: default
         stand up to scrutiny from the outside &mdash; good research &middot; supportable cases &middot;
         trustworthy AI output.
       </p>
-      <div class="arc-legend" aria-hidden="true">
-        <span class="arc-legend--research">research</span>
-        <span class="arc-legend--data">econometrics</span>
-        <span class="arc-legend--software">software</span>
-      </div>
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
           <div class="arc-lanes"
@@ -145,10 +148,29 @@ layout: default
               <span>SOFTWARE</span>
             </div>
 
+            <!-- The same key for the narrow chart, where the lanes are columns
+                 and so name themselves at the head of one rather than down the
+                 side of the grid. Four names collapse to three: COURSEWORK and
+                 RESEARCH share a column there (the degree and Quasioptimal never
+                 overlap), and the thesis strip between research and data is
+                 named by the outline around it instead. Each carries its lane's
+                 color, which is what the old three-dot legend was for. -->
+            <div class="arc-lane-head is-narrow-only arc-lane-head--research" style="--ln: 2;">RESEARCH</div>
+            <div class="arc-lane-head is-narrow-only arc-lane-head--data" style="--ln: 4;">DATA</div>
+            <div class="arc-lane-head is-narrow-only arc-lane-head--software"
+                 style="--ln: 5; --ln-end: 7;">SOFTWARE</div>
+
             <!-- honors-thesis outline, on the unbanded row between the degree
                  above it and the research below, and hung with the papers it
-                 encloses (see .arc-group--thesis) -->
-            <div class="arc-group arc-group--thesis" style="grid-row: 3; grid-column: 5 / 7;">
+                 encloses (see .arc-group--thesis).
+
+                 On the narrow chart the same argument is made by a column rather
+                 than a row: the strip the papers sit in runs between the research
+                 lane and the data one, belonging to neither, and the outline is
+                 the width of that strip over the two half-years the theses took
+                 (2021H2 and 2022H1, rows 9 to 11). -->
+            <div class="arc-group arc-group--thesis" style="grid-row: 3; grid-column: 5 / 7;
+                 --m0: 9; --m1: 11; --ln: 3;">
               <span class="arc-group-label arc-group-label--below">Honors Thesis</span>
             </div>
 
@@ -170,7 +192,8 @@ layout: default
                  out to the end of the scale and into the junction rather than
                  stopping on a date. It sits on the research row: the writing is
                  research of its own, and the row above is the degree. -->
-            <a class="arc-quiet" style="grid-row: 4; grid-column: 8 / {{ work_end }}; --o: 8;"
+            <a class="arc-quiet" style="grid-row: 4; grid-column: 8 / {{ work_end }};
+               --m0: 12; --m1: 18; --ln: 2;"
                href="https://quasioptimal.io" target="_blank" rel="noopener">
               Quasioptimal &mdash; independent research &middot; 2023&ndash;Present
               <span class="arc-pop arc-pop--down">
@@ -180,8 +203,12 @@ layout: default
               </span>
             </a>
 
+            <!-- Past the last row of the narrow chart (line 18) the junction and
+                 the node take implicit rows of their own, spanning every lane:
+                 the convergence reads as the foot of the descent rather than as
+                 something off to one side of it. -->
             <div class="arc-junction" style="grid-column: {{ work_end }};"></div>
-            <div class="arc-node" style="grid-column: {{ work_end | plus: 1 }}; --o: 99;">
+            <div class="arc-node" style="grid-column: {{ work_end | plus: 1 }};">
               <h3>Software Engineering</h3>
               {%- for p in site.projects -%}
                 {%- if p.arc.node -%}
@@ -209,8 +236,20 @@ layout: default
                  below their own descending staircase, with its arrow running the
                  same way they do. The bottom row is the small-tools run, which
                  starts at 2024 (column 10), so the note takes the six columns of
-                 clear row to its left. -->
-            <div class="arc-descent" style="grid-row: 8; grid-column: 4 / 10; --o: 100;"
+                 clear row to its left.
+
+                 The narrow chart leaves the mirror image of that triangle: the
+                 staircase runs from the degree at the top left down to the
+                 software lanes at the bottom right, so the clear ground is above
+                 and to the right of it — the two software columns from 2018 to
+                 the first side project in 2022 (rows 2 to 10). The note takes
+                 that block, and the arrow points the same way it does on the
+                 wide chart, down and to the right, along the diagonal the work
+                 actually travels. There is no hover on a phone, so what is a
+                 popover over there prints as body copy here: the void is exactly
+                 the room the argument needs. -->
+            <div class="arc-descent" style="grid-row: 8; grid-column: 4 / 10;
+                 --m0: 2; --m1: 10; --ln: 5; --ln-end: 7;"
                  tabindex="0" role="note">
               <span>Down the Tech Stack</span>
               <svg class="arc-descent-arrow" width="15" height="15" viewBox="0 0 13 13"
@@ -232,6 +271,9 @@ layout: default
           </div>
         </div>
       </div>
+      <!-- Narrow only: a pointer discovers a chart's detail by moving over it,
+           and a finger has no equivalent. Says what a tap does once, quietly. -->
+      <p class="arc-hint">tap any bar for its card</p>
     </div>
 
     <!-- The waterfall: one bar per tool, all sourced from _data/tools.yml, on a
@@ -263,28 +305,42 @@ layout: default
       colors: every bar and every phase names its own cadence in the popover the
       pointer is already on, which is where the question gets asked. A legend
       answered it in advance, at the cost of a row above the chart.{%- endcomment %}
+      {%- comment -%}Both row counts have to be known before anything is emitted:
+      every year rule spans the full chart, so it needs the last row's grid line
+      up front, and on the narrow chart that line has to travel on the grid
+      element itself. The two counts differ because the two charts don't spend
+      rows on the same things — see the note on the counters further down. Each
+      band after the first also spends a row on its divider, on both.
+
+      The narrow count can't be left to `grid-row: 2 / -1` the way the columns
+      are: -1 is the end of the *explicit* grid, and every row of the matrix past
+      the ruler is implicit (grid-auto-rows). It resolves to line 2 there, and
+      the rules and the now line come out one row tall.{%- endcomment -%}
+      {%- assign tool_rows = 0 -%}
+      {%- assign tool_rows_m = 0 -%}
+      {%- for v in site.data.tools.views -%}
+        {%- unless forloop.first -%}
+          {%- assign tool_rows = tool_rows | plus: 1 -%}
+          {%- assign tool_rows_m = tool_rows_m | plus: 1 -%}
+        {%- endunless -%}
+        {%- for g in v.groups -%}
+          {%- assign tool_rows_m = tool_rows_m | plus: 1 -%}
+          {%- for t in g.tools -%}
+            {%- unless t.continues -%}
+              {%- assign tool_rows = tool_rows | plus: 1 -%}
+            {%- endunless -%}
+            {%- assign tool_rows_m = tool_rows_m | plus: 1 -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      {%- endfor -%}
+      {%- assign grid_end = tool_rows | plus: 2 -%}
+      {%- assign grid_end_m = tool_rows_m | plus: 2 -%}
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
           <div class="arc-lanes arc-lanes--tools"
-               style="grid-template-columns: 104px repeat({{ arc_full }}, 1fr) {{ arc_tail }}fr 46px;">
-            {%- comment -%}The row count has to be known before the bars are
-            emitted: every year rule spans the full chart, so it needs the last
-            row's grid line up front. Each band after the first also spends a row
-            on its divider.{%- endcomment -%}
-            {%- assign tool_rows = 0 -%}
-            {%- for v in site.data.tools.views -%}
-              {%- unless forloop.first -%}
-                {%- assign tool_rows = tool_rows | plus: 1 -%}
-              {%- endunless -%}
-              {%- for g in v.groups -%}
-                {%- for t in g.tools -%}
-                  {%- unless t.continues -%}
-                    {%- assign tool_rows = tool_rows | plus: 1 -%}
-                  {%- endunless -%}
-                {%- endfor -%}
-              {%- endfor -%}
-            {%- endfor -%}
-            {%- assign grid_end = tool_rows | plus: 2 -%}
+               style="grid-template-columns: 104px repeat({{ arc_full }}, 1fr) {{ arc_tail }}fr 46px;
+                      --m-template: 100px repeat({{ arc_full_m }}, 1fr) {{ arc_tail }}fr 14px;
+                      --m-rows: {{ grid_end_m }};">
             {%- comment -%}Popovers open downward, which for the bottom rows would
             mean reserving a band of dead space under the chart — enough of it to
             push the view switch off a normal screen. Bars from here down open
@@ -292,9 +348,17 @@ layout: default
             {%- assign tools_flip = tool_rows | minus: 3 -%}
             {%- include arc-year-ruler.html end=grid_end last=arc_now_year %}
             <div class="arc-ruler-tick arc-ruler-tick--now"
-                 style="grid-column: {{ arc_now }}; --o: {{ arc_now }};"><span>now</span></div>
+                 style="grid-column: {{ arc_now }}; --m0: {{ arc_now_m }};"><span>now</span></div>
 
+            {%- comment -%}Two row counters, because the two charts don't put the
+            same things on rows. Wide, a row is a lane a bar sits in and a
+            succession (`continues`) shares one; the group rails run down the
+            side and cost nothing. Narrow, every tool needs a line of its own in
+            the name gutter, so relays are broken apart, and each group heads its
+            rows from a line above them instead of a rail beside them.
+            {%- endcomment -%}
             {%- assign tool_row = 1 -%}
+            {%- assign tool_row_m = 1 -%}
             {%- for v in site.data.tools.views -%}
               {%- comment -%}Captured here because forloop.first inside the
               group and tool loops below refers to those, not to this one.
@@ -303,13 +367,17 @@ layout: default
               {%- unless forloop.first -%}
                 {%- assign minor = " is-minor" -%}
                 {%- assign tool_row = tool_row | plus: 1 -%}
+                {%- assign tool_row_m = tool_row_m | plus: 1 -%}
             {%- comment -%}Rule only, no band label: the group rails below it
             (EDITORS, NOTES, …) already say what the band is.{%- endcomment %}
             <div class="arc-band-divider"
-                 style="grid-row: {{ tool_row }}; grid-column: 1 / {{ arc_now }};"></div>
+                 style="grid-row: {{ tool_row }}; grid-column: 1 / {{ arc_now }};
+                        --tr: {{ tool_row_m }};"></div>
               {%- endunless -%}
               {%- for g in v.groups -%}
                 {%- assign group_first = tool_row | plus: 1 -%}
+                {%- assign tool_row_m = tool_row_m | plus: 1 -%}
+                {%- assign group_head_m = tool_row_m -%}
                 {%- for t in g.tools -%}
                   {%- comment -%}A tool marked `continues` shares the previous
                   tool's row, turning a non-overlapping succession (editors,
@@ -318,6 +386,7 @@ layout: default
                   {%- unless t.continues -%}
                     {%- assign tool_row = tool_row | plus: 1 -%}
                   {%- endunless -%}
+                  {%- assign tool_row_m = tool_row_m | plus: 1 -%}
                   {%- comment -%}A tool with `segments` derives its extent from
                   them — first phase's start to last phase's end (or now) — so
                   the bar and its phases can never disagree.{%- endcomment -%}
@@ -388,6 +457,16 @@ layout: default
                     {%- assign col_start = 2 -%}
                     {%- assign clipped = " is-clipped" -%}
                   {%- endif -%}
+                  {%- comment -%}The narrow scale reaches back to 2018, which is
+                  as far back as anything here goes, so nothing clips over there.
+                  Clamped all the same: backdating an entry should shorten a bar,
+                  not emit a column 0 and break the matrix.{%- endcomment -%}
+                  {%- assign m_col_start = t_start | minus: 2018 | times: 2 | plus: 2 | round | at_least: 2 -%}
+                  {%- if t_ongoing -%}
+                    {%- assign m_col_end = arc_now_m -%}
+                  {%- else -%}
+                    {%- assign m_col_end = t_end | minus: 2018 | times: 2 | plus: 2 | round -%}
+                  {%- endif -%}
                   {%- comment -%}A bar with a `link` is the anchor itself rather
                   than a div: it is the whole target, and it gets its focus from
                   the href instead of a tabindex. A bar with phases can't be one
@@ -405,9 +484,17 @@ layout: default
                         {%- if t.segments %} has-segments{% endif -%}
                         {%- if col_start >= arc_late %} is-late{% endif -%}
                         {%- if tool_row >= tools_flip %} is-up{% endif %}"
-                 style="grid-row: {{ tool_row }}; grid-column: {{ col_start }} / {{ col_end }}; --o: {{ col_raw }};"
+                 style="grid-row: {{ tool_row }}; grid-column: {{ col_start }} / {{ col_end }};
+                        --tr: {{ tool_row_m }}; --m0: {{ m_col_start }}; --m1: {{ m_col_end }};"
+                 data-tool="{{ t.name | escape }}" aria-label="{{ t.name }}"
                  {%- if t.link %} href="{{ t.link }}" target="_blank" rel="noopener"
-                 {%- else -%}{%- unless t.segments %} tabindex="0"{% endunless %}{% endif %}>
+                 {%- comment -%}role goes with the tabindex: a bare div can be
+                 focused but can't carry an accessible name, and on the narrow
+                 matrix — where the bar's own title is hidden and the name lives
+                 out in the gutter — the aria-label above is the only name it
+                 has. Segmented bars aren't focusable themselves; their phases
+                 are, and each of those names itself.{%- endcomment -%}
+                 {%- else -%}{%- unless t.segments %} tabindex="0" role="button"{% endunless %}{% endif %}>
               <strong>{{ t.name }}</strong>
               <span class="arc-pop arc-pop--tool">
                 {%- comment -%}Shown only when the bar's own title had to be cut
@@ -498,22 +585,48 @@ layout: default
               </span>
               {%- endif -%}
             </{{ tool_tag }}>
+            {%- comment -%}The narrow matrix's name gutter. Emitted for every bar
+            and shown only there: wide, the name is inside the bar, where it
+            sticks to the rail so a bar whose start has scrolled off still says
+            what it is. Its own element rather than a second copy inside the bar,
+            because it sits in column 1 while the bar sits out on its dates —
+            a grid item can only be in one place.{%- endcomment %}
+            <div class="arc-tool-name{% if t.occasional %} is-occasional{% endif %}"
+                 style="--tr: {{ tool_row_m }};">{{ t.name }}</div>
                 {%- endfor -%}
                 {%- comment -%}Emitted after its rows so the span can use the row
                 counter; grid placement is explicit, so DOM order is free.
                 {%- endcomment %}
             <div class="arc-lane-labels arc-lane-labels--group{{ minor }}"
-                 style="grid-row: {{ group_first }} / {{ tool_row | plus: 1 }};">
+                 style="grid-row: {{ group_first }} / {{ tool_row | plus: 1 }};
+                        --tr: {{ group_head_m }};">
               <span>{{ g.group | upcase }}</span>
             </div>
               {%- endfor -%}
             {%- endfor -%}
             <div class="arc-now-line"
-                 style="grid-row: 2 / {{ grid_end }}; grid-column: {{ arc_now }};"></div>
+                 style="grid-row: 2 / {{ grid_end }}; grid-column: {{ arc_now }};
+                        --m0: {{ arc_now_m }};"></div>
           </div>
         </div>
       </div>
+      <p class="arc-hint">tap any row for its dates and notes</p>
     </div>
+    </div>
+
+    <!-- A tool is a row in a data file rather than a document, so there is no
+         card behind it for a tap to open the way a work chip opens one. Its note
+         and its phases come up here instead — the same copy the pointer gets
+         from the popovers on the wide chart, in the one place a phone has room
+         for it. Filled in by the script below. -->
+    {%- comment -%}A panel, not a modal: the chart behind it stays live, and
+    tapping the next row refills this one in place. So it says region and
+    announces its own changes rather than claiming a dialog's focus.
+    {%- endcomment %}
+    <div class="arc-sheet" id="arc-sheet" role="region" aria-live="polite"
+         aria-label="Tool detail" hidden>
+      <button type="button" class="arc-sheet-close" aria-label="Close">&times;</button>
+      <div class="arc-sheet-body"></div>
     </div>
 
     <!-- The view switch sits under the chart: it reads as a footer control for
@@ -548,6 +661,81 @@ layout: default
         if (card && window.openProjectModal) window.openProjectModal(card);
       });
     });
+    // ---- Tool detail sheet (narrow chart only) ----------------------------
+    // On the matrix a bar is a 19px band of color with its name out in the
+    // gutter: everything the wide chart reveals on hover — the span, the note,
+    // and the cadence of each phase — has nowhere to go. A tap raises it here.
+    // The copy is read straight out of the popovers already in the markup, so
+    // the data file stays the one source of truth and this adds no second copy
+    // of anything.
+    const arcSheet = document.getElementById("arc-sheet");
+    if (arcSheet) {
+      const arcSheetBody = arcSheet.querySelector(".arc-sheet-body");
+      const closeSheet = () => {
+        arcSheet.classList.remove("is-open");
+        // Wait out the slide-down before pulling it from the layout, or it
+        // vanishes instead of leaving.
+        setTimeout(() => { arcSheet.hidden = true; }, 220);
+      };
+      const openSheet = (bar) => {
+        const parts = [];
+        const own = bar.querySelector(":scope > .arc-pop--tool");
+        parts.push('<strong>' + (bar.dataset.tool || "") + '</strong>');
+        if (own) {
+          // The bar's own popover leads with the title, which the line above
+          // just said; take the rest of it.
+          own.querySelectorAll(":scope > small").forEach((s) => parts.push(s.outerHTML));
+        }
+        // One line per phase, each keeping the cadence edge it wears on the
+        // chart: solid for a daily driver, dashed for reach-for-it-sometimes.
+        bar.querySelectorAll(".arc-seg").forEach((seg) => {
+          const pop = seg.querySelector(":scope > .arc-pop--tool");
+          if (!pop) return;
+          const cadence = seg.classList.contains("is-occasional") ? " is-occasional" : "";
+          parts.push('<span class="arc-seg-note' + cadence + '">' + pop.innerHTML + "</span>");
+        });
+        if (bar.tagName === "A" && bar.href) {
+          parts.push('<a class="arc-sheet-link" href="' + bar.href +
+                     '" target="_blank" rel="noopener">Open &#8599;</a>');
+        }
+        arcSheetBody.innerHTML = parts.join("");
+        arcSheet.hidden = false;
+        // Two frames: the element has to be in the layout at translateY(100%)
+        // before the class that moves it off can be a transition rather than a
+        // starting position.
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          arcSheet.classList.add("is-open");
+        }));
+      };
+      // The matrix only exists below 700px; above it the bars speak for
+      // themselves and a linked one should still just follow its link.
+      const isNarrow = () => window.matchMedia("(max-width: 700px)").matches;
+      document.querySelectorAll("#arc-card .arc-chip--tool").forEach((bar) => {
+        bar.addEventListener("click", (e) => {
+          if (!isNarrow()) return;
+          e.preventDefault();
+          openSheet(bar);
+        });
+        // Keyboard reaches these too — a tablet in portrait is a narrow
+        // viewport with arrow keys. The popovers a focus ring would open on the
+        // wide chart are switched off here, so focus raises the sheet instead.
+        // focusin rather than focus: a segmented bar's phases are what actually
+        // take the focus, and this needs to hear about it from the bar.
+        bar.addEventListener("focusin", () => {
+          if (isNarrow()) openSheet(bar);
+        });
+      });
+      arcSheet.querySelector(".arc-sheet-close").addEventListener("click", closeSheet);
+      document.addEventListener("click", (e) => {
+        if (arcSheet.hidden || arcSheet.contains(e.target)) return;
+        if (e.target.closest(".arc-chip--tool")) return;
+        closeSheet();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !arcSheet.hidden) closeSheet();
+      });
+    }
+
     // ---- Elided titles ----------------------------------------------------
     // A chip narrower than one word of its own title cuts the title off rather
     // than spilling it past its border (see .arc-chip > strong in arc.scss).
