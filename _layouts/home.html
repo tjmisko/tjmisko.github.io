@@ -209,9 +209,22 @@ layout: default
                  something off to one side of it. -->
             <div class="arc-junction" style="grid-column: {{ work_end }};"></div>
             <div class="arc-node" style="grid-column: {{ work_end | plus: 1 }};">
+              {%- comment -%}Two passes over the same documents. A node entry is a
+              full-width card by default; one marked arc.node.small is held back
+              for the paired row at the foot of the panel, where two of them sit
+              side by side. The small ones are the shorter builds, and pairing
+              them says so without giving each the width of a year's work — and
+              keeps the panel, which is the tallest thing spanning the chart and
+              therefore what sets every row's height, from growing a whole card
+              taller for each one.
+
+              A small entry is drawn as an icon-only mini, the same chip the
+              short builds down in the software band get: nothing on the face but
+              the glyph, and the whole of it in the popover.
+              {%- endcomment -%}
               <h3>Software Engineering</h3>
               {%- for p in site.projects -%}
-                {%- if p.arc.node -%}
+                {%- if p.arc.node and p.arc.node.small != true -%}
               <button type="button" class="arc-chip arc-chip--software"
                       data-project="{{ p.slug }}">
                 <strong>{{ p.arc.node.label }}</strong>
@@ -228,6 +241,32 @@ layout: default
               </button>
                 {%- endif -%}
               {%- endfor -%}
+              {%- assign node_small = site.projects | where_exp: "p", "p.arc.node.small" -%}
+              {%- if node_small.size > 0 -%}
+              <div class="arc-node-pair">
+                {%- for p in node_small -%}
+                {%- comment -%}An icon-only mini, drawn and behaving exactly as
+                BinderBuilder and the rest of the small builds do down in the
+                software band: same glyph, same class, nothing on the face but
+                the icon, and the whole of it — name, tagline, dates,
+                description — in the popover. These two are in the panel rather
+                than on a row only because 2026 is past the end of the fixed
+                scale, so they should not look like a different species.
+                {%- endcomment -%}
+                <button type="button"
+                        class="arc-chip arc-chip--software arc-chip--mini arc-chip--node-small"
+                        data-project="{{ p.slug }}" aria-label="{{ p.arc.node.label }}">
+                  <span class="arc-ico arc-ico--{{ p.arc.node.kind | default: 'cli' }}" aria-hidden="true"></span>
+                  <span class="arc-pop">
+                    <strong>{{ p.arc.node.label }}</strong>
+                    {%- if p.arc.node.sub %}<small>{{ p.arc.node.sub }}</small>{% endif -%}
+                    {%- if p.arc.node.span %}<small class="arc-pop-span">{{ p.arc.node.span }}</small>{% endif -%}
+                    {%- if p.arc.node.blurb %}<small>{{ p.arc.node.blurb }}</small>{% endif -%}
+                  </span>
+                </button>
+                {%- endfor -%}
+              </div>
+              {%- endif -%}
             </div>
 
             <!-- The lanes descend research → data → software, and the descent is

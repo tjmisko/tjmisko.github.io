@@ -267,7 +267,22 @@ $arc-ruler-h: 28px;
   background: none;
   backdrop-filter: none;
   justify-content: center;
-  gap: 99px; // 113px name to name, over a 14px line box
+  // 113px name to name, over a 14px line box. The number is not free: it has to
+  // be the distance from the degree's row to the research row, and half of it
+  // has to be the distance from the research row to the relay under it — one
+  // fit, not two, which holds only because the research row sits at exactly half
+  // the degree's remove (see .arc-quiet).
+  //
+  // Both distances are the chart's own, but only while the chart is taller than
+  // the node column beside it. The node spans every content row, so once it
+  // outgrows them it sets their heights instead, the two distances grow with it,
+  // and this number is wrong. That is what pairing the short builds at the foot
+  // of the panel buys (see .arc-node-pair): the panel stays under the chart, and
+  // this stays a property of the chart. The clearance is about 37px, which is
+  // not another full-width card: a sixth entry wants pairing too. If one is ever
+  // added without it, this has to be re-measured — it is whatever the distance
+  // from the degree's row to the research row then comes to.
+  gap: 99px;
   z-index: 5; // above the rail it sits on
   // Everything above lines the names up by their boxes, and by their boxes they
   // were level: the degree's title and COURSEWORK put their cap tops on the same
@@ -782,6 +797,29 @@ a.arc-chip:focus-visible {
   }
   .arc-chip { margin: 0; align-self: stretch; }
 }
+// The paired row at the foot of the panel: two short builds sharing the width
+// one long one gets. `flex: 1 1 0` splits it evenly whatever the titles are, so
+// the pair reads as one row rather than as two cards that happened to fit, and
+// `min-width: 0` lets a long title wrap inside its half instead of forcing the
+// half wider. Stretch keeps both at the taller one's height.
+.arc-node-pair {
+  display: flex;
+  gap: 8px;
+  align-self: stretch;
+  // The two split the panel between them, so the pair sits on the same left and
+  // right edges as the full-width cards above it and the row reads as one more
+  // course of the same stack rather than as something dropped in underneath.
+  // Width only: the cross-axis is left alone so each card keeps a mini's own
+  // height, which is what makes it the same object as the ones on the chart.
+  > .arc-chip { flex: 1 1 0; }
+}
+// The card itself is .arc-chip--mini and needs nothing further: a mini is
+// already icon-only, already centered, already carrying its name in its
+// popover. All that is left is to undo the panel's own stretch, which would
+// pull a chip sized to its glyph up to the row's full height.
+.arc-chip--node-small {
+  align-self: center;
+}
 // ---- Tools waterfall -------------------------------------------------------
 // Same ruler, read the other way: one bar per tool, stacked in the order they
 // were picked up. Rows are implicit (one per tool in _data/tools.yml), which
@@ -1118,6 +1156,15 @@ a.arc-chip:focus-visible {
     row-gap: 0;
     column-gap: 3px;
   }
+  // Pairing exists to save height in a panel that has none to spare. Down here
+  // the panel is the full width of the chart and sits at the foot of it, so the
+  // constraint is gone and the reason with it: the row becomes a column and the
+  // two rejoin the stack above them, each taking the width its entry needs to
+  // print its dates and description on the card the way the others do.
+  .arc-node-pair {
+    flex-direction: column;
+    gap: 8px;
+  }
 
   // ---- The turned axis ------------------------------------------------------
   // A year's rule is the top edge of the row that year begins, drawn across
@@ -1372,6 +1419,32 @@ a.arc-chip:focus-visible {
           padding: 2px 0 0;
           font-size: 0.72rem;
         }
+      }
+      // The paired entries are minis, so the chart's own mini rule above has
+      // already squeezed them to a centered 3px glyph — right for a chip that
+      // has to fit a half-year column, wrong for one sitting in the destination
+      // panel, where a card is read rather than scanned and its whole text is on
+      // its face. Put them back on the panel's terms: full width like the cards
+      // above them, the glyph at the left, and the text beside it rather than
+      // centered under it.
+      .arc-chip--node-small {
+        align-self: stretch;
+        // Back to a row. Chips on this axis are column boxes so that a bar's
+        // title sits at its top edge where the work began, but these are not on
+        // the axis and have no duration to describe — they are cards in the
+        // panel, and the glyph belongs beside the name it labels rather than
+        // stacked on top of it.
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 6px 10px;
+        // The glyph is a drawing, not a box of text: left to shrink on the
+        // default flex-shrink it gave half its width to the description beside
+        // it and came out at 12px, a squashed version of the same icon the
+        // chart draws at 24.
+        > .arc-ico { flex: 0 0 auto; }
+        > .arc-pop { flex: 1 1 auto; padding: 0; }
       }
     }
   }

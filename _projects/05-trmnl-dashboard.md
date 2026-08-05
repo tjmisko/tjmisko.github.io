@@ -11,6 +11,7 @@ tags:
   - "automation"
 arc:
   node:
+    small: true
     label: "TRMNL Dashboard"
     sub: "E-ink daily brief · Bash + Go + Liquid"
     span: "Feb 2026 – Present"
