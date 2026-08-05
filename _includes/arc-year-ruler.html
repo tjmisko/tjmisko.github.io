@@ -10,15 +10,25 @@ chart" in arc.scss). The two read different scales, so a tick carries both.
             line 2 + (Y-2020)*2. The scale starts at 2020 and the little that
             predates it is clamped to the left edge and marked .is-clipped —
             there is no room for four more columns at that density.
-  Narrow.   Track M carries half-year 2018 + (M-2)/2, so year Y lands on grid
-            line 2 + (Y-2018)*2, carried as --m0. Both narrow charts have room
-            the wide one doesn't, so both start where the work does and neither
-            clips anything: the work chart because a phone is tall and time runs
-            down it, the toolchain matrix because its bars gave up their titles
-            to a name gutter and got four more columns back. Which axis --m0
-            names is the chart's business — a row on the work chart, a column on
-            the matrix. The two years the wide scale can't afford are emitted as
-            .is-narrow-only: they have no column to sit in over there.
+  Narrow.   Track M carries half-year O + (M-2)/2, where O is narrow_origin, so
+            year Y lands on grid line 2 + (Y-O)*2, carried as --m0. Which axis
+            --m0 names is the chart's business — a row on the work chart, a
+            column on the matrix.
+
+            The two narrow charts no longer agree on O, which is why it is a
+            parameter. The matrix reaches back to 2018 because its bars do: they
+            gave up their titles to a name gutter and got four columns back, so
+            the first spreadsheets can start where they started. The work chart
+            starts at 2020 with the wide one, because the only thing it had
+            before then was the degree — and the degree is arc.wide_only, a
+            phone having one screen of height for the whole arc and none of it
+            to spend on scene-setting. Two empty years at the head of the chart
+            would be the same waste by another means.
+
+            Years before the origin are simply not drawn. Wide, where the scale
+            always starts at 2020, the pre-2020 rules exist only for a narrow
+            chart that reaches back that far, so they come out .is-narrow-only —
+            they have no column to sit in over there.
 
 Label and rule are separate elements: the rule starts one track in, past the
 ruler track, because a line drawn the full length would strike through its own
@@ -33,16 +43,23 @@ at full resolution.
          Wide only; narrow rules span the lanes with 1 / -1.
   last — the last year to label. Pass the build year so the scale grows with the
          calendar; pass a literal only for a grid whose columns are fixed.
+  narrow_origin — the first year on the narrow scale. Defaults to 2018 for the
+         toolchain matrix; the work chart passes 2020.
 {%- endcomment -%}
 {%- assign last_year = include.last | default: 2026 -%}
+{%- assign narrow_origin = include.narrow_origin | default: 2018 -%}
 {%- for y in (2018..last_year) -%}
   {%- assign year_col = y | minus: 2020 | times: 2 | plus: 2 -%}
-  {%- assign year_line = y | minus: 2018 | times: 2 | plus: 2 -%}
+  {%- assign year_line = y | minus: narrow_origin | times: 2 | plus: 2 -%}
   {%- assign odd_year = y | modulo: 2 -%}
   {%- if y < 2020 -%}
+    {%- comment -%}Off both scales when the narrow one starts at 2020: no column
+    over there and no row over here.{%- endcomment -%}
+    {%- if y >= narrow_origin %}
 <div class="arc-rule is-narrow-only" style="--m0: {{ year_line }};"></div>
-    {%- if odd_year == 0 %}
+      {%- if odd_year == 0 %}
 <div class="arc-ruler-tick is-narrow-only" style="--m0: {{ year_line }};"><span>{{ y }}</span></div>
+      {%- endif -%}
     {%- endif -%}
   {%- else -%}
 <div class="arc-rule" style="grid-column: {{ year_col }}; grid-row: 2 / {{ include.end }}; --m0: {{ year_line }};"></div>

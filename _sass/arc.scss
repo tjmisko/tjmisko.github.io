@@ -15,8 +15,10 @@
 // All of the above is the chart at full width. Below 700px both grids are
 // redrawn from the same markup — the work grid turned a quarter turn so that
 // time runs down the page and the lanes run across it, the toolchain waterfall
-// narrowed into a matrix with its names in a gutter — and both scales start at
-// 2018 there, where the work does, so neither clips anything. See "Mobile: the
+// narrowed into a matrix with its names in a gutter. The matrix reaches back to
+// 2018, where its bars do, and clips nothing; the work chart keeps the wide
+// scale's 2020 origin, because the only work it had before then was the degree
+// and the degree is not drawn there at all (arc.wide_only). See "Mobile: the
 // transposed chart" at the foot of this file.
 
 $arc-research: rgb(200, 200, 204);
@@ -1119,7 +1121,7 @@ a.arc-chip:focus-visible {
   .arc-lanes-wrap { container-type: inline-size; }
 
   .arc-lanes:not(.arc-lanes--tools) {
-    // year gutter · research · the thesis strip · data · software ×2.
+    // year gutter · research · data · software ×2.
     // See the packing table in arc-chip.html for why seven rows fit in four
     // lanes. The ratios are not even: the side-projects lane has nothing longer
     // than "Sproul" to fit, where research and data have to carry
@@ -1140,10 +1142,14 @@ a.arc-chip:focus-visible {
     // the budget goes where the long words are, and the tracks that hold no
     // words are cut to what their contents measure:
     //
-    //   20px  the year gutter — "2018" at 0.5rem
-    //   30px  the thesis strip — a paper glyph (18px) and its padding
+    //   20px  the year gutter — "2020" at 0.5rem
     //   36px  the floor under the side-projects lane, which is all minis now
-    //         (Lindy, Retend, and the three CLIs) and so holds a 24px glyph
+    //         (Lindy, the site, Retend, and the three CLIs) and so holds a 24px
+    //         glyph
+    //
+    // The thesis strip used to take 30px between research and data. The papers
+    // are in the research lane now, so that column is gone and its width is back
+    // in the pool below — which is the whole reason the theses could get bigger.
     //
     // What is left goes to the three lanes that carry sentences: research and
     // data both have to hold twelve characters ("Quasioptimal",
@@ -1152,25 +1158,26 @@ a.arc-chip:focus-visible {
     // lane is a fixed fraction of the chart, so the two are in a straight line
     // against each other — which is what the type size below solves for.
     grid-template-columns:
-      20px minmax(0, 1fr) 30px minmax(0, 1fr) minmax(36px, 0.5fr) minmax(0, 0.9fr) !important;
+      20px minmax(0, 1fr) minmax(0, 1fr) minmax(36px, 0.5fr) minmax(0, 0.9fr) !important;
     // A fixed step, so a row is a half-year everywhere on the chart and two bars
     // of the same length covered the same amount of time. auto would let a
     // wordy chip stretch its own rows and quietly lie about its duration.
-    grid-template-rows: 18px repeat(16, 46px);
+    // Twelve of them: 2020 to 2026, the same span the wide chart draws.
+    grid-template-rows: 18px repeat(12, 46px);
     // Time is continuous: a gap between rows would draw months that don't exist.
     // What sets one bar off from the next in a lane is its own bottom margin,
     // which takes the same 3px from every bar and so distorts nothing.
     row-gap: 0;
     column-gap: 3px;
   }
-  // Pairing exists to save height in a panel that has none to spare. Down here
-  // the panel is the full width of the chart and sits at the foot of it, so the
-  // constraint is gone and the reason with it: the row becomes a column and the
-  // two rejoin the stack above them, each taking the width its entry needs to
-  // print its dates and description on the card the way the others do.
+  // The pair stays a pair. On the wide chart each takes half the panel so the
+  // row reads as one more course of the same stack; here the panel is the full
+  // width of the chart and half of that is a lot of box around a 24px glyph, so
+  // they size to their icons and sit centered under the cards instead.
   .arc-node-pair {
-    flex-direction: column;
-    gap: 8px;
+    justify-content: center;
+    gap: 10px;
+    > .arc-chip { flex: 0 0 auto; }
   }
 
   // ---- The turned axis ------------------------------------------------------
@@ -1267,6 +1274,10 @@ a.arc-chip:focus-visible {
     // Hung between two rows on the wide chart. Here the argument is made by the
     // column the thesis sits in, not by an offset within one.
     .arc-chip.is-between { transform: none; }
+    // Set from a document's front matter (arc.wide_only) — the degree is the
+    // only one today. Nested this deep because the mobile .arc-chip rule above
+    // sets display, and a bare .arc-chip.is-wide-only would lose to it.
+    .arc-chip.is-wide-only { display: none; }
     // Sticky titles belong to a horizontal scroller, which this isn't.
     .arc-chip > strong { position: static; left: auto; }
     // No hover on a touch screen and no room for a panel besides: everything the
@@ -1290,8 +1301,6 @@ a.arc-chip:focus-visible {
     }
 
     // Minis are icon-only on both charts; here they fill their single half-year.
-    // Padding is trimmed to 3px because the thesis strip is sized to the glyph
-    // it holds and there is nothing else in its 30px to give.
     .arc-chip--mini {
       display: flex;
       align-items: center;
@@ -1299,28 +1308,57 @@ a.arc-chip:focus-visible {
       padding: 3px;
     }
     .arc-ico { margin: 0; }
+    // The theses were drawn at 18px because that was the whole of the strip they
+    // used to sit in. In the research lane they have a full lane's width and a
+    // 46px row, so the glyph goes up to what the row will hold: 32px of paper
+    // plus the chip's 3px padding and 1px border, top and bottom, inside the
+    // 43px a row leaves after the 3px every bar keeps under it. Same drawing,
+    // scaled — the rule spacing is a background-size, so it grows with it.
+    .arc-ico--paper {
+      width: 26px;
+      height: 32px;
+      background-size: 15px 24px;
+    }
 
-    // The honors-thesis outline, now a tall box around the strip the papers sit
-    // in. Its label won't lie under a 28px box and there are lanes hard against
-    // both sides of it, so it stands the label on end and runs it up the strip
-    // into the clear column above — reading bottom to top, toward the box it
-    // names, the way an axis label does.
+    // The honors-thesis outline, a box around the two papers in the research
+    // lane. It stands off them the way the wide chart's does: 5px of air on
+    // every side, bought by growing the box rather than by shrinking what is
+    // inside it, because a bar's height is its duration and these two would
+    // otherwise read shorter than the half-years they took. So the vertical
+    // clearance is the box's own negative margin, into rows the research lane
+    // has nothing in — and 2px is enough at the foot, where the lower paper's
+    // own 3px bottom margin has already given back most of the gap.
     .arc-group--thesis {
       align-self: stretch;
       height: auto;
-      margin: 0;
+      margin: -5px 0 -2px;
       transform: none;
     }
+    // Sideways there is nowhere to grow into: the box is already the width of
+    // the lane, and past that are the year gutter and the data lane, a 3px
+    // column gap away. So this side of the clearance is the papers' — inset
+    // within a lane they are the only occupants of. Width is not duration.
+    .arc-chip.is-between { margin: 0 5px 3px; }
+    // Named again, and lying flat. It came off the narrow chart when the box was
+    // 30px wide and the label had to stand on end and run up it — a whole column
+    // of vertical lettering spent on two words. The research lane has width for
+    // it horizontally, but not enough for the wide chart's notch: "Honors
+    // Thesis" set large enough to read is most of an 80px box, and a legend
+    // notched into a border it nearly spans erases the border instead of sitting
+    // in it. So it sits above the box rather than in it — no mask, the outline
+    // stays closed, and the type keeps a size worth reading. Nothing else is in
+    // this lane above 2021, so there is no other block it could be naming.
     .arc-group-label--below {
       top: auto;
-      bottom: calc(100% + 4px);
+      bottom: calc(100% + 3px);
       left: 50%;
-      transform: translateX(-50%) rotate(180deg);
-      writing-mode: vertical-rl;
+      transform: translateX(-50%);
       background: none;
       padding: 0;
-      font-size: 0.58rem;
-      letter-spacing: 0.08em;
+      font-size: 0.52rem;
+      // Tighter than the 0.1em the wide chart's labels carry, which is a
+      // display-type flourish this one has no room for.
+      letter-spacing: 0.02em;
     }
 
     // Quasioptimal reads as a bar here rather than as a line of text: it holds a
@@ -1330,6 +1368,9 @@ a.arc-chip:focus-visible {
       align-self: stretch;
       display: block;
       min-width: 0;
+      // The optical lift belongs to a line of text centered in a row. Here it is
+      // a bar drawn to its dates, and 2px off them is just wrong.
+      transform: none;
       margin: 0 0 3px;
       padding: 4px;
       font-size: clamp(0.46rem, calc(4cqw - 4.4px), 0.68rem);
@@ -1350,10 +1391,9 @@ a.arc-chip:focus-visible {
     // The caption stands there the way it stands on the wide chart, and the
     // paragraph behind it stays behind it: a chart's negative space is doing
     // work, and filling it with body copy on sight would cost the staircase the
-    // very outline that makes the argument visible. So it opens on a tap, into
-    // the block it already occupies — no panel over the chart, because unlike a
-    // tool bar this one has somewhere of its own to expand into. The dotted rule
-    // under the caption is what says so, the same mark .arc-quiet wears.
+    // very outline that makes the argument visible. So it opens on a tap. The
+    // dotted rule under the caption is what says it will, the same mark
+    // .arc-quiet wears.
     .arc-descent {
       align-self: start;
       display: block;
@@ -1369,18 +1409,39 @@ a.arc-chip:focus-visible {
       // otherwise open this on the tap's lingering focus.
       > .arc-pop { display: none; }
     }
+    // Opened, it is a panel after all. The clear block is two lanes wide and a
+    // paragraph set to that measure runs longer than the block is tall, so the
+    // tail of it lands on the staircase either way — and body copy interleaved
+    // with the bars it is about is not readable at 0.62rem. It keeps its own
+    // ground instead: the popover's backing and border from the wide chart,
+    // painting over whatever it reaches. Still in flow rather than absolute, so
+    // it opens from the caption downward into the void that was the point of
+    // putting it here.
     .arc-descent.is-open {
       color: $homepage-accent-color;
       > .arc-pop {
         display: block;
-        position: static;
+        // relative, not static: z-index only binds on a positioned box, and
+        // without it the paint order is DOM order — which puts this last today
+        // and one reordered include away from disappearing under a chip.
+        position: relative;
+        z-index: 4;
         max-width: none;
         width: auto;
-        border: 0;
-        background: none;
-        padding: 6px 0 0;
+        // Two lanes is about ten characters of this type, and a paragraph set
+        // ten characters wide is a column of hyphens. Since it is already
+        // painting over the chart, it may as well take the width it needs: a
+        // negative left margin widens an auto-width block leftward, out over the
+        // data lane, to roughly twice the measure. In cqw so it stays the same
+        // share of the chart at every width the matrix is drawn at.
+        margin-left: -30cqw;
+        padding: 7px 9px;
         font-size: 0.62rem;
         line-height: 1.45;
+        // The wide chart's popovers hand their taps to the chip underneath; this
+        // one is the disclosure's own body, and a tap on it should shut it the
+        // same way a tap on the caption does.
+        pointer-events: auto;
       }
     }
     .arc-descent-arrow { vertical-align: -2px; }
@@ -1389,7 +1450,7 @@ a.arc-chip:focus-visible {
     // Past the last half-year both take a row of their own across every lane, so
     // the convergence closes the chart instead of standing beside it.
     .arc-junction {
-      grid-row: 18;
+      grid-row: 14;
       grid-column: 1 / -1 !important;
       border-right: 0;
       height: 20px;
@@ -1403,7 +1464,7 @@ a.arc-chip:focus-visible {
       }
     }
     .arc-node {
-      grid-row: 19;
+      grid-row: 15;
       grid-column: 1 / -1 !important;
       margin: 0;
       .arc-chip {
@@ -1427,31 +1488,16 @@ a.arc-chip:focus-visible {
           font-size: 0.72rem;
         }
       }
-      // The paired entries are minis, so the chart's own mini rule above has
-      // already squeezed them to a centered 3px glyph — right for a chip that
-      // has to fit a half-year column, wrong for one sitting in the destination
-      // panel, where a card is read rather than scanned and its whole text is on
-      // its face. Put them back on the panel's terms: full width like the cards
-      // above them, the glyph at the left, and the text beside it rather than
-      // centered under it.
+      // Everything above is for the full-size entries. The pair at the foot is
+      // not a card and should not grow into one: they are the same icon-only
+      // minis the short builds wear up on the chart, drawn the same way and
+      // opening the same card on a tap. Nothing on the face but the glyph — the
+      // name, the tagline, the dates and the description are all one tap away,
+      // which is the deal every other mini on this chart makes.
       .arc-chip--node-small {
-        align-self: stretch;
-        // Back to a row. Chips on this axis are column boxes so that a bar's
-        // title sits at its top edge where the work began, but these are not on
-        // the axis and have no duration to describe — they are cards in the
-        // panel, and the glyph belongs beside the name it labels rather than
-        // stacked on top of it.
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 6px 10px;
-        // The glyph is a drawing, not a box of text: left to shrink on the
-        // default flex-shrink it gave half its width to the description beside
-        // it and came out at 12px, a squashed version of the same icon the
-        // chart draws at 24.
-        > .arc-ico { flex: 0 0 auto; }
-        > .arc-pop { flex: 1 1 auto; padding: 0; }
+        align-self: center;
+        padding: 11px 6px;
+        > .arc-pop { display: none; }
       }
     }
   }

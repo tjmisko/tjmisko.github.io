@@ -110,7 +110,7 @@ layout: default
                style="grid-template-columns: 104px repeat({{ work_cols }}, 1fr) 18px 220px;">
             {%- comment -%}Rows are 1 ruler + 7 content, so the rules run to
             line 9.{%- endcomment -%}
-            {%- include arc-year-ruler.html end=9 last=work_last_year -%}
+            {%- include arc-year-ruler.html end=9 last=work_last_year narrow_origin=2020 -%}
 
             {%- comment -%}The rail starts below the ruler row: leaving row 1
             clear keeps it off the 2020 label, which overhangs its own grid line
@@ -150,27 +150,30 @@ layout: default
 
             <!-- The same key for the narrow chart, where the lanes are columns
                  and so name themselves at the head of one rather than down the
-                 side of the grid. Four names collapse to three: COURSEWORK and
-                 RESEARCH share a column there (the degree and Quasioptimal never
-                 overlap), and the thesis strip between research and data is
-                 named by the outline around it instead. Each carries its lane's
+                 side of the grid. Four names collapse to three: COURSEWORK has
+                 nothing to name over there — the degree is arc.wide_only, and
+                 the column it shared is Quasioptimal's alone — and the thesis
+                 strip between research and data goes unnamed, left to the
+                 outline and the cards its papers open. Each carries its lane's
                  color, which is what the old three-dot legend was for. -->
             <div class="arc-lane-head is-narrow-only arc-lane-head--research" style="--ln: 2;">RESEARCH</div>
-            <div class="arc-lane-head is-narrow-only arc-lane-head--data" style="--ln: 4;">DATA</div>
+            <div class="arc-lane-head is-narrow-only arc-lane-head--data" style="--ln: 3;">DATA</div>
             <div class="arc-lane-head is-narrow-only arc-lane-head--software"
-                 style="--ln: 5; --ln-end: 7;">SOFTWARE</div>
+                 style="--ln: 4; --ln-end: 6;">SOFTWARE</div>
 
             <!-- honors-thesis outline, on the unbanded row between the degree
                  above it and the research below, and hung with the papers it
                  encloses (see .arc-group--thesis).
 
-                 On the narrow chart the same argument is made by a column rather
-                 than a row: the strip the papers sit in runs between the research
-                 lane and the data one, belonging to neither, and the outline is
-                 the width of that strip over the two half-years the theses took
-                 (2021H2 and 2022H1, rows 9 to 11). -->
+                 The narrow chart no longer makes that argument with a column.
+                 The papers sit in the research lane there — see the packing
+                 table in arc-chip.html — and the outline is that lane's width
+                 over the two half-years the theses took (2021H2 and 2022H1,
+                 rows 5 to 7). What the wide chart says by putting them between
+                 the bands, the narrow one says by leaving them the data palette
+                 in a research lane. -->
             <div class="arc-group arc-group--thesis" style="grid-row: 3; grid-column: 5 / 7;
-                 --m0: 9; --m1: 11; --ln: 3;">
+                 --m0: 5; --m1: 7; --ln: 2;">
               <span class="arc-group-label arc-group-label--below">Honors Thesis</span>
             </div>
 
@@ -193,7 +196,7 @@ layout: default
                  stopping on a date. It sits on the research row: the writing is
                  research of its own, and the row above is the degree. -->
             <a class="arc-quiet" style="grid-row: 4; grid-column: 8 / {{ work_end }};
-               --m0: 12; --m1: 18; --ln: 2;"
+               --m0: 8; --m1: 14; --ln: 2;"
                href="https://quasioptimal.io" target="_blank" rel="noopener">
               Quasioptimal &mdash; independent research &middot; 2023&ndash;Present
               <span class="arc-pop arc-pop--down">
@@ -278,17 +281,19 @@ layout: default
                  clear row to its left.
 
                  The narrow chart leaves the mirror image of that triangle: the
-                 staircase runs from the degree at the top left down to the
-                 software lanes at the bottom right, so the clear ground is above
-                 and to the right of it — the two software columns from 2018 to
-                 the first side project in 2022 (rows 2 to 10). The note takes
-                 that block, and the arrow points the same way it does on the
-                 wide chart, down and to the right, along the diagonal the work
-                 actually travels. There is no hover on a phone, so what is a
-                 popover over there prints as body copy here: the void is exactly
-                 the room the argument needs. -->
+                 staircase runs from the research lane at the top left down to
+                 the software lanes at the bottom right, so the clear ground is
+                 above and to the right of it — the two software columns running
+                 down to the first side project in 2022 (row 6). The note takes
+                 the lower half of that block rather than all of it: hard against
+                 the ruler it read as a heading for the lanes it sits in, which
+                 is what the column heads directly above it already are. Starting
+                 a year down the scale, it reads as an annotation hanging in the
+                 void instead. The arrow points the same way it does on the wide
+                 chart, down and to the right, along the diagonal the work
+                 actually travels. -->
             <div class="arc-descent" style="grid-row: 8; grid-column: 4 / 10;
-                 --m0: 2; --m1: 10; --ln: 5; --ln-end: 7;"
+                 --m0: 4; --m1: 6; --ln: 4; --ln-end: 6;"
                  tabindex="0" role="note">
               <span>Down the Tech Stack</span>
               <svg class="arc-descent-arrow" width="15" height="15" viewBox="0 0 13 13"

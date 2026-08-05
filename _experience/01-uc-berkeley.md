@@ -8,6 +8,7 @@ arc:
   row: 2
   start: 2018
   end: 2022.4
+  wide_only: true
   label: "BA Applied Math + Economics &middot; UC Berkeley"
   span: "Aug 2018 – May 2022"
   blurb: "Applied math and economics with honors, plus the CS systems and AI core."

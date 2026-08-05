@@ -25,6 +25,13 @@ Front matter read here:
                two-line label can't leave its neighbours sitting short — the
                run should read as one line across the chart. Set it on every
                chip in the row, not just the tall one.
+  arc.wide_only  drawn on the wide chart and left off the narrow one. For an
+               item that is context where there is room for context and noise
+               where there isn't: a phone has one screen of height to spend on
+               the whole arc, and something that only sets the scene should not
+               be holding the top of it. The document still renders its card and
+               is still reachable from the portfolio — this hides a bar, not an
+               entry. Mirrors .is-narrow-only, which the lane heads wear.
   arc.start    decimal year the chip begins (2023.5 = mid-2023)
   arc.end      decimal year it ends; omitted when arc.ongoing is set
   arc.ongoing  runs off the fixed scale into the junction instead of ending
@@ -95,46 +102,66 @@ are computed here and both ride out on the element — the wide one as grid-row 
 grid-column, the narrow one as the custom properties the media query reads,
 since a stylesheet can't outrank an inline style without them.
 
-  --m0 / --m1  the half-year rows the chip spans, on a 2018 origin. Vertical room
-               is what a phone has, so the narrow scale starts where the work
-               does: the degree runs from its true 2018 start and nothing is
-               clipped. arc.ongoing runs to the foot of the fixed scale (2026),
-               which is row 18.
+  --m0 / --m1  the half-year rows the chip spans, on the same 2020 origin the
+               columns use — so for any chip drawn on both charts these two carry
+               the same numbers as grid-column, and a bar that is four columns
+               wide over there is four rows tall over here. (They still have to
+               ride out separately: the media query has to override an inline
+               grid-column, and only a custom property can outrank one.) The
+               narrow chart reached back to 2018 for as long as the degree was
+               drawn on it; with the degree arc.wide_only there is nothing before
+               2020 left to reach for, and two empty years at the head of a phone
+               screen cost more than they show. arc.ongoing runs to the foot of
+               the fixed scale (2026), which is row 14.
   --ln         the lane column.
 
 Lanes are packed rather than one-per-row: seven columns at this width would be
 51px each, which no title survives. Two desktop rows can share a column when
 nothing on one ever runs at the same time as anything on the other, and after
-the half-year snapping three pairs qualify:
+the half-year snapping four qualify:
 
-  2 the degree + 4 Quasioptimal    → 2  RESEARCH   (2018–2022, then 2023–now)
-  3 the theses                     → 3  the strip between research and data,
-                                        which is where the honors thesis belongs
-                                        for the same reason arc.between hangs it
-                                        between the bars on the wide chart
-  5 the employment relay           → 4  DATA       (already one contiguous run)
-  6 side projects + 8 the CLIs     → 5  SOFTWARE   (Lindy → Retend → the CLIs,
-                                        each starting where the last stopped)
-  7 sspi.world                     → 6  SOFTWARE, second track: the one thing
+  2 the degree + 4 Quasioptimal
+      + 3 the theses               → 2  RESEARCH   (the degree is wide_only, so
+                                        what actually shares this lane is the
+                                        theses to 2022 and Quasioptimal from
+                                        2023. The theses had a 30px strip of
+                                        their own between research and data,
+                                        which is where the wide chart puts them
+                                        and why arc.between hangs them there —
+                                        but that argument was made by a column
+                                        too narrow to hold anything but a glyph,
+                                        and the theses ARE the research. They
+                                        keep the data palette they wear on the
+                                        wide chart, so nothing about what kind
+                                        of work they were is lost by moving.)
+  5 the employment relay           → 3  DATA       (already one contiguous run)
+  6 side projects + 8 the CLIs     → 4  SOFTWARE   (Lindy → the site → Retend →
+                                        the CLIs, each starting where the last
+                                        stopped)
+  7 sspi.world                     → 5  SOFTWARE, second track: the one thing
                                         that ran under everything else
 
 A new row has to be told which column it joins, and told deliberately — landing
 in column 0 would silently stack it on the year gutter — so an unmapped row
 stops the build.{%- endcomment -%}
-{%- assign m_start = a.start | minus: 2018 | times: 2 | plus: 2 | round -%}
+{%- comment -%}Clamped, though nothing reaches back past 2020 that is still drawn
+here: the degree does, and is only kept off the chart by display — a negative
+grid line would resolve against the far end of the grid and put it somewhere
+surprising if that ever changed.{%- endcomment -%}
+{%- assign m_start = a.start | minus: 2020 | times: 2 | plus: 2 | round | at_least: 2 -%}
 {%- if a.ongoing -%}
-  {%- assign m_end = 18 -%}
+  {%- assign m_end = 14 -%}
 {%- else -%}
-  {%- assign m_end = a.end | minus: 2018 | times: 2 | plus: 2 | round -%}
+  {%- assign m_end = a.end | minus: 2020 | times: 2 | plus: 2 | round | at_least: 3 -%}
 {%- endif -%}
 {%- case a.row -%}
   {%- when 2 -%}{%- assign m_lane = 2 -%}
-  {%- when 3 -%}{%- assign m_lane = 3 -%}
+  {%- when 3 -%}{%- assign m_lane = 2 -%}
   {%- when 4 -%}{%- assign m_lane = 2 -%}
-  {%- when 5 -%}{%- assign m_lane = 4 -%}
-  {%- when 6 -%}{%- assign m_lane = 5 -%}
-  {%- when 7 -%}{%- assign m_lane = 6 -%}
-  {%- when 8 -%}{%- assign m_lane = 5 -%}
+  {%- when 5 -%}{%- assign m_lane = 3 -%}
+  {%- when 6 -%}{%- assign m_lane = 4 -%}
+  {%- when 7 -%}{%- assign m_lane = 5 -%}
+  {%- when 8 -%}{%- assign m_lane = 4 -%}
   {%- else -%}
     {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--row-{{ a.row }}-has-no-lane-column-on-the-narrow-chart{%- endcapture -%}
     {% include {{ arc_fail }} %}
@@ -144,6 +171,8 @@ be clipped by the scroll container, so those two rows open downward instead.
 {%- endcomment -%}
 {%- assign pop_dir = "" -%}
 {%- if a.row < 4 -%}{%- assign pop_dir = " arc-pop--down" -%}{%- endif -%}
+{%- assign wide_only = "" -%}
+{%- if a.wide_only -%}{%- assign wide_only = " is-wide-only" -%}{%- endif -%}
 {%- comment -%}Phase geometry is measured against the bar as *drawn*, not against
 the raw front-matter dates: both edges snapped to the nearest half-year column on
 the way in, so measuring against the unsnapped years would slide every phase
@@ -216,14 +245,14 @@ along the row.{%- endcomment -%}
   {%- comment -%}Each part takes its own stretch of the narrow chart's time axis;
   the lane column is the chip's, since parts are a succession within one row.
   {%- endcomment -%}
-  {%- assign pt_m_start = pt_start | minus: 2018 | times: 2 | plus: 2 | round -%}
+  {%- assign pt_m_start = pt_start | minus: 2020 | times: 2 | plus: 2 | round | at_least: 2 -%}
   {%- if a.ongoing and forloop.last -%}
-    {%- assign pt_m_end = 18 -%}
+    {%- assign pt_m_end = 14 -%}
   {%- else -%}
-    {%- assign pt_m_end = pt_end | minus: 2018 | times: 2 | plus: 2 | round -%}
+    {%- assign pt_m_end = pt_end | minus: 2020 | times: 2 | plus: 2 | round | at_least: 3 -%}
   {%- endif -%}
 <button type="button"
-        class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ pt_clipped }}
+        class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ pt_clipped }}{{ wide_only }}
                {%- if a.between %} is-between{% endif -%}
                {%- if a.relay %} is-relay{% endif %}"
         style="grid-row: {{ a.row }}; grid-column: {{ pt_col_start }} / {{ pt_col_end }};
@@ -248,7 +277,7 @@ along the row.{%- endcomment -%}
 {%- endfor -%}
 {%- elsif a.kind -%}
 <button type="button"
-        class="arc-chip arc-chip--{{ a.tone | default: a.lane }} arc-chip--mini{{ clipped }}
+        class="arc-chip arc-chip--{{ a.tone | default: a.lane }} arc-chip--mini{{ clipped }}{{ wide_only }}
                {%- if a.between %} is-between{% endif %}"
         style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }};
                --m0: {{ m_start }}; --m1: {{ m_end }}; --ln: {{ m_lane }};"
@@ -269,7 +298,7 @@ popover carries only what the chip can't: the dates and the description — plus
 the title itself, held back until the chip is too narrow to finish saying it.
 {%- endcomment -%}
 <button type="button"
-        class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ clipped }}
+        class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ clipped }}{{ wide_only }}
                {%- if a.between %} is-between{% endif -%}
                {%- if a.relay %} is-relay{% endif -%}
                {%- if a.phases %} has-phases{% endif %}"
