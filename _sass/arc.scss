@@ -799,13 +799,12 @@ a.arc-chip:focus-visible {
   display: flex;
   gap: 8px;
   align-self: stretch;
-  justify-content: center;
-  // The cards hug their glyph rather than splitting the panel between them: a
-  // mini is the size of its icon wherever it is drawn, and two of them stretched
-  // to 94px each would be the same chip at a size it is nowhere else on the
-  // chart. Centered, because a short row of them under three full-width cards
-  // has no edge it belongs against.
-  > .arc-chip { flex: 0 0 auto; }
+  // The two split the panel between them, so the pair sits on the same left and
+  // right edges as the full-width cards above it and the row reads as one more
+  // course of the same stack rather than as something dropped in underneath.
+  // Width only: the cross-axis is left alone so each card keeps a mini's own
+  // height, which is what makes it the same object as the ones on the chart.
+  > .arc-chip { flex: 1 1 0; }
 }
 // The card itself is .arc-chip--mini and needs nothing further: a mini is
 // already icon-only, already centered, already carrying its name in its
