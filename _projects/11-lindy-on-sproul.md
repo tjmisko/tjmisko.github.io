@@ -11,11 +11,11 @@ tags:
 arc:
   lane: software
   row: 6
-  start: 2021.95
+  start: 2022
   end: 2022.95
   label: "Lindy on Sproul"
   sub: "Club website · Jekyll · JS"
-  span: "Dec 2021 – Dec 2022"
+  span: "Jan – Dec 2022"
   blurb: "The swing dance club's website, and the project where the programming actually started."
 ---
 * **What it is.** The website for Lindy on Sproul, UC Berkeley's swing dance club: a responsive static site carrying the class schedule, event announcements, an embedded live calendar, and an FAQ, built and maintained with two collaborators over a year.
