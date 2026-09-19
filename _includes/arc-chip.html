@@ -7,6 +7,11 @@ and a one-line description, and a click that opens the document's detail modal.
   p            the document (a _projects or _experience entry)
   work_end     the grid line the fixed scale ends on, for arc.ongoing chips
 
+A document may also carry arc.node for the panel past the end of the scale
+(see home.html); the two are independent, so one project can be drawn in both
+places — Taskbuffer's 2024 shell tool is a mini here and its 2026 plugins a
+mini in the panel's Software Tools band, both opening the same card.
+
 Front matter read here:
   arc.lane     research | data | software — which color family the chip takes
   arc.tone     overrides lane for color only (a research role in the data palette)
@@ -39,7 +44,11 @@ Front matter read here:
   arc.label    the chip's title
   arc.sub      short technical tagline under the title
   arc.span     human-readable dates, shown in the popover
-  arc.blurb    one sentence, shown in the popover
+  arc.blurb    optional one-sentence override for the popover. Left off, the
+               popover reads the document's project-headline, so a chip and
+               its card say the same thing once; set it only where the chip
+               is a single era or role of a longer story and needs its own
+               sentence (the 2022 site, the first Taskbuffer, the roles).
   arc.parts    optional list of sections of one document drawn as separate boxes
                on its row rather than as one bar, for work that changed in kind
                partway through — a role that became a different role over the
@@ -58,7 +67,8 @@ Front matter read here:
                  sub      short tagline under it; falls back to arc.sub
                  span     human-readable dates for the popover; falls back to
                           arc.span
-                 blurb    one sentence for the popover; falls back to arc.blurb
+                 blurb    one sentence for the popover; falls back to
+                          arc.blurb, then to project-headline
                Parts must be in date order and disjoint (touching is fine, gaps
                are fine); a violation fails the build with a missing-include
                error naming the document and the rule.
@@ -76,10 +86,22 @@ Front matter read here:
                chip's extent — arc.start / arc.end still do, and phases only
                texture what is already drawn, clipped to it. Phases must be in
                date order and disjoint (touching is fine, gaps are fine); a
-               violation, or phases on an arc.kind mini, fails the build with a
-               missing-include error naming the document and the rule.
+               violation fails the build with a missing-include error naming
+               the document and the rule.
+               On an arc.kind mini there is no bar to texture, so the phases
+               are listed in the popover and nothing more: a way for a chip
+               that stands for one era of a longer story to tell the whole of
+               it. The list is drawn as given, not validated against a bar it
+               doesn't have.
+  arc.era      optional 1-based index into arc.phases naming the era this chip
+               stands for. Its line in the popover's list holds at full
+               strength and the rest sit back, the way a hovered stretch of a
+               textured bar lifts its own line. For a mini that is one era of
+               a project with several (Taskbuffer's 2024 shell tool), paired
+               with arc.node.era on the same document's panel entry.
 {%- endcomment -%}
 {%- assign a = include.p.arc -%}
+{%- assign chip_blurb = a.blurb | default: include.p.project-headline -%}
 {%- assign col_raw = a.start | minus: 2020 | times: 2 | plus: 2 | round -%}
 {%- if a.ongoing -%}
   {%- assign col_end = include.work_end -%}
@@ -136,8 +158,11 @@ the half-year snapping four qualify:
                                         of work they were is lost by moving.)
   5 the employment relay           → 3  DATA       (already one contiguous run)
   6 side projects + 8 the CLIs     → 4  SOFTWARE   (Lindy → the site → Retend →
-                                        the CLIs, each starting where the last
-                                        stopped)
+                                        BinderBuilder → the first Taskbuffer →
+                                        Pomera, each starting where the last
+                                        stopped. The config repo on row 8 shares
+                                        Taskbuffer's half-year and would land on
+                                        top of it, so it is arc.wide_only.)
   7 sspi.world                     → 5  SOFTWARE, second track: the one thing
                                         that ran under everything else
 
@@ -180,10 +205,6 @@ boundary off the fill it is supposed to divide.{%- endcomment -%}
 {%- assign bar_start_year = col_start | minus: 2 | times: 0.5 | plus: 2020 -%}
 {%- assign bar_end_year = col_end | minus: 2 | times: 0.5 | plus: 2020 -%}
 {%- assign bar_len = bar_end_year | minus: bar_start_year -%}
-{%- if a.phases and a.kind -%}
-  {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--phases-are-not-drawable-on-an-icon-only-mini-chip{%- endcapture -%}
-  {% include {{ arc_fail }} %}
-{%- endif -%}
 {%- if a.parts and a.kind -%}
   {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--parts-are-not-drawable-on-an-icon-only-mini-chip{%- endcapture -%}
   {% include {{ arc_fail }} %}
@@ -263,7 +284,7 @@ along the row.{%- endcomment -%}
   {%- assign pt_sub = pt.sub | default: a.sub -%}
   {%- if pt_sub %}<small>{{ pt_sub }}</small>{% endif -%}
   {%- assign pt_span = pt.span | default: a.span -%}
-  {%- assign pt_blurb = pt.blurb | default: a.blurb -%}
+  {%- assign pt_blurb = pt.blurb | default: chip_blurb -%}
   {%- if pt_span or pt_blurb -%}
   <span class="arc-pop{{ pop_dir }}">
     {%- comment -%}Shown only when the part's own title had to be cut — see the
@@ -281,7 +302,8 @@ along the row.{%- endcomment -%}
                {%- if a.between %} is-between{% endif %}"
         style="grid-row: {{ a.row }}; grid-column: {{ col_start }} / {{ col_end }};
                --m0: {{ m_start }}; --m1: {{ m_end }}; --ln: {{ m_lane }};"
-        data-project="{{ include.p.slug }}" aria-label="{{ a.label }}">
+        data-project="{{ include.p.slug }}" aria-label="{{ a.label }}"
+        {%- if a.era %} data-era="{{ a.era }}"{% endif %}>
   <span class="arc-ico arc-ico--{{ a.kind }}" aria-hidden="true"></span>
   {%- comment -%}A mini shows nothing but its icon on either chart, so its
   popover opens with the title the chip never says.{%- endcomment -%}
@@ -289,7 +311,8 @@ along the row.{%- endcomment -%}
     <strong>{{ a.label }}</strong>
     {%- if a.sub %}<small>{{ a.sub }}</small>{% endif -%}
     {%- if a.span %}<small class="arc-pop-span">{{ a.span }}</small>{% endif -%}
-    {%- if a.blurb %}<small>{{ a.blurb }}</small>{% endif -%}
+    {%- if chip_blurb %}<small>{{ chip_blurb }}</small>{% endif -%}
+    {%- if a.phases %}{% include arc-pop-phases.html phases=a.phases %}{% endif -%}
   </span>
 </button>
 {%- else -%}
@@ -366,29 +389,16 @@ the title itself, held back until the chip is too narrow to finish saying it.
   {%- endif -%}
   <strong>{{ a.label }}</strong>
   {%- if a.sub %}<small>{{ a.sub }}</small>{% endif -%}
-  {%- if a.span or a.blurb or a.phases -%}
+  {%- if a.span or chip_blurb or a.phases -%}
   <span class="arc-pop{{ pop_dir }}">
     {%- comment -%}Shown only when the chip's own title had to be cut — see the
     marking pass in home.html.{%- endcomment -%}
     <strong class="arc-pop-title">{{ a.label }}</strong>
     {%- if a.span %}<small class="arc-pop-span">{{ a.span }}</small>{% endif -%}
-    {%- if a.blurb %}<small>{{ a.blurb }}</small>{% endif -%}
+    {%- if chip_blurb %}<small>{{ chip_blurb }}</small>{% endif -%}
     {%- comment -%}The phase breakdown, since the textures on the bar can say
     that the pitch changed but not what changed or when.{%- endcomment -%}
-    {%- if a.phases -%}
-    <span class="arc-pop-phases">
-      {%- for ph in a.phases -%}
-        {%- assign cadence = ph.cadence | default: "active" -%}
-      {%- comment -%}Dates only: the cadence names itself in the edge beside the
-      line (solid or dashed, matching the bar's own fill) and again in the note,
-      so spelling it out a third time only crowded the date.{%- endcomment %}
-      <span class="arc-pop-phase is-{{ cadence }}" data-phase="{{ forloop.index }}">
-        <small class="arc-pop-span">{{ ph.span }}</small>
-        {%- if ph.note %}<small>{{ ph.note }}</small>{% endif -%}
-      </span>
-      {%- endfor -%}
-    </span>
-    {%- endif -%}
+    {%- if a.phases %}{% include arc-pop-phases.html phases=a.phases %}{% endif -%}
   </span>
   {%- endif -%}
 </button>

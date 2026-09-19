@@ -2,22 +2,22 @@
 project-title: "Berkeley Research Group"
 project-type: "Economics & Damages Associate - Emeryville, CA"
 project-status: "Completed Jul 2024"
-project-headline: A year building the empirical record behind expert reports — Stata pipelines shipped to opposing counsel to re-run.
+project-headline: Built the Stata analysis and gathered qualitative evidence for expert reports in antitrust litigation, where every reported figure had to reproduce from raw inputs.
 arc:
   lane: data
   row: 5
   relay: true
   start: 2023.5
   end: 2024.5
-  label: "BRG &middot; Antitrust Econometrics"
+  label: "BRG &middot; Antitrust Litigation Support"
   span: "Aug 2023 – Jul 2024"
-  blurb: "Litigation econometrics whose do-files had to reproduce every reported figure from raw inputs."
+  blurb: "Stata analysis behind antitrust expert reports, reproducible from raw inputs."
 ---
-* **What it is.** Economic and damages consulting: building the empirical analysis behind expert reports in antitrust and commercial litigation, in Stata, starting from raw client and third-party data.
-* **Why it matters.** Litigation analysis ships to the other side as a backup, and opposing experts re-run it looking for a crack. Writing code under that constraint — every figure in a report reproducing end-to-end from raw inputs — is where the habit of building for outside scrutiny came from.
+Economics and damages consulting on antitrust litigation, Aug 2023 to Jul 2024, building the analysis behind expert reports in Stata from raw client and third-party data. That analysis shipped to opposing counsel as a backup that their experts re-ran, so every reported figure had to reproduce from raw inputs.
 
-**Technical details**
+* I built Stata MP ingest, parse, and clean pipelines over dozens of inconsistently formatted Excel feeds, up to about 500 GB, on memory-capped Azure VMs.
+* The do-files regenerated every reported figure from raw inputs and shipped as formal litigation backups.
+* Coverage, sanity, and outlier checks caught defects before a report went out, including a miscomputation in a financial-statement pipeline.
+* I also contributed report-ready analysis, figures, and technical paragraphs, and gathered and drafted qualitative evidence for the reports.
 
-* Wrote reproducible Stata analysis pipelines whose do-files regenerate every figure they report end-to-end from raw inputs, shipped as litigation backups subject to adversarial re-running by opposing experts
-* Built coverage, sanity, and outlier checks into those pipelines, which caught real defects before they reached a report
-* Built BinderBuilder, a Python CLI that cut footnote-checking on expert reports from roughly 60 to 25 seconds in the common case — it has its own entry in the portfolio
+BinderBuilder, a Python CLI written here, has its own entry.

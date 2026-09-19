@@ -1,0 +1,26 @@
+{%- comment -%}
+The phase breakdown inside a popover: one line per phase, dates over a note,
+behind a cadence edge in the family color. Drawn by every chip that carries
+arc.phases — the full bars, whose textures say the pitch changed but not what
+changed or when; the icon-only minis, which have no texture to hover and so
+tell the whole story here; and the panel's minis, which read the same list
+from the same document.
+
+  phases   the arc.phases list
+
+Each line carries data-phase, its 1-based index, which is what pairs it with a
+stretch of a textured bar (hover) or with a chip's own era (arc.era /
+arc.node.era, set on the chip as data-era) — see .arc-pop-phase in arc.scss.
+{%- endcomment -%}
+<span class="arc-pop-phases">
+  {%- for ph in include.phases -%}
+    {%- assign cadence = ph.cadence | default: "active" -%}
+  {%- comment -%}Dates only: the cadence names itself in the edge beside the
+  line (solid or dashed, matching the bar's own fill) and again in the note,
+  so spelling it out a third time only crowded the date.{%- endcomment %}
+  <span class="arc-pop-phase is-{{ cadence }}" data-phase="{{ forloop.index }}">
+    <small class="arc-pop-span">{{ ph.span }}</small>
+    {%- if ph.note %}<small>{{ ph.note }}</small>{% endif -%}
+  </span>
+  {%- endfor -%}
+</span>

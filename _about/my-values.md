@@ -8,7 +8,7 @@ Surprise and discovery are delightful
 ## Collaboration, Conversation, and Diversity
 Bringing people to build things makes them better. Clear communication, respect, patience, and empathy with my collaborators.
 
-## Playfulness, curisosity, and experimentation
+## Playfulness, curiosity, and experimentation
 We learn best by pushing against the boundaries and trying things that might (and probably will) fail.  Play enables us to throw off constraints, question assumptions, and be creative.
 
 ## Groundedness
