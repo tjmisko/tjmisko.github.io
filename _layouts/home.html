@@ -22,16 +22,25 @@ layout: default
    |_|_|  |_|___/\__\__,_|_| |_| |_|  |_|_|___/_|\_\___/
         </pre>
         <p class="reveal">
-          I build software that structures information flows, guiding user attention to where it's
-          most needed and automating the rest. View
-          <a class="homepage-link" href="#projects-card">Arachne</a>
-          (latest automation project), or look through my
-          <a class="homepage-link" href="#skills-card">skills</a>, and
-          <a class="homepage-link" href="#projects-card"> portfolio </a> below.
+          I build software that processes, filters, and organizes flows of
+          information, automating the mechanical parts so that scarce user
+          attention goes where it is most needed.
+
+        <!-- Three main goals: -->
+            <!-- 1. Use computational tools over manual processes at scale when appropriate -->
+            <!-- 2. Let automated tooling handle the mechanical parts (under supervision and checks)-->
+            <!-- 3. Guide scarce human attention to where it is most needed. -->
+
+          Check out my active projects,
+          <a class="homepage-link" href="#projects-card">Functionary</a> and
+          <a class="homepage-link" href="#projects-card">Switchboard</a>,
+          view my <a class="homepage-link" href="#skills-card">skills</a>, or
+          peruse the rest of my
+          <a class="homepage-link" href="#projects-card">portfolio</a> below.
         </p>
         <p class="reveal">
-          I also write as an interdisciplinary researcher on the possibilities, limits, and
-          dangers of optimization — see <a class="homepage-link" href="https://quasioptimal.io">Quasioptimal</a>.
+          I also moonlight as an interdisciplinary researcher on the possibilities, limits, and
+          dangers of optimization. Writing forthcoming at <a class="homepage-link" href="https://quasioptimal.io">Quasioptimal</a>.
         </p>
         <p class="reveal">
           I'm looking for work in the San Francisco Bay Area. Feel free to reach out at the links below!
@@ -100,9 +109,8 @@ layout: default
     <div class="arc-stage reveal">
     <div class="arc-view" id="arc-view-work" role="tabpanel" aria-labelledby="arc-tab-work">
       <p class="arc-throughline">
-        One thread through all of it: computational systems that must be correct on the inside and
-        stand up to scrutiny from the outside &mdash; good research &middot; supportable cases &middot;
-        trustworthy AI output.
+        Started in economics research, but learned along the way that I also like building the tools and
+        infrastructure that support research and knowledge work.
       </p>
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
@@ -198,11 +206,12 @@ layout: default
             <a class="arc-quiet" style="grid-row: 4; grid-column: 8 / {{ work_end }};
                --m0: 8; --m1: 14; --ln: 2;"
                href="https://quasioptimal.io" target="_blank" rel="noopener">
-              Quasioptimal &mdash; independent research &middot; 2023&ndash;Present
+              Quasioptimal &mdash; Independent Research &middot; 2023&ndash;Present
               <span class="arc-pop arc-pop--down">
                 <small class="arc-pop-span">2023 &ndash; Present</small>
                 <small>Interdisciplinary writing on the possibilities, limits, and dangers of
-                optimization. Opens quasioptimal.io.</small>
+                optimization. I began gathering source material in 2023. Work ongoing at
+                https://quasioptimal.io.</small>
               </span>
             </a>
 
@@ -214,31 +223,57 @@ layout: default
             <div class="arc-node" style="grid-column: {{ work_end | plus: 1 }};">
               {%- comment -%}Two passes over the same documents. A node entry is a
               full-width card by default; one marked arc.node.small is held back
-              for the paired row at the foot of the panel, where two of them sit
-              side by side. The small ones are the shorter builds, and pairing
-              them says so without giving each the width of a year's work — and
-              keeps the panel, which is the tallest thing spanning the chart and
-              therefore what sets every row's height, from growing a whole card
-              taller for each one.
+              for the grid of minis at the foot of the panel, under its own band
+              name, where they share the width one card gets. The small ones are
+              the shorter builds, and packing them says so without giving each
+              the width of a year's work — and keeps the panel, which is the
+              tallest thing spanning the chart and therefore what sets every
+              row's height, from growing a whole card taller for each one.
 
               A small entry is drawn as an icon-only mini, the same chip the
-              short builds down in the software band get: nothing on the face but
-              the glyph, and the whole of it in the popover.
+              short builds down in the software band get: nothing on the face
+              but the glyph, and the whole of it in the popover.
+
+              arc.node is independent of the chart placement arc.lane / arc.row
+              read by arc-chip.html, so a project can be drawn in both places
+              when it is one story in two eras — Taskbuffer's 2024 shell tool
+              is a mini on the chart and its 2026 plugins a mini in the second
+              band here, both opening the same card.
               {%- endcomment -%}
-              <h3>Software Engineering</h3>
+              <h3>Current Work</h3>
+              {%- comment -%}Each band is headed by a name that hovers to a
+              sentence tying its cards together: the three full cards are one
+              body of work, the minis another, and the band name is the one
+              place that gets said. The blurbs are
+              hardcoded like the throughlines rather than sourced from any one
+              project, since each belongs to none of them. On the narrow chart
+              the sentence prints inline under the name — see .arc-node-band
+              there.{%- endcomment %}
+              <h4 class="arc-node-band" tabindex="0">
+                <span>AI Engineering</span>
+                <span class="arc-pop"><small>Systems around models rather than
+                models themselves: agents run behind review gates with a
+                provenance record, every running session stays in view, and a
+                model's claim is shown only where its source backs it.</small></span>
+              </h4>
               {%- for p in site.projects -%}
                 {%- if p.arc.node and p.arc.node.small != true -%}
               <button type="button" class="arc-chip arc-chip--software"
                       data-project="{{ p.slug }}">
                 <strong>{{ p.arc.node.label }}</strong>
                 <small>{{ p.arc.node.sub }}</small>
-                {%- if p.arc.node.span or p.arc.node.blurb -%}
+                {%- comment -%}The popover's sentence is the document's
+                project-headline unless arc.node.blurb overrides it — the same
+                fallback the chart chips make in arc-chip.html, so a card and
+                its entry here say the same thing once.{%- endcomment -%}
+                {%- assign node_blurb = p.arc.node.blurb | default: p.project-headline -%}
+                {%- if p.arc.node.span or node_blurb -%}
                 <span class="arc-pop">
                   {%- comment -%}Shown only when the chip's own title had to be
                   cut — see the marking pass in the script below.{%- endcomment -%}
                   <strong class="arc-pop-title">{{ p.arc.node.label }}</strong>
                   {%- if p.arc.node.span %}<small class="arc-pop-span">{{ p.arc.node.span }}</small>{% endif -%}
-                  {%- if p.arc.node.blurb %}<small>{{ p.arc.node.blurb }}</small>{% endif -%}
+                  {%- if node_blurb %}<small>{{ node_blurb }}</small>{% endif -%}
                 </span>
                 {%- endif -%}
               </button>
@@ -246,25 +281,41 @@ layout: default
               {%- endfor -%}
               {%- assign node_small = site.projects | where_exp: "p", "p.arc.node.small" -%}
               {%- if node_small.size > 0 -%}
-              <div class="arc-node-pair">
+              <h4 class="arc-node-band" tabindex="0">
+                <span>Software Tools</span>
+                <span class="arc-pop"><small>Tools for my own daily use: a
+                plain-text task list driven from Neovim and a phone, Obsidian
+                plugins that put a vim-style keyboard on a calendar and a map,
+                an e-ink dashboard, and a cold-storage daemon for the home
+                server.</small></span>
+              </h4>
+              <div class="arc-node-minis">
                 {%- for p in node_small -%}
                 {%- comment -%}An icon-only mini, drawn and behaving exactly as
                 BinderBuilder and the rest of the small builds do down in the
                 software band: same glyph, same class, nothing on the face but
                 the icon, and the whole of it — name, tagline, dates,
-                description — in the popover. These two are in the panel rather
+                description — in the popover. They are in the panel rather
                 than on a row only because 2026 is past the end of the fixed
                 scale, so they should not look like a different species.
                 {%- endcomment -%}
                 <button type="button"
                         class="arc-chip arc-chip--software arc-chip--mini arc-chip--node-small"
-                        data-project="{{ p.slug }}" aria-label="{{ p.arc.node.label }}">
+                        data-project="{{ p.slug }}" aria-label="{{ p.arc.node.label }}"
+                        {%- if p.arc.node.era %} data-era="{{ p.arc.node.era }}"{% endif %}>
                   <span class="arc-ico arc-ico--{{ p.arc.node.kind | default: 'cli' }}" aria-hidden="true"></span>
                   <span class="arc-pop">
                     <strong>{{ p.arc.node.label }}</strong>
                     {%- if p.arc.node.sub %}<small>{{ p.arc.node.sub }}</small>{% endif -%}
                     {%- if p.arc.node.span %}<small class="arc-pop-span">{{ p.arc.node.span }}</small>{% endif -%}
-                    {%- if p.arc.node.blurb %}<small>{{ p.arc.node.blurb }}</small>{% endif -%}
+                    {%- assign node_blurb = p.arc.node.blurb | default: p.project-headline -%}
+                    {%- if node_blurb %}<small>{{ node_blurb }}</small>{% endif -%}
+                    {%- comment -%}A document drawn in both places carries one
+                    phase list, and both of its chips print it: this one names
+                    its own era with arc.node.era, the chart's with arc.era, and
+                    each holds its own line at full strength. See
+                    arc-pop-phases.html.{%- endcomment -%}
+                    {%- if p.arc.phases %}{% include arc-pop-phases.html phases=p.arc.phases %}{% endif -%}
                   </span>
                 </button>
                 {%- endfor -%}
@@ -305,11 +356,19 @@ layout: default
               feed transposes them away, and this note still has to read.
               {%- endcomment %}
               <span class="arc-pop">
-                <small>Research &rarr; data &rarr; software, in that order and not by accident. I
-                came for the economics research; answering those questions well took statistical
-                and data depth; doing that at scale &mdash; automating what ought to be automated
-                &mdash; is software. Each step is the one before it, taken seriously enough to
-                build.</small>
+                <strong>Down the Tech Stack</strong>
+                <small> To do the research backing the SSPI at IRLE, I had
+                to become adept at working with data, both at the analytical
+                level (competence in econometrics, statistics, and data
+                science) and, as the data got bigger and harder to handle, at
+                the infrastructure level. The process our team inherited was crude,
+                manual, error-prone, and costly to reproduce. The primary obstacle to
+                better research was scaling our data (covering more years and
+                more countries, with better robustness checks and more
+                statistical power), and the obstacle to scaling the data was
+                engineering a reliable, reproducible collection process, so I
+                taught myself to be an engineer.
+                </small>
               </span>
             </div>
           </div>
@@ -604,7 +663,7 @@ layout: default
                     {%- assign seg_width = s_end | minus: s_start | times: 100.0 | divided_by: vis_len | round: 2 -%}
                     {%- assign cadence = s.cadence | default: "daily" -%}
                     {%- if cadence == "daily" -%}
-                      {%- assign cadence_label = "daily driver" -%}
+                      {%- assign cadence_label = "daily" -%}
                     {%- else -%}
                       {%- assign cadence_label = "occasional" -%}
                     {%- endif -%}
@@ -731,7 +790,7 @@ layout: default
           own.querySelectorAll(":scope > small").forEach((s) => parts.push(s.outerHTML));
         }
         // One line per phase, each keeping the cadence edge it wears on the
-        // chart: solid for a daily driver, dashed for reach-for-it-sometimes.
+        // chart: solid for daily, dashed for occassional.
         bar.querySelectorAll(".arc-seg").forEach((seg) => {
           const pop = seg.querySelector(":scope > .arc-pop--tool");
           if (!pop) return;
@@ -1589,4 +1648,3 @@ document.{%- endcomment -%}
     <div class="pdf-modal-frame" role="document" tabindex="0"></div>
   </div>
 </div>
-

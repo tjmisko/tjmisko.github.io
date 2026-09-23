@@ -47,8 +47,12 @@ $arc-ruler-h: 28px;
 
 // Match the other section headers ("Portfolio", "Skills"), which render at
 // 1.7em inside the card's 1.3em context — the container resets to 1rem, so
-// restate the size explicitly.
-.arc-container .site-header { font-size: 2.2rem; }
+// restate the size explicitly. The shared heading style supplies a generous
+// bottom margin; the throughline belongs more closely to this heading.
+.arc-container .site-header {
+  font-size: 2.2rem;
+  margin-bottom: 0;
+}
 
 .arc-stage { width: 100%; }
 .arc-view {
@@ -144,9 +148,9 @@ $arc-ruler-h: 28px;
 .arc-throughline {
   font-family: "IBM Plex Mono";
   font-size: 0.86rem;
-  color: $arc-dim;
-  text-align: center;
-  max-width: 66ch;
+  color: rgba(235, 235, 237, 0.78);
+  text-align: justify;
+  max-width: 80ch;
   line-height: 1.55;
   margin: 0;
 }
@@ -279,7 +283,7 @@ $arc-ruler-h: 28px;
   // the node column beside it. The node spans every content row, so once it
   // outgrows them it sets their heights instead, the two distances grow with it,
   // and this number is wrong. That is what pairing the short builds at the foot
-  // of the panel buys (see .arc-node-pair): the panel stays under the chart, and
+  // of the panel buys (see .arc-node-minis): the panel stays under the chart, and
   // this stays a property of the chart. The clearance is about 37px, which is
   // not another full-width card: a sixth entry wants pairing too. If one is ever
   // added without it, this has to be re-measured — it is whatever the distance
@@ -488,6 +492,17 @@ a.arc-chip:focus-visible {
 @for $i from 1 through 6 {
   .arc-chip.has-phases:has(.arc-phase[data-phase="#{$i}"]:hover)
     .arc-pop-phase[data-phase="#{$i}"] {
+    opacity: 1;
+    border-left-color: var(--phase-edge);
+  }
+}
+// The same emphasis, standing rather than under the pointer: a chip that is one
+// era of a longer story (data-era, from arc.era or arc.node.era) prints the
+// whole list and holds its own line, so the two Taskbuffer minis read the same
+// two eras with a different one lit. Same index cap as the hover loop.
+.arc-chip[data-era] .arc-pop-phase { opacity: 0.38; }
+@for $i from 1 through 6 {
+  .arc-chip[data-era="#{$i}"] .arc-pop-phase[data-phase="#{$i}"] {
     opacity: 1;
     border-left-color: var(--phase-edge);
   }
@@ -789,35 +804,89 @@ a.arc-chip:focus-visible {
   grid-row: 2 / 9;
   border: 1px dashed rgba(250, 130, 30, 0.5);
   border-radius: 8px;
-  padding: 12px;
+  // The panel is the tallest thing spanning the chart and so sets every row's
+  // height: each pixel of padding, gap, or leading here is paid for down the
+  // whole grid, so all three run a step tighter than the chips on the rows.
+  padding: 10px;
   margin-left: 12px;
   align-self: center;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   h3 {
     font-family: "Courier Prime";
     font-size: 1.1rem;
-    margin: 0 0 2px;
+    margin: 0;
     color: $homepage-accent-color;
     font-weight: normal;
     line-height: 1.3;
     text-align: center;
   }
-  .arc-chip { margin: 0; align-self: stretch; }
+  // A band inside the panel: the name over a run of cards, set like the lane
+  // labels down the side of the chart (small caps, tracked) so it reads as a
+  // key rather than as a second title — but a step up from them in size and
+  // weight, since a lane label names what is beside it and this one heads what
+  // is under it. The sentence that ties the band's
+  // cards together is in its popover, which opens leftward into the chart like
+  // every popover in the panel — a dotted underline is the only sign it holds
+  // one, the same cue the narrow chart's descent note wears.
+  .arc-node-band {
+    position: relative;
+    align-self: flex-start;
+    margin: 2px 0 -2px;
+    font-family: "Courier Prime";
+    font-size: 0.7rem;
+    font-weight: normal;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    color: rgba(225, 225, 225, 0.74);
+    cursor: help;
+    transition: color var(--dur-fast) var(--ease-out);
+    > span:first-child { border-bottom: 1px dotted rgba(225, 225, 225, 0.3); }
+    // The popover is body copy: it takes none of the heading's tracking or
+    // caps, which it would otherwise inherit.
+    > .arc-pop {
+      font-family: "IBM Plex Mono";
+      font-size: 0.8rem;
+      letter-spacing: 0;
+      text-transform: none;
+      max-width: 320px;
+    }
+  }
+  .arc-node-band:hover,
+  .arc-node-band:focus-visible {
+    color: $homepage-accent-color;
+    z-index: 3;
+  }
+  .arc-node-band:hover > .arc-pop,
+  .arc-node-band:focus-visible > .arc-pop { display: block; }
+  // A card here is read in a column 220px wide, where a three-word tagline
+  // already wraps to three lines at the chips' size; a step down in type and
+  // leading buys a line back on most of them.
+  .arc-chip {
+    margin: 0;
+    align-self: stretch;
+    padding: 5px 9px;
+    font-size: 0.76rem;
+    line-height: 1.32;
+  }
 }
-// The paired row at the foot of the panel: two short builds sharing the width
-// one long one gets. `flex: 1 1 0` splits it evenly whatever the titles are, so
-// the pair reads as one row rather than as two cards that happened to fit, and
-// `min-width: 0` lets a long title wrap inside its half instead of forcing the
-// half wider. Stretch keeps both at the taller one's height.
-.arc-node-pair {
-  display: flex;
+// The minis at the foot of the panel: the short builds, three to a row, sharing
+// the width one long card gets. A grid rather than a wrapping flex row so the
+// columns line up course over course whatever the count. Three rather than two
+// because the panel sets every row's height on the chart: five minis two to a
+// row cost a third course and put the view switch on the fold of a short
+// screen, where 3 + 2 fits in the height the old pair took.
+.arc-node-minis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   align-self: stretch;
-  // The two split the panel between them, so the pair sits on the same left and
-  // right edges as the full-width cards above it and the row reads as one more
-  // course of the same stack rather than as something dropped in underneath.
+  // Each row splits the panel between its three, so the block sits on the
+  // same left and right edges as the full-width cards above it and reads as
+  // more courses of the same stack rather than as something dropped in
+  // underneath.
   // Width only: the cross-axis is left alone so each card keeps a mini's own
   // height, which is what makes it the same object as the ones on the chart.
   > .arc-chip { flex: 1 1 0; }
@@ -846,16 +915,20 @@ a.arc-chip:focus-visible {
 .arc-lanes--tools {
   width: 100%;
   grid-template-rows: $arc-ruler-h;
-  grid-auto-rows: minmax(22px, auto);
-  // The waterfall carries three times the rows the work grid does, and the view
-  // switch sits under it: every pixel of rhythm here is multiplied by fifteen
-  // and spent on whether the switch clears the fold.
-  row-gap: 4px;
+  grid-auto-rows: minmax(20px, auto);
+  // The waterfall carries more than twice the rows the work grid does, and the
+  // view switch sits under it: every pixel of rhythm here is multiplied by
+  // sixteen and spent on whether the switch clears the fold. The budget is the
+  // work grid's own height — the two tabs share a card, and a Tools view taller
+  // than the Work one pushes the card's foot off a short screen on every
+  // switch — so the gap, the bar padding, and the minor floor below are each
+  // set as tight as the type allows.
+  row-gap: 3px;
   // The bottom rows open their popovers upward (see .is-up), so there is
   // nothing to reserve room for down here beyond the last bar's own edge —
   // overflow-x on .arc-scroll makes overflow-y a scroller too, and a tall
   // reserve pushed the view switch below the fold.
-  padding-bottom: 10px;
+  padding-bottom: 4px;
 }
 // One rail label per group, spanning that group's rows. The negative margin
 // closes the row-gap between adjacent groups: bars whose start is scrolled off
@@ -866,7 +939,7 @@ a.arc-chip:focus-visible {
 // bar titles already signal that a bar continues past the rail.
 .arc-lane-labels--group {
   justify-content: center;
-  margin: -4px 0; // just over half the grid's 6px row-gap, so the rails overlap
+  margin: -4px 0; // more than the grid's 3px row-gap, so the rails overlap
   background: $homepage-background-color;
   backdrop-filter: none;
   span { padding-right: 14px; }
@@ -891,7 +964,7 @@ a.arc-chip:focus-visible {
   display: flex;
   align-items: flex-end;
   border-bottom: 1px solid $arc-faint;
-  margin: 16px 0 2px;
+  margin: 10px 0 2px;
   pointer-events: none;
 }
 .arc-lane-labels--group.is-minor span {
@@ -908,9 +981,10 @@ a.arc-chip:focus-visible {
   // Stays above the auto-row floor so the full-size/minor distinction holds,
   // but it is the padding and line-height below that actually set the height —
   // a one-line nowrap bar has no use for the 1.4 leading .arc-chip gives body
-  // copy, and every pixel here is multiplied by fifteen rows.
-  min-height: 23px;
-  padding: 3px 10px;
+  // copy, and every pixel here is multiplied by sixteen rows. 2px of padding
+  // over 1.25 leading is the least that keeps the lettering off the border.
+  min-height: 21px;
+  padding: 2px 10px;
   font-size: 0.78rem;
   line-height: 1.25;
   white-space: nowrap;
@@ -1143,9 +1217,9 @@ a.arc-chip:focus-visible {
     // words are cut to what their contents measure:
     //
     //   20px  the year gutter — "2020" at 0.5rem
-    //   36px  the floor under the side-projects lane, which is all minis now
-    //         (Lindy, the site, Retend, and the three CLIs) and so holds a 24px
-    //         glyph
+    //   36px  the floor under the side-projects lane, which is all minis
+    //         (Lindy, the site, Retend, BinderBuilder, the first Taskbuffer,
+    //         Pomera) and so holds a 24px glyph
     //
     // The thesis strip used to take 30px between research and data. The papers
     // are in the research lane now, so that column is gone and its width is back
@@ -1170,14 +1244,15 @@ a.arc-chip:focus-visible {
     row-gap: 0;
     column-gap: 3px;
   }
-  // The pair stays a pair. On the wide chart each takes half the panel so the
-  // row reads as one more course of the same stack; here the panel is the full
-  // width of the chart and half of that is a lot of box around a 24px glyph, so
-  // they size to their icons and sit centered under the cards instead.
-  .arc-node-pair {
+  // The minis keep their three columns. On the wide chart each row splits the
+  // panel so it reads as one more course of the same stack; here the panel is
+  // the full width of the chart and a third of that is a lot of box around a
+  // 24px glyph, so the columns size to their icons and sit centered under the
+  // cards instead.
+  .arc-node-minis {
+    grid-template-columns: repeat(3, max-content);
     justify-content: center;
     gap: 10px;
-    > .arc-chip { flex: 0 0 auto; }
   }
 
   // ---- The turned axis ------------------------------------------------------
@@ -1274,8 +1349,8 @@ a.arc-chip:focus-visible {
     // Hung between two rows on the wide chart. Here the argument is made by the
     // column the thesis sits in, not by an offset within one.
     .arc-chip.is-between { transform: none; }
-    // Set from a document's front matter (arc.wide_only) — the degree is the
-    // only one today. Nested this deep because the mobile .arc-chip rule above
+    // Set from a document's front matter (arc.wide_only) — the degree and the
+    // config repo today. Nested this deep because the mobile .arc-chip rule above
     // sets display, and a bare .arc-chip.is-wide-only would lose to it.
     .arc-chip.is-wide-only { display: none; }
     // Sticky titles belong to a horizontal scroller, which this isn't.
@@ -1467,6 +1542,28 @@ a.arc-chip:focus-visible {
       grid-row: 15;
       grid-column: 1 / -1 !important;
       margin: 0;
+      // No hover here, so a band's sentence prints inline under its name, the
+      // way the cards below print their descriptions on the face. The name
+      // stays in the lane-label face; the sentence takes the cards' own
+      // description size.
+      .arc-node-band {
+        font-size: 0.76rem;
+        cursor: default;
+        margin-bottom: 0;
+        > span:first-child { border-bottom: 0; }
+        > .arc-pop {
+          display: block;
+          position: static;
+          width: auto;
+          max-width: none;
+          transform: none;
+          border: 0;
+          background: none;
+          padding: 3px 0 0;
+          font-size: 0.72rem;
+          line-height: 1.45;
+        }
+      }
       .arc-chip {
         margin: 0;
         padding: 6px 10px;

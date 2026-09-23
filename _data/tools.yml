@@ -61,9 +61,7 @@
 views:
   - id: tools
     tab: Tools
-    throughline: >-
-      The stack accumulates rather than rotates: spreadsheets and stats packages for research
-      questions, general-purpose languages to build the systems, then the layer underneath them.
+    throughline: As I've developed my technical skills, I've found myself drawn to tools that reward investment and allow me to configure and shape them to suit my needs.
     groups:
       - group: Computing
         tools:
@@ -75,17 +73,21 @@ views:
               - start: 2018-01-01
                 cadence: daily
                 span: 2018 – 2024
-                note: Modeling, case exhibits, and everyday analysis through BRG.
+                note: >-
+                  Economic modeling, data preparation, case exhibits, and
+                  everyday analysis in school, during the early days of SSPI, and
+                  at BRG.
               - start: 2024-07-01
                 cadence: occasional
                 ongoing: true
                 span: 2024 – now
-                note: Still where a quick table or a shared sheet goes, but the analysis itself moved into code.
+                note: >-
+                  Still useful for a quick table or a shared sheet.
 
           - name: R
             family: analysis
             span: 2020 – 2025
-            note: Econometrics and causal inference — regressions, panel data, ggplot.
+            note: Statistics, economics, and causal inference — regressions, panel data, ggplot.
             segments:
               - start: 2020-01-01
                 cadence: daily
@@ -95,37 +97,42 @@ views:
                 end: 2026-01-01
                 cadence: occasional
                 span: mid-2023 – 2025
-                note: Stata took the case work at BRG, but R stayed in reach for a plot or a quick model — on and off until the SSPI work wrapped at the end of 2025.
+                note: Occasionally reached for R for a plot or a quick model until the SSPI work wrapped up in 2025.
 
           - name: Stata
             family: analysis
             start: 2023-07-01
             end: 2024-07-01
             span: 2023 – 2024
-            note: Antitrust econometrics at BRG, on the case teams that used it.
+            note: Primary tool for data preparation, analysis, and econometrics work at BRG.
 
           - name: Python
             family: language
             span: 2020 – now
-            note: Primary language. ETL pipelines, Flask backends, CLIs, analysis.
+            note: Primary language. Flask backends, Click CLIs, analysis in pandas, computation in numpy.
             segments:
               - start: 2020-07-01
                 cadence: daily
                 span: mid-2020 – end 2020
-                note: Picked up for SSPI data work — the first collection scripts and ETL pipelines.
+                note: CS 61A coursework and projects.
               - start: 2021-01-01
                 cadence: occasional
                 span: "2021"
-                note: On and off through 2021 — reached for when the research needed a script, while R carried the analysis.
+                note: Occasional research tasks.
               - start: 2022-01-01
                 cadence: daily
                 span: 2022 – 2025
-                note: Every day for four years — the sspi.world Flask backend, ETL pipelines, CLIs.
+                note: >-
+                  Primary language for four years, chosen for the sspi.world Flask
+                  backend as a lingua franca that research apprentices already knew
+                  from their coursework. Used to build out the ETL pipeline for
+                  sspi.world, the website backend, and later the CLI tools.
               - start: 2026-01-01
                 cadence: occasional
                 ongoing: true
                 span: 2026 – now
-                note: Still the language I think in, now reached for on and off — agent fleets write most of the routine Python to spec.
+                note: >-
+                  Still useful for ML/AI work, but not a systems language.
 
           - name: HTML / CSS / JavaScript
             family: language
@@ -140,14 +147,24 @@ views:
                 cadence: occasional
                 ongoing: true
                 span: mid-2025 – now
-                note: Mostly agent-driven since — I set the structure and review the result rather than typing the markup and styles.
+                note: >-
+                  I occasionally jump in to fix something simple, but these days I mostly declare the
+                  behavior I'd like in natural language and have a coding agent do the rest. The time
+                  spent actually understanding the frontend and building things myself makes it easy
+                  to steer agents when they go off track.
 
           - name: Bash
             family: language
             start: 2023-07-01
             span: 2023 – now
             ongoing: true
-            note: The locus of work shifted to the terminal in 2023; bash is the <i>lingua franca</i> of daily computing tasks, integrating naturally into the Vim, Obsidian, and plaintext tools ecosystem. I issue commands, use CLIs, and write scripts including the first iteration of Taskbuffer. The depth in writing and reading Bash has become doubly handy in the era of coding agents, making supervision at a glance effortless.
+            note: >-
+              The locus of computer work shifted to the terminal in 2023 for me,
+              so Bash became the <i>lingua franca</i> of daily computing tasks,
+              providing a gateway to the Vim, Obsidian, and plaintext tool
+              ecosystem. Some background and depth in writing and reading
+              Bash has proved surprisingly handy in the era of coding agents,
+              making supervision at a glance effortless.
 
           - name: TypeScript
             family: language
@@ -155,26 +172,29 @@ views:
             span: 2024 – now
             ongoing: true
             occasional: true
-            note: Occasional — typed front ends and tooling where the types earn their keep.
+            note: Occasional typed front ends and tooling, especially for Obsidian plugins; the recent plugins are agent-built to my direction.
 
           - name: Go
             family: language
             span: 2024 – now
-            note: Concurrent daemons and CLIs — Taskbuffer's Go era hand-written; Switchboard's daemon agent-built to my direction.
+            note: Small single-binary tools since 2024; the daemons — Switchboard, Coldstore — are agent-built to my direction.
             segments:
               - start: 2024-07-01
                 cadence: daily
                 span: mid-2024 – 2025
-                note: The opening burst — Taskbuffer's Go rewrite, hand-written end to end.
+                note: Learned a bit of Go to rewrite Taskbuffer, since the bash scripts I'd cobbled together were starting to become painful.
               - start: 2025-01-01
                 cadence: occasional
                 span: "2025"
-                note: Off the daily rotation for a year — reached for when a job wanted a single static binary, not much else.
+                note: Mostly off the daily rotation for a year, used only in maintaining and extending Taskbuffer.
               - start: 2026-01-01
                 cadence: daily
                 ongoing: true
                 span: 2026 – now
-                note: Back in daily use — Switchboard's daemon, agent-built to my direction.
+                note: >-
+                  Back in daily use for Switchboard's daemon. Because Go is so simple,
+                  I find it nice to use when outsourcing work to coding agents. It's easy to read, simple to
+                  reason about, and hard to screw up.
 
           - name: C
             family: language
@@ -182,14 +202,25 @@ views:
             span: late 2024 – now
             ongoing: true
             occasional: true
-            note: Occasional — systems fundamentals, memory, pointers, what the layers above sit on.
+            note: >-
+              I learned C for the same reason I took Latin in school:
+              to read the classics, to bring myself into contact with
+              the knowledge of the ancients, and for the occasionally
+              useful bit of trivia. I've never built anything useful in
+              C, but much of what I rely on daily is built in C, and
+              understanding the syntax and design of C was crucial to my
+              progression as a programmer.
 
           - name: Rust
             family: language
             start: 2026-01-01
             span: 2026 – now
             ongoing: true
-            note: Current study — ownership, lifetimes, safe systems programming.
+            note: >-
+              The language I'm currently learning to think, write, and
+              build in, laddering up my understanding by reading and reviewing
+              the Rust that agents write for Functionary. A Rust rewrite of
+              Switchboard is planned as the first thing I build in it by hand.
 
   - id: toolchain
     tab: Toolchain
@@ -201,15 +232,15 @@ views:
             start: 2019-01-01
             end: 2022-01-01
             span: 2019 – 2022
-            note: First editor — the coursework and early econometrics years.
+            note: First editor — the coursework, early website work. Rest in peace.
 
-          - name: VS Code
+          - name: VSCode
             family: environment
             continues: true
             start: 2022-01-01
             end: 2024-01-01
             span: 2022 – 2024
-            note: Everyday editor through the SSPI build and the start of BRG.
+            note: Everyday editor through the early SSPI build.
 
           - name: Neovim
             family: environment
@@ -217,8 +248,13 @@ views:
             start: 2024-01-01
             span: 2024 – now
             ongoing: true
-            note: Primary editor, configured from scratch; Lua plugins of my own.
-
+            note: >-
+              Primary editor, picked up as I transitioned into the terminal for
+              everyday work in late 2023, with a custom configuration I incrementally
+              built out over the course of 2024. When I was a kid I played around a
+              ton with 3D modeling in Blender (which also features keyboard driven
+              modal editing), so learning the vim keybindings felt oddly like coming
+              home.
       - group: Notes
         tools:
           - name: Apple Notes
@@ -234,7 +270,12 @@ views:
             start: 2023-07-01
             span: 2023 – now
             ongoing: true
-            note: Plain-text notes and linked research knowledge base.
+            note: >-
+              I use Obsidian for all of the information I care about: notes, journaling,
+              writing, tasks, projects, calendars, recommendations, you name it. I also
+              maintain several plugins, mostly for personal use, which implement a
+              vim-inspired keyboard-centric workflow for managing tasks (obsidian-taskbuffer),
+              calendars (obsidian-keyboard-calendar), and maps (obsidian-vim-map).
 
       - group: Terminal
         tools:
@@ -244,7 +285,8 @@ views:
             end: 2023-10-01
             span: 2018 – late 2023
             occasional: true
-            note: The macOS default, taken as it came — a terminal was still just where commands went, not somewhere to work.
+            note: >-
+              The macOS default: who even knew that you could have another option?
 
           - name: WezTerm
             family: environment
@@ -252,7 +294,8 @@ views:
             start: 2023-10-01
             span: late 2023 – now
             ongoing: true
-            note: Configured from scratch in Lua, and the same config has followed the machine from Windows to Linux.
+            note: >-
+              Basic, configured in Lua, and my daily driver for several years running.
 
       - group: Operating System
         tools:
@@ -269,7 +312,7 @@ views:
             start: 2023-07-01
             end: 2024-07-01
             span: 2023 – 2024
-            note: Issued machine at BRG; the case work ran on it.
+            note: Issued machine at BRG.
 
           - name: Linux
             family: environment
@@ -277,24 +320,12 @@ views:
             start: 2024-07-01
             span: 2024 – now
             ongoing: true
-            note: Fedora Asahi Remix on Apple Silicon; primary machine since mid-2024.
-
-      - group: AI Tooling
-        tools:
-          - name: ChatGPT
-            family: environment
-            start: 2023-07-01
-            end: 2025-07-01
-            span: 2023 – 2025
-            note: Chat window alongside the editor — questions answered, snippets drafted, code pasted back by hand.
-
-          - name: Claude Code
-            family: environment
-            continues: true
-            start: 2025-07-01
-            span: 2025 – now
-            ongoing: true
-            note: Agents in the repo rather than a chat window; now the fleets that built Arachne to my specification.
+            note: >-
+              Fedora Asahi Remix on Apple Silicon; primary machine since mid-2024.
+              The main draw to Linux was configurability. I was tired of fighting my
+              operating system and window manager over keybindings, window
+              placement, annoying immutable defaults, and other nits. I'm never going
+              back.
 
       - group: Keyboard
         tools:
@@ -304,4 +335,7 @@ views:
             span: late 2023 – now
             ongoing: true
             link: https://configure.zsa.io/voyager/layouts/3aeEA/latest/0
-            note: Split ergonomic board on Colemak-DH, with custom layers in place of reaching. Opens the layout in ZSA's configurator.
+            note: >-
+              Split ergonomic board on Colemak-DH, with custom layers to put arrow keys,
+              page up, page down, home, and end keys, and a number pad all under my right hand,
+              ready whenever I need them.

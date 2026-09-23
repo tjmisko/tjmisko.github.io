@@ -2,7 +2,7 @@
 project-title: "Institute for Research on Labor and Employment"
 project-type: "Software & Data Engineer - Berkeley, CA"
 project-status: "Completed Dec 2025"
-project-headline: Sole engineer on sspi.world — the application, the pipelines, the CI/CD, and the Linux box underneath it.
+project-headline: "The engineer responsible for sspi.world, the research platform behind the SSPI, while also leading its research teams."
 website: sspi.world
 arc:
   lane: research
@@ -11,16 +11,15 @@ arc:
   relay: true
   start: 2024.5
   end: 2026
-  label: "IRLE &middot; Software &amp; Data Engineer"
+  label: "IRLE &middot; Software &amp; Data Engineer &middot; Team Lead"
   span: "Jul 2024 – Dec 2025"
-  blurb: "Sole engineer on the research platform, plus the CI/CD and the server under it."
+  blurb: "Returned to IRLE as an engineer responsible for the SSPI platform's software and data while also leading the research team."
 ---
-* **What it is.** A return to IRLE on the engineering side: sole engineer on sspi.world, the research platform that collects, computes, and publishes the SSPI policy index. I owned it end to end — Flask and MongoDB application, a five-stage ETL pipeline, the release process, and the server it runs on — and led three research teams of about six undergraduates each over my years there.
-* **Why it matters.** It replaced a manual Google Sheets process with reproducible automated pipelines across 60+ sources, so data coverage decided which countries the index could include rather than the reverse.
+I returned to IRLE in July 2024 as the engineer responsible for sspi.world, the Flask and MongoDB application, its pipeline, releases, and server, while also leading the research teams. The platform replaced a manual Google Sheets process with pipelines over 183 datasets from 25 statistical organizations.
 
-**Technical details**
+* I built the five-stage pipeline (collect, clean, compute, impute, finalize) and refactored it from one route per indicator to a generic route over a decorator registry.
+* A Click CLI I wrote over the app's endpoints became, in 2025, the interface my coding agents used in the codebase.
+* Releases ran through tag-triggered GitHub Actions over SSH with symlink swaps, and I migrated the server from Apache to NGINX.
+* I led about fifteen student contributors, wrote the handbook, reviewed their pull requests, and brought on a second reviewer.
 
-* Designed a five-stage DAG pipeline (collect, clean, compute, score, finalize) with fail-fast validation over several million records
-* Built a Click CLI wrapping the app's HTTP endpoints for development and data exploration; in 2025 it became the structured interface my AI coding agents used to work inside the codebase
-* Operated the platform the team depended on: semver-tagged releases via GitHub Actions over SSH with atomic symlink swaps, root-caused MongoDB OOM kills, and migrated Apache to NGINX
-* The application itself has its own entry in the portfolio
+The application has its own entry.
