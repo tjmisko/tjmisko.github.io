@@ -1,7 +1,7 @@
 ---
 project-title: "Switchboard"
 project-type: "Software - Systems Daemon - Go"
-project-status: "Active - Daily Use and Cross-Platform Porting"
+project-status: "Active - Daily Use; Working on Cross-Platform Porting"
 project-headline: "Interactive status bar driven by a Go daemon that reports the status of every coding-agent session, across harnesses and remote sessions, and jumps into any of them with a keypress or click. Linux build live, macOS port in progress."
 github: switchboard
 tags:

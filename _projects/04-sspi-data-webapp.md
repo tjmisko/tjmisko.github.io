@@ -2,7 +2,7 @@
 project-title: "SSPI Full Stack Web Application"
 project-type: "Software - Research Data Platform - Python, Flask, MongoDB & JavaScript"
 project-status: "Completed Dec 2025"
-project-headline: "The research platform behind sspi.world, from data collection to the public site: a metadata-driven Flask and MongoDB pipeline from 25 statistical organizations to a published policy index, built 2023 to 2025."
+project-headline: "The research platform behind sspi.world: Flask & MongoDB backend running a five stage ETL pipeline, serving a JS with Chart.js frontend, plus the CI/CD and Linux VPS underneath."
 github: sspi-data-webapp
 website: sspi.world
 project-supervisor: Clair Brown

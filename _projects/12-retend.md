@@ -1,7 +1,7 @@
 ---
 project-title: "Retend"
 project-type: "Software - Time Tracking - Bash, Neovim & Go"
-project-status: "Completed Early 2024 - Still In Daily Use"
+project-status: "Completed Early 2024" 
 project-headline: "Time tracking in which each day is a 96-line plain-text file, one line per quarter hour, filled in after the fact from Neovim."
 github: RetendExport
 tags:
