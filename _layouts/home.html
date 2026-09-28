@@ -106,10 +106,6 @@ layout: default
          would stay invisible after being switched to. -->
     <div class="arc-stage reveal">
     <div class="arc-view" id="arc-view-work" role="tabpanel" aria-labelledby="arc-tab-work">
-      <p class="arc-throughline">
-        Started in economics research, but learned along the way that I prefer building the tools and
-        infrastructure that support research and knowledge work.
-      </p>
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
           <div class="arc-lanes"
@@ -393,7 +389,6 @@ layout: default
     only adds a row of dots.{%- endcomment -%}
     <div class="arc-view arc-view--waterfall" id="arc-view-{{ primary.id }}" role="tabpanel"
          aria-labelledby="arc-tab-{{ primary.id }}" hidden>
-      <p class="arc-throughline">{{ primary.throughline }}</p>
       {%- comment -%}A minor band's summary is optional: without the guard a band
       that doesn't want one still emits an empty paragraph, and its negative
       top margin pulls the chart up into the line above.{%- endcomment -%}
@@ -732,12 +727,25 @@ layout: default
 
     <!-- The view switch sits under the chart: it reads as a footer control for
          the thing above it rather than competing with the section header. -->
+    {%- comment -%}Each tab's throughline is a popover on the tab itself rather
+    than a paragraph above its chart. The popovers hang off the toggle, not the
+    buttons, and the accessible name is set explicitly so the sentence is a
+    description and not part of the name.{%- endcomment %}
     <div class="arc-toggle reveal" role="tablist" aria-label="Trajectory view">
       <button type="button" class="arc-toggle-btn is-active" role="tab" data-view="work"
-              id="arc-tab-work" aria-controls="arc-view-work" aria-selected="true">Work</button>
+              id="arc-tab-work" aria-controls="arc-view-work" aria-selected="true"
+              aria-label="Work" aria-describedby="arc-tip-work">Work
+        <span class="arc-pop arc-pop--tab" id="arc-tip-work" role="tooltip">
+          Started in economics research, but learned along the way that I like building the tools and
+          infrastructure that support research and knowledge work.
+        </span>
+      </button>
       <button type="button" class="arc-toggle-btn" role="tab" data-view="{{ primary.id }}" tabindex="-1"
               id="arc-tab-{{ primary.id }}" aria-controls="arc-view-{{ primary.id }}"
-              aria-selected="false">{{ primary.tab }}</button>
+              aria-selected="false" aria-label="{{ primary.tab }}"
+              aria-describedby="arc-tip-{{ primary.id }}">{{ primary.tab }}
+        <span class="arc-pop arc-pop--tab" id="arc-tip-{{ primary.id }}" role="tooltip">{{ primary.throughline }}</span>
+      </button>
     </div>
     {%- comment -%}Detail cards for the experience chips. A project chip finds
     its card in the portfolio rolodex; a role or a degree has no card there (and

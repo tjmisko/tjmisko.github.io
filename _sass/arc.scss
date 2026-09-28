@@ -85,11 +85,28 @@ $arc-ruler-h: 28px;
 .arc-toggle {
   display: inline-flex;
   border: 1px solid $arc-faint;
+  // The tab popovers hang off this box, so it can't clip; the buttons round
+  // their own outer corners instead.
+  position: relative;
   border-radius: 5px;
-  overflow: hidden;
   font-family: "IBM Plex Mono";
 }
 .arc-toggle-btn {
+// Each tab's throughline, shown while the pointer or focus is on the tab. Opens
+// upward from the toggle's left edge (the toggle sits under its chart).
+.arc-pop--tab {
+  max-width: min(340px, 86vw);
+  font-family: "IBM Plex Mono";
+  font-size: 0.82rem;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+  color: $arc-pop-text;
+}
+.arc-toggle-btn:hover > .arc-pop--tab,
+.arc-toggle-btn:focus-visible > .arc-pop--tab { display: block; }
   appearance: none;
   background: none;
   border: 0;
@@ -103,6 +120,8 @@ $arc-ruler-h: 28px;
               background-color var(--dur-fast) var(--ease-out);
   & + & { border-left: 1px solid $arc-faint; }
   &:hover { color: $homepage-font-color; }
+  &:first-child { border-radius: 4px 0 0 4px; }
+  &:last-child { border-radius: 0 4px 4px 0; }
   &.is-active {
     color: $homepage-accent-color;
     background: rgba(250, 130, 30, 0.1);
@@ -147,11 +166,11 @@ $arc-ruler-h: 28px;
 // Sits above its chart (both tabs), framing the story before the bars tell it.
 .arc-throughline {
   font-family: "IBM Plex Mono";
-  font-size: 0.86rem;
-  color: rgba(235, 235, 237, 0.78);
+  font-size: 0.90rem;
+  color: rgba(235, 235, 237, 0.88);
   text-align: justify;
-  max-width: 80ch;
-  line-height: 1.55;
+  max-width: 77ch;
+  line-height: 1.35;
   margin: 0;
 }
 // A minor band's throughline, subordinate to the one for the chart proper. The
