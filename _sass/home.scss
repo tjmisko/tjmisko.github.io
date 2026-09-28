@@ -752,7 +752,10 @@ p, ul {
 }
 
 html.using-mouse .project-card:hover:not(.project-modal):not(:has(.project-linkbox li:hover)),
-html.using-keyboard .project-card:focus-visible {
+html.using-keyboard .project-card:focus-visible,
+// A card a hero link sent focus to: touch input never sets using-keyboard and
+// script focus after a tap isn't focus-visible, so it would show nothing there.
+.project-card.is-linked:focus:not(.project-modal) {
   transform: translateY(-3px);
   box-shadow: 0 10px 24px rgba(0,0,0,0.45);
   border-color: $homepage-accent-color;

@@ -25,11 +25,14 @@ layout: default
           I build software that automates the mechanical parts of information
           processing so that scarce human attention goes where it is most needed.
 
-          Learn more about <a class="homepage-link" href="#projects-card">Functionary</a>,
-          <a class="homepage-link" href="#projects-card">Lysilogy</a>,
-          <a class="homepage-link" href="#projects-card">Switchboard</a>,
-          and my other projects below.
-          I also moonlight as an interdisciplinary researcher on the possibilities, limits, and
+          Learn more about
+          <a class="homepage-link" href="#projects-card" data-project="01-functionary">Functionary</a>,
+          <a class="homepage-link" href="#projects-card" data-project="03-lysilogy">Lysilogy</a>,
+          <a class="homepage-link" href="#projects-card" data-project="02-switchboard">Switchboard</a>,
+          and my
+          <a class="homepage-link" href="#projects-card" data-project="04-sspi-data-webapp">other projects</a>
+          below.
+          I moonlight as an interdisciplinary researcher on the possibilities, limits, and
           dangers of optimization at <a class="homepage-link" href="https://quasioptimal.io">Quasioptimal</a>.
         </p>
         <p class="reveal">
@@ -1229,6 +1232,8 @@ layout: default
 
   // ---- Smooth-scroll for in-page anchor links ---------------------------
   // (CSS scroll-behavior stays off so it doesn't fight native snap.)
+  // Links carrying data-project also focus that card in the rolodex; see
+  // initRolodex below.
   document.querySelectorAll('a.homepage-link[href^="#"], a.section-nav[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
       const targetId = link.getAttribute("href").slice(1);
@@ -1540,6 +1545,50 @@ layout: default
       if (!first) return;
       e.preventDefault();
       first.focus({ preventScroll: true });
+    });
+
+    // Hero links name a project: roll the deck to its row and focus its card.
+    // The scroll itself is the anchor handler's; this only moves the rolodex.
+    document.querySelectorAll("a.homepage-link[data-project]").forEach((link) => {
+      link.addEventListener("click", () => {
+        const card = allCards.find((c) => c.dataset.project === link.dataset.project);
+        if (!card) return;
+        const row = rows.findIndex((r) => r.contains(card));
+        if (row < 0) return;
+        if (row !== active) { active = row; applyRowStates(); }
+        // Focus now, and again once the smooth scroll has settled: the click
+        // that got us here leaves focus on the link, and a card that is still
+        // mid-flip can decline it. Retry only while focus is still off the
+        // card, and stop if the user has moved into another one.
+        const claim = () => {
+          if (document.activeElement === card) return;
+          const other = document.activeElement && document.activeElement.closest &&
+                        document.activeElement.closest(".project-card");
+          if (other && other !== card) return;
+          card.focus({ preventScroll: true });
+        };
+        const mark = () => {
+          card.classList.add("is-linked");
+          card.addEventListener("blur", () => card.classList.remove("is-linked"), { once: true });
+        };
+        mark();
+        card.focus({ preventScroll: true });
+        // "Settled" is a scroll position that stops changing: scrollend is
+        // missing on older Safari, and a fixed delay is too short for a long
+        // smooth scroll on a phone. The cap covers a page that never scrolls.
+        let idle = 0;
+        const finish = () => {
+          clearTimeout(idle);
+          window.removeEventListener("scroll", bump);
+          const had = document.activeElement === card;
+          claim();
+          // Refocused after a blur had cleared the mark.
+          if (!had && document.activeElement === card) mark();
+        };
+        const bump = () => { clearTimeout(idle); idle = setTimeout(finish, 150); };
+        window.addEventListener("scroll", bump, { passive: true });
+        idle = setTimeout(finish, 400);
+      });
     });
 
     // Side track: click a tick or drag to jump to a row.
