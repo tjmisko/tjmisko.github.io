@@ -513,12 +513,37 @@ p, ul {
 .skills-content h2 {
   font-size: 1.2em;
 }
+// Group names read as small tracked labels over a hairline, the same voice as
+// the site rail, so the three groups separate without bold type competing with
+// the skill names under them.
+.skills-content h5 {
+  font-family: "IBM Plex Mono";
+  font-size: 0.72rem;
+  font-weight: normal;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(225, 225, 225, 0.5);
+  margin: 1.7em 0 0.7em;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.1);
+}
+.skills-content h5:first-child { margin-top: 0; }
+// Entries have no bullet: the skill name leads in full white, its description
+// follows at reading weight (Roboto 400, not the site's thin 300) in a softer grey.
 .skills-content ul {
-  margin-top: 6px;
-  margin-bottom: 6px;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  font-weight: 400;
+  color: rgba(225, 225, 225, 0.95);
 }
 .skills-content li {
-  margin-bottom: 5px;
+  margin-bottom: 0.55em;
+  line-height: 1.5;
+}
+.skills-content li strong {
+  font-weight: 500;
+  color: #fff;
 }
 
 .info-container {
