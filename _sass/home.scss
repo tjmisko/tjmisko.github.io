@@ -123,7 +123,6 @@ p, ul {
   margin-bottom: 2em;
   scroll-snap-align: start;
   padding: 0 1em;
-  // Anchor each card's corner section-nav (and the resume button) to the card.
   position: relative;
 }
 
@@ -147,29 +146,124 @@ p, ul {
   transform: none;
 }
 
-.resume-button {
+// ---- Site rail ---------------------------------------------------------------
+// Sticky right-hand navigation, drawn with as little ink as will still read:
+// a hairline, a small hollow dot per section, dim labels, and the accent
+// spent only on the section in view and on hover. The resume sits at the top as
+// a bare grey word over a hairline rule, not a box.
+//
+// The rail is out of the flow, so the page reserves a gutter for it
+// (.page-content, and .arc-container which sizes from the viewport): wide
+// enough for the labels from 1100px up, just the dots below that.
+.site-rail {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2; // under the project and PDF modals
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 22px 14px 22px 0;
+  pointer-events: none; // only the entries themselves catch the pointer
   font-family: "IBM Plex Mono";
-  position: absolute;
-  background: none;
-  cursor: pointer;
-  color: $homepage-accent-color;
-  padding: 7px 7px 4px 7px;
-  font-size: clamp(1rem, 5vw, 1.4rem);
-  top: 25px;
-  right: 25px;
-  border-radius: 5px;
-  border: 1px solid $homepage-accent-color;
-  text-decoration: none;
-  transition: transform var(--dur-fast) var(--ease-out),
-              background-color var(--dur-fast) var(--ease-out),
-              color var(--dur-fast) var(--ease-out);
 }
+.site-rail > * { pointer-events: auto; }
 
+.resume-button {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.25);
+  border-radius: 0;
+  padding: 0 0 2px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  color: rgba(225, 225, 225, 0.4);
+  transition: color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              letter-spacing var(--dur-fast) var(--ease-out);
+}
 .resume-button:hover,
 .resume-button:focus-visible {
-  transform: scale(1.02);
-  background-color: $homepage-accent-color;
-  color: $homepage-background-color;
+  color: $homepage-accent-color;
+  border-bottom-color: $homepage-accent-color;
+  letter-spacing: 0.12em;
+}
+
+.site-rail-list {
+  list-style: none;
+  margin: auto 0;
+  padding: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  // The hairline runs through the dots, centered on them, and stops at the
+  // first and last: inset by half a row, which is where each dot's center sits.
+  --row: 1rem;
+  &::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--row) / 2);
+    bottom: calc(var(--row) / 2);
+    right: 3px;
+    width: 1px;
+    background: rgba(225, 225, 225, 0.14);
+  }
+}
+.site-rail-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  height: var(--row); // fixed, so a dot's center is always half a row in
+  line-height: 1;
+  text-decoration: none;
+  color: rgba(225, 225, 225, 0.4);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.site-rail-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.site-rail-dot {
+  width: 7px;
+  height: 7px;
+  box-sizing: border-box;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: $homepage-background-color; // masks the hairline behind it
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.site-rail-link:hover,
+.site-rail-link:focus-visible { color: $homepage-font-color; }
+.site-rail-link.is-current { color: $homepage-accent-color; }
+.site-rail-link.is-current .site-rail-dot { background: $homepage-accent-color; }
+
+// Narrow: dots only. A label appears on hover or focus, opening leftward.
+@media screen and (max-width: 1099px) {
+  .site-rail-label {
+    position: absolute;
+    right: calc(100% + 10px);
+    padding: 2px 6px;
+    background: $homepage-background-color;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+  .site-rail-link:hover .site-rail-label,
+  .site-rail-link:focus-visible .site-rail-label { opacity: 1; }
+}
+
+// Reserve the gutter so nothing sits under the rail.
+.page-content { padding-right: $rail-slim; }
+@media screen and (min-width: 1100px) {
+  .page-content { padding-right: $rail-wide; }
 }
 
 // PDF popover: full-screen fade overlay holding a panel that renders any of the
@@ -380,51 +474,6 @@ p, ul {
   padding: 0.5em;
   margin: 0.5em auto 0.5em;
   border-radius: 0.5em;
-}
-
-// Faint bottom-left cue inviting a scroll down to the portfolio. Anchored to
-// the initial containing block (like the resume button) so it sits at the
-// bottom of the first screen and scrolls away with the hero. "Faintness" comes
-// from a dim colour, not opacity, so the reveal fade-in still works.
-// Faint corner navigation between the three snap sections. Anchored to its
-// .homepage-card (position:relative): `--up` sits top-left and points to the
-// previous section, `--down` sits bottom-left and points to the next. Label on
-// the left, arrow to its right. "Faintness" is a dim colour, not opacity, so
-// the reveal fade-in still works.
-.section-nav {
-  position: absolute;
-  left: 25px;
-  z-index: 2;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  color: rgba(225, 225, 225, 0.4);
-  transition: color var(--dur-fast) var(--ease-out);
-}
-.section-nav--up { top: 25px; }
-.section-nav--down { bottom: 25px; }
-
-.section-nav:hover,
-.section-nav:focus-visible {
-  color: $homepage-accent-color;
-}
-.section-nav-label {
-  font-family: "IBM Plex Mono";
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-}
-.section-nav-arrow {
-  display: block;
-  width: 18px;
-  height: 18px;
-  flex: none;
-}
-// On narrow screens (mobile) the corner nav collapses to just the arrow so the
-// label doesn't crowd the section content.
-@media screen and (max-width: $on-palm) {
-  .section-nav-label { display: none; }
 }
 
 // Hero ASCII "typing" effect. On a fresh load the banner is rebuilt as one

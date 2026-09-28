@@ -1,0 +1,54 @@
+{%- comment -%}
+  Sticky right-hand rail: the resume at the top, then one entry per section of
+  the page with the one in view lit. It replaces the per-card corner arrows, so
+  the whole layout of the site is on screen at every scroll position.
+
+  The resume is just another document for the PDF viewer at the foot of the
+  page; the button carries its own source and cache-buster here so the viewer
+  itself knows nothing about which file it is showing.
+
+  Sections are listed here by hand, in page order; each href is a card id in
+  home.html.
+{%- endcomment -%}
+<nav class="site-rail" aria-label="Sections">
+  <button class="resume-button" id="resume-trigger" type="button" aria-haspopup="dialog"
+          data-pdf="/resume.pdf?v=2026-07-30" data-pdf-title="Resume"
+          data-pdf-download="resume.pdf">Resume</button>
+  <ol class="site-rail-list">
+    {%- assign rail = "greeting-card:Home,arc-card:Trajectory,skills-card:Skills,projects-card:Portfolio" | split: "," -%}
+    {%- for entry in rail -%}
+      {%- assign parts = entry | split: ":" -%}
+    <li>
+      <a class="site-rail-link" href="#{{ parts[0] }}" data-section="{{ parts[0] }}" aria-label="{{ parts[1] }}">
+        <span class="site-rail-label">{{ parts[1] }}</span>
+        <span class="site-rail-dot" aria-hidden="true"></span>
+      </a>
+    </li>
+    {%- endfor -%}
+  </ol>
+</nav>
+<script>
+// Light the entry for the section that holds the middle of the viewport. A thin
+// band across the middle rather than "any part visible", so two neighbouring
+// cards are never both current.
+document.addEventListener("DOMContentLoaded", function () {
+  const links = Array.from(document.querySelectorAll(".site-rail-link"));
+  if (!links.length || !("IntersectionObserver" in window)) return;
+  const setCurrent = (id) => {
+    links.forEach((a) => {
+      const on = a.dataset.section === id;
+      a.classList.toggle("is-current", on);
+      if (on) a.setAttribute("aria-current", "location");
+      else a.removeAttribute("aria-current");
+    });
+  };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) setCurrent(e.target.id); });
+  }, { rootMargin: "-50% 0px -50% 0px", threshold: 0 });
+  links.forEach((a) => {
+    const card = document.getElementById(a.dataset.section);
+    if (card) observer.observe(card);
+  });
+  setCurrent(links[0].dataset.section);
+});
+</script>

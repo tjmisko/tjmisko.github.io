@@ -18,6 +18,11 @@ $project-card-color: rgb(32,32,35);
 // swap it live; the fallback is the committed choice.
 $font-header: var(--font-header, "Space Mono");
 
+// Width the sticky right rail (home.scss) takes from the page: labels from
+// 1100px up, dots only below. Full-width layouts subtract it (see arc.scss).
+$rail-wide: 6.5rem;
+$rail-slim: 2.2rem;
+
 // Motion design tokens. Durations live as CSS custom properties so the
 // prefers-reduced-motion guard below can zero them out at runtime, disabling
 // every transition and reveal without touching individual rules.

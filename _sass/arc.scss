@@ -38,11 +38,14 @@ $arc-ruler-h: 28px;
 
 .arc-container {
   font-size: 1rem;
-  width: min(1280px, 96vw);
+  width: min(1280px, calc(96vw - #{$rail-slim}));
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.85rem;
+}
+@media screen and (min-width: 1100px) {
+  .arc-container { width: min(1280px, calc(96vw - #{$rail-wide})); }
 }
 
 // Match the other section headers ("Portfolio", "Skills"), which render at
@@ -142,11 +145,11 @@ $arc-ruler-h: 28px;
 // ruler and get cut in half by that edge. Two answers, because the container
 // only has to scroll for part of the range:
 //
-// From the width where the grid fits (96vw ≥ 880px) there is nothing to scroll,
+// From the width where the grid fits (96vw less the rail gutter ≥ 880px) there is nothing to scroll,
 // so the container stops being one and clips nothing. Popovers overhang the
 // chart freely; they stay inside its box either way, since the ones on the
 // right-hand columns already open inward (.is-late, and the node's own rule).
-@media screen and (min-width: 920px) {
+@media screen and (min-width: 960px) {
   .arc-scroll { overflow-x: visible; }
 }
 // Below that the scroller has to stay, so the box reaches up past the chart
@@ -157,7 +160,7 @@ $arc-ruler-h: 28px;
 // the throughline, so the prose under it can't be selected at these widths;
 // giving the container `pointer-events: none` would fix that and cost the
 // scrollbar its grab, which is the one thing these widths need.
-@media screen and (min-width: 701px) and (max-width: 919px) {
+@media screen and (min-width: 701px) and (max-width: 959px) {
   .arc-scroll {
     padding-top: 240px;
     margin-top: -240px;

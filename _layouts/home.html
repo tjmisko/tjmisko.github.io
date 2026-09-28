@@ -1,15 +1,9 @@
 ---
 layout: default
 ---
+{%- include site-rail.html -%}
 <div class="homepage-card" id="greeting-card">
     <div class="info-container" id="greeting">
-        {%- comment -%}The resume is just another document for the PDF viewer at
-        the foot of this page; it carries its own source and cache-buster here so
-        the viewer itself knows nothing about which file it is showing.
-        {%- endcomment -%}
-        <button class="resume-button" id="resume-trigger" type="button" aria-haspopup="dialog"
-                data-pdf="/resume.pdf?v=2026-07-30" data-pdf-title="Resume"
-                data-pdf-download="resume.pdf">Resume</button>
         <p class="reveal">
           Welcome! I'm
         </p>
@@ -43,7 +37,6 @@ layout: default
            {%- include social.html -%}
         </div>
     </div>
-    {%- include section-nav.html dir="down" target="#arc-card" label="Trajectory" -%}
 </div>
 
 <!-- Three main goals: -->
@@ -52,7 +45,6 @@ layout: default
     <!-- 3. Guide scarce human attention to where it is most needed. -->
 
 <div class="homepage-card" id="arc-card">
-  {%- include section-nav.html dir="up" target="#greeting-card" label="Home" -%}
   <div class="arc-container">
     {%- comment -%}
     The two views read different scales, deliberately.
@@ -946,11 +938,9 @@ layout: default
     }
   });
   </script>
-  {%- include section-nav.html dir="down" target="#skills-card" label="Skills" -%}
 </div>
 
 <div class="homepage-card" id="skills-card">
-    {%- include section-nav.html dir="up" target="#arc-card" label="Trajectory" -%}
     <div class="info-container" id="skills">
         <h1 class="site-header reveal"> Skills </h1>
         {% for a in site.about %}
@@ -959,11 +949,9 @@ layout: default
             {% endif %}
         {% endfor %}
     </div>
-    {%- include section-nav.html dir="down" target="#projects-card" label="Portfolio" -%}
 </div>
 
 <div class="homepage-card" id="projects-card">
-  {%- include section-nav.html dir="up" target="#skills-card" label="Skills" -%}
   <div class="project-modal-parent"></div>
   <h1 class="site-header reveal"> Portfolio </h1>
   <div class="rolodex reveal" id="rolodex">
@@ -1242,7 +1230,7 @@ layout: default
   // (CSS scroll-behavior stays off so it doesn't fight native snap.)
   // Links carrying data-project also focus that card in the rolodex; see
   // initRolodex below.
-  document.querySelectorAll('a.homepage-link[href^="#"], a.section-nav[href^="#"]').forEach((link) => {
+  document.querySelectorAll('a.homepage-link[href^="#"], a.site-rail-link[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
       const targetId = link.getAttribute("href").slice(1);
       const target = document.getElementById(targetId);
