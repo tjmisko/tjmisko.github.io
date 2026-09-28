@@ -982,6 +982,18 @@ layout: default
       .querySelectorAll(".project-description, .project-collaborators, .project-supervisor")
       .forEach((el) => { el.style.display = "block"; });
     modalWindow.addEventListener("click", (event) => event.stopPropagation());
+    // A link to another project's card switches the modal to that card. Looked
+    // up in the rolodex, never in the modal itself, and left as a plain
+    // #projects-card anchor if the target is missing.
+    modalWindow.querySelectorAll("a.project-link[data-project]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const target = document.querySelector(
+          '.project-card[data-project="' + link.dataset.project + '"]:not(.project-modal)');
+        if (!target) return;
+        event.preventDefault();
+        openModal(target);
+      });
+    });
     modalParent.appendChild(modalWindow);
     // Flip to the open state on the next frame so the transition runs.
     requestAnimationFrame(() => modalParent.classList.add("is-open"));

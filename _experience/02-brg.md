@@ -20,4 +20,4 @@ Economics and damages consulting on antitrust litigation, Aug 2023 to Jul 2024, 
 * Coverage, sanity, and outlier checks caught defects before a report went out, including a miscomputation in a financial-statement pipeline.
 * I also contributed report-ready analysis, figures, and technical paragraphs, and gathered and drafted qualitative evidence for the reports.
 
-BinderBuilder, a Python CLI written here, has its own entry.
+<a class="project-link" data-project="10-binder-builder" href="#projects-card">BinderBuilder</a>, a Python CLI written here, has its own entry.
