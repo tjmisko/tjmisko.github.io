@@ -635,12 +635,11 @@ p, ul {
   z-index: 2;
 }
 .rolodex--ready .rolodex-row .project-card { height: 100%; overflow: hidden; }
-// Clamp long headlines so each face fits the fixed row height (full text is in the modal).
+// Headline size is fitted by the rolodex script (fitHeadlines in home.html): the
+// largest size at which every card's text still fits its fixed-height face, so
+// the copy fills the box without overflowing. The full text is in the modal.
 .rolodex--ready .project-headline {
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-size: var(--headline-size, 0.92rem);
 }
 
 // Side position track: circular nodes nested inside a rounded outer box and
@@ -1022,23 +1021,34 @@ html.using-keyboard .project-card:focus-visible,
   height: 22px;
 }
 
+// Card face and modal share one vocabulary — Roboto throughout, a medium-weight
+// title over a dim subtitle and a regular summary — and differ only in scale; the modal's
+// larger sizes are set under .project-modal above.
 .project-title {
   text-align: left;
-  font-family: "IBM Plex Mono";
-  font-weight: normal;
-  font-size: 1.2rem;
+  font-family: "Roboto";
+  font-weight: 500;
+  font-size: 1.1rem;
+  line-height: 1.25;
+  color: $homepage-font-color;
 }
 
 .project-type  {
   font-family: "Roboto";
-  font-size: 1rem;
-  margin-top: 3px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  margin-top: 5px;
   margin-bottom: 6px;
+  color: rgba(225, 225, 225, 0.55);
 }
 
 .project-headline {
-  margin: 6px 0 0;
-  line-height: 1.4;
+  margin: 10px 0 0;
+  font-family: "Roboto";
+  font-size: 0.92rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(225, 225, 225, 0.85);
 }
 
 /** Blog linkbox stylings */

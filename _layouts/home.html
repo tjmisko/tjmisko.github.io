@@ -1473,6 +1473,36 @@ layout: default
       });
       track.setAttribute("aria-valuemax", String(rows.length));
       applyRowStates();
+      fitHeadlines();
+    }
+
+    // Fill each face with its summary, just short of overflowing. One size for
+    // the whole deck, so the cards stay consistent: the largest at which every
+    // card's content still fits its fixed-height face. Measured, not assumed —
+    // it depends on the text, the column count and the webfont. Cards in a row
+    // that isn't laid out (no-motion mode hides them) can't be measured and
+    // don't constrain the size.
+    // A card also has to leave HEADLINE_GAP px of clear space between its text
+    // and its footer, so the copy fills the face without touching the rule.
+    // offsetTop rather than getBoundingClientRect: the rows that aren't current
+    // are rotated away, and a transform would skew the numbers.
+    const HEADLINE_MAX = 1.5, HEADLINE_MIN = 0.8, HEADLINE_STEP = 0.02, HEADLINE_GAP = 20;
+    function fitHeadlines() {
+      let size = HEADLINE_MAX;
+      const tooTight = (c) => {
+        if (c.clientHeight === 0) return false;
+        if (c.scrollHeight > c.clientHeight + 1) return true;
+        const upper = c.querySelector(".project-upper");
+        const footer = c.querySelector(".project-footer");
+        if (!upper || !footer) return false;
+        return footer.offsetTop - (upper.offsetTop + upper.offsetHeight) < HEADLINE_GAP;
+      };
+      const overflows = () => allCards.some(tooTight);
+      deck.style.setProperty("--headline-size", size + "rem");
+      while (size > HEADLINE_MIN && overflows()) {
+        size = Math.round((size - HEADLINE_STEP) * 100) / 100;
+        deck.style.setProperty("--headline-size", size + "rem");
+      }
     }
 
     function go(i, focusCard, col) {
@@ -1508,9 +1538,12 @@ layout: default
     let resizeTimer = 0;
     const remeasure = () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => { if (columnsForWidth() !== cpr) buildRows(); }, 120);
+      resizeTimer = setTimeout(() => {
+        if (columnsForWidth() !== cpr) buildRows(); else fitHeadlines();
+      }, 120);
     };
     if (typeof ResizeObserver !== "undefined") new ResizeObserver(remeasure).observe(deck);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHeadlines);
     window.addEventListener("resize", remeasure, { passive: true });
 
     // Keyboard nav (only while focus is within projects):
