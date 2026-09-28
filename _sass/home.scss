@@ -294,8 +294,8 @@ p, ul {
 .pdf-modal {
   display: flex;
   flex-direction: column;
-  width: min(900px, 100%);
-  height: min(90vh, 1100px);
+  width: unquote("min(900px, 100%)");
+  height: unquote("min(90vh, 1100px)");
   background-color: $project-card-color;
   border-radius: 10px;
   overflow: hidden;
@@ -506,7 +506,7 @@ p, ul {
 // column: widen it so bullets wrap to fewer lines, and tighten the type and
 // spacing so the whole thing clears the fold.
 #skills-card .info-container {
-  max-width: min(650px, 92vw);
+  max-width: unquote("min(650px, 92vw)");
 }
 .skills-content {
   font-size: 0.86em;
@@ -809,7 +809,7 @@ p, ul {
 
 .project-card.project-modal {
   position: relative;
-  max-width: min(620px, 88%);
+  max-width: unquote("min(620px, 88%)");
   overflow-y: auto;
   max-height: 90%;
   z-index: 4;

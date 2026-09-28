@@ -38,14 +38,14 @@ $arc-ruler-h: 28px;
 
 .arc-container {
   font-size: 1rem;
-  width: min(1280px, calc(96vw - #{$rail-slim}));
+  width: unquote("min(1280px, calc(96vw - #{$rail-slim}))");
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.85rem;
 }
 @media screen and (min-width: 1100px) {
-  .arc-container { width: min(1280px, calc(96vw - #{$rail-wide})); }
+  .arc-container { width: unquote("min(1280px, calc(96vw - #{$rail-wide}))"); }
 }
 
 // Match the other section headers ("Portfolio", "Skills"), which render at
@@ -98,7 +98,7 @@ $arc-ruler-h: 28px;
 // Each tab's throughline, shown while the pointer or focus is on the tab. Opens
 // upward from the toggle's left edge (the toggle sits under its chart).
 .arc-pop--tab {
-  max-width: min(340px, 86vw);
+  max-width: unquote("min(340px, 86vw)");
   font-family: "IBM Plex Mono";
   font-size: 0.82rem;
   font-weight: normal;

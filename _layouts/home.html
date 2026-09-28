@@ -46,31 +46,6 @@ layout: default
 
 <div class="homepage-card" id="arc-card">
   <div class="arc-container">
-    {%- comment -%}
-    The two views read different scales, deliberately.
-
-    Work is fixed: the axis runs 2020 to the start of 2026 and stops there, so
-    the node past its right edge stays where the current work actually sits
-    instead of sliding rightward with every publish.
-
-      work_cols  half-year columns from 2020 to work_last_year.
-      work_end   the grid line at work_last_year: the junction sits on it and
-                 the node one column past it, so everything still running reads
-                 as running out of the chart into the present.
-
-    The waterfall's "now" is resolved at build time from site.time, so its
-    marker tracks the last publish rather than a date baked into the source:
-
-      arc_full   whole half-year columns from 2020 up to the last boundary at or
-                 before today — the 1fr columns of the grid.
-      arc_tail   the part-column after them, emitted as a fractional fr so the
-                 axis ends exactly on today rather than on a half-year boundary.
-      arc_now    the grid line where those two meet: today. Ongoing bars run to
-                 it, and the now rule and label sit on it.
-
-    Day-of-year over 365 is close enough at this scale — a leap year moves the
-    line by a third of a pixel.
-    {%- endcomment -%}
     {%- assign work_last_year = 2026 -%}
     {%- assign work_cols = work_last_year | minus: 2020 | times: 2 -%}
     {%- assign work_end = work_cols | plus: 2 -%}
