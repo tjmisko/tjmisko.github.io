@@ -437,7 +437,8 @@ p, ul {
   font-weight: normal;
   text-align: center;
   width: 100%;
-  font-size: 1.7em;
+  color: rgba(225, 225, 225, 0.8);
+  font-size: 1.5em;
   padding-top: 0.5em;
 }
 .site-header a {
@@ -458,6 +459,7 @@ p, ul {
 
 #greeting-card p {
   font-size: clamp(1.1rem, 2.7vw, 1.45rem);
+  color: rgba(225, 225, 225, 0.8); // links keep their own accent color
 }
 #greeting-card ul {
   font-size: clamp(1.1rem, 2.7vw, 1.45rem);
@@ -958,7 +960,7 @@ html.using-keyboard .project-card:focus-visible,
   margin: 0;
   font-family: "Roboto";
   font-size: 0.62rem;
-  font-weight: 500;
+  font-weight: 300;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: rgba(225, 225, 225, 0.5);
