@@ -44,7 +44,7 @@ minima:
     github:  tjmisko
     linkedin: tristanmisko
     spotify: tristanmisko
-    substack: quasioptimal
+    # substack: quasioptimal  # empty for now
     #twitter: jekyllrb
     # devto: jekyll
     # dribbble: jekyll
