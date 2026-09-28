@@ -61,7 +61,7 @@
 views:
   - id: tools
     tab: Tools
-    throughline: As I've developed my technical skills, I've found myself drawn to tools that reward investment and allow me to configure and shape them to suit my needs.
+    throughline: As I've developed my technical skills, I've found myself drawn to malleable, configurable tools and technology ecosystems that reward investment.
     groups:
       - group: Computing
         tools:
@@ -132,7 +132,7 @@ views:
                 ongoing: true
                 span: 2026 – now
                 note: >-
-                  Still useful for ML/AI work, but not a systems language.
+                  Still in the toolkit, but on the backburner as I learn Rust.
 
           - name: HTML / CSS / JavaScript
             family: language
@@ -172,7 +172,9 @@ views:
             span: 2024 – now
             ongoing: true
             occasional: true
-            note: Occasional typed front ends and tooling, especially for Obsidian plugins; the recent plugins are agent-built to my direction.
+            note: >-
+              Occasional typed front ends and tooling, especially for Obsidian
+              plugins; recent plugins are mostly agent-built to my direction.
 
           - name: Go
             family: language
@@ -182,19 +184,22 @@ views:
               - start: 2024-07-01
                 cadence: daily
                 span: mid-2024 – 2025
-                note: Learned a bit of Go to rewrite Taskbuffer, since the bash scripts I'd cobbled together were starting to become painful.
+                note: Picked up a bit of Go to rewrite Taskbuffer, since the bash scripts I'd cobbled together were starting to become painful.
               - start: 2025-01-01
                 cadence: occasional
                 span: "2025"
-                note: Mostly off the daily rotation for a year, used only in maintaining and extending Taskbuffer.
+                note: Used occasionally for maintaining and extending Taskbuffer.
               - start: 2026-01-01
                 cadence: daily
                 ongoing: true
                 span: 2026 – now
                 note: >-
-                  Back in daily use for Switchboard's daemon. Because Go is so simple,
-                  I find it nice to use when outsourcing work to coding agents. It's easy to read, simple to
-                  reason about, and hard to screw up.
+                  Guided agents building an iteration of Switchboard's daemon
+                  and Coldstore's backend. Because Go is so simple, I find it
+                  nice to use for outsourcing work to coding agents, even if I
+                  don't really enjoy writing it myself. I find it's
+                  comparatively easy to read and review, and harder for agents
+                  to screw up the architecture.
 
           - name: C
             family: language
@@ -203,13 +208,14 @@ views:
             ongoing: true
             occasional: true
             note: >-
-              I learned C for the same reason I took Latin in school:
-              to read the classics, to bring myself into contact with
-              the knowledge of the ancients, and for the occasionally
-              useful bit of trivia. I've never built anything useful in
-              C, but much of what I rely on daily is built in C, and
-              understanding the syntax and design of C was crucial to my
-              progression as a programmer.
+              I learned C for the same reason I studied Latin: to read the
+              classics, bring myself into contact with the knowledge and wisdom
+              of the ancients, and appreciate the lore and the infrastructure.
+              Like Latin, I'm not a fluent speaker, but with a dictionary and
+              some patience I can read and write it passably. I've never built
+              anything useful in C, but most of what I and everybody else
+              relies on is written in C, and its handy to be able to follow the
+              development of systems written in C.
 
           - name: Rust
             family: language
@@ -217,14 +223,47 @@ views:
             span: 2026 – now
             ongoing: true
             note: >-
-              The language I'm currently learning to think, write, and
-              build in, laddering up my understanding by reading and reviewing
-              the Rust that agents write for Functionary. A Rust rewrite of
-              Switchboard is planned as the first thing I build in it by hand.
+              The language I'm currently learning to think in, write,
+              build in, and love. The combination of rich data modeling,
+              memory safety, performance, and developer tooling is,
+              as far as I know, unparalleled.
 
   - id: toolchain
     tab: Toolchain
     groups:
+      - group: OS
+        tools:
+          - name: macOS
+            family: environment
+            start: 2018-01-01
+            end: 2023-07-01
+            span: 2018 – 2023
+            note: Personal machine through college and the SSPI research years.
+
+          - name: Windows
+            family: environment
+            continues: true
+            start: 2023-07-01
+            end: 2024-07-01
+            span: 2023 – 2024
+            note: On my BRG-issued machine.
+
+          - name: Linux
+            family: environment
+            continues: true
+            start: 2024-07-01
+            span: 2024 – now
+            ongoing: true
+            note: >-
+              Fedora Asahi Remix on Apple Silicon as primary machine since
+              mid-2024. Since then I've stood up four other linux boxes (three
+              Debian, one Arch). Originally, the main draw to Linux was configurability. I was tired
+              of fighting my operating system (in particular the window manager) over
+              keybindings, window placement, annoying immutable defaults, and
+              other nits. The transparent internals and wealth of resources for learning about
+              Linux and Operating Systems in general naturally pulled me further down the stack.
+              Never going back.
+
       - group: Editor
         tools:
           - name: Atom
@@ -232,7 +271,7 @@ views:
             start: 2019-01-01
             end: 2022-01-01
             span: 2019 – 2022
-            note: First editor — the coursework, early website work. Rest in peace.
+            note: Requiescat in pace.
 
           - name: VSCode
             family: environment
@@ -240,7 +279,7 @@ views:
             start: 2022-01-01
             end: 2024-01-01
             span: 2022 – 2024
-            note: Everyday editor through the early SSPI build.
+            note: Still waiting for it to load my diff.
 
           - name: Neovim
             family: environment
@@ -251,10 +290,9 @@ views:
             note: >-
               Primary editor, picked up as I transitioned into the terminal for
               everyday work in late 2023, with a custom configuration I incrementally
-              built out over the course of 2024. When I was a kid I played around a
-              ton with 3D modeling in Blender (which also features keyboard driven
-              modal editing), so learning the vim keybindings felt oddly like coming
-              home.
+              built out over the course of 2024. As a kid I played around a
+              ton with 3D modeling in Blender; learning the vim keybindings felt oddly like coming
+              home to that.
       - group: Notes
         tools:
           - name: Apple Notes
@@ -271,10 +309,10 @@ views:
             span: 2023 – now
             ongoing: true
             note: >-
-              I use Obsidian for all of the information I care about: notes, journaling,
+              Obsidian handles all of the information I care about: notes, journaling,
               writing, tasks, projects, calendars, recommendations, you name it. I also
-              maintain several plugins, mostly for personal use, which implement a
-              vim-inspired keyboard-centric workflow for managing tasks (obsidian-taskbuffer),
+              maintain several plugins, mostly for personal use, which implement
+              vim-inspired keyboard-centric interfaces for managing tasks (obsidian-taskbuffer),
               calendars (obsidian-keyboard-calendar), and maps (obsidian-vim-map).
 
       - group: Terminal
@@ -286,7 +324,7 @@ views:
             span: 2018 – late 2023
             occasional: true
             note: >-
-              The macOS default: who even knew that you could have another option?
+              Who even knew there were better options?
 
           - name: WezTerm
             family: environment
@@ -296,36 +334,6 @@ views:
             ongoing: true
             note: >-
               Basic, configured in Lua, and my daily driver for several years running.
-
-      - group: Operating System
-        tools:
-          - name: macOS
-            family: environment
-            start: 2018-01-01
-            end: 2023-07-01
-            span: 2018 – 2023
-            note: Personal machine through college and the SSPI research years.
-
-          - name: Windows
-            family: environment
-            continues: true
-            start: 2023-07-01
-            end: 2024-07-01
-            span: 2023 – 2024
-            note: Issued machine at BRG.
-
-          - name: Linux
-            family: environment
-            continues: true
-            start: 2024-07-01
-            span: 2024 – now
-            ongoing: true
-            note: >-
-              Fedora Asahi Remix on Apple Silicon; primary machine since mid-2024.
-              The main draw to Linux was configurability. I was tired of fighting my
-              operating system and window manager over keybindings, window
-              placement, annoying immutable defaults, and other nits. I'm never going
-              back.
 
       - group: Keyboard
         tools:
