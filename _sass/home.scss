@@ -71,7 +71,7 @@ main {
 }
 
 h1 {
-  font-family: "Courier Prime";
+  font-family: $font-header;
   font-size: 1.7em;
 }
 h2, h3 {
@@ -84,7 +84,7 @@ h2, h3 {
 p, ul {
   font-family: "Roboto";
   font-size: 0.8em;
-  font-weight: 200;
+  font-weight: 300;
   line-height: 1.4;
 }
 
@@ -148,7 +148,7 @@ p, ul {
 }
 
 .resume-button {
-  font-family: "Courier Prime";
+  font-family: "IBM Plex Mono";
   position: absolute;
   background: none;
   cursor: pointer;
@@ -236,7 +236,7 @@ p, ul {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  font-family: "Courier Prime";
+  font-family: $font-header;
   font-size: 1.1rem;
   color: $homepage-font-color;
 }
@@ -339,7 +339,7 @@ p, ul {
 
 /** Headers about me, quasioptimal, and contact me */
 .site-header {
-  font-family: "Courier Prime";
+  font-family: $font-header;
   font-weight: normal;
   text-align: center;
   width: 100%;
@@ -357,7 +357,7 @@ p, ul {
 
 /** custom styling for greeting page */
 #greeting-card h1 {
-  font-family: "Courier Prime";
+  font-family: $font-header;
   font-weight: normal;
   text-align: left;
 }
@@ -411,7 +411,7 @@ p, ul {
   color: $homepage-accent-color;
 }
 .section-nav-label {
-  font-family: "Courier Prime";
+  font-family: "IBM Plex Mono";
   font-size: 0.8rem;
   letter-spacing: 0.08em;
 }

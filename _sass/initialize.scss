@@ -10,9 +10,13 @@ $small-font-size:  $base-font-size * 0.875 !default;
 $base-line-height: 1.5 !default;
 
 $homepage-font-color: rgb(225,225,225);
-$homepage-background-color: rgb(25,25,27);
+$homepage-background-color: rgb(20,20,22);
 $homepage-accent-color: rgb(250, 130, 30);
-$project-card-color: rgb(39,39,42);
+$project-card-color: rgb(32,32,35);
+
+// Heading face. A CSS variable so the font lab (_includes/font-lab.html) can
+// swap it live; the fallback is the committed choice.
+$font-header: var(--font-header, "Space Mono");
 
 // Motion design tokens. Durations live as CSS custom properties so the
 // prefers-reduced-motion guard below can zero them out at runtime, disabling

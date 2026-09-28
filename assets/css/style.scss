@@ -6,11 +6,6 @@
   "initialize";
 
 @font-face {
-  font-family: "courier-new-webfont";
-  src: url("../fonts/courier-new-webfont.woff");
-}
-
-@font-face {
   font-family: 'Roboto';
   src: url('Roboto-Bold.ttf') format('truetype');
   font-weight: bold;
@@ -319,5 +314,21 @@
   src: url('CourierPrime-Italic.ttf') format('truetype');
   font-weight: normal;
   font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  src: url('SpaceMono-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  src: url('SpaceMono-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
   font-display: swap;
 }

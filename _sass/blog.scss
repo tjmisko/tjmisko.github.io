@@ -46,7 +46,7 @@ sup, sub {
 pre {
     display: block;
     overflow: auto;
-    font-family: 'Monaco', monospace;
+    font-family: "IBM Plex Mono", monospace;
     padding: 1em 1em;
 }
 
@@ -57,12 +57,12 @@ pre {
     color: $homepage-font-color;
     overflow-wrap: break-word;
     h1 {
-        font-family: "Courier Prime";
+        font-family: $font-header;
         font-size: 16pt;
         margin: 15px 0px 3px 0px;
     }
     h2 {
-        font-family: "Courier Prime";
+        font-family: $font-header;
         font-weight: normal;
         font-size: 16pt;
         margin: 25px 0px 3px 0px;
@@ -115,7 +115,7 @@ pre {
     flex-direction: column;
     justify-content: center;
     h1 {
-        font-family: "Courier Prime";
+        font-family: $font-header;
         font-weight: normal;
         font-size: 22pt;
     }
