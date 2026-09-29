@@ -770,6 +770,109 @@ p, ul {
   transform: scale(1.35);
 }
 
+// ---- Rolodex on touch -----------------------------------------------------
+// A phone, or any coarse pointer: the track stops being a control — its dots
+// are too small and too close for a finger, and taking the drag meant taking
+// the page's scroll — and becomes a readout of where you are. Up/down arrows do
+// the paging. The query is repeated as touchNav in home.html's rolodex script.
+//
+// Two placements, chosen by data-arrows on .rolodex:
+//   track  an arrow at either end of the track, beside the deck
+//   below  a row under the deck, the arrows either side of an "n / N" count
+.rolodex-step {
+  all: unset;
+  display: none;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  border: 1px solid $rule-strong;
+  border-radius: 4px;
+  color: rgba(225, 225, 225, 0.6);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              opacity var(--dur-fast) var(--ease-out);
+}
+.rolodex-step svg { display: block; }
+.rolodex-step:active:not(:disabled),
+.rolodex-step:focus-visible {
+  color: $homepage-accent-color;
+  border-color: $homepage-accent-color;
+}
+@media (hover: hover) {
+  .rolodex-step:hover:not(:disabled) {
+    color: $homepage-accent-color;
+    border-color: $homepage-accent-color;
+  }
+}
+.rolodex-step:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+.rolodex-count {
+  display: none;
+  @include small-label(0.09em);
+  font-size: 0.7rem;
+  line-height: 1;
+  color: rgba(225, 225, 225, 0.5);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+@media screen and (max-width: $on-palm), (pointer: coarse) {
+  .rolodex--ready .rolodex-tick {
+    pointer-events: none;
+    cursor: default;
+  }
+  .rolodex--ready .rolodex-track { touch-action: auto; }
+  .rolodex--ready .rolodex-step { display: grid; place-items: center; }
+
+  .rolodex--ready {
+    display: grid;
+    column-gap: 12px;
+    row-gap: 0;
+  }
+  .rolodex--ready .rolodex-deck { grid-area: deck; }
+  .rolodex--ready .rolodex-track { grid-area: track; justify-self: center; }
+  .rolodex--ready .rolodex-step--prev { grid-area: prev; }
+  .rolodex--ready .rolodex-step--next { grid-area: next; }
+  .rolodex--ready .rolodex-count { grid-area: count; }
+
+  // Beside: the arrows cap the track, level with the tops and bottoms of the
+  // cards (the rows are inset 10px in the deck).
+  .rolodex--ready[data-arrows="track"] {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "deck prev"
+      "deck track"
+      "deck next";
+    .rolodex-step--prev { margin-top: 10px; }
+    .rolodex-step--next { margin-bottom: 10px; }
+    .rolodex-track { margin: 8px 0; }
+  }
+
+  // Below: the track keeps its place beside the deck as the position readout;
+  // the arrows take a row of their own under it, wide enough for a thumb.
+  .rolodex--ready[data-arrows="below"] {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "deck deck  deck track"
+      "prev count next .";
+    row-gap: 6px;
+    .rolodex-step { width: 48px; height: 36px; }
+    .rolodex-step--prev { justify-self: end; }
+    .rolodex-step--next { justify-self: start; }
+    .rolodex-count {
+      display: block;
+      align-self: center;
+      min-width: 5.5em;
+      text-align: center;
+    }
+  }
+}
+
 // Reduced motion: instant row swap, no 3D rotation.
 .rolodex--no-motion .rolodex-row { transition: none; transform: none; }
 .rolodex--no-motion .rolodex-row:not(.is-active) { display: none; }

@@ -929,12 +929,35 @@ layout: default
 <div class="homepage-card" id="projects-card">
   <div class="project-modal-parent"></div>
   <h1 class="site-header reveal"> Portfolio </h1>
-  <div class="rolodex reveal" id="rolodex">
+  {%- comment -%}On a phone or any touch screen the track is a readout, not a
+  control: seventeen 7px dots are no target for a finger, and a track that took
+  the drag took the page's scroll with it. The arrows page instead. Where they
+  sit is data-arrows — "track" puts them at either end of the track, "below"
+  in a row under the deck with a count between them (see .rolodex in
+  home.scss). All four are hidden where the track is still a control.
+  {%- endcomment %}
+  <div class="rolodex reveal" id="rolodex" data-arrows="track">
     <div class="rolodex-deck" id="rolodex-deck">
       {%- include project-feed.html -%}
     </div>
+    <button type="button" class="rolodex-step rolodex-step--prev" data-step="-1"
+            aria-label="Previous project" aria-controls="rolodex-deck">
+      <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+        <path d="M3 9 L7 5 L11 9" fill="none" stroke="currentColor" stroke-width="1.4"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
     <div class="rolodex-track" id="rolodex-track" aria-hidden="true"></div>
+    <button type="button" class="rolodex-step rolodex-step--next" data-step="1"
+            aria-label="Next project" aria-controls="rolodex-deck">
+      <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+        <path d="M3 5 L7 9 L11 5" fill="none" stroke="currentColor" stroke-width="1.4"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <p class="rolodex-count" id="rolodex-count" aria-live="polite"></p>
   </div>
+  {%- include compare-arrows.html -%}
   <script>
   // Setup is deferred to DOMContentLoaded so querySelectorAll(".reveal") sees
   // every section. Portfolio is now the last card, so the sections above are
@@ -1397,6 +1420,13 @@ layout: default
     if (!allCards.length) return;
     allCards.forEach((card) => card.addEventListener("click", () => openModal(card)));
 
+    const stepPrev = rolodex.querySelector(".rolodex-step--prev");
+    const stepNext = rolodex.querySelector(".rolodex-step--next");
+    const count = document.getElementById("rolodex-count");
+    // Must match the media query in home.scss that shows the arrows and turns
+    // the track into a readout.
+    const touchNav = window.matchMedia("(max-width: 600px), (pointer: coarse)");
+
     let cpr = 0;     // cards per row, responsive to width
     let rows = [];   // row wrapper elements
     let active = 0;  // active row index
@@ -1417,8 +1447,15 @@ layout: default
         row.classList.toggle("is-next", i > active);
         row.querySelectorAll(".project-card").forEach((c) => { c.tabIndex = i === active ? 0 : -1; });
       });
-      Array.from(track.children).forEach((tick, i) => tick.classList.toggle("is-active", i === active));
+      Array.from(track.children).forEach((tick, i) => {
+        tick.classList.toggle("is-active", i === active);
+        // A readout's dots take no focus; a control's do.
+        tick.tabIndex = touchNav.matches ? -1 : 0;
+      });
       track.setAttribute("aria-valuenow", String(active + 1));
+      if (stepPrev) stepPrev.disabled = active === 0;
+      if (stepNext) stepNext.disabled = active === rows.length - 1;
+      if (count) count.textContent = (active + 1) + " / " + rows.length;
       // Drive the accent fill on the side track up to the active node.
       const lastRow = rows.length - 1;
       track.style.setProperty("--rolodex-progress", lastRow > 0 ? String(active / lastRow) : "0");
@@ -1443,7 +1480,7 @@ layout: default
         tick.type = "button";
         tick.className = "rolodex-tick";
         tick.setAttribute("aria-label", "Go to project row " + (i + 1));
-        tick.addEventListener("click", () => go(i, true));
+        tick.addEventListener("click", () => { if (!touchNav.matches) go(i, true); });
         track.appendChild(tick);
       });
       track.setAttribute("aria-valuemax", String(rows.length));
@@ -1501,6 +1538,14 @@ layout: default
     track.setAttribute("role", "slider");
     track.setAttribute("aria-label", "Project position");
     track.setAttribute("aria-valuemin", "1");
+
+    // The arrows page one row at a time. Focus stays on the arrow rather than
+    // moving to the card, so a run of taps doesn't lift each card in turn.
+    [stepPrev, stepNext].forEach((btn) => {
+      if (!btn) return;
+      btn.addEventListener("click", () => step(Number(btn.dataset.step), false));
+    });
+    touchNav.addEventListener("change", applyRowStates);
 
     buildRows();
     rolodex.classList.add("rolodex--ready");
@@ -1607,13 +1652,15 @@ layout: default
       });
     });
 
-    // Side track: click a tick or drag to jump to a row.
+    // Side track: click a tick or drag to jump to a row. Not on touch, where
+    // the track only reports the position and the arrows do the paging.
     const rowFromPointer = (clientY) => {
       const r = track.getBoundingClientRect();
       return Math.round(((clientY - r.top) / r.height) * (rows.length - 1));
     };
     let dragging = false;
     track.addEventListener("pointerdown", (e) => {
+      if (touchNav.matches) return;
       if (e.target.closest(".rolodex-tick")) return; // tick handles its own click
       dragging = true;
       track.setPointerCapture(e.pointerId);

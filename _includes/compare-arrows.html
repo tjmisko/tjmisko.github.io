@@ -1,0 +1,66 @@
+{%- comment -%}
+  Temporary: a switch for comparing the two placements of the rolodex arrows
+  on a phone (see .rolodex in home.scss). Dormant unless the page is opened
+  with ?arrows=track or ?arrows=below; then a pill in the bottom-left corner
+  flips between them live and keeps the choice in the URL, so a reload or a
+  shared link shows the same one.
+
+  Delete this include and its line in home.html once a placement is chosen,
+  and set that placement as data-arrows on .rolodex.
+{%- endcomment -%}
+<div class="compare-arrows" id="compare-arrows" role="group" aria-label="Arrow placement" hidden>
+  <span>arrows</span>
+  <button type="button" data-arrows="track">beside</button>
+  <button type="button" data-arrows="below">below</button>
+</div>
+<style>
+.compare-arrows {
+  position: fixed;
+  left: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 4px 10px;
+  border: 1px solid rgba(250, 130, 30, 0.6);
+  border-radius: 8px;
+  background: rgb(24, 24, 26);
+  font: 0.7rem "IBM Plex Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(225, 225, 225, 0.5);
+}
+.compare-arrows[hidden] { display: none; }
+.compare-arrows button {
+  all: unset;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: rgba(225, 225, 225, 0.7);
+}
+.compare-arrows button[aria-pressed="true"] {
+  background: rgb(250, 130, 30);
+  color: rgb(20, 20, 22);
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(location.search);
+  const initial = params.get("arrows");
+  const rolodex = document.getElementById("rolodex");
+  const panel = document.getElementById("compare-arrows");
+  if (!rolodex || !panel) return;
+  if (initial !== "track" && initial !== "below") return;
+  const buttons = Array.from(panel.querySelectorAll("button"));
+  const show = (placement) => {
+    rolodex.dataset.arrows = placement;
+    buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.arrows === placement)));
+    params.set("arrows", placement);
+    history.replaceState(null, "", location.pathname + "?" + params.toString() + location.hash);
+  };
+  buttons.forEach((b) => b.addEventListener("click", () => show(b.dataset.arrows)));
+  show(initial);
+  panel.hidden = false;
+});
+</script>
