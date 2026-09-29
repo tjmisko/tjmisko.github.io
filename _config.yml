@@ -14,9 +14,9 @@ collections:
   - sspi-devlog
 collections:
   about:
-    output: true
+    output: false
   projects:
-    output: true
+    output: false
   # Roles and schooling that place a chip on the Trajectory chart but are not
   # portfolio projects, so they never enter the rolodex. Same front matter as
   # _projects (project-title, -type, -status, -headline, arc) so one card
