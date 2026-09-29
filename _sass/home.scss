@@ -297,7 +297,7 @@ p, ul {
   width: unquote("min(900px, 100%)");
   height: unquote("min(90vh, 1100px)");
   background-color: $project-card-color;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
   transform: scale(0.97);
@@ -781,12 +781,11 @@ p, ul {
   position: relative;
   background-color: $project-card-color;
   font-size: 0.9em;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 20px 20px 16px;
-  // Transparent border reserved up front so the accent border on hover
-  // doesn't nudge the layout.
-  border: 1px solid transparent;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  // Hairline at rest, like every other surface on the page; the accent border
+  // and the lift below arrive on hover.
+  border: 1px solid $rule;
   box-sizing: border-box;
   z-index: 2;
   // Opacity reveals over the slower reveal duration; the interactive
@@ -808,11 +807,9 @@ p, ul {
   overflow-y: auto;
   max-height: 90%;
   z-index: 4;
-  // Quieter than a rolodex face: a hairline instead of a drop shadow, a
-  // tighter corner, and room to breathe.
+  // Quieter than a rolodex face: room to breathe.
   padding: 30px 32px 20px;
   font-size: 1rem;
-  border-radius: 6px;
   background-color: rgb(24, 24, 26); // darker than a rolodex face
   border-color: rgba(225, 225, 225, 0.1);
   box-shadow: none;
