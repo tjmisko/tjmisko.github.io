@@ -1331,7 +1331,16 @@ a.arc-chip:focus-visible {
     // (the first bar starts mid-year), so that row is only as tall as the 2020
     // label hanging in the gutter under its rule. The chart starts where the
     // work does instead of under a half-year of empty lanes.
-    grid-template-rows: 18px 12px repeat(11, 46px);
+    //
+    // The step is 46px where the screen has room for it and gives way where it
+    // doesn't: a phone browser's toolbars leave some 620px of a 812px screen,
+    // and at 46px the view switch fell below it. Everything in the card that
+    // isn't a half-year row — heading, lane heads, the switch — comes to about
+    // 128px; the rest of the small viewport, less a little air, is shared out
+    // among the eleven rows. The small viewport (svh), because the toolbars
+    // coming and going must not re-scale the chart mid-scroll.
+    --arc-row: clamp(34px, calc((100svh - 152px) / 11), 46px);
+    grid-template-rows: 18px 12px repeat(11, var(--arc-row));
     // Time is continuous: a gap between rows would draw months that don't exist.
     // What sets one bar off from the next in a lane is its own bottom margin,
     // which takes the same 3px from every bar and so distorts nothing.
@@ -1475,11 +1484,14 @@ a.arc-chip:focus-visible {
     // 46px row, so the glyph goes up to what the row will hold: 32px of paper
     // plus the chip's 3px padding and 1px border, top and bottom, inside the
     // 43px a row leaves after the 3px every bar keeps under it. Same drawing,
-    // scaled — the rule spacing is a background-size, so it grows with it.
+    // scaled — the rule spacing is a background-size, so it grows with it. A
+    // shorter row (see --arc-row) takes the same 14px off the glyph, and the
+    // drawing keeps its proportions.
     .arc-ico--paper {
-      width: 26px;
-      height: 32px;
-      background-size: 15px 24px;
+      --paper-h: calc(var(--arc-row) - 14px);
+      width: calc(var(--paper-h) * 0.8125);
+      height: var(--paper-h);
+      background-size: calc(var(--paper-h) * 0.47) calc(var(--paper-h) * 0.75);
     }
 
     // The honors-thesis outline, a box around the two papers in the research
