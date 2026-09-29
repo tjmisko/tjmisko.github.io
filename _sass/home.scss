@@ -1031,6 +1031,9 @@ html.using-keyboard .project-card:focus-visible,
 .project-linkbox .svg-icon {
   width: 22px;
   height: 22px;
+  // Dimmed like the hero social icons; hover still brings up the accent.
+  fill: rgb(180, 180, 180);
+  &:hover { fill: $homepage-accent-color; }
 }
 
 // Card face and modal share one vocabulary — Roboto throughout, a medium-weight
