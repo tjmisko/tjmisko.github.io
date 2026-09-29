@@ -28,7 +28,7 @@ $arc-dim: rgba(225, 225, 225, 0.55);
 // Popover body copy. Read once, deliberately, on a panel — so it sits well
 // above the resting weight the chart's own labels carry.
 $arc-pop-text: rgba(232, 232, 234, 0.9);
-$arc-faint: rgba(225, 225, 225, 0.16);
+$arc-faint: $rule-strong;
 // Fainter than $arc-faint, which only ever draws short segments: a year rule
 // runs the full height of the chart, where the same alpha reads as foreground
 // rather than backdrop.

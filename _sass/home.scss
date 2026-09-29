@@ -942,7 +942,7 @@ html.using-keyboard .project-card:focus-visible,
   flex-direction: row-reverse;
   align-items: center;
   font-size: 0.6rem;
-  border-top: 1px solid rgba(225, 225, 225, 0.18);
+  border-top: 1px solid $rule;
   padding-top: 8px;
   margin-top: 10px;
   gap: 24px;

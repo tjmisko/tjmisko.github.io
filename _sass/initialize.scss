@@ -14,6 +14,11 @@ $homepage-background-color: rgb(20,20,22);
 $homepage-accent-color: rgb(250, 130, 30);
 $project-card-color: rgb(32,32,35);
 
+// Hairline opacities: $rule for dividers and resting borders, $rule-strong for
+// edges that must hold their own against a surface (chart frames, lane splits).
+$rule: rgba(225, 225, 225, 0.1);
+$rule-strong: rgba(225, 225, 225, 0.16);
+
 // Heading face. A CSS variable so the font lab (_includes/font-lab.html) can
 // swap it live; the fallback is the committed choice.
 $font-header: var(--font-header, "Space Mono");
