@@ -1794,20 +1794,9 @@ a.arc-chip:focus-visible {
     margin-top: 10px;
     color: $homepage-accent-color;
   }
-
-  // A chart nobody knows to touch is a picture. One line, under each chart,
-  // where the wide view has nothing to say.
-  .arc-hint {
-    font-family: "IBM Plex Mono";
-    font-size: 0.62rem;
-    color: rgba(225, 225, 225, 0.34);
-    text-align: center;
-    margin: 2px 0 0;
-  }
 }
 
-// The hint and the sheet are narrow-chart furniture: the pointer needs neither.
+// The sheet is narrow-chart furniture: the pointer doesn't need it.
 @media screen and (min-width: 701px) {
-  .arc-hint { display: none; }
   .arc-sheet { display: none !important; }
 }
