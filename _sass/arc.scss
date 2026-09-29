@@ -60,6 +60,10 @@ $arc-ruler-h: 28px;
 .arc-container .site-header {
   font-size: calc(14pt * 1.3 * 1.5);
 }
+// Phones: the same size as the other section headers there (home.scss).
+@media screen and (max-width: $on-palm) {
+  .arc-container .site-header { font-size: 1.4rem; }
+}
 
 .arc-stage { width: 100%; }
 .arc-view {

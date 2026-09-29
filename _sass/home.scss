@@ -490,6 +490,17 @@ p, ul {
   padding-top: 0.5em;
   margin-bottom: 1.5rem;
 }
+// Phones: a section title is a label for the screen, not a display line. At
+// desktop size it took a fifth of the height before any content, and the rail's
+// Resume ran into it. The chart restates the desktop size, and its phone size
+// with it (arc.scss).
+@media screen and (max-width: $on-palm) {
+  .site-header {
+    font-size: 1.4rem;
+    padding-top: 0;
+    margin-bottom: 1rem;
+  }
+}
 .site-header a {
     text-decoration: none;
     color: $homepage-font-color;
