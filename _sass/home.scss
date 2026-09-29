@@ -47,6 +47,11 @@ html {
     scroll-snap-type: none;
   }
 }
+// Touch screens page by flick instead (home.html): snap can't tell a flick from
+// a slow drag, and it would fight the pager for the same scroll.
+html.flick-paging {
+  scroll-snap-type: none;
+}
 
 a {
   color: $homepage-accent-color;
