@@ -17,15 +17,15 @@ arc:
   relay: true
   start: 2020.5
   end: 2023.5
-  label: "IRLE · SSPI Research"
+  label: "SSPI Research @ IRLE"
   span: "Aug 2020 – Aug 2023"
   parts:
     - start: 2020.5
-      label: "IRLE · Research Apprentice"
+      label: "Research Apprentice @ IRLE"
       span: "Aug 2020 – Aug 2021"
       blurb: "Collected, documented, and validated indicator data for the SSPI."
     - start: 2021.5
-      label: "IRLE · Research Team Lead"
+      label: "Research Team Lead @ IRLE"
       span: "Aug 2021 – Aug 2023"
       blurb: "Led the undergraduate teams, set collection and validation standards, and started the data-handling work that became sspi.world."
 ---

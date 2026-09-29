@@ -9,7 +9,7 @@ arc:
   relay: true
   start: 2023.5
   end: 2024.5
-  label: "BRG &middot; Antitrust Litigation Support"
+  label: "Antitrust Litigation Support @ BRG"
   span: "Aug 2023 – Jul 2024"
   blurb: "Stata analysis behind antitrust expert reports, reproducible from raw inputs."
 ---

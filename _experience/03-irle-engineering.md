@@ -11,7 +11,7 @@ arc:
   relay: true
   start: 2024.5
   end: 2026
-  label: "IRLE &middot; Software &amp; Data Engineer &middot; Team Lead"
+  label: "Software &amp; Data Engineer &middot; Team Lead @ IRLE"
   span: "Jul 2024 – Dec 2025"
   blurb: "Returned to IRLE as an engineer responsible for the SSPI platform's software and data while also leading the research team."
 ---
