@@ -1359,6 +1359,9 @@ a.arc-chip:focus-visible {
       grid-row: 1;
       grid-column: var(--ln) / var(--ln-end, span 1);
       align-self: end;
+      // Centered over the column it names (both columns, for SOFTWARE), so a
+      // head and the bars under it share one axis.
+      text-align: center;
       font-family: "IBM Plex Mono";
       font-size: 0.58rem;
       letter-spacing: 0.08em;
