@@ -1,0 +1,39 @@
+{%- comment -%}
+  Horizontal swipe for touch screens, shared by the portfolio rolodex and the
+  skills tabs. Only a sideways flick counts: the element is given
+  touch-action: pan-y in CSS, so the browser keeps every vertical gesture for
+  the page's own scroll (and cancels the pointer when it takes one, which drops
+  the gesture here), and only the sideways ones are left for this to read.
+{%- endcomment -%}
+<script>
+// el        the surface to listen on
+// onSwipe   called with +1 for a swipe to the left (onward), -1 to the right
+// enabled   a predicate checked at the start of each gesture
+window.addSwipe = function (el, onSwipe, enabled) {
+  const MIN_DX = 50;      // px the finger has to travel sideways
+  const MAX_SLOPE = 0.6;  // |dy| / |dx| above this reads as a scroll, not a swipe
+  const MAX_MS = 700;     // slower than this is a drag or a read, not a flick
+  let start = null;
+  let swallowUntil = 0;
+  el.addEventListener("pointerdown", (e) => {
+    if (e.pointerType !== "touch" || !e.isPrimary || !enabled()) { start = null; return; }
+    start = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+  });
+  el.addEventListener("pointercancel", () => { start = null; });
+  el.addEventListener("pointerup", (e) => {
+    if (!start) return;
+    const dx = e.clientX - start.x, dy = e.clientY - start.y, dt = e.timeStamp - start.t;
+    start = null;
+    if (Math.abs(dx) < MIN_DX || Math.abs(dy) > Math.abs(dx) * MAX_SLOPE || dt > MAX_MS) return;
+    // The lift that ends a swipe can still be delivered as a click on
+    // whatever it ended over — a card would open its modal. Swallow it.
+    swallowUntil = e.timeStamp + 400;
+    onSwipe(dx < 0 ? 1 : -1);
+  });
+  el.addEventListener("click", (e) => {
+    if (e.timeStamp > swallowUntil) return;
+    e.preventDefault();
+    e.stopPropagation();
+  }, true);
+};
+</script>

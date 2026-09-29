@@ -910,6 +910,10 @@ p, ul {
     cursor: default;
   }
   .rolodex--ready .rolodex-track { touch-action: auto; }
+  // Vertical gestures stay the page's scroll; sideways ones are left to the
+  // swipe handler (swipe.html).
+  .rolodex--ready .rolodex-deck,
+  .skills-content.is-tabbed { touch-action: pan-y pinch-zoom; }
   .rolodex--ready .rolodex-step { display: grid; place-items: center; }
 
   .rolodex--ready {

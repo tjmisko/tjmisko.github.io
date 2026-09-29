@@ -2,6 +2,7 @@
 layout: default
 ---
 {%- include site-rail.html -%}
+{%- include swipe.html -%}
 <div class="homepage-card" id="greeting-card">
     <div class="info-container" id="greeting">
         <p class="reveal">
@@ -924,6 +925,15 @@ layout: default
             {% endif %}
         {% endfor %}
     </div>
+      // On touch, a sideways swipe across the section moves one tab along,
+      // stopping at either end. Same query as the rolodex's touchNav.
+      const touchNav = window.matchMedia("(max-width: 600px), (pointer: coarse)");
+      if (window.addSwipe) {
+        window.addSwipe(content, (dir) => {
+          const next = current + dir;
+          if (next >= 0 && next < tabButtons.length) select(next);
+        }, () => touchNav.matches && content.classList.contains("is-tabbed"));
+      }
     <script>
     // ---- Skills: stacked or tabbed ----------------------------------------
     // The groups are one stack wherever the whole section fits the screen, and
@@ -1586,6 +1596,10 @@ layout: default
       // Drive the accent fill on the side track up to the active node.
       const lastRow = rows.length - 1;
       track.style.setProperty("--rolodex-progress", lastRow > 0 ? String(active / lastRow) : "0");
+    // And a sideways swipe across the deck does what the arrows do: left for
+    // the next row, right for the one before. Sideways rather than up and down,
+    // which would take the page's scroll away from a finger on the card.
+    if (window.addSwipe) window.addSwipe(deck, (dir) => step(dir, false), () => touchNav.matches);
     }
 
     function buildRows() {
