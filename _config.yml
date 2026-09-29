@@ -1,17 +1,30 @@
 title: Tristan Misko
+url: https://tristanmisko.com
 author:
   name: Tristan Misko
   email: tjmisko@quasioptimal.io
+# jekyll-seo-tag: the logo goes into the page's structured data, and the
+# social links name the profiles that are also me (sameAs).
+logo: /assets/icon-512.png
+social:
+  name: Tristan Misko
+  links:
+    - https://github.com/tjmisko
+    - https://www.linkedin.com/in/tristanmisko
 description: > # this means to ignore newlines until "show_excerpts:"
   View my software and data engineering portfolio.
 show_excerpts: false # set to true to show excerpts on the homepage
-collections:
-  - projects
-  - about
-  - pages
-  - archives
-  - bibliography
-  - sspi-devlog
+# The link-preview image (og:image, twitter:image) for every page that doesn't
+# name its own. jekyll-seo-tag reads it from front matter only, hence a default.
+defaults:
+  - scope:
+      path: ""
+    values:
+      image:
+        path: /assets/og-image.png
+        width: 1200
+        height: 630
+        alt: Tristan Misko
 collections:
   about:
     output: false

@@ -9,9 +9,15 @@
 
   {%- seo -%}
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-  <link rel="icon" href="{{ '/assets/favicon.ico' | relative_url }}" sizes="any">
+  {%- comment -%}The .ico lives at the root because that is where search
+  engines look when a page names no icon, and DuckDuckGo's icon service looks
+  nowhere else. Google wants a square raster at a multiple of 48px, which the
+  96px PNG is; the SVG is for browsers.{%- endcomment %}
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="{{ '/assets/favicon-96.png' | relative_url }}" type="image/png" sizes="96x96">
   <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{{ '/assets/apple-touch-icon.png' | relative_url }}">
+  <link rel="manifest" href="{{ '/site.webmanifest' | relative_url }}">
 
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
