@@ -1512,9 +1512,10 @@ a.arc-chip:focus-visible {
       letter-spacing: 0.02em;
     }
 
-    // Quasioptimal reads as a bar here rather than as a line of text: it holds a
-    // lane for six half-years, and a dotted underline down a 70px column would
-    // be the only thing on the chart not drawn to its dates.
+    // Quasioptimal is drawn to its dates, as everything here is, but undersold:
+    // it is background work, not a job, so no box — a grey rule down its left
+    // edge for the six half-years it holds, and its name beside the top of it,
+    // dim. The dates are what the rule is.
     .arc-quiet {
       align-self: stretch;
       display: block;
@@ -1529,13 +1530,15 @@ a.arc-chip:focus-visible {
       overflow-wrap: break-word;
       hyphens: auto;
       overflow: hidden;
-      border: 1px solid $arc-faint;
-      border-left: 3px solid $arc-research;
-      border-radius: 4px;
-      background: $project-card-color;
-      // Its own copy already ends in the dates, so the popover would only say
-      // them twice.
-      > .arc-pop { display: none; }
+      border: 0;
+      border-left: 2px solid $arc-faint;
+      border-radius: 0;
+      background: none;
+      color: $arc-dim;
+      padding: 0 0 0 6px;
+      // Nothing to hover, and the dates are the rule itself.
+      > .arc-pop,
+      .arc-quiet-span { display: none; }
     }
 
     // The descent note, in the clear ground above the staircase (see home.html).
