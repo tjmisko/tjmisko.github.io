@@ -1521,6 +1521,7 @@ layout: default
       });
       Array.from(track.children).forEach((tick, i) => {
         tick.classList.toggle("is-active", i === active);
+        tick.classList.toggle("is-passed", i < active);
         // A readout's dots take no focus; a control's do.
         tick.tabIndex = touchNav.matches ? -1 : 0;
       });

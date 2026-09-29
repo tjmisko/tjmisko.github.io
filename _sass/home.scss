@@ -839,9 +839,14 @@ p, ul {
   bottom: 3.5px;
   background-color: rgba(225, 225, 225, 0.14);
 }
+// The ground already covered is drawn in a faded accent, the line and the dots
+// on it alike, so the one full-strength dot is the card in view and nothing
+// competes with it. Mixed into the page color rather than made translucent:
+// a passed dot is filled, and its fill has to stay opaque to mask the line.
+$rolodex-passed: mix($homepage-accent-color, $homepage-background-color, 42%);
 .rolodex--ready .rolodex-track::after {
   height: calc((100% - 7px) * var(--rolodex-progress, 0));
-  background-color: $homepage-accent-color;
+  background-color: $rolodex-passed;
   transition: height var(--dur-reveal) var(--ease-out);
 }
 .rolodex-tick {
@@ -858,6 +863,12 @@ p, ul {
   transition: border-color var(--dur-fast) var(--ease-out),
               background-color var(--dur-fast) var(--ease-out),
               transform var(--dur-reveal) var(--ease-out);
+}
+// Ahead of the hover rule, which it ties on specificity: a passed dot still
+// brightens under the pointer.
+.rolodex-tick.is-passed {
+  border-color: $rolodex-passed;
+  background-color: $rolodex-passed;
 }
 .rolodex-tick:hover,
 .rolodex-tick:focus-visible {
