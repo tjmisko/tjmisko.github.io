@@ -1313,8 +1313,11 @@ a.arc-chip:focus-visible {
     // A fixed step, so a row is a half-year everywhere on the chart and two bars
     // of the same length covered the same amount of time. auto would let a
     // wordy chip stretch its own rows and quietly lie about its duration.
-    // Twelve of them: 2020 to 2026, the same span the wide chart draws.
-    grid-template-rows: 18px repeat(12, 46px);
+    // Twelve of them, 2020 to 2026 — but the first half of 2020 holds nothing
+    // (the first bar starts mid-year), so that row is only as tall as the 2020
+    // label hanging in the gutter under its rule. The chart starts where the
+    // work does instead of under a half-year of empty lanes.
+    grid-template-rows: 18px 12px repeat(11, 46px);
     // Time is continuous: a gap between rows would draw months that don't exist.
     // What sets one bar off from the next in a lane is its own bottom margin,
     // which takes the same 3px from every bar and so distorts nothing.
