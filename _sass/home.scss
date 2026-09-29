@@ -660,7 +660,7 @@ p, ul {
   .skills-tabs {
     display: flex;
     flex-wrap: nowrap;
-    column-gap: 1.2em;
+    column-gap: 2.2em;
     font-size: unquote("min(0.72rem, calc(100cqi / 27.6))");
     border-bottom: 1px solid $rule;
     margin-bottom: 0.9em;
@@ -678,7 +678,7 @@ p, ul {
   font-size: inherit; // set on the row, fitted to the column
   white-space: nowrap;
   color: rgba(225, 225, 225, 0.45);
-  padding: 0 0 7px;
+  padding: 0 0 9px;
   margin-bottom: -1px; // the active underline sits on the row's hairline
   border-bottom: 1px solid transparent;
   cursor: pointer;
