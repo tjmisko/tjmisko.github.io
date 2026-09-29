@@ -10,7 +10,7 @@ degree opens the same card format a project does.
     <div class="project-flex-wrapper">
         <div class="project-upper">
             <h1 class="project-title"> {{ include.p.project-title }}</h1>
-            <h2 class="project-type"> {{ include.p.project-type }} </h2>
+            <h2 class="project-type"> {{ include.p.project-type | replace: " - ", " · " }} </h2>
             <p class="project-headline"> {{ include.p.project-headline }} </p>
             <div class="project-description" style="display: none;"> {{ include.p.content }}</div>
         </div>
@@ -29,7 +29,7 @@ degree opens the same card format a project does.
                 {%- if include.p.google-drive -%}<li><a rel="me" href="https://drive.google.com/drive/{{ include.p.google-drive | escape }}" target="_blank" title="https://drive.google.com/drive/{{ include.p.google-drive  | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#google-drive' | relative_url }}"></use></svg></a></li>{%- endif -%}
             </ul>
             <div class="project-type-box">
-              <p class="project-status {% if include.p.project-status contains 'Active' %}is-active{% else %}is-done{% endif %}" title="Status: {{ include.p.project-status }}">{{ include.p.project-status }}</p>
+              <p class="project-status {% if include.p.project-status contains 'Active' %}is-active{% else %}is-done{% endif %}" title="Status: {{ include.p.project-status | replace: ' - ', ' · ' }}">{{ include.p.project-status | replace: " - ", " · " }}</p>
               {% if include.p.project-supervisor %}<p class="project-type project-supervisor" style="display: none;"> <b> Supervisor: </b> {{ include.p.project-supervisor }} </p> {% endif %}
               {% if include.p.project-collaborators %}<p class="project-type project-collaborators" style="display: none;"> <b> Collaborators: </b> {{ include.p.project-collaborators }} </p> {% endif %}
             </div>
