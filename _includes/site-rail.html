@@ -50,5 +50,20 @@ document.addEventListener("DOMContentLoaded", function () {
     if (card) observer.observe(card);
   });
   setCurrent(links[0].dataset.section);
+
+  // A tap names the section it is going to, briefly. Without a hover state to
+  // lean on, the label would otherwise either never show on a phone or — with
+  // one — stick until the next tap. A pointer click is blurred so focus can't
+  // hold it up either; a keyboard one (detail 0) keeps its place in the tab order.
+  const FLASH_MS = 1000;
+  let flashTimer = 0;
+  links.forEach((a) => {
+    a.addEventListener("click", (e) => {
+      clearTimeout(flashTimer);
+      links.forEach((other) => other.classList.toggle("is-flashing", other === a));
+      if (e.detail > 0) a.blur();
+      flashTimer = setTimeout(() => a.classList.remove("is-flashing"), FLASH_MS);
+    });
+  });
 });
 </script>

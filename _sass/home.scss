@@ -240,12 +240,20 @@ p, ul {
   background: $homepage-background-color; // masks the hairline behind it
   transition: background-color var(--dur-fast) var(--ease-out);
 }
-.site-rail-link:hover,
+// Hover only where there is a pointer to hover with: iOS leaves :hover on the
+// last thing tapped, so on a phone the tapped entry would stay lit until the
+// next tap somewhere else.
+@media (hover: hover) {
+  .site-rail-link:hover { color: $homepage-font-color; }
+}
 .site-rail-link:focus-visible { color: $homepage-font-color; }
 .site-rail-link.is-current { color: $homepage-accent-color; }
 .site-rail-link.is-current .site-rail-dot { background: $homepage-accent-color; }
 
-// Narrow: dots only. A label appears on hover or focus, opening leftward.
+// Narrow: dots only. A label appears on hover or focus, opening leftward, and
+// for a moment after a tap (.is-flashing, set by site-rail.html) — long enough
+// to say where the tap is going, then it fades back out of the way. The fade
+// out is slower than the fade in so it reads as leaving, not blinking off.
 @media screen and (max-width: 1099px) {
   .site-rail-label {
     position: absolute;
@@ -254,10 +262,21 @@ p, ul {
     background: $homepage-background-color;
     white-space: nowrap;
     opacity: 0;
-    transition: opacity var(--dur-fast) var(--ease-out);
+    // A multiple of the token rather than a fixed time, so reduced motion
+    // still zeroes it.
+    transition: opacity calc(var(--dur-fast) * 2) var(--ease-out);
   }
-  .site-rail-link:hover .site-rail-label,
-  .site-rail-link:focus-visible .site-rail-label { opacity: 1; }
+  .site-rail-link:focus-visible .site-rail-label,
+  .site-rail-link.is-flashing .site-rail-label {
+    opacity: 1;
+    transition-duration: var(--dur-fast);
+  }
+}
+@media screen and (max-width: 1099px) and (hover: hover) {
+  .site-rail-link:hover .site-rail-label {
+    opacity: 1;
+    transition-duration: var(--dur-fast);
+  }
 }
 
 // Reserve the gutter so nothing sits under the rail.
