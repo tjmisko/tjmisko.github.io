@@ -12,7 +12,7 @@ social:
     - https://github.com/tjmisko
     - https://www.linkedin.com/in/tristanmisko
 description: > # this means to ignore newlines until "show_excerpts:"
-  View my software and data engineering portfolio.
+  Portfolio for my engineering work across AI, software, and data engineering.
 show_excerpts: false # set to true to show excerpts on the homepage
 # The link-preview image (og:image, twitter:image) for every page that doesn't
 # name its own. jekyll-seo-tag reads it from front matter only, hence a default.
