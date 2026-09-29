@@ -287,13 +287,21 @@ layout: default
           {%- assign tool_rows_m = tool_rows_m | plus: 1 -%}
         {%- endunless -%}
         {%- for g in v.groups -%}
-          {%- assign tool_rows_m = tool_rows_m | plus: 1 -%}
+          {%- assign g_rows = 0 -%}
           {%- for t in g.tools -%}
             {%- unless t.continues -%}
               {%- assign tool_rows = tool_rows | plus: 1 -%}
+              {%- assign g_rows = g_rows | plus: 1 -%}
             {%- endunless -%}
-            {%- assign tool_rows_m = tool_rows_m | plus: 1 -%}
           {%- endfor -%}
+          {%- comment -%}A group that is one row wide (a single succession) is
+          one line narrow too; any other spends a line on its head and one on
+          each tool. See the drawing pass below.{%- endcomment -%}
+          {%- if g_rows == 1 -%}
+            {%- assign tool_rows_m = tool_rows_m | plus: 1 -%}
+          {%- else -%}
+            {%- assign tool_rows_m = tool_rows_m | plus: 1 | plus: g.tools.size -%}
+          {%- endif -%}
         {%- endfor -%}
       {%- endfor -%}
       {%- assign grid_end = tool_rows | plus: 2 -%}
@@ -316,9 +324,12 @@ layout: default
             {%- comment -%}Two row counters, because the two charts don't put the
             same things on rows. Wide, a row is a lane a bar sits in and a
             succession (`continues`) shares one; the group rails run down the
-            side and cost nothing. Narrow, every tool needs a line of its own in
-            the name gutter, so relays are broken apart, and each group heads its
-            rows from a line above them instead of a rail beside them.
+            side and cost nothing. Narrow, a group of several rows needs a line
+            per tool for the names in the gutter, and heads its rows from a line
+            above them instead of a rail beside them. A group that is one
+            succession (OS, Editor, …) stays one line there as well: the group's
+            name takes the gutter, and each tool names itself inside its own bar
+            where the bar is wide enough (.is-one-line in arc.scss).
             {%- endcomment -%}
             {%- assign tool_row = 1 -%}
             {%- assign tool_row_m = 1 -%}
@@ -341,6 +352,12 @@ layout: default
                 {%- assign group_first = tool_row | plus: 1 -%}
                 {%- assign tool_row_m = tool_row_m | plus: 1 -%}
                 {%- assign group_head_m = tool_row_m -%}
+                {%- assign g_rows = 0 -%}
+                {%- for t in g.tools -%}
+                  {%- unless t.continues -%}{%- assign g_rows = g_rows | plus: 1 -%}{%- endunless -%}
+                {%- endfor -%}
+                {%- assign one_line = "" -%}
+                {%- if g_rows == 1 -%}{%- assign one_line = " is-one-line" -%}{%- endif -%}
                 {%- for t in g.tools -%}
                   {%- comment -%}A tool marked `continues` shares the previous
                   tool's row, turning a non-overlapping succession (editors,
@@ -349,7 +366,9 @@ layout: default
                   {%- unless t.continues -%}
                     {%- assign tool_row = tool_row | plus: 1 -%}
                   {%- endunless -%}
-                  {%- assign tool_row_m = tool_row_m | plus: 1 -%}
+                  {%- if one_line == "" -%}
+                    {%- assign tool_row_m = tool_row_m | plus: 1 -%}
+                  {%- endif -%}
                   {%- comment -%}A tool with `segments` derives its extent from
                   them — first phase's start to last phase's end (or now) — so
                   the bar and its phases can never disagree.{%- endcomment -%}
@@ -440,7 +459,7 @@ layout: default
                     {% include {{ arc_fail }} %}
                   {%- endif -%}
                   {%- if t.link -%}{%- assign tool_tag = "a" -%}{%- else -%}{%- assign tool_tag = "div" -%}{%- endif -%}
-            <{{ tool_tag }} class="arc-chip arc-chip--tool arc-chip--{{ t.family }}{{ minor }}{{ clipped }}
+            <{{ tool_tag }} class="arc-chip arc-chip--tool arc-chip--{{ t.family }}{{ minor }}{{ clipped }}{{ one_line }}
                         {%- if t_ongoing %} is-ongoing{% endif -%}
                         {%- if t.occasional %} is-occasional{% endif -%}
                         {%- if t.continues %} is-continuation{% endif -%}
@@ -553,14 +572,19 @@ layout: default
             sticks to the rail so a bar whose start has scrolled off still says
             what it is. Its own element rather than a second copy inside the bar,
             because it sits in column 1 while the bar sits out on its dates —
-            a grid item can only be in one place.{%- endcomment %}
+            a grid item can only be in one place.
+
+            Not for a one-line group, whose gutter holds the group's name and
+            whose bars name themselves.{%- endcomment %}
+                  {%- if one_line == "" %}
             <div class="arc-tool-name{% if t.occasional %} is-occasional{% endif %}"
                  style="--tr: {{ tool_row_m }};">{{ t.name }}</div>
+                  {%- endif -%}
                 {%- endfor -%}
                 {%- comment -%}Emitted after its rows so the span can use the row
                 counter; grid placement is explicit, so DOM order is free.
                 {%- endcomment %}
-            <div class="arc-lane-labels arc-lane-labels--group{{ minor }}"
+            <div class="arc-lane-labels arc-lane-labels--group{{ minor }}{{ one_line }}"
                  style="grid-row: {{ group_first }} / {{ tool_row | plus: 1 }};
                         --tr: {{ group_head_m }};">
               <span>{{ g.group | upcase }}</span>

@@ -1616,10 +1616,8 @@ a.arc-chip:focus-visible {
     row-gap: 2px;
     padding-bottom: 0;
 
-    // Relays are broken up: VS Code and Neovim share one row on the wide chart,
-    // where each bar is wide enough to name itself. In the gutter they need a
-    // line each, so every tool takes a row of its own here (--tr, counted in
-    // home.html) and the succession is read off the dates instead.
+    // Each bar takes the row counted for it in home.html (--tr): a line of its
+    // own in a group of several rows, the group's one line in a succession.
     .arc-chip--tool {
       grid-row: var(--tr) !important;
       grid-column: var(--m0) / var(--m1) !important;
@@ -1676,6 +1674,38 @@ a.arc-chip:focus-visible {
       }
     }
     .arc-lane-labels--group.is-minor span { font-size: 0.56rem; }
+
+    // A group that is one succession stays one line, as it is wide (see the
+    // row counters in home.html): its name takes the gutter on the row itself
+    // rather than heading it from a line above, and each bar names itself.
+    .arc-lane-labels--group.is-one-line {
+      grid-column: 1 !important;
+      justify-content: center;
+      margin: 0;
+    }
+    .arc-chip--tool.is-one-line {
+      > strong {
+        display: block;
+        position: static; // not the wide chart's sticky title
+        box-sizing: border-box;
+        min-width: 0;
+        padding: 0 5px;
+        font-size: 0.6rem;
+        text-overflow: clip;
+      }
+      // A bar too short for its name says nothing rather than half of it; the
+      // name is one tap away in the sheet. .is-elided is measured, by the
+      // marking pass in home.html.
+      &.is-elided > strong { visibility: hidden; }
+    }
+    // The joins square off, as they do wide, so the succession reads as one
+    // track. (The rule above rounds every continuation for the rows where a
+    // relay is broken apart and each bar stands alone.)
+    .arc-chip--tool.is-one-line.is-continuation {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
     // The bands stay: the environment is context under the computing work, and
     // on one shared axis that reads the same way it does wide.
     .arc-band-divider {
