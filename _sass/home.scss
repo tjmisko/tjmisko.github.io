@@ -278,7 +278,7 @@ p, ul {
   place-items: center;
   padding: 4vmin;
   box-sizing: border-box;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.72);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -296,10 +296,10 @@ p, ul {
   flex-direction: column;
   width: unquote("min(900px, 100%)");
   height: unquote("min(90vh, 1100px)");
-  background-color: $project-card-color;
+  background-color: $modal-color;
+  border: 1px solid $rule;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
   transform: scale(0.97);
   opacity: 0;
   transition: transform var(--dur-fast) var(--ease-out),
@@ -314,7 +314,7 @@ p, ul {
   align-items: center;
   gap: 1em;
   padding: 0.55em 0.9em;
-  border-bottom: 1px solid rgba(225, 225, 225, 0.12);
+  border-bottom: 1px solid $rule;
 }
 .pdf-modal-title {
   margin: 0;
@@ -330,7 +330,8 @@ p, ul {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  font-family: $font-header;
+  font-family: "Roboto";
+  font-weight: 500;
   font-size: 1.1rem;
   color: $homepage-font-color;
 }
@@ -383,7 +384,7 @@ p, ul {
   flex: 1 1 auto;
   width: 100%;
   border: 0;
-  background: $project-card-color; // dark backdrop, matches the modal body
+  background: $modal-color; // dark backdrop, matches the modal body
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   padding: 1rem;
@@ -807,7 +808,7 @@ p, ul {
   // Quieter than a rolodex face: room to breathe.
   padding: 30px 32px 20px;
   font-size: 1rem;
-  background-color: rgb(24, 24, 26); // darker than a rolodex face
+  background-color: $modal-color;
   border-color: rgba(225, 225, 225, 0.1);
   box-shadow: none;
   scrollbar-width: thin;
