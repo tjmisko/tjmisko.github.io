@@ -1084,6 +1084,14 @@ layout: default
       .querySelectorAll(".project-description, .project-collaborators, .project-supervisor")
       .forEach((el) => { el.style.display = "block"; });
     modalWindow.addEventListener("click", (event) => event.stopPropagation());
+    // Shown on phones only (.project-modal-close in home.scss).
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "project-modal-close";
+    closeButton.setAttribute("aria-label", "Close");
+    closeButton.innerHTML = "&times;";
+    closeButton.addEventListener("click", closeModal);
+    modalWindow.prepend(closeButton);
     // A link to another project's card switches the modal to that card. Looked
     // up in the rolodex, never in the modal itself, and left as a plain
     // #projects-card anchor if the target is missing.

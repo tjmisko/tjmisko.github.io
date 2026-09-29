@@ -1194,6 +1194,37 @@ $rolodex-passed: mix($homepage-accent-color, $homepage-background-color, 42%);
   opacity: 1;
 }
 
+// A close button for phones, the same bare × the tool sheet carries. A pointer
+// has the backdrop and a keyboard has Escape; on a phone the card fills most of
+// the screen, and the strip of backdrop left around it doesn't read as a
+// control. Sticky, so it stays in the corner as the card scrolls; floated, so
+// it takes no line of its own above the title; pulled out into the card's
+// padding so the title keeps its full measure.
+.project-modal-close { display: none; }
+@media screen and (max-width: 700px) {
+  .project-modal-close {
+    display: block;
+    position: sticky;
+    top: 0;
+    float: right;
+    z-index: 1;
+    margin: -24px -26px 0 8px;
+    padding: 4px 8px;
+    appearance: none;
+    // The card's own ground, so the copy scrolling up under it doesn't show
+    // through once it has stuck.
+    background: $modal-color;
+    border: 0;
+    border-radius: 4px;
+    font: inherit;
+    font-family: "IBM Plex Mono";
+    font-size: 1.1rem;
+    line-height: 1;
+    color: rgba(225, 225, 225, 0.55); // $arc-dim, which arc.scss defines after this file
+    cursor: pointer;
+  }
+}
+
 html.using-mouse .project-card:hover:not(.project-modal):not(:has(.project-linkbox li:hover)),
 html.using-keyboard .project-card:focus-visible,
 // A card a hero link sent focus to: touch input never sets using-keyboard and
