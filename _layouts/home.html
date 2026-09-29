@@ -208,12 +208,16 @@ layout: default
             <div class="arc-descent" style="grid-row: 8; grid-column: 4 / 10;
                  --m0: 4; --m1: 6; --ln: 4; --ln-end: 6;"
                  tabindex="0" role="note">
-              <span>Down the Tech Stack</span>
-              <svg class="arc-descent-arrow" width="15" height="15" viewBox="0 0 13 13"
+              {%- comment -%}The arrow rides inside the caption, tied to its last
+              word by a nowrap span: on the narrow chart the caption breaks onto
+              two lines, and an arrow beside it rather than in it could drop to a
+              line of its own.{%- endcomment %}
+              <span class="arc-descent-caption">Down the Tech <span class="arc-descent-tail">Stack<svg
+                   class="arc-descent-arrow" width="15" height="15" viewBox="0 0 13 13"
                    aria-hidden="true" focusable="false">
                 <path d="M2.5 2.5 L10 10 M10 5.5 L10 10 L5.5 10" fill="none" stroke="currentColor"
                       stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              </svg></span></span>
               {%- comment -%}Phrased without reference to the lanes: the mobile
               feed transposes them away, and this note still has to read.
               {%- endcomment %}
@@ -665,14 +669,44 @@ layout: default
     // The copy is read straight out of the popovers already in the markup, so
     // the data file stays the one source of truth and this adds no second copy
     // of anything.
+    //
+    // The descent note's paragraph comes up here too (see below), so the sheet
+    // keeps track of whose copy it is holding: the caption stays lit while its
+    // own paragraph is up, and a second tap on it puts the sheet away.
     const arcSheet = document.getElementById("arc-sheet");
+    const arcDescent = document.querySelector("#arc-card .arc-descent");
     if (arcSheet) {
       const arcSheetBody = arcSheet.querySelector(".arc-sheet-body");
+      let sheetOwner = null;
+      let sheetHideTimer = 0;
+      const setSheetOwner = (owner) => {
+        sheetOwner = owner;
+        if (!arcDescent) return;
+        const descentOpen = owner === arcDescent;
+        arcDescent.classList.toggle("is-open", descentOpen);
+        if (arcDescent.hasAttribute("aria-expanded")) {
+          arcDescent.setAttribute("aria-expanded", String(descentOpen));
+        }
+      };
       const closeSheet = () => {
         arcSheet.classList.remove("is-open");
+        setSheetOwner(null);
         // Wait out the slide-down before pulling it from the layout, or it
         // vanishes instead of leaving.
-        setTimeout(() => { arcSheet.hidden = true; }, 220);
+        clearTimeout(sheetHideTimer);
+        sheetHideTimer = setTimeout(() => { arcSheet.hidden = true; }, 220);
+      };
+      const showSheet = (html, owner) => {
+        clearTimeout(sheetHideTimer);
+        arcSheetBody.innerHTML = html;
+        setSheetOwner(owner);
+        arcSheet.hidden = false;
+        // Two frames: the element has to be in the layout at translateY(100%)
+        // before the class that moves it off can be a transition rather than a
+        // starting position.
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          arcSheet.classList.add("is-open");
+        }));
       };
       const openSheet = (bar) => {
         const parts = [];
@@ -695,14 +729,7 @@ layout: default
           parts.push('<a class="arc-sheet-link" href="' + bar.href +
                      '" target="_blank" rel="noopener">Open &#8599;</a>');
         }
-        arcSheetBody.innerHTML = parts.join("");
-        arcSheet.hidden = false;
-        // Two frames: the element has to be in the layout at translateY(100%)
-        // before the class that moves it off can be a transition rather than a
-        // starting position.
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          arcSheet.classList.add("is-open");
-        }));
+        showSheet(parts.join(""), bar);
       };
       // The matrix only exists below 700px; above it the bars speak for
       // themselves and a linked one should still just follow its link.
@@ -725,53 +752,57 @@ layout: default
       arcSheet.querySelector(".arc-sheet-close").addEventListener("click", closeSheet);
       document.addEventListener("click", (e) => {
         if (arcSheet.hidden || arcSheet.contains(e.target)) return;
-        if (e.target.closest(".arc-chip--tool")) return;
+        // Their own handlers have already refilled or put away the sheet.
+        if (e.target.closest(".arc-chip--tool, .arc-descent")) return;
         closeSheet();
       });
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && !arcSheet.hidden) closeSheet();
       });
-    }
 
-    // ---- The descent note (narrow chart only) -----------------------------
-    // On the wide chart this is a caption you hover for the paragraph behind
-    // it. On the narrow one it is the same caption, tapped: the paragraph opens
-    // into the clear block the note already sits in, so the staircase keeps the
-    // outline that clear block draws around it until you ask.
-    //
-    // The role changes with the width because the behaviour does — a note you
-    // can only read is not a control, and a disclosure that never says whether
-    // it is open is not one either. Both are set from here rather than in the
-    // markup, since only one of the two widths has anything to disclose.
-    const arcDescent = document.querySelector("#arc-card .arc-descent");
-    if (arcDescent) {
-      const narrow = window.matchMedia("(max-width: 700px)");
-      const syncRole = () => {
-        if (narrow.matches) {
-          arcDescent.setAttribute("role", "button");
-          arcDescent.setAttribute("aria-expanded",
-            String(arcDescent.classList.contains("is-open")));
-        } else {
+      // ---- The descent note (narrow chart only) ---------------------------
+      // On the wide chart this is a caption you hover for the paragraph behind
+      // it. On the narrow one it is the same caption, tapped, and the paragraph
+      // comes up in the sheet: the staircase keeps the outline its clear block
+      // draws, and a paragraph this long, opened in place, ran off the top of
+      // the screen.
+      //
+      // The role changes with the width because the behaviour does — a note
+      // you can only read is not a control, and a disclosure that never says
+      // whether it is open is not one either. Both are set from here rather
+      // than in the markup, since only one of the two widths has anything to
+      // disclose.
+      if (arcDescent) {
+        const narrow = window.matchMedia("(max-width: 700px)");
+        const descentPop = arcDescent.querySelector(":scope > .arc-pop");
+        const syncRole = () => {
+          if (narrow.matches) {
+            arcDescent.setAttribute("role", "button");
+            arcDescent.setAttribute("aria-controls", "arc-sheet");
+            arcDescent.setAttribute("aria-expanded", String(sheetOwner === arcDescent));
+            return;
+          }
           arcDescent.setAttribute("role", "note");
+          arcDescent.removeAttribute("aria-controls");
           arcDescent.removeAttribute("aria-expanded");
-          arcDescent.classList.remove("is-open");
-        }
-      };
-      const toggle = () => {
-        if (!narrow.matches) return;
-        arcDescent.classList.toggle("is-open");
+          if (sheetOwner === arcDescent) closeSheet();
+        };
+        const toggle = () => {
+          if (!narrow.matches || !descentPop) return;
+          if (sheetOwner === arcDescent) { closeSheet(); return; }
+          showSheet(descentPop.innerHTML, arcDescent);
+        };
+        arcDescent.addEventListener("click", toggle);
+        arcDescent.addEventListener("keydown", (e) => {
+          // It carries a tabindex on both charts, so on this one it has to
+          // answer the keys its new role promises.
+          if (e.key !== "Enter" && e.key !== " ") return;
+          e.preventDefault();
+          toggle();
+        });
+        narrow.addEventListener("change", syncRole);
         syncRole();
-      };
-      arcDescent.addEventListener("click", toggle);
-      arcDescent.addEventListener("keydown", (e) => {
-        // It carries a tabindex on both charts, so on this one it has to answer
-        // the keys its new role promises.
-        if (e.key !== "Enter" && e.key !== " ") return;
-        e.preventDefault();
-        toggle();
-      });
-      narrow.addEventListener("change", syncRole);
-      syncRole();
+      }
     }
 
     // ---- Elided titles ----------------------------------------------------

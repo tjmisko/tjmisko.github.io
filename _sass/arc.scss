@@ -805,7 +805,13 @@ a.arc-chip:focus-visible {
 // The default upward, left-anchored opening is right for the bottom-left corner:
 // the lanes above it are empty at that end of the scale.
 .arc-descent > .arc-pop { max-width: 360px; }
-.arc-descent-arrow { flex: 0 0 auto; }
+// The arrow sits inside the caption's last word (see home.html), so the gap the
+// flex row used to put between them is its own margin now.
+.arc-descent-tail { white-space: nowrap; }
+.arc-descent-arrow {
+  margin-left: 7px;
+  vertical-align: -2px;
+}
 
 // ---- Narrative notes (the "why" bubbles) -----------------------------------
 .arc-note {
@@ -1574,9 +1580,10 @@ a.arc-chip:focus-visible {
     // The caption stands there the way it stands on the wide chart, and the
     // paragraph behind it stays behind it: a chart's negative space is doing
     // work, and filling it with body copy on sight would cost the staircase the
-    // very outline that makes the argument visible. So it opens on a tap. The
-    // dotted rule under the caption is what says it will, the same mark
-    // .arc-quiet wears.
+    // very outline that makes the argument visible. So it opens on a tap, into
+    // the tool sheet at the foot of the screen — opened in place, a paragraph
+    // this long ran off the top of the screen. The dotted rule under the
+    // caption is what says it opens, the same mark .arc-quiet wears.
     .arc-descent {
       align-self: start;
       display: block;
@@ -1585,77 +1592,28 @@ a.arc-chip:focus-visible {
       padding: 0 2px;
       font-size: 0.62rem;
       cursor: pointer;
-      // Two full lines, "Down the Tech" over "Stack ↘". The arrow has to ride
-      // with the last word, and the <svg> can't: a browser may always break
-      // beside an image-like box, nowrap or not, so it dropped to a line of
-      // its own. Here the arrow is drawn as part of the caption's text
-      // instead — a pseudo-element holding a word joiner (U+2060), which
-      // forbids a break before it, painted with the same arrow as a mask. The
-      // caption and arrow together are too long for the lane, so the line
-      // breaks after "Tech", the last place the caption allows. The dotted
-      // rule is an underline, which stops at the text and leaves the arrow's
-      // padding bare, as the border under the wide chart's caption does.
-      //
-      // Capped just past "Down the Tech" (13 characters), so it breaks there
-      // on every lane width rather than only on the narrowest.
-      > span:first-of-type {
+      // Two full lines, "Down the Tech" over "Stack ↘": capped just past "Down
+      // the Tech" (13 characters), so it breaks there on every lane width
+      // rather than only on the narrowest. The arrow is tied to "Stack" by the
+      // nowrap tail it sits in.
+      > .arc-descent-caption {
         display: inline-block;
         max-width: 14ch;
         text-decoration: underline dotted rgba(225, 225, 225, 0.3);
         text-underline-offset: 3px;
-        &::after {
-          content: "\2060";
-          padding-left: 1.35em;
-          background-color: currentColor;
-          $arc-descent-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'%3E%3Cpath d='M2.5 2.5 L10 10 M10 5.5 L10 10 L5.5 10' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-          -webkit-mask: $arc-descent-arrow no-repeat right center / 1.1em 1.1em;
-          mask: $arc-descent-arrow no-repeat right center / 1.1em 1.1em;
-        }
       }
-      .arc-descent-arrow { display: none; }
-      // Outranks the hover and focus rules on the wide chart, which would
-      // otherwise open this on the tap's lingering focus.
-      > .arc-pop {
-        display: none;
-        white-space: normal;
+      .arc-descent-arrow {
+        width: 1.1em;
+        height: 1.1em;
+        margin-left: 0.25em;
       }
+      // The paragraph is read in the sheet. Outranks the hover and focus rules
+      // on the wide chart, which would otherwise open it on the tap's lingering
+      // focus.
+      > .arc-pop { display: none; }
     }
-    // Opened, it is a panel after all. The clear block is two lanes wide and a
-    // paragraph set to that measure runs longer than the block is tall, so the
-    // tail of it lands on the staircase either way — and body copy interleaved
-    // with the bars it is about is not readable at 0.62rem. It keeps its own
-    // ground instead: the popover's backing and border from the wide chart,
-    // painting over whatever it reaches. Still in flow rather than absolute, so
-    // it opens from the caption downward into the void that was the point of
-    // putting it here.
-    .arc-descent.is-open {
-      color: $homepage-accent-color;
-      > .arc-pop {
-        display: block;
-        // relative, not static: z-index only binds on a positioned box, and
-        // without it the paint order is DOM order — which puts this last today
-        // and one reordered include away from disappearing under a chip.
-        position: relative;
-        z-index: 4;
-        max-width: none;
-        width: auto;
-        // Two lanes is about ten characters of this type, and a paragraph set
-        // ten characters wide is a column of hyphens. Since it is already
-        // painting over the chart, it may as well take the width it needs: a
-        // negative left margin widens an auto-width block leftward, out over the
-        // data lane, to roughly twice the measure. In cqw so it stays the same
-        // share of the chart at every width the matrix is drawn at.
-        margin-left: -30cqw;
-        padding: 7px 9px;
-        font-size: 0.62rem;
-        line-height: 1.45;
-        // The wide chart's popovers hand their taps to the chip underneath; this
-        // one is the disclosure's own body, and a tap on it should shut it the
-        // same way a tap on the caption does.
-        pointer-events: auto;
-      }
-    }
-    .arc-descent-arrow { vertical-align: -2px; }
+    // Lit while the sheet holds its paragraph.
+    .arc-descent.is-open { color: $homepage-accent-color; }
 
     // ---- The foot of the descent --------------------------------------------
     // Not drawn here. On a phone the closing panel is a section of its own
