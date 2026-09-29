@@ -924,6 +924,118 @@ layout: default
             {% endif %}
         {% endfor %}
     </div>
+    <script>
+    // ---- Skills: stacked or tabbed ----------------------------------------
+    // The groups are one stack wherever the whole section fits the screen, and
+    // tabs wherever it doesn't (see .skills-content.is-tabbed in home.scss).
+    // The markdown is left as written: the groups are wrapped and the tab row
+    // is built from their h5 labels here, so skills.md stays the one place the
+    // groups and their order are set. Without script it is simply the stack.
+    document.addEventListener("DOMContentLoaded", function () {
+      const container = document.getElementById("skills");
+      const content = container && container.querySelector(".skills-content");
+      if (!content) return;
+      const labels = Array.from(content.querySelectorAll(":scope > h5"));
+      if (labels.length < 2) return;
+
+      const tabs = document.createElement("div");
+      tabs.className = "skills-tabs";
+      tabs.setAttribute("aria-label", "Skill groups");
+      const panels = document.createElement("div");
+      panels.className = "skills-panels";
+      const groups = labels.map((label, i) => {
+        const group = document.createElement("section");
+        group.className = "skills-group";
+        group.id = "skills-group-" + i;
+        // The label and everything after it up to the next label.
+        let node = label;
+        const members = [];
+        while (node && !(node !== label && node.tagName === "H5")) {
+          members.push(node);
+          node = node.nextSibling;
+        }
+        members.forEach((m) => group.appendChild(m));
+        panels.appendChild(group);
+
+        const tab = document.createElement("button");
+        tab.type = "button";
+        tab.className = "skills-tab";
+        tab.id = "skills-tab-" + i;
+        tab.textContent = label.textContent;
+        tab.setAttribute("aria-controls", group.id);
+        tabs.appendChild(tab);
+        return group;
+      });
+      content.appendChild(tabs);
+      content.appendChild(panels);
+      const tabButtons = Array.from(tabs.children);
+
+      let current = 0;
+      const select = (i) => {
+        current = i;
+        tabButtons.forEach((t, k) => {
+          t.setAttribute("aria-selected", String(k === i));
+          t.tabIndex = k === i ? 0 : -1;
+        });
+        groups.forEach((g, k) => g.classList.toggle("is-active", k === i));
+      };
+      // Tab semantics only while it is tabs: stacked, the groups are plain
+      // sections under their own headings and the buttons aren't shown.
+      const setTabbed = (on) => {
+        content.classList.toggle("is-tabbed", on);
+        if (on) tabs.setAttribute("role", "tablist"); else tabs.removeAttribute("role");
+        tabButtons.forEach((t) => { if (on) t.setAttribute("role", "tab"); else t.removeAttribute("role"); });
+        groups.forEach((g, k) => {
+          if (on) {
+            g.setAttribute("role", "tabpanel");
+            g.setAttribute("aria-labelledby", tabButtons[k].id);
+          } else {
+            g.removeAttribute("role");
+            g.removeAttribute("aria-labelledby");
+          }
+        });
+      };
+      tabButtons.forEach((t, i) => t.addEventListener("click", () => select(i)));
+      tabs.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        const dir = e.key === "ArrowRight" ? 1 : -1;
+        const next = (current + dir + tabButtons.length) % tabButtons.length;
+        select(next);
+        tabButtons[next].focus();
+      });
+      select(0);
+
+      // Fits means the stacked section, heading included, clears the screen
+      // with a little room to spare. The screen is the small viewport (svh): on
+      // a phone the toolbar coming and going changes innerHeight on every
+      // scroll, and the layout must not flip mid-scroll. The stack is measured
+      // by switching back to it and out again in one go — no frame is painted
+      // in between, so nothing flickers.
+      const FIT_MARGIN = 32;
+      const probe = document.createElement("div");
+      probe.style.cssText = "position:absolute;top:0;left:0;width:0;visibility:hidden;height:100vh;height:100svh;";
+      document.body.appendChild(probe);
+      let lastW = 0, lastH = 0;
+      const fit = () => {
+        const w = container.clientWidth, h = probe.offsetHeight;
+        if (w === lastW && h === lastH) return;
+        lastW = w; lastH = h;
+        setTabbed(false);
+        const stacked = container.offsetHeight;
+        setTabbed(stacked > h - FIT_MARGIN);
+      };
+      fit();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => { lastW = 0; fit(); });
+      }
+      let fitTimer = 0;
+      window.addEventListener("resize", () => {
+        clearTimeout(fitTimer);
+        fitTimer = setTimeout(fit, 120);
+      }, { passive: true });
+    });
+    </script>
 </div>
 
 <div class="homepage-card" id="projects-card">

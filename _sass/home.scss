@@ -575,6 +575,7 @@ p, ul {
 // column: widen it so bullets wrap to fewer lines, and tighten the type and
 // spacing so the whole thing clears the fold.
 #skills-card .info-container {
+  width: 100%;
   max-width: unquote("min(650px, 92vw)");
 }
 @media screen and (max-width: $on-palm) {
@@ -598,15 +599,21 @@ p, ul {
   padding-bottom: 6px;
   border-bottom: 1px solid rgba(225, 225, 225, 0.1);
 }
-.skills-content h5:first-child { margin-top: 0; }
-// Entries have no bullet: the skill name leads in full white, its description
-// follows at reading weight (Roboto 400, not the site's thin 300) in a softer grey.
+// The first group's label only: once the script has wrapped the groups, every
+// label is the first child of its own .skills-group.
+.skills-content > h5:first-child,
+.skills-group:first-child > h5 { margin-top: 0; }
+// Entries have no bullet: the skill name leads, its description follows at
+// reading weight (Roboto 400, not the site's thin 300). The name stands out by
+// contrast as much as by weight — medium in near-white over a description a
+// step greyer — rather than medium in pure white over near-white, which was all
+// weight and read as shouting.
 .skills-content ul {
   list-style: none;
   padding-left: 0;
   margin: 0;
   font-weight: 400;
-  color: rgba(225, 225, 225, 0.95);
+  color: rgba(225, 225, 225, 0.68);
 }
 .skills-content li {
   margin-bottom: 0.55em;
@@ -614,7 +621,62 @@ p, ul {
 }
 .skills-content li strong {
   font-weight: 500;
-  color: #fff;
+  color: rgba(236, 236, 238, 0.94);
+}
+
+// ---- Skills as tabs -------------------------------------------------------
+// Where the three groups don't fit one screen stacked, they become tabs: the
+// group labels move up into a row over the hairline and only one group shows.
+// Which layout applies is measured, not a breakpoint — it depends on the width,
+// the height and the copy — by the script after the skills card in home.html,
+// which also builds the tab row and wraps each group in a .skills-group.
+//
+// The tab row has to stay one line: wrapped, the active underline hangs between
+// the rows instead of on the hairline. So its type is sized from the column —
+// 36 characters of labels at 0.7em each (Plex Mono's 0.6em plus 0.1em of
+// tracking) and two 1.2em gaps come to 27.6em — capped at the labels' usual
+// size. That takes a size container, and a size container no longer sizes its
+// flex-item parent, hence the explicit width on the column (#skills-card
+// .info-container, above).
+.skills-content { container-type: inline-size; }
+.skills-tabs { display: none; }
+.skills-content.is-tabbed {
+  .skills-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    column-gap: 1.2em;
+    font-size: unquote("min(0.72rem, calc(100cqi / 27.6))");
+    border-bottom: 1px solid $rule;
+    margin-bottom: 0.9em;
+  }
+  .skills-group > h5 { display: none; }
+  // Every group in one cell, so the panel is as tall as the tallest group and
+  // the section holds still when the tab changes.
+  .skills-panels { display: grid; }
+  .skills-group { grid-area: 1 / 1; }
+  .skills-group:not(.is-active) { visibility: hidden; }
+}
+.skills-tab {
+  all: unset;
+  @include small-label(0.1em);
+  font-size: inherit; // set on the row, fitted to the column
+  white-space: nowrap;
+  color: rgba(225, 225, 225, 0.45);
+  padding: 0 0 7px;
+  margin-bottom: -1px; // the active underline sits on the row's hairline
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
+}
+.skills-tab:focus-visible { color: $homepage-font-color; }
+@media (hover: hover) {
+  .skills-tab:hover { color: $homepage-font-color; }
+}
+.skills-tab[aria-selected="true"] {
+  color: $homepage-accent-color;
+  border-bottom-color: $homepage-accent-color;
 }
 
 .info-container {
