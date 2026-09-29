@@ -1572,27 +1572,18 @@ a.arc-chip:focus-visible {
       grid-row: 15;
       grid-column: 1 / -1 !important;
       margin: 0;
-      // No hover here, so a band's sentence prints inline under its name, the
-      // way the cards below print their descriptions on the face. The name
-      // stays in the lane-label face; the sentence takes the cards' own
-      // description size.
+      // Names only, the same as every other chip on the chart. There is no
+      // hover here to raise a band's sentence or a card's dates and
+      // description, and printing them inline turned the panel into a column of
+      // paragraphs taller than the chart above it. A card's full text is one
+      // tap away in its modal; the band sentences are the one thing a phone
+      // does without.
       .arc-node-band {
         font-size: 0.76rem;
         cursor: default;
         margin-bottom: 0;
         > span:first-child { border-bottom: 0; }
-        > .arc-pop {
-          display: block;
-          position: static;
-          width: auto;
-          max-width: none;
-          transform: none;
-          border: 0;
-          background: none;
-          padding: 3px 0 0;
-          font-size: 0.72rem;
-          line-height: 1.45;
-        }
+        > .arc-pop { display: none; }
       }
       .arc-chip {
         margin: 0;
@@ -1601,19 +1592,7 @@ a.arc-chip:focus-visible {
         line-height: 1.35;
         overflow: visible;
         > small { display: block; }
-        // The destination is the one place that is read rather than scanned, so
-        // its entries carry their dates and description on the face of the card.
-        > .arc-pop {
-          display: block;
-          position: static;
-          width: auto;
-          max-width: none;
-          transform: none;
-          border: 0;
-          background: none;
-          padding: 2px 0 0;
-          font-size: 0.72rem;
-        }
+        > .arc-pop { display: none; }
       }
       // Everything above is for the full-size entries. The pair at the foot is
       // not a card and should not grow into one: they are the same icon-only
