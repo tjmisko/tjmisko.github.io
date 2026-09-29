@@ -19,6 +19,15 @@ $project-card-color: rgb(32,32,35);
 $rule: rgba(225, 225, 225, 0.1);
 $rule-strong: rgba(225, 225, 225, 0.16);
 
+// The site's small label voice: tracked uppercase Plex Mono. Callers set size
+// and colour.
+@mixin small-label($tracking: 0.12em) {
+  font-family: "IBM Plex Mono";
+  font-weight: normal;
+  letter-spacing: $tracking;
+  text-transform: uppercase;
+}
+
 // Heading face. A CSS variable so the font lab (_includes/font-lab.html) can
 // swap it live; the fallback is the committed choice.
 $font-header: var(--font-header, "Space Mono");

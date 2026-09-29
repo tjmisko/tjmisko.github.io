@@ -520,11 +520,8 @@ p, ul {
 // the site rail, so the three groups separate without bold type competing with
 // the skill names under them.
 .skills-content h5 {
-  font-family: "IBM Plex Mono";
+  @include small-label;
   font-size: 0.72rem;
-  font-weight: normal;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: rgba(225, 225, 225, 0.5);
   margin: 1.7em 0 0.7em;
   padding-bottom: 6px;
@@ -861,6 +858,17 @@ p, ul {
     font-weight: 400;
     line-height: 1.65;
     color: rgba(225, 225, 225, 0.78);
+    // Markdown section headings: the same small label as the skills groups
+    // rather than the global h2.
+    h2, h3 {
+      @include small-label;
+      font-size: 0.72rem;
+      color: rgba(225, 225, 225, 0.5);
+      margin: 1.7em 0 0.7em;
+      padding-bottom: 6px;
+      border-bottom: 1px solid $rule;
+    }
+    h2:first-child, h3:first-child { margin-top: 0; }
     p {
       font-size: inherit;
       font-weight: inherit;
@@ -949,11 +957,8 @@ html.using-keyboard .project-card:focus-visible,
   align-items: center;
   gap: 7px;
   margin: 0;
-  font-family: "Roboto";
+  @include small-label(0.09em);
   font-size: 0.62rem;
-  font-weight: 300;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
   color: rgba(225, 225, 225, 0.5);
 }
 .project-status::before {
