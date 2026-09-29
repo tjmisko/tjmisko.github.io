@@ -4,6 +4,7 @@ layout: default
 {%- include site-rail.html -%}
 {%- include swipe.html -%}
 <div class="homepage-card" id="greeting-card">
+    {% include resume-button.html class="resume-button--hero" %}
     <div class="info-container" id="greeting">
         <p class="reveal">
           Welcome! I'm
@@ -1264,13 +1265,14 @@ layout: default
     }
     window.closePdfModal = closePdf;
 
-    const trigger = document.getElementById("resume-trigger");
-    if (trigger) {
+    // Both resume buttons: the rail's, and the one a phone shows at the top of
+    // Home instead (resume-button.html).
+    document.querySelectorAll(".resume-button").forEach((trigger) => {
       trigger.addEventListener("click", () => openPdf(trigger.dataset.pdf, {
         title: trigger.dataset.pdfTitle,
         download: trigger.dataset.pdfDownload,
       }));
-    }
+    });
     // Every PDF link on a card opens here instead of handing the file to the
     // browser, which is as likely to drop it in Downloads as to show it.
     // Capture rather than bubble: a card cloned into the project modal stops

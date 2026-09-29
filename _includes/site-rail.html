@@ -3,18 +3,15 @@
   the page with the one in view lit. It replaces the per-card corner arrows, so
   the whole layout of the site is on screen at every scroll position.
 
-  The resume is just another document for the PDF viewer at the foot of the
-  page; the button carries its own source and cache-buster here so the viewer
-  itself knows nothing about which file it is showing.
+  The resume button is its own include (resume-button.html): on a phone this
+  copy is hidden and one at the top of the Home section shows instead.
 
   Sections are listed here by hand, in page order; each href is a card id in
   home.html. Current Work is a section only on a narrow screen (#work-card),
   so its entry is only shown there.
 {%- endcomment -%}
 <nav class="site-rail" aria-label="Sections">
-  <button class="resume-button" id="resume-trigger" type="button" aria-haspopup="dialog"
-          data-pdf="/resume.pdf?v=2026-07-30" data-pdf-title="Resume"
-          data-pdf-download="resume.pdf">Resume</button>
+  {% include resume-button.html class="resume-button--rail" %}
   <ol class="site-rail-list">
     {%- assign rail = "greeting-card:Home,arc-card:Trajectory,work-card:Current Work,skills-card:Skills,projects-card:Portfolio" | split: "," -%}
     {%- for entry in rail -%}

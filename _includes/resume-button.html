@@ -1,0 +1,12 @@
+{%- comment -%}
+  The resume button: just another document for the PDF viewer at the foot of
+  the page, so it carries its own source and cache-buster here and the viewer
+  knows nothing about which file it is showing. Drawn in two places — in the
+  site rail, where it stays in view, and on a phone at the top of the Home
+  section instead, where it scrolls away with it — so the file is named once.
+
+    class   resume-button--rail | resume-button--hero (see home.scss)
+{%- endcomment -%}
+<button class="resume-button {{ include.class }}" type="button" aria-haspopup="dialog"
+        data-pdf="/resume.pdf?v=2026-07-30" data-pdf-title="Resume"
+        data-pdf-download="resume.pdf">Resume</button>

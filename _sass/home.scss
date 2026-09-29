@@ -182,6 +182,7 @@ p, ul {
   padding: 0 0 2px;
   cursor: pointer;
   font: inherit;
+  font-family: "IBM Plex Mono"; // the rail's face, wherever the button is drawn
   font-size: 0.9rem;
   letter-spacing: 0.08em;
   color: rgba(225, 225, 225, 0.4);
@@ -194,6 +195,21 @@ p, ul {
   color: $homepage-accent-color;
   border-bottom-color: $homepage-accent-color;
   letter-spacing: 0.12em;
+}
+// Phones: held in view, the button sat over every section's heading. It stays
+// where it first appears — the top right of Home, in the rail's own spot — and
+// scrolls away with that section. Pulled right past the card's edge to the
+// rail's inset, so it lands where the rail would have put it.
+.resume-button--hero { display: none; }
+@media screen and (max-width: $on-palm) {
+  .resume-button--rail { display: none; }
+  .resume-button--hero {
+    display: block;
+    position: absolute;
+    top: 22px;
+    right: calc(#{$rail-palm-inset} - #{$rail-palm});
+    z-index: 2;
+  }
 }
 
 .site-rail-list {
