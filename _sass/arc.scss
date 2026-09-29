@@ -51,11 +51,9 @@ $arc-ruler-h: 28px;
 // Match the other section headers ("Portfolio", "Skills"), which render at
 // 1.5em inside the card's 1.3em context of the 14pt body — the container resets
 // to 1rem, so restate that product (14pt x 1.3 x 1.5) rather than an
-// approximation that drifts from the others. The shared heading style supplies
-// a generous bottom margin; the chart belongs more closely to this heading.
+// approximation that drifts from the others.
 .arc-container .site-header {
   font-size: calc(14pt * 1.3 * 1.5);
-  margin-bottom: 0;
 }
 
 .arc-stage { width: 100%; }
