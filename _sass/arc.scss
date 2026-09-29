@@ -228,6 +228,9 @@ $arc-ruler-h: 28px;
     display: inline-block;
     transform: translateX(-50%);
   }
+  // Each tick carries its year twice (arc-year-ruler.html): in full here, and
+  // abbreviated on the narrow charts, which label every year.
+  > .arc-year-short { display: none; }
 }
 .arc-rule {
   border-left: 1px solid $arc-rule;
@@ -1260,6 +1263,11 @@ a.arc-chip:focus-visible {
 // reason; where a rule is only in this file, it doesn't.
 @media screen and (max-width: 700px) {
   .is-narrow-only { display: block; }
+  // Every year labelled, and so abbreviated: '21 rather than 2021.
+  .arc-ruler-tick {
+    > .arc-year-long { display: none; }
+    > .arc-year-short { display: inline-block; }
+  }
   // Nothing scrolls sideways: both charts are drawn to the width they are given.
   .arc-scroll { overflow-x: visible; }
   .arc-scroll > * { min-width: 0; }
