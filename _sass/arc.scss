@@ -928,6 +928,53 @@ a.arc-chip:focus-visible {
 .arc-chip--node-small {
   align-self: center;
 }
+
+// ---- Current Work as a section (phones) ------------------------------------
+// #work-card in home.html: the panel's contents lifted out of the chart and out
+// of its box into a screen of their own. It exists wherever the chart is narrow,
+// which is also where the panel itself is hidden (see the foot of the descent in
+// the narrow chart below), so the page says it once at every width.
+#work-card { display: none; }
+@media screen and (max-width: 700px) {
+  #work-card { display: flex; }
+  #work-card .info-container { width: 100%; }
+}
+// Doubled class: it has to outrank the panel's own rules, the band's
+// hover-to-open among them, which carry .arc-node and a pseudo-class.
+.arc-node.arc-node--section {
+  // In no grid and drawn as no box: none of the panel's placement or outline.
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font-size: 1rem;
+  gap: 10px;
+  .arc-node-band {
+    font-size: 0.76rem;
+    margin: 10px 0 0;
+    cursor: default;
+    > span:first-child { border-bottom: 0; }
+  }
+  // Names and taglines only. A finger has no hover to raise a card's dates and
+  // description, and printed on the face they made a column of paragraphs; the
+  // card's modal is one tap away. The band sentences a phone does without.
+  .arc-node-band > .arc-pop,
+  .arc-chip > .arc-pop { display: none; }
+  // A step up from the panel's type: the panel is sized to fit beside a chart,
+  // this has a screen to itself.
+  .arc-chip {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    overflow: visible;
+  }
+  .arc-chip--node-small { padding: 12px 6px; }
+  // The minis go five across, spanning the section so the row sits on the same
+  // edges as the cards above it: all of them on one row.
+  .arc-node-minis {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+  }
+}
 // ---- Tools waterfall -------------------------------------------------------
 // Same ruler, read the other way: one bar per tool, stacked in the order they
 // were picked up. Rows are implicit (one per tool in _data/tools.yml), which
@@ -1274,16 +1321,6 @@ a.arc-chip:focus-visible {
     row-gap: 0;
     column-gap: 3px;
   }
-  // The minis keep their three columns. On the wide chart each row splits the
-  // panel so it reads as one more course of the same stack; here the panel is
-  // the full width of the chart and a third of that is a lot of box around a
-  // 24px glyph, so the columns size to their icons and sit centered under the
-  // cards instead.
-  .arc-node-minis {
-    grid-template-columns: repeat(3, max-content);
-    justify-content: center;
-    gap: 10px;
-  }
 
   // ---- The turned axis ------------------------------------------------------
   // A year's rule is the top edge of the row that year begins, drawn across
@@ -1552,60 +1589,11 @@ a.arc-chip:focus-visible {
     .arc-descent-arrow { vertical-align: -2px; }
 
     // ---- The foot of the descent --------------------------------------------
-    // Past the last half-year both take a row of their own across every lane, so
-    // the convergence closes the chart instead of standing beside it.
-    .arc-junction {
-      grid-row: 14;
-      grid-column: 1 / -1 !important;
-      border-right: 0;
-      height: 20px;
-      &::after {
-        content: "\25BC"; // ▼
-        right: auto;
-        left: 50%;
-        top: auto;
-        bottom: 0;
-        transform: translateX(-50%);
-      }
-    }
-    .arc-node {
-      grid-row: 15;
-      grid-column: 1 / -1 !important;
-      margin: 0;
-      // Names only, the same as every other chip on the chart. There is no
-      // hover here to raise a band's sentence or a card's dates and
-      // description, and printing them inline turned the panel into a column of
-      // paragraphs taller than the chart above it. A card's full text is one
-      // tap away in its modal; the band sentences are the one thing a phone
-      // does without.
-      .arc-node-band {
-        font-size: 0.76rem;
-        cursor: default;
-        margin-bottom: 0;
-        > span:first-child { border-bottom: 0; }
-        > .arc-pop { display: none; }
-      }
-      .arc-chip {
-        margin: 0;
-        padding: 6px 10px;
-        font-size: 0.76rem;
-        line-height: 1.35;
-        overflow: visible;
-        > small { display: block; }
-        > .arc-pop { display: none; }
-      }
-      // Everything above is for the full-size entries. The pair at the foot is
-      // not a card and should not grow into one: they are the same icon-only
-      // minis the short builds wear up on the chart, drawn the same way and
-      // opening the same card on a tap. Nothing on the face but the glyph — the
-      // name, the tagline, the dates and the description are all one tap away,
-      // which is the deal every other mini on this chart makes.
-      .arc-chip--node-small {
-        align-self: center;
-        padding: 11px 6px;
-        > .arc-pop { display: none; }
-      }
-    }
+    // Not drawn here. On a phone the closing panel is a section of its own
+    // (#work-card, styled with .arc-node--section below), so the chart ends at
+    // its last half-year and the junction has nothing to point into.
+    .arc-junction,
+    .arc-node { display: none; }
   }
 
   // ---- Mobile: the toolchain matrix -----------------------------------------

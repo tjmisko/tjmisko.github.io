@@ -177,112 +177,11 @@ layout: default
               </span>
             </a>
 
-            <!-- Past the last row of the narrow chart (line 18) the junction and
-                 the node take implicit rows of their own, spanning every lane:
-                 the convergence reads as the foot of the descent rather than as
-                 something off to one side of it. -->
+            <!-- Wide chart only. On a phone the node's contents are a section of
+                 their own (#work-card, below), and both of these are hidden. -->
             <div class="arc-junction" style="grid-column: {{ work_end }};"></div>
             <div class="arc-node" style="grid-column: {{ work_end | plus: 1 }};">
-              {%- comment -%}Two passes over the same documents. A node entry is a
-              full-width card by default; one marked arc.node.small is held back
-              for the grid of minis at the foot of the panel, under its own band
-              name, where they share the width one card gets. The small ones are
-              the shorter builds, and packing them says so without giving each
-              the width of a year's work — and keeps the panel, which is the
-              tallest thing spanning the chart and therefore what sets every
-              row's height, from growing a whole card taller for each one.
-
-              A small entry is drawn as an icon-only mini, the same chip the
-              short builds down in the software band get: nothing on the face
-              but the glyph, and the whole of it in the popover.
-
-              arc.node is independent of the chart placement arc.lane / arc.row
-              read by arc-chip.html, so a project can be drawn in both places
-              when it is one story in two eras — Taskbuffer's 2024 shell tool
-              is a mini on the chart and its 2026 plugins a mini in the second
-              band here, both opening the same card.
-              {%- endcomment -%}
-              <h3>Current Work</h3>
-              {%- comment -%}Each band is headed by a name that hovers to a
-              sentence tying its cards together: the three full cards are one
-              body of work, the minis another, and the band name is the one
-              place that gets said. The blurbs are
-              hardcoded like the throughlines rather than sourced from any one
-              project, since each belongs to none of them. On the narrow chart
-              the sentence prints inline under the name — see .arc-node-band
-              there.{%- endcomment %}
-              <h4 class="arc-node-band" tabindex="0">
-                <span>AI Engineering</span>
-                <span class="arc-pop"><small>Systems around models rather than
-                models themselves: agents run behind review gates with a
-                provenance record, every running session stays in view, and a
-                model's claim is shown only where its source backs it.</small></span>
-              </h4>
-              {%- for p in site.projects -%}
-                {%- if p.arc.node and p.arc.node.small != true -%}
-              <button type="button" class="arc-chip arc-chip--software"
-                      data-project="{{ p.slug }}">
-                <strong>{{ p.arc.node.label }}</strong>
-                <small>{{ p.arc.node.sub }}</small>
-                {%- comment -%}The popover's sentence is the document's
-                project-headline unless arc.node.blurb overrides it — the same
-                fallback the chart chips make in arc-chip.html, so a card and
-                its entry here say the same thing once.{%- endcomment -%}
-                {%- assign node_blurb = p.arc.node.blurb | default: p.project-headline -%}
-                {%- if p.arc.node.span or node_blurb -%}
-                <span class="arc-pop">
-                  {%- comment -%}Shown only when the chip's own title had to be
-                  cut — see the marking pass in the script below.{%- endcomment -%}
-                  <strong class="arc-pop-title">{{ p.arc.node.label }}</strong>
-                  {%- if p.arc.node.span %}<small class="arc-pop-span">{{ p.arc.node.span }}</small>{% endif -%}
-                  {%- if node_blurb %}<small>{{ node_blurb }}</small>{% endif -%}
-                </span>
-                {%- endif -%}
-              </button>
-                {%- endif -%}
-              {%- endfor -%}
-              {%- assign node_small = site.projects | where_exp: "p", "p.arc.node.small" -%}
-              {%- if node_small.size > 0 -%}
-              <h4 class="arc-node-band" tabindex="0">
-                <span>Software Tools</span>
-                <span class="arc-pop"><small>Tools for my own daily use: a
-                plain-text task list driven from Neovim and a phone, Obsidian
-                plugins that put a vim-style keyboard on a calendar and a map,
-                an e-ink dashboard, and a cold-storage daemon for the home
-                server.</small></span>
-              </h4>
-              <div class="arc-node-minis">
-                {%- for p in node_small -%}
-                {%- comment -%}An icon-only mini, drawn and behaving exactly as
-                BinderBuilder and the rest of the small builds do down in the
-                software band: same glyph, same class, nothing on the face but
-                the icon, and the whole of it — name, tagline, dates,
-                description — in the popover. They are in the panel rather
-                than on a row only because 2026 is past the end of the fixed
-                scale, so they should not look like a different species.
-                {%- endcomment -%}
-                <button type="button"
-                        class="arc-chip arc-chip--software arc-chip--mini arc-chip--node-small"
-                        data-project="{{ p.slug }}" aria-label="{{ p.arc.node.label }}"
-                        {%- if p.arc.node.era %} data-era="{{ p.arc.node.era }}"{% endif %}>
-                  <span class="arc-ico arc-ico--{{ p.arc.node.kind | default: 'cli' }}" aria-hidden="true"></span>
-                  <span class="arc-pop">
-                    <strong>{{ p.arc.node.label }}</strong>
-                    {%- if p.arc.node.sub %}<small>{{ p.arc.node.sub }}</small>{% endif -%}
-                    {%- if p.arc.node.span %}<small class="arc-pop-span">{{ p.arc.node.span }}</small>{% endif -%}
-                    {%- assign node_blurb = p.arc.node.blurb | default: p.project-headline -%}
-                    {%- if node_blurb %}<small>{{ node_blurb }}</small>{% endif -%}
-                    {%- comment -%}A document drawn in both places carries one
-                    phase list, and both of its chips print it: this one names
-                    its own era with arc.node.era, the chart's with arc.era, and
-                    each holds its own line at full strength. See
-                    arc-pop-phases.html.{%- endcomment -%}
-                    {%- if p.arc.phases %}{% include arc-pop-phases.html phases=p.arc.phases %}{% endif -%}
-                  </span>
-                </button>
-                {%- endfor -%}
-              </div>
-              {%- endif -%}
+              {%- include current-work.html -%}
             </div>
 
             <!-- The lanes descend research → data → software, and the descent is
@@ -916,6 +815,20 @@ layout: default
   </script>
 </div>
 
+<!-- Phones only: the Trajectory's closing panel, lifted out of the chart into a
+     screen of its own. At the foot of a narrow chart it was a box inside a
+     box, and a long one; here it is a section like the others, with room to
+     read the cards. Hidden above the narrow chart's width (arc.scss), where the
+     panel is at the end of the chart and this would say it twice. -->
+<div class="homepage-card" id="work-card">
+  <div class="info-container">
+    <h1 class="site-header reveal">Current Work</h1>
+    <div class="arc-node arc-node--section reveal">
+      {%- include current-work.html heading=false -%}
+    </div>
+  </div>
+</div>
+
 <div class="homepage-card" id="skills-card">
     <div class="info-container" id="skills">
         <h1 class="site-header reveal"> Skills </h1>
@@ -925,15 +838,6 @@ layout: default
             {% endif %}
         {% endfor %}
     </div>
-      // On touch, a sideways swipe across the section moves one tab along,
-      // stopping at either end. Same query as the rolodex's touchNav.
-      const touchNav = window.matchMedia("(max-width: 600px), (pointer: coarse)");
-      if (window.addSwipe) {
-        window.addSwipe(content, (dir) => {
-          const next = current + dir;
-          if (next >= 0 && next < tabButtons.length) select(next);
-        }, () => touchNav.matches && content.classList.contains("is-tabbed"));
-      }
     <script>
     // ---- Skills: stacked or tabbed ----------------------------------------
     // The groups are one stack wherever the whole section fits the screen, and
@@ -1021,6 +925,15 @@ layout: default
         });
       };
       tabButtons.forEach((t, i) => t.addEventListener("click", () => select(i)));
+      // On touch, a sideways swipe across the section moves one tab along,
+      // stopping at either end. Same query as the rolodex's touchNav.
+      const touchNav = window.matchMedia("(max-width: 600px), (pointer: coarse)");
+      if (window.addSwipe) {
+        window.addSwipe(content, (dir) => {
+          const next = current + dir;
+          if (next >= 0 && next < tabButtons.length) select(next);
+        }, () => touchNav.matches && content.classList.contains("is-tabbed"));
+      }
       tabs.addEventListener("keydown", (e) => {
         if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
         e.preventDefault();
@@ -1596,10 +1509,6 @@ layout: default
       // Drive the accent fill on the side track up to the active node.
       const lastRow = rows.length - 1;
       track.style.setProperty("--rolodex-progress", lastRow > 0 ? String(active / lastRow) : "0");
-    // And a sideways swipe across the deck does what the arrows do: left for
-    // the next row, right for the one before. Sideways rather than up and down,
-    // which would take the page's scroll away from a finger on the card.
-    if (window.addSwipe) window.addSwipe(deck, (dir) => step(dir, false), () => touchNav.matches);
     }
 
     function buildRows() {
@@ -1687,6 +1596,10 @@ layout: default
       btn.addEventListener("click", () => step(Number(btn.dataset.step), false));
     });
     touchNav.addEventListener("change", applyRowStates);
+    // And a sideways swipe across the deck does what the arrows do: left for
+    // the next row, right for the one before. Sideways rather than up and down,
+    // which would take the page's scroll away from a finger on the card.
+    if (window.addSwipe) window.addSwipe(deck, (dir) => step(dir, false), () => touchNav.matches);
 
     buildRows();
     rolodex.classList.add("rolodex--ready");

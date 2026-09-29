@@ -8,17 +8,18 @@
   itself knows nothing about which file it is showing.
 
   Sections are listed here by hand, in page order; each href is a card id in
-  home.html.
+  home.html. Current Work is a section only on a narrow screen (#work-card),
+  so its entry is only shown there.
 {%- endcomment -%}
 <nav class="site-rail" aria-label="Sections">
   <button class="resume-button" id="resume-trigger" type="button" aria-haspopup="dialog"
           data-pdf="/resume.pdf?v=2026-07-30" data-pdf-title="Resume"
           data-pdf-download="resume.pdf">Resume</button>
   <ol class="site-rail-list">
-    {%- assign rail = "greeting-card:Home,arc-card:Trajectory,skills-card:Skills,projects-card:Portfolio" | split: "," -%}
+    {%- assign rail = "greeting-card:Home,arc-card:Trajectory,work-card:Current Work,skills-card:Skills,projects-card:Portfolio" | split: "," -%}
     {%- for entry in rail -%}
       {%- assign parts = entry | split: ":" -%}
-    <li>
+    <li{% if parts[0] == "work-card" %} class="is-narrow-only"{% endif %}>
       <a class="site-rail-link" href="#{{ parts[0] }}" data-section="{{ parts[0] }}" aria-label="{{ parts[1] }}">
         <span class="site-rail-label">{{ parts[1] }}</span>
         <span class="site-rail-dot" aria-hidden="true"></span>
