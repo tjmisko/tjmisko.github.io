@@ -1567,12 +1567,40 @@ a.arc-chip:focus-visible {
       padding: 0 2px;
       font-size: 0.62rem;
       cursor: pointer;
+      // Two full lines, "Down the Tech" over "Stack ↘". The arrow has to ride
+      // with the last word, and the <svg> can't: a browser may always break
+      // beside an image-like box, nowrap or not, so it dropped to a line of
+      // its own. Here the arrow is drawn as part of the caption's text
+      // instead — a pseudo-element holding a word joiner (U+2060), which
+      // forbids a break before it, painted with the same arrow as a mask. The
+      // caption and arrow together are too long for the lane, so the line
+      // breaks after "Tech", the last place the caption allows. The dotted
+      // rule is an underline, which stops at the text and leaves the arrow's
+      // padding bare, as the border under the wide chart's caption does.
+      //
+      // Capped just past "Down the Tech" (13 characters), so it breaks there
+      // on every lane width rather than only on the narrowest.
       > span:first-of-type {
-        border-bottom: 1px dotted rgba(225, 225, 225, 0.3);
+        display: inline-block;
+        max-width: 14ch;
+        text-decoration: underline dotted rgba(225, 225, 225, 0.3);
+        text-underline-offset: 3px;
+        &::after {
+          content: "\2060";
+          padding-left: 1.35em;
+          background-color: currentColor;
+          $arc-descent-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'%3E%3Cpath d='M2.5 2.5 L10 10 M10 5.5 L10 10 L5.5 10' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          -webkit-mask: $arc-descent-arrow no-repeat right center / 1.1em 1.1em;
+          mask: $arc-descent-arrow no-repeat right center / 1.1em 1.1em;
+        }
       }
+      .arc-descent-arrow { display: none; }
       // Outranks the hover and focus rules on the wide chart, which would
       // otherwise open this on the tap's lingering focus.
-      > .arc-pop { display: none; }
+      > .arc-pop {
+        display: none;
+        white-space: normal;
+      }
     }
     // Opened, it is a panel after all. The clear block is two lanes wide and a
     // paragraph set to that measure runs longer than the block is tall, so the
