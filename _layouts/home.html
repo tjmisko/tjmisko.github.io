@@ -569,18 +569,20 @@ layout: default
               </span>
               {%- endif -%}
             </{{ tool_tag }}>
-            {%- comment -%}The narrow matrix's name gutter. Emitted for every bar
-            and shown only there: wide, the name is inside the bar, where it
-            sticks to the rail so a bar whose start has scrolled off still says
-            what it is. Its own element rather than a second copy inside the bar,
-            because it sits in column 1 while the bar sits out on its dates —
-            a grid item can only be in one place.
+            {%- comment -%}The narrow matrix names every bar inside itself, as
+            the wide chart does; this is the name for a bar too short to hold
+            it, set on the bar's row just ahead of where it starts (--m0). Its
+            own element rather than the bar's title moved, because it sits out
+            in the empty years while the bar sits on its dates — a grid item
+            can only be in one place. Shown only for a bar marked .is-elided.
 
             Not for a one-line group, whose gutter holds the group's name and
-            whose bars name themselves.{%- endcomment %}
+            whose bars, too short or not, have a neighbour on either side.
+            {%- endcomment %}
                   {%- if one_line == "" %}
             <div class="arc-tool-name{% if t.occasional %} is-occasional{% endif %}"
-                 style="--tr: {{ tool_row_m }};">{{ t.name }}</div>
+                 style="--tr: {{ tool_row_m }}; --m0: {{ m_col_start }};"
+                 aria-hidden="true">{{ t.name }}</div>
                   {%- endif -%}
                 {%- endfor -%}
                 {%- comment -%}Emitted after its rows so the span can use the row

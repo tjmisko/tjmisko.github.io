@@ -1624,12 +1624,13 @@ a.arc-chip:focus-visible {
   }
 
   // ---- Mobile: the toolchain matrix -----------------------------------------
-  // The waterfall keeps its axis — time still runs left to right — and gives up
-  // the one thing that doesn't survive the width: the names inside the bars.
-  // "ZSA Voyager" needs 80px and its bar is 63px wide. So the names move to a
-  // gutter, the bars get the four columns back that clipping used to cost, and
-  // what is left is a matrix: one row per tool, one cell per half-year, the fill
-  // carrying the cadence exactly as it does on the wide chart.
+  // The waterfall keeps its axis — time still runs left to right — and a matrix
+  // is what is left: one row per tool, one cell per half-year, the fill carrying
+  // the cadence exactly as it does on the wide chart. The names stay inside the
+  // bars, read against the bar they name, and not every one fits: "ZSA Voyager"
+  // needs 80px and its bar is 63px wide. A short bar's name moves out into the
+  // empty years ahead of it rather than into a gutter of names, which read as a
+  // list set apart from the chart.
   //
   // It replaces 3,800px of cards, each printing its note and every phase, with
   // about 700px that can be read across as well as down: which years were dense,
@@ -1654,8 +1655,21 @@ a.arc-chip:focus-visible {
       align-self: stretch;
       padding: 0;
       white-space: nowrap;
-      // The name is in the gutter now, so the bar is pure fill.
-      > strong { display: none; }
+      // Each bar names itself, as it does wide.
+      > strong {
+        display: block;
+        position: static; // not the wide chart's sticky title
+        box-sizing: border-box;
+        min-width: 0;
+        padding: 0 5px;
+        font-size: 0.6rem;
+        text-overflow: clip;
+      }
+      // A bar too short for its name says nothing rather than half of it: the
+      // name moves out ahead of the bar (.arc-tool-name, below), or for a
+      // one-line group, is one tap away in the sheet. .is-elided is measured,
+      // by the marking pass in home.html.
+      &.is-elided > strong { visibility: hidden; }
     }
     .arc-chip--tool.is-minor { min-height: 0; padding: 0; }
     // Every bar starts where it started: with four more columns there is nothing
@@ -1663,22 +1677,29 @@ a.arc-chip:focus-visible {
     .arc-chip--tool.is-ongoing,
     .arc-chip--tool.is-continuation { border-radius: 4px; }
 
+    // The name of a bar too short to hold it, in the empty years ahead of the
+    // bar: every multi-row group runs to the present, so a short bar is a late
+    // one, and the ground before it is clear.
     .arc-tool-name {
-      display: block;
-      grid-column: 1;
+      display: none;
+      grid-column: 1 / var(--m0);
       grid-row: var(--tr);
       align-self: center;
-      font-size: 0.62rem;
+      justify-self: end;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-size: 0.6rem;
+      font-weight: bold; // the weight of the names inside the bars around it
       line-height: 1.15;
       color: $homepage-font-color;
-      padding-right: 6px;
+      padding-right: 5px;
       text-align: right;
-      // One line per tool is what makes the matrix a matrix; a name too long for
-      // the gutter loses its tail rather than its row.
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      pointer-events: none;
     }
+    .arc-chip--tool.is-elided + .arc-tool-name { display: block; }
     // A tool that was only ever reached for sometimes reads back a step, the
     // same distinction the wide chart draws with its dimmed bar title.
     .arc-tool-name.is-occasional { color: $arc-dim; }
@@ -1709,21 +1730,6 @@ a.arc-chip:focus-visible {
       grid-column: 1 !important;
       justify-content: center;
       margin: 0;
-    }
-    .arc-chip--tool.is-one-line {
-      > strong {
-        display: block;
-        position: static; // not the wide chart's sticky title
-        box-sizing: border-box;
-        min-width: 0;
-        padding: 0 5px;
-        font-size: 0.6rem;
-        text-overflow: clip;
-      }
-      // A bar too short for its name says nothing rather than half of it; the
-      // name is one tap away in the sheet. .is-elided is measured, by the
-      // marking pass in home.html.
-      &.is-elided > strong { visibility: hidden; }
     }
     // The joins square off, as they do wide, so the succession reads as one
     // track. (The rule above rounds every continuation for the rows where a
