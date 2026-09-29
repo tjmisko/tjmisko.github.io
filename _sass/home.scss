@@ -125,6 +125,9 @@ p, ul {
   padding: 0 1em;
   position: relative;
 }
+@media screen and (max-width: $on-palm) {
+  .homepage-card { padding: 0; }
+}
 
 // Scroll-reveal utility: elements start faded + slightly lowered and settle
 // into place when `.is-visible` is added by the IntersectionObserver in
@@ -283,6 +286,17 @@ p, ul {
 .page-content { padding-right: $rail-slim; }
 @media screen and (min-width: 1100px) {
   .page-content { padding-right: $rail-wide; }
+}
+// Phones: the page carries one gutter on each side and the sections carry
+// none of their own, so every section starts on the same left edge and runs to
+// the same right one. Section-specific palm overrides (the chart, the skills
+// column, the rolodex) are in their own sections below and in arc.scss.
+@media screen and (max-width: $on-palm) {
+  .site-rail { padding-right: $rail-palm-inset; }
+  .page-content {
+    padding-left: $gutter-palm;
+    padding-right: $rail-palm;
+  }
 }
 
 // PDF popover: full-screen fade overlay holding a panel that renders any of the
@@ -504,10 +518,19 @@ p, ul {
   padding: 0;
 }
 
+// The banner is sized from the column it sits in, not the viewport: its widest
+// line is 57 characters of IBM Plex Mono (0.6em each, 34.2em) plus 1em of
+// padding, so 35.2em has to fit the column. Sized from vw it guessed at the
+// gutters, guessed short on a phone, and pre's overflow: auto hid the tail of
+// the name behind a sideways scroll. The column is a size container for this.
+#greeting {
+  container-type: inline-size;
+  width: 100%;
+}
 #greeting-card .name-title-ascii {
   // background-color: #111111;
   box-sizing: border-box;
-  font-size: clamp(0.4rem, 2.4vw, 1rem);
+  font-size: unquote("min(1rem, calc(100cqi / 35.2))");
   padding: 0.5em;
   margin: 0.5em auto 0.5em;
   border-radius: 0.5em;
@@ -542,6 +565,9 @@ p, ul {
 // spacing so the whole thing clears the fold.
 #skills-card .info-container {
   max-width: unquote("min(650px, 92vw)");
+}
+@media screen and (max-width: $on-palm) {
+  #skills-card .info-container { max-width: 100%; }
 }
 .skills-content {
   font-size: 0.86em;
@@ -620,6 +646,9 @@ p, ul {
   max-width: 1200px;
   padding: clamp(5px, 2vw, 2rem);
   box-sizing: border-box;
+}
+@media screen and (max-width: $on-palm) {
+  .rolodex { padding-left: 0; padding-right: 0; }
 }
 .rolodex-deck {
   flex: 1 1 auto;

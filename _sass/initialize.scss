@@ -38,6 +38,12 @@ $font-header: var(--font-header, "Space Mono");
 // 1100px up, dots only below. Full-width layouts subtract it (see arc.scss).
 $rail-wide: 6.5rem;
 $rail-slim: 2.2rem;
+// Phones (at most $on-palm) get every pixel back that the layout can spare:
+// one left gutter shared by every section, and on the right just enough for
+// the rail's dots, which move in to $rail-palm-inset from the edge.
+$gutter-palm: 12px;
+$rail-palm-inset: 8px;
+$rail-palm: 26px;
 
 // Motion design tokens. Durations live as CSS custom properties so the
 // prefers-reduced-motion guard below can zero them out at runtime, disabling

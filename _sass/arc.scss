@@ -47,6 +47,11 @@ $arc-ruler-h: 28px;
 @media screen and (min-width: 1100px) {
   .arc-container { width: unquote("min(1280px, calc(96vw - #{$rail-wide}))"); }
 }
+// Phones: the page's own gutters already keep the chart off the edges and the
+// rail (see .page-content in home.scss), so it takes the column it is given.
+@media screen and (max-width: $on-palm) {
+  .arc-container { width: 100%; }
+}
 
 // Match the other section headers ("Portfolio", "Skills"), which render at
 // 1.5em inside the card's 1.3em context of the 14pt body — the container resets
