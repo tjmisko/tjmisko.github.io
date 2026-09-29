@@ -35,6 +35,7 @@ arc:
       note: "Directed the agent-built Neovim plugin, its pure-Lua rewrite cut over on byte-parity with the binary it replaced, and the Obsidian port that drives the same notes from a phone."
   node:
     small: true
+    order: 2
     kind: cli
     era: 2
     label: "Taskbuffer"

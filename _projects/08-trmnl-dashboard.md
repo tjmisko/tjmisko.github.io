@@ -12,6 +12,7 @@ tags:
 arc:
   node:
     small: true
+    order: 5
     label: "TRMNL Dashboard"
     sub: "E-ink dashboard plugin · Bash, Go, Liquid"
     span: "Feb 2026 – Present"

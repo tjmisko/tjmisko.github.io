@@ -12,6 +12,7 @@ tags:
 arc:
   node:
     small: true
+    order: 1
     label: "Coldstore"
     sub: "Syncthing cold-storage daemon · Go, React, SQLite"
     span: "Aug 2026"

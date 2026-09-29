@@ -11,6 +11,7 @@ tags:
 arc:
   node:
     small: true
+    order: 3
     kind: web
     label: "Keyboard Calendar"
     sub: "Obsidian Plugin · TypeScript" 
