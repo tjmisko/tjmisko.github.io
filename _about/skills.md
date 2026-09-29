@@ -14,6 +14,7 @@ layout: post
 * **Technical Mentoring**: Helping build conceptual understanding & problem-solving skills.
 
 ##### Technical Background
+{: data-short="Background"}
 * **Mathematics**: Fluency and rigor across linear algebra, probability theory, algorithms, real analysis, complex analysis, and convex optimization.
 * **Data Analysis and Econometrics**: Research and research design for regression analysis, both correlational and causal. Data analysis in Python, R, and Stata. 
 * **AI/ML**: Fundamentals of AI theory---LLM architecture, scaling laws, reinforcement learning---and basics of model training in Python with PyTorch and NumPy.

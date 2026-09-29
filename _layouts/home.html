@@ -961,7 +961,22 @@ layout: default
         tab.type = "button";
         tab.className = "skills-tab";
         tab.id = "skills-tab-" + i;
-        tab.textContent = label.textContent;
+        // A label may carry a shorter form for phones (data-short, set in
+        // skills.md): both are printed and CSS picks one, and the accessible
+        // name stays the full label either way.
+        const full = label.textContent.trim();
+        if (label.dataset.short) {
+          tab.setAttribute("aria-label", full);
+          const long = document.createElement("span");
+          long.className = "skills-tab-full";
+          long.textContent = full;
+          const short = document.createElement("span");
+          short.className = "skills-tab-short";
+          short.textContent = label.dataset.short;
+          tab.append(long, short);
+        } else {
+          tab.textContent = full;
+        }
         tab.setAttribute("aria-controls", group.id);
         tabs.appendChild(tab);
         return group;

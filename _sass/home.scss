@@ -670,6 +670,17 @@ p, ul {
   transition: color var(--dur-fast) var(--ease-out),
               border-color var(--dur-fast) var(--ease-out);
 }
+// Phones take a label's short form where it has one (data-short in skills.md),
+// which also leaves the row fewer characters to fit: 26 rather than 36, so
+// 18.2em of labels and the same two gaps.
+.skills-tab-short { display: none; }
+@media screen and (max-width: $on-palm) {
+  .skills-tab-full { display: none; }
+  .skills-tab-short { display: inline; }
+  .skills-content.is-tabbed .skills-tabs {
+    font-size: unquote("min(0.72rem, calc(100cqi / 20.6))");
+  }
+}
 .skills-tab:focus-visible { color: $homepage-font-color; }
 @media (hover: hover) {
   .skills-tab:hover { color: $homepage-font-color; }
