@@ -643,10 +643,10 @@ p, ul {
   font-size: var(--headline-size, 0.92rem);
 }
 
-// Side position track: circular nodes nested inside a rounded outer box and
-// strung along a thick, inset (recessed) channel. The accent fill rises through
-// the channel up to the active node; its height is driven by --rolodex-progress
-// (set in JS to active / (rows - 1)). Click or drag to jump.
+// Side position track, drawn the way the site rail is: a 1px hairline through
+// 7px hollow dots. The accent line rides the hairline up to the active dot; its
+// height is driven by --rolodex-progress (set in JS to active / (rows - 1)).
+// Click or drag to jump.
 .rolodex--ready .rolodex-track {
   position: relative;
   display: flex;
@@ -654,40 +654,34 @@ p, ul {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 26px;
-  // Match the 10px top/bottom inset on .rolodex-row so the track's rounded caps
-  // sit flush with the cards' edges instead of protruding past them.
+  width: 16px;
+  // Match the 10px top/bottom inset on .rolodex-row so the track lines up with
+  // the cards' edges.
   margin: 10px 0;
-  padding: 13px 0;
+  padding: 0;
   box-sizing: border-box;
-  // Outer box that nests the nodes.
-  background-color: rgba(225, 225, 225, 0.05);
-  border: 1px solid rgba(225, 225, 225, 0.14);
-  border-radius: 13px;
   touch-action: none;
 }
-// Thick inset channel (::before) carved into the box, plus the accent fill
-// (::after) that rides inside it. Both are centered.
+// The hairline (::before) and the accent line (::after) that rides on it, both
+// centered and inset by half a dot, which is where the first and last dot's
+// centers sit.
 .rolodex--ready .rolodex-track::before,
 .rolodex--ready .rolodex-track::after {
   content: "";
   position: absolute;
   left: 50%;
-  top: 13px;
-  width: 8px;
-  border-radius: 4px;
+  top: 3.5px;
+  width: 1px;
   transform: translateX(-50%);
   pointer-events: none;
 }
 .rolodex--ready .rolodex-track::before {
-  bottom: 13px;
-  background-color: rgba(0, 0, 0, 0.38);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.55);
+  bottom: 3.5px;
+  background-color: rgba(225, 225, 225, 0.14);
 }
 .rolodex--ready .rolodex-track::after {
-  height: calc((100% - 26px) * var(--rolodex-progress, 0));
+  height: calc((100% - 7px) * var(--rolodex-progress, 0));
   background-color: $homepage-accent-color;
-  opacity: 0.9;
   transition: height var(--dur-reveal) var(--ease-out);
 }
 .rolodex-tick {
@@ -695,23 +689,23 @@ p, ul {
   position: relative;
   z-index: 1;
   cursor: pointer;
-  width: 12px;
-  height: 12px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   box-sizing: border-box;
-  background-color: rgba(225, 225, 225, 0.4);
-  // Cutout ring in the page colour so each node reads clearly against the
-  // dark channel and the accent fill.
-  border: 2px solid $homepage-background-color;
-  transition: background-color var(--dur-fast) var(--ease-out),
+  border: 1px solid rgba(225, 225, 225, 0.4);
+  background-color: $homepage-background-color; // masks the hairline behind it
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out),
               transform var(--dur-reveal) var(--ease-out);
 }
 .rolodex-tick:hover,
 .rolodex-tick:focus-visible {
-  background-color: rgba(225, 225, 225, 0.75);
+  border-color: $homepage-font-color;
   transform: scale(1.18);
 }
 .rolodex-tick.is-active {
+  border-color: $homepage-accent-color;
   background-color: $homepage-accent-color;
   transform: scale(1.35);
 }
