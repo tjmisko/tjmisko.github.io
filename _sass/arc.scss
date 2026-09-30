@@ -1250,9 +1250,9 @@ a.arc-chip:focus-visible {
 // is the whole job the standing legend used to do above the chart.
 .arc-lane-head { display: none; }
 
-// A tool's name, in the matrix's left gutter. Wide, the name is inside its bar
-// (and sticks to the rail as the bar scrolls off), so this stays out of the way.
-.arc-tool-name { display: none; }
+// A tool's short name (tools.yml `short`), for the narrow matrix's bars that
+// are too short for the full one. Wide, every bar has room for its full name.
+.arc-tool-short { display: none; }
 
 // ---- Mobile: the transposed chart -------------------------------------------
 // Below 700px the work grid turns a quarter turn rather than dissolving: time
@@ -1627,10 +1627,11 @@ a.arc-chip:focus-visible {
   // The waterfall keeps its axis — time still runs left to right — and a matrix
   // is what is left: one row per tool, one cell per half-year, the fill carrying
   // the cadence exactly as it does on the wide chart. The names stay inside the
-  // bars, read against the bar they name, and not every one fits: "ZSA Voyager"
-  // needs 80px and its bar is 63px wide. A short bar's name moves out into the
-  // empty years ahead of it rather than into a gutter of names, which read as a
-  // list set apart from the chart.
+  // bars, read against the bar they name, and the gutter at the left is only as
+  // wide as the environment band's group names, so the years take the rest of
+  // the width. Not every name fits even so — "ZSA Voyager" needs 80px and its
+  // bar is 63px wide — and one that doesn't falls back to its short form, or
+  // failing that, says nothing: the name is one tap away in the sheet.
   //
   // It replaces 3,800px of cards, each printing its note and every phase, with
   // about 700px that can be read across as well as down: which years were dense,
@@ -1661,15 +1662,31 @@ a.arc-chip:focus-visible {
         position: static; // not the wide chart's sticky title
         box-sizing: border-box;
         min-width: 0;
-        padding: 0 5px;
-        font-size: 0.6rem;
+        padding: 0 4px;
+        font-size: 0.55rem;
         text-overflow: clip;
       }
-      // A bar too short for its name says nothing rather than half of it: the
-      // name moves out ahead of the bar (.arc-tool-name, below), or for a
-      // one-line group, is one tap away in the sheet. .is-elided is measured,
-      // by the marking pass in home.html.
+      // A bar too short for its name tries the short one; too short for that
+      // too, it says nothing rather than half of a name. Both are measured, by
+      // the marking pass in home.html.
+      &.is-short .arc-tool-full { display: none; }
+      &.is-short .arc-tool-short { display: inline; }
       &.is-elided > strong { visibility: hidden; }
+      // Except a tool still in use: the newest bars are the shortest ones only
+      // because they are new, and they are what the chart is leading up to. Its
+      // name stands just ahead of the bar instead, in years it hadn't started.
+      &.is-elided.is-ongoing > strong {
+        visibility: visible;
+        position: absolute;
+        left: auto; // the wide chart's sticky offset, which would outrank right
+        // Measured from inside the bar's 3px accent edge, so step past it.
+        right: calc(100% + 3px);
+        top: 50%;
+        transform: translateY(-50%);
+        max-width: none;
+        overflow: visible;
+        padding: 0 4px 0 0;
+      }
     }
     .arc-chip--tool.is-minor { min-height: 0; padding: 0; }
     // Every bar starts where it started: with four more columns there is nothing
@@ -1677,35 +1694,8 @@ a.arc-chip:focus-visible {
     .arc-chip--tool.is-ongoing,
     .arc-chip--tool.is-continuation { border-radius: 4px; }
 
-    // The name of a bar too short to hold it, in the empty years ahead of the
-    // bar: every multi-row group runs to the present, so a short bar is a late
-    // one, and the ground before it is clear.
-    .arc-tool-name {
-      display: none;
-      grid-column: 1 / var(--m0);
-      grid-row: var(--tr);
-      align-self: center;
-      justify-self: end;
-      max-width: 100%;
-      box-sizing: border-box;
-      font-size: 0.6rem;
-      font-weight: bold; // the weight of the names inside the bars around it
-      line-height: 1.15;
-      color: $homepage-font-color;
-      padding-right: 5px;
-      text-align: right;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      pointer-events: none;
-    }
-    .arc-chip--tool.is-elided + .arc-tool-name { display: block; }
-    // A tool that was only ever reached for sometimes reads back a step, the
-    // same distinction the wide chart draws with its dimmed bar title.
-    .arc-tool-name.is-occasional { color: $arc-dim; }
-
-    // Group rails become headers over the rows they name: a 112px gutter can't
-    // hold a rail and a name side by side.
+    // Group rails become headers over the rows they name: a gutter sized to the
+    // group names can't hold a rail beside them.
     .arc-lane-labels--group {
       grid-row: var(--tr) !important;
       grid-column: 1 / -1 !important;
@@ -1715,21 +1705,24 @@ a.arc-chip:focus-visible {
       background: none;
       span {
         padding: 0;
-        font-size: 0.56rem;
-        letter-spacing: 0.12em;
+        font-size: 0.5rem;
+        letter-spacing: 0.1em;
         text-align: left;
         width: 100%;
       }
     }
-    .arc-lane-labels--group.is-minor span { font-size: 0.56rem; }
+    .arc-lane-labels--group.is-minor span { font-size: 0.5rem; }
 
     // A group that is one succession stays one line, as it is wide (see the
     // row counters in home.html): its name takes the gutter on the row itself
     // rather than heading it from a line above, and each bar names itself.
+    // These names are what size the gutter (max-content in home.html), so the
+    // gutter is exactly the longest of them plus this bit of air before the bars.
     .arc-lane-labels--group.is-one-line {
       grid-column: 1 !important;
       justify-content: center;
       margin: 0;
+      padding-right: 6px;
     }
     // The joins square off, as they do wide, so the succession reads as one
     // track. (The rule above rounds every continuation for the rows where a
@@ -1757,7 +1750,7 @@ a.arc-chip:focus-visible {
     .arc-ruler-tick {
       grid-row: 1 !important;
       grid-column: var(--m0) !important;
-      font-size: 0.56rem;
+      font-size: 0.5rem;
       > span { transform: translateX(-50%); }
     }
     .arc-now-line {

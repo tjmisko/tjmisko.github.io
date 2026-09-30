@@ -312,7 +312,7 @@ layout: default
         <div class="arc-scroll">
           <div class="arc-lanes arc-lanes--tools"
                style="grid-template-columns: 104px repeat({{ arc_full }}, 1fr) {{ arc_tail }}fr 46px;
-                      --m-template: 100px repeat({{ arc_full_m }}, 1fr) {{ arc_tail }}fr 14px;
+                      --m-template: max-content repeat({{ arc_full_m }}, 1fr) {{ arc_tail }}fr 8px;
                       --m-rows: {{ grid_end_m }};">
             {%- comment -%}Popovers open downward, which for the bottom rows would
             mean reserving a band of dead space under the chart — enough of it to
@@ -326,12 +326,12 @@ layout: default
             {%- comment -%}Two row counters, because the two charts don't put the
             same things on rows. Wide, a row is a lane a bar sits in and a
             succession (`continues`) shares one; the group rails run down the
-            side and cost nothing. Narrow, a group of several rows needs a line
-            per tool for the names in the gutter, and heads its rows from a line
-            above them instead of a rail beside them. A group that is one
-            succession (OS, Editor, …) stays one line there as well: the group's
-            name takes the gutter, and each tool names itself inside its own bar
-            where the bar is wide enough (.is-one-line in arc.scss).
+            side and cost nothing. Narrow, a group of several rows takes a line
+            per tool and heads its rows from a line above them instead of a rail
+            beside them. A group that is one succession (OS, Editor, …) stays one
+            line there as well, with the group's name in the gutter (.is-one-line
+            in arc.scss). Either way each tool names itself inside its own bar,
+            where the bar is wide enough.
             {%- endcomment -%}
             {%- assign tool_row = 1 -%}
             {%- assign tool_row_m = 1 -%}
@@ -474,12 +474,17 @@ layout: default
                  {%- if t.link %} href="{{ t.link }}" target="_blank" rel="noopener"
                  {%- comment -%}role goes with the tabindex: a bare div can be
                  focused but can't carry an accessible name, and on the narrow
-                 matrix — where the bar's own title is hidden and the name lives
-                 out in the gutter — the aria-label above is the only name it
-                 has. Segmented bars aren't focusable themselves; their phases
-                 are, and each of those names itself.{%- endcomment -%}
+                 matrix — where a bar too short for its name hides it — the
+                 aria-label above is the only name it has. Segmented bars aren't
+                 focusable themselves; their phases are, and each of those names
+                 itself.{%- endcomment -%}
                  {%- else -%}{%- unless t.segments %} tabindex="0" role="button"{% endunless %}{% endif %}>
-              <strong>{{ t.name }}</strong>
+              {%- comment -%}`short` is the narrow matrix's fallback for a name
+              that doesn't fit its bar (the marking pass in the script below
+              swaps it in); a name that still doesn't fit is hidden.{%- endcomment %}
+              <strong><span class="arc-tool-full">{{ t.name }}</span>
+                {%- if t.short -%}<span class="arc-tool-short">{{ t.short }}</span>{%- endif -%}
+              </strong>
               <span class="arc-pop arc-pop--tool">
                 {%- comment -%}Shown only when the bar's own title had to be cut
                 — see the marking pass in the script below. A segmented bar
@@ -569,21 +574,6 @@ layout: default
               </span>
               {%- endif -%}
             </{{ tool_tag }}>
-            {%- comment -%}The narrow matrix names every bar inside itself, as
-            the wide chart does; this is the name for a bar too short to hold
-            it, set on the bar's row just ahead of where it starts (--m0). Its
-            own element rather than the bar's title moved, because it sits out
-            in the empty years while the bar sits on its dates — a grid item
-            can only be in one place. Shown only for a bar marked .is-elided.
-
-            Not for a one-line group, whose gutter holds the group's name and
-            whose bars, too short or not, have a neighbour on either side.
-            {%- endcomment %}
-                  {%- if one_line == "" %}
-            <div class="arc-tool-name{% if t.occasional %} is-occasional{% endif %}"
-                 style="--tr: {{ tool_row_m }}; --m0: {{ m_col_start }};"
-                 aria-hidden="true">{{ t.name }}</div>
-                  {%- endif -%}
                 {%- endfor -%}
                 {%- comment -%}Emitted after its rows so the span can use the row
                 counter; grid placement is explicit, so DOM order is free.
@@ -819,12 +809,23 @@ layout: default
     // and the column width, so there is no breakpoint to write it as. A hidden
     // view measures 0/0 and reads as fitting, which is why switching tabs
     // re-runs this alongside resizes and the webfonts landing.
+    //
+    // On the narrow matrix a tool with a `short` name tries that first (a
+    // "JS" where "JavaScript" won't go); only if the short one is cut too does
+    // the bar give up its title.
+    const narrowChart = window.matchMedia("(max-width: 700px)");
     const markElided = () => {
+      // A pixel of tolerance: sub-pixel text metrics round either way, and a
+      // chip that fits exactly should not claim to have been cut.
+      const isCut = (title) => !!title && title.scrollWidth > title.clientWidth + 1;
       document.querySelectorAll("#arc-card .arc-chip").forEach((chip) => {
         const title = chip.querySelector(":scope > strong");
-        // A pixel of tolerance: sub-pixel text metrics round either way, and a
-        // chip that fits exactly should not claim to have been cut.
-        const cut = !!title && title.scrollWidth > title.clientWidth + 1;
+        chip.classList.remove("is-short");
+        let cut = isCut(title);
+        if (cut && narrowChart.matches && title.querySelector(".arc-tool-short")) {
+          chip.classList.add("is-short");
+          cut = isCut(title);
+        }
         chip.classList.toggle("is-elided", cut);
       });
     };

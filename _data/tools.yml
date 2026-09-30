@@ -53,6 +53,9 @@
 #                 names carry the distinction — so adding a family here means
 #                 adding a rule for it in _sass/arc.scss.
 #   span / note   display strings for the hover popover (and the mobile feed).
+#   short         optional shorter name for the phone chart, used only when the
+#                 full name doesn't fit inside its bar there. A name that still
+#                 doesn't fit is hidden (a tap on the bar shows it).
 #
 # Bars render top-to-bottom in file order, so keep each group roughly
 # chronological by `start`. Adding a group — or a whole band — is a change here
@@ -135,6 +138,7 @@ views:
                   Still in the toolkit, but on the backburner as I learn Rust.
 
           - name: HTML / CSS / JavaScript
+            short: HTML / CSS / JS
             family: language
             span: 2022 – now
             note: Browser interfaces — the sspi.world front end, charts, this site.
