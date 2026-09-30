@@ -37,20 +37,20 @@ body {
 }
 
 html {
-  scroll-snap-type: y proximity;
-  -webkit-overflow-scrolling: touch;
   background-color: $homepage-background-color;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-snap-type: none;
-  }
-}
-// Touch screens page by flick instead (home.html): snap can't tell a flick from
-// a slow drag, and it would fight the pager for the same scroll.
-html.flick-paging {
-  scroll-snap-type: none;
+// Every section is one screen tall, so every scroll ends on one: mandatory
+// snap, left entirely to the browser. Proximity snap only fired when a scroll
+// happened to stop near a section, which read as bouncing at random, and a
+// script reading flicks fought the browser's own momentum. The browser's snap
+// runs inside its scroll physics, where neither can happen.
+//
+// Only where a section fits: below 500px of height (a phone on its side) the
+// sections keep their 500px floor, outgrow the screen, and a snap would pull
+// the reader off whatever they were halfway through.
+@media (min-height: 500px) and (prefers-reduced-motion: no-preference) {
+  html { scroll-snap-type: y mandatory; }
 }
 
 a {
@@ -127,6 +127,9 @@ p, ul {
   box-sizing: border-box;
   margin-bottom: 2em;
   scroll-snap-align: start;
+  // One section per swipe: a hard fling stops at the next section rather than
+  // sailing past two of them.
+  scroll-snap-stop: always;
   padding: 0 1em;
   position: relative;
 }
