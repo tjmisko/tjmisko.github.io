@@ -954,14 +954,45 @@ layout: default
       content.appendChild(panels);
       const tabButtons = Array.from(tabs.children);
 
+      // dir  which way the drum turns: +1 onward (the outgoing group leaves to
+      //      the left), -1 back. Left out, it is the way the tabs read.
       let current = 0;
-      const select = (i) => {
-        current = i;
+      const select = (i, dir) => {
         tabButtons.forEach((t, k) => {
           t.setAttribute("aria-selected", String(k === i));
           t.tabIndex = k === i ? 0 : -1;
         });
-        groups.forEach((g, k) => g.classList.toggle("is-active", k === i));
+        // The first group shows where it stands on load; there is nothing to
+        // turn from.
+        if (!groups.some((g) => g.classList.contains("is-active"))) {
+          groups[i].classList.add("is-active");
+          current = i;
+          return;
+        }
+        if (i === current) return;
+        const turn = dir || (i > current ? 1 : -1);
+        const outgoing = groups[current];
+        const incoming = groups[i];
+        // The incoming group is put on the side it comes in from with no
+        // transition, so it swings in from there rather than from wherever the
+        // last turn left it.
+        incoming.style.transition = "none";
+        incoming.classList.remove("is-prev", "is-next");
+        incoming.classList.add(turn > 0 ? "is-next" : "is-prev");
+        void incoming.offsetWidth;
+        incoming.style.transition = "";
+        if (outgoing !== incoming) {
+          outgoing.classList.remove("is-active", "is-prev", "is-next");
+          outgoing.classList.add(turn > 0 ? "is-prev" : "is-next");
+        }
+        incoming.classList.remove("is-prev", "is-next");
+        incoming.classList.add("is-active");
+        current = i;
+      };
+      // The drum's axis stands half a column behind it, so its faces meet at
+      // the column's edges as they turn.
+      const setPivot = () => {
+        panels.style.setProperty("--skills-pivot", -(panels.clientWidth / 2) + "px");
       };
       // Tab semantics only while it is tabs: stacked, the groups are plain
       // sections under their own headings and the buttons aren't shown.
@@ -980,22 +1011,20 @@ layout: default
         });
       };
       tabButtons.forEach((t, i) => t.addEventListener("click", () => select(i)));
-      // On touch, a sideways swipe across the section moves one tab along,
-      // stopping at either end. Same query as the rolodex's touchNav.
+      // On touch, a sideways swipe across the section turns the drum one group
+      // along, and on round from the last group to the first, the way the
+      // arrow keys already do. Same query as the rolodex's touchNav.
       const touchNav = window.matchMedia("(max-width: 600px), (pointer: coarse)");
+      const step = (dir) => select((current + dir + tabButtons.length) % tabButtons.length, dir);
       if (window.addSwipe) {
-        window.addSwipe(content, (dir) => {
-          const next = current + dir;
-          if (next >= 0 && next < tabButtons.length) select(next);
-        }, () => touchNav.matches && content.classList.contains("is-tabbed"));
+        window.addSwipe(content, step,
+          () => touchNav.matches && content.classList.contains("is-tabbed"));
       }
       tabs.addEventListener("keydown", (e) => {
         if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
         e.preventDefault();
-        const dir = e.key === "ArrowRight" ? 1 : -1;
-        const next = (current + dir + tabButtons.length) % tabButtons.length;
-        select(next);
-        tabButtons[next].focus();
+        step(e.key === "ArrowRight" ? 1 : -1);
+        tabButtons[current].focus();
       });
       select(0);
 
@@ -1017,6 +1046,7 @@ layout: default
         setTabbed(false);
         const stacked = container.offsetHeight;
         setTabbed(stacked > h - FIT_MARGIN);
+        setPivot();
       };
       fit();
       if (document.fonts && document.fonts.ready) {

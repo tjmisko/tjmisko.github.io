@@ -676,9 +676,36 @@ p, ul {
   .skills-group > h5 { display: none; }
   // Every group in one cell, so the panel is as tall as the tallest group and
   // the section holds still when the tab changes.
-  .skills-panels { display: grid; }
-  .skills-group { grid-area: 1 / 1; }
-  .skills-group:not(.is-active) { visibility: hidden; }
+  //
+  // Changing tabs turns the groups the way the portfolio rolodex turns its
+  // rows, on their side: each group is a face on a drum whose axis stands
+  // behind the column (--skills-pivot, half the column's width, set by the
+  // script), so the outgoing group swings off to one side as the next swings in
+  // from the other. Onward goes left, as a swipe to the left does.
+  .skills-panels {
+    display: grid;
+    perspective: 1400px;
+    overflow: hidden;
+  }
+  .skills-group {
+    grid-area: 1 / 1;
+    transform-origin: center center var(--skills-pivot, -170px);
+    backface-visibility: hidden;
+    transition: transform var(--dur-reveal) var(--ease-out),
+                opacity var(--dur-reveal) var(--ease-out),
+                visibility 0s linear var(--dur-reveal);
+  }
+  .skills-group:not(.is-active) {
+    visibility: hidden;
+    opacity: 0;
+  }
+  .skills-group.is-prev { transform: rotateY(-90deg); }
+  .skills-group.is-next { transform: rotateY(90deg); }
+  .skills-group.is-active {
+    transform: none;
+    transition: transform var(--dur-reveal) var(--ease-out),
+                opacity var(--dur-reveal) var(--ease-out);
+  }
 }
 .skills-tab {
   all: unset;
