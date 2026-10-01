@@ -61,7 +61,7 @@ the blurbs marked `no` are removed from front matter. Nothing else moves.
 
 - Headline (current): A keyboard-first calendar for Obsidian.
 - Node blurb (current): A modal, vim-inspired calendar editor for Obsidian.
-- Proposed: A modal, vim-inspired Calendar Plugin for Obsidian. Musophobes can now have calendars too. Daily, weekly, and monthly views supported across desktop and mobile, all backed by plaintext events.
+- Proposed: A modal, vim-inspired Calendar Plugin for Obsidian. Musophobes can now keep calendars too. Daily, weekly, and monthly views supported across desktop and mobile, all backed by plaintext events.
 - Keep blurb: no
 
 ## 07 Vim Map

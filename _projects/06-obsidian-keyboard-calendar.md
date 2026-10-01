@@ -2,7 +2,7 @@
 project-title: "Keyboard Calendar"
 project-type: "Software - Obsidian Plugin - TypeScript"
 project-status: "Active - Daily Use"
-project-headline: "A modal, vim-inspired Calendar Plugin for Obsidian. Musophobes can now have calendars too. Daily, weekly, and monthly views supported across desktop and mobile, all backed by plaintext events."
+project-headline: "A modal, vim-inspired Calendar Plugin for Obsidian. Musophobes can now keep calendars too! Daily, weekly, and monthly views supported across desktop and mobile, all backed by plaintext events."
 github: obsidian-keyboard-calendar
 tags:
   - "all"
