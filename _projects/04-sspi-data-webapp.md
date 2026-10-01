@@ -33,10 +33,4 @@ arc:
       span: "Jul 2024 – Dec 2025"
       note: "Primary work again at IRLE: the ETL pipeline, CLI, CI/CD, and the public site."
 ---
-The platform behind sspi.world: a metadata-driven ETL pipeline that pulls from 25 statistical organizations, scores the SSPI, imputes gaps, and serves it through a Flask API, a Click CLI, and JavaScript charts. I built it from 2023 to 2025, my first engineering project, with about fifteen Berkeley student contributors. About 3,300 of the commits are mine, and none before 2026 carries an agent co-author trailer.
-
-* The pipeline runs in five stages: collect, clean, compute, impute, finalize. It covers 183 datasets, and each imputed observation records its method and distance from observed data.
-* I refactored 51 per-indicator Flask routes into one generic route over a decorator registry. The index definition is committed as YAML, and a scoring function's parameter names declare its dependencies.
-* The index originally covered 49 pre-selected countries. It now collects every country its sources report, and over 70 exceed 80% coverage.
-* A tag-triggered GitHub Actions release runs the tests, builds a checksum-verified tarball, and swaps a symlink over SSH.
-* In 2024 contributor PRs waited months while I was the only merge path, so I handed first-pass review to a second reviewer.
+The platform behind sspi.world: a metadata-driven ETL pipeline that pulls from 25 statistical organizations, scores the SSPI, imputes gaps, and serves it through a Flask API, a Click CLI, and JavaScript charts. I built it from 2023 to 2025 with the help of about fifteen Berkeley undergraduate research apprentices. About 3,300 of the commits are mine.

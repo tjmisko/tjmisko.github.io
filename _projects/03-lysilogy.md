@@ -13,9 +13,16 @@ arc:
     sub: "Preprocess Scientific Papers to Prepare Supporting Content"
     span: "Aug 2026 – Present"
 ---
-Lysilogy points at a folder of scientific PDFs. A Rust backend extracts each with Poppler, shells out to a local coding-agent CLI for a typed analysis, and serves a keyboard-driven React reader with four levels: Abstract, Overview, Glossary, Text.
+Lysilogy consumes a directory of scientific PDFs. A Rust backend extracts each with Poppler, shells out to a local coding-agent CLI for a typed analysis, and serves a keyboard-driven React reader with four progressive levels of detail: 
 
-* A model-proposed quotation becomes a highlight only if it is located in the PDF's word geometry. Ambiguous or missing matches yield no highlight.
-* A source note is shown only if every URL it cites resolves.
-* One outbound-fetch gate serves model-cited and user-pasted URLs. It rejects private and reserved addresses and walks redirects manually.
-* A blind A/B lane tests prompt changes against a promotion rule I specified before any data existed. The tested treatment was not promoted.
+1. **Abstract**: Provides the extracted abstract, a complementary generated summary, and 
+2. **Overview**: See a sectioned view of the PDF from above, visually showing where and how long the authors spend on claims. Pop into any section to see its text side-by-side with a summary. Find and read the key sections fast.
+3. **Glossary**: Definitions for the key technical terms a reader might be unfamiliar with.
+4. **Full Text**: Read the full text without distractions, with built-in, context-rich answers to questions that come up during reading.
+
+## Technical Details
+* Rust backend, React frontend. An Axum/Tokio server handles discovery, PDF extraction, persistence and job state. A React + TypeScript reader built on pdf.js provides keyboard-first, vim-style navigation.
+* Agents run as sandboxed CLI subprocesses. Codex or Claude Code run as read-only subprocesses with only the tools each task needs. The backend owns all progress and state, and each concurrent analysis stage is cached under a key built from the prompt, schema, source, provider and model, so retries only rerun what failed.
+* Multi-stage pipeline with independent review. Orientation, structural mapping and historical context run in parallel. Context goes research → writer → reviewer: writer only sees frozen evidence, and a separate model pass checks whether claims are supported, in the right order, and useful.
+* Provenance checked in code. Quoted abstracts and AI highlights must exactly match spans in Poppler-extracted text with token coordinates. Every cited URL must pass DNS, redirect, public-address and HTTP checks, and one failed citation withholds the whole note.
+* Built-in agent evaluations. A blind A/B harness changes one prompt variable at a time while the paper, model and schema stay fixed. Ramps are scored before the arms are revealed, and the results are rolled up into Markdown reports.
