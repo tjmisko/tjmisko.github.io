@@ -14,12 +14,14 @@ arc:
     sub: "Agent-Session Switcher"
     span: "Feb 2026 – Present"
 ---
-Switchboard is a Go daemon that finds each running coding-agent session on my desktop, works out its terminal window, and publishes a status file. The status bar shows one chip per session, and clicking it jumps there.
+Switchboard is an agent status bar that makes agent sessions viewable at a glance and navigable at a single keystroke across providers from anywhere on your machine. A Go daemon discovers coding agents by managing processes, collects hook events emited by agents to compute live status (working, idle, needs permission), and publishes a status file consumed by the status bar.
 
-* A once-a-second scan of `/proc` is the source of truth, so sessions need no registration. Claude Code hooks add status color, and the daemon works without them.
-* The process-to-window join spans process table, terminal multiplexer, and compositor, anchored on the controlling TTY, and fails closed on zero or multiple matches.
-* Death detection uses `pidfd_open` and `poll`, backed by a reconciler sweep because a restart orphans the pidfds. Both were agent proposals I approved.
-* I had the Bash/Lua prototype rebuilt in Go after reading its single-writer FIFO daemon as a mutex reimplemented in shell.
-* CI runs `go test -race` on amd64 and arm64, and the deploy script rolls back unless the running process reports the intended revision.
+I've been using this tool daily since June, with 300-700+ navigation events handled by Switchboard on coding-agent heavy days. I'm the sole user for now, but work is ongoing toward making the code cross platform, release ready.
 
-Linux only, one user, running daily as a systemd unit.
+## Technical Details
+* Scans `/proc` at 1 Hz to establish ground truth about running agent processes. Sessions need no registration: the daemon discovers them whenever they become live.
+* Status hooks emited by agents throughout their lifecycle provide the status information. Agents are modeled as a state machine, with events corresponding to transition edges.
+* Process-to-window join spans the process table, terminal / terminal multiplexer, compositor, and window manager, all anchored on the controlling `tty` of the agent process. Defaults to no-op if a navigation destination cannot be established.
+* Death detection uses `pidfd_open` and `poll`, backed by a reconciler sweep because restarts orphan `pidfd`s.
+* The agent lifecycle event stream and user window focus events are optionally persisted to serve a dashboard, which shows usage patterns, tracks agent interruptions, and documents the time spent steering agents to provide users feedback.
+* Built with coding agents, designed and heavily steered by me when necessary.
