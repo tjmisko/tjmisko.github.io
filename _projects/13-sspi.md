@@ -21,7 +21,7 @@ arc:
   span: "Aug 2020 – Aug 2023"
   parts:
     - start: 2020.5
-      label: "Research Apprentice @ IRLE"
+      label: "Research Apprentice"
       span: "Aug 2020 – Aug 2021"
       blurb: "Collected, documented, and validated indicator data for the SSPI."
     - start: 2021.5

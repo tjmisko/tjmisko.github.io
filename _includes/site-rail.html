@@ -7,8 +7,9 @@
   copy is hidden and one at the top of the Home section shows instead.
 
   Sections are listed here by hand, in page order; each href is a card id in
-  home.html. Current Work is a section only on a narrow screen (#work-card),
-  so its entry is only shown there.
+  home.html. Current Work is a section only where the chart has no room for its
+  panel (#work-card), so its entry is only shown there (.site-rail-item--work in
+  arc.scss).
 {%- endcomment -%}
 <nav class="site-rail" aria-label="Sections">
   {% include resume-button.html class="resume-button--rail" %}
@@ -16,7 +17,7 @@
     {%- assign rail = "greeting-card:Home,arc-card:Trajectory,work-card:Current Work,skills-card:Skills,projects-card:Portfolio" | split: "," -%}
     {%- for entry in rail -%}
       {%- assign parts = entry | split: ":" -%}
-    <li{% if parts[0] == "work-card" %} class="is-narrow-only"{% endif %}>
+    <li{% if parts[0] == "work-card" %} class="site-rail-item--work"{% endif %}>
       <a class="site-rail-link" href="#{{ parts[0] }}" data-section="{{ parts[0] }}" aria-label="{{ parts[1] }}">
         <span class="site-rail-label">{{ parts[1] }}</span>
         <span class="site-rail-dot" aria-hidden="true"></span>

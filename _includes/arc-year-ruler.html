@@ -47,6 +47,9 @@ tick carries both forms and CSS shows one, and the odd years' ticks are
          calendar; pass a literal only for a grid whose columns are fixed.
   narrow_origin — the first year on the narrow scale. Defaults to 2018 for the
          toolchain matrix; the work chart passes 2020.
+
+2020's tick and rule carry .is-origin: the wide work chart drops its first
+half-year at its tightest desktop width, and the year's label has to go with it.
 {%- endcomment -%}
 {%- assign last_year = include.last | default: 2026 -%}
 {%- assign narrow_origin = include.narrow_origin | default: 2018 -%}
@@ -63,7 +66,7 @@ tick carries both forms and CSS shows one, and the odd years' ticks are
 <div class="arc-ruler-tick is-narrow-only" style="--m0: {{ year_line }};">{{ year_label }}</div>
     {%- endif -%}
   {%- else -%}
-<div class="arc-rule" style="grid-column: {{ year_col }}; grid-row: 2 / {{ include.end }}; --m0: {{ year_line }};"></div>
-<div class="arc-ruler-tick{% if odd_year == 1 %} is-narrow-only{% endif %}" style="grid-column: {{ year_col }}; --m0: {{ year_line }};">{{ year_label }}</div>
+<div class="arc-rule{% if y == 2020 %} is-origin{% endif %}" style="grid-column: {{ year_col }}; grid-row: 2 / {{ include.end }}; --m0: {{ year_line }};"></div>
+<div class="arc-ruler-tick{% if odd_year == 1 %} is-narrow-only{% endif %}{% if y == 2020 %} is-origin{% endif %}" style="grid-column: {{ year_col }}; --m0: {{ year_line }};">{{ year_label }}</div>
   {%- endif -%}
 {%- endfor -%}

@@ -1,0 +1,17 @@
+{%- comment -%}
+The length, in characters, of a title's longest word: what a chip's lettering
+needs to know to find the largest type size at which no word has to be cut (see
+"Titles sized to fit" in arc.scss). Emitted as --fit on the chip or section.
+
+  text   the title, as written in front matter (entities and all)
+
+Entities are decoded first so "&amp;" counts as the one character it draws.
+{%- endcomment -%}
+{%- assign fit_text = include.text | replace: "&amp;", "&" | replace: "&middot;", "·" | replace: "&nbsp;", " " | strip_html -%}
+{%- assign fit_longest = 1 -%}
+{%- assign fit_words = fit_text | split: " " -%}
+{%- for fit_word in fit_words -%}
+  {%- assign fit_n = fit_word | size -%}
+  {%- if fit_n > fit_longest -%}{%- assign fit_longest = fit_n -%}{%- endif -%}
+{%- endfor -%}
+{{- fit_longest -}}

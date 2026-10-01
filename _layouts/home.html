@@ -77,8 +77,10 @@ layout: default
     <div class="arc-view" id="arc-view-work" role="tabpanel" aria-labelledby="arc-tab-work">
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
-          <div class="arc-lanes"
-               style="grid-template-columns: 104px repeat({{ work_cols }}, 1fr) 18px 220px;">
+          {%- comment -%}The column template is in arc.scss (.arc-lanes--work), which
+          redraws it per width; only the half-year count comes from here.{%- endcomment %}
+          <div class="arc-lanes arc-lanes--work"
+               style="--arc-cols: {{ work_cols }}; --arc-cols-tail: {{ work_cols | minus: 1 }};">
             {%- comment -%}Rows are 1 ruler + 7 content, so the rules run to
             line 9.{%- endcomment -%}
             {%- include arc-year-ruler.html end=9 last=work_last_year narrow_origin=2020 -%}
