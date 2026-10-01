@@ -801,13 +801,24 @@ p, ul {
   position: relative;
   height: clamp(338px, 40vh, 350px);
   perspective: 1600px;
+  // Clip, not hide. `hidden` still makes a scroll container, and the rows turned
+  // away below the deck give it something to scroll to: anything that brings an
+  // element inside into view (focus, find-in-page, a script) could shift the
+  // whole deck up and leave the cards' tops cut off under the heading. `clip`
+  // draws the same edge with nothing behind it to scroll. `hidden` stays first as
+  // the fallback where clip isn't supported, and the rolodex script resets any
+  // scroll that gets through there.
   overflow: hidden;
+  overflow: clip;
 }
 .rolodex--ready .rolodex-row {
   position: absolute;
   // Small vertical inset so a card's hover/focus lift (translateY(-3px)) and
   // its shadow aren't clipped by the deck's overflow: hidden.
   inset: 10px 0;
+  // Leave room for the rightmost card's hover shadow beside the track.
+  padding-right: 12px;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(var(--cpr, 3), minmax(0, 1fr));
   gap: 15px;
@@ -830,7 +841,13 @@ p, ul {
   pointer-events: auto;
   z-index: 2;
 }
-.rolodex--ready .rolodex-row .project-card { height: 100%; overflow: hidden; }
+// Clipped for the same reason as the deck: a face is a fixed height, and its
+// copy must never be scrollable inside it by a focused link.
+.rolodex--ready .rolodex-row .project-card {
+  height: 100%;
+  overflow: hidden;
+  overflow: clip;
+}
 // Headline size is fitted by the rolodex script (fitHeadlines in home.html): the
 // largest size at which every card's text still fits its fixed-height face, so
 // the copy fills the box without overflowing. The full text is in the modal.
@@ -1480,4 +1497,3 @@ html.using-keyboard .project-card:focus-visible,
 .email-link {
   color :$homepage-accent-color;
 }
-

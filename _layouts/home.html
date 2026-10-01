@@ -1696,6 +1696,13 @@ layout: default
     // which would take the page's scroll away from a finger on the card.
     if (window.addSwipe) window.addSwipe(deck, (dir) => step(dir, false), () => touchNav.matches);
 
+    // The deck is overflow: clip and can't scroll. Where clip is unsupported it
+    // falls back to hidden, which can — so put back any scroll that happens, or
+    // the row slides up and the cards' tops are cut off under the heading.
+    deck.addEventListener("scroll", () => {
+      if (deck.scrollTop || deck.scrollLeft) { deck.scrollTop = 0; deck.scrollLeft = 0; }
+    }, { passive: true });
+
     buildRows();
     rolodex.classList.add("rolodex--ready");
     if (prefersReducedMotion) rolodex.classList.add("rolodex--no-motion");
