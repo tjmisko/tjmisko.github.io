@@ -720,6 +720,16 @@ $arc-fit-size: unquote("max(0.5rem, min(1em, (100cqi - var(--fit) * 0.5px) / (va
   padding: 11px 6px;
   align-self: center;
 }
+// The software minis are the side projects (rows 6 and 8): small work on the
+// way into computing, drawn under sspi.world rather than level with it. At the
+// full 11px a 19px glyph made those rows 47px against sspi.world's 49 and the
+// three read as equals; 6px takes each down to 37 so the platform is the band's
+// weight. Wide chart only — the narrow one sets its own mini padding to fit its
+// fixed half-year rows. The child combinator keeps the Current Work panel's
+// minis, which sit inside .arc-node-minis, at full size.
+@media screen and (min-width: 701px) {
+  .arc-lanes--work > .arc-chip--mini.arc-chip--software { padding: 6px; }
+}
 // ---- Hover popovers --------------------------------------------------------
 // Every item on the chart carries one: its dates and a one-line description,
 // the summary a click expands into the full detail modal. Full-size chips leave
