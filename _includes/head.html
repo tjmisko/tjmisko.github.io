@@ -6,6 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  {%- comment -%}The site is dark-only. color-scheme says so to the browser, so
+  its own controls and scrollbars render dark; darkreader-lock tells Dark Reader
+  to leave the page alone, since its guess at whether a page is already dark
+  sometimes misses and lightens the card faces under light text.{%- endcomment %}
+  <meta name="color-scheme" content="dark">
+  <meta name="darkreader-lock">
 
   {%- seo -%}
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
