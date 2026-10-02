@@ -1896,7 +1896,9 @@ layout: default
 {%- comment -%}One viewer for every PDF the site links to: the resume from the
 hero button, the papers from the cards in the portfolio. Title, source and both
 fallback links are filled in by whatever opened it, so nothing here names a
-document.{%- endcomment -%}
+document. The single-file build has no PDFs to show, and pdfViewer() bows out
+when this is missing.{%- endcomment -%}
+{%- unless site.single_file -%}
 <div class="pdf-modal-parent" id="pdf-modal" role="dialog" aria-modal="true" aria-label="Document" aria-hidden="true">
   <div class="pdf-modal">
     <div class="pdf-modal-header">
@@ -1913,3 +1915,4 @@ document.{%- endcomment -%}
     <div class="pdf-modal-frame" role="document" tabindex="0"></div>
   </div>
 </div>
+{%- endunless -%}

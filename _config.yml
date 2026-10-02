@@ -107,3 +107,4 @@ exclude:
   - vendor/cache/
   - vendor/gems/
   - vendor/ruby/
+  - _dist # script/single-file's build and output

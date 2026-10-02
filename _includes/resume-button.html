@@ -6,7 +6,12 @@
   section instead, where it scrolls away with it — so the file is named once.
 
     class   resume-button--rail | resume-button--hero (see home.scss)
+
+  Left out of the single-file build (script/single-file), which goes where the
+  resume has already been handed over separately.
 {%- endcomment -%}
+{%- unless site.single_file -%}
 <button class="resume-button {{ include.class }}" type="button" aria-haspopup="dialog"
         data-pdf="/resume.pdf?v=2026-07-30" data-pdf-title="Resume"
         data-pdf-download="resume.pdf">Resume</button>
+{%- endunless -%}

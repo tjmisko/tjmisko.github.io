@@ -1,0 +1,5 @@
+# Layered over _config.yml by script/single-file, which builds the site into one
+# self-contained HTML file for upload to portals that take a portfolio as a file.
+# Templates check this flag to leave out what can't travel in that file: the
+# resume button and the PDF viewer behind it, and the PDF links on the cards.
+single_file: true

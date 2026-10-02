@@ -1,0 +1,312 @@
+#!/usr/bin/env python3
+"""Build the site as one self-contained HTML file.
+
+    script/single-file [--out PATH] [--no-build]
+
+For portals that take a portfolio as an uploaded file rather than a link. Runs
+a production Jekyll build with _config.single-file.yml layered on top (which
+drops the resume button, the PDF viewer, and the cards' PDF links), then folds
+everything the home page loads into index.html:
+
+  - the stylesheet, as a <style> block
+  - its fonts, subset to the characters the page uses and re-encoded as WOFF2
+    data URIs (the full set is ~5MB; the subset is a small fraction of that)
+  - the social-icon sprite, as an inline <svg> of just the symbols in use
+  - the SVG favicon, as a data URI (the PNG/ICO icons and manifest are dropped)
+
+Links to other files on the site are made absolute, so they go to the live
+site. The build fails if anything local is left unresolved, if a script or
+stylesheet would still load from elsewhere, or if the file is over the size
+limit.
+
+Needs Ruby/Bundler for Jekyll, and fontTools with brotli for the fonts.
+"""
+
+import argparse
+import base64
+import html
+import io
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+from fontTools import subset
+from fontTools.ttLib import TTFont
+
+REPO = Path(__file__).resolve().parent.parent
+BUILD_DIR = REPO / "_dist" / "site"
+OUT_DEFAULT = REPO / "_dist" / "tristan-misko-portfolio.html"
+SPRITE_PATH = "/assets/minima-social-icons.svg"
+SPRITE_ID_PREFIX = "icon-"
+# Ashby's portfolio upload; decimal megabytes, to stay clear of either reading.
+SIZE_LIMIT_BYTES = 5_000_000
+
+# Always kept in the font subsets, whether or not the page uses them today:
+# printable ASCII, Latin-1, and the common punctuation and arrows.
+UNICODES_BASELINE = (
+    set(range(0x20, 0x7F))
+    | set(range(0xA0, 0x100))
+    | set(range(0x2010, 0x2028))
+    | set(range(0x2030, 0x203B))
+    | set(range(0x2190, 0x219A))
+)
+
+
+def fail(message):
+    print(f"single-file: {message}", file=sys.stderr)
+    sys.exit(1)
+
+
+def site_url_read():
+    config = (REPO / "_config.yml").read_text()
+    match = re.search(r"^url:\s*(\S+)", config, re.MULTILINE)
+    if not match:
+        fail("no url: in _config.yml to point links at")
+    return match.group(1).rstrip("/")
+
+
+def jekyll_build():
+    command = [
+        "bundle", "exec", "jekyll", "build",
+        "--config", "_config.yml,_config.single-file.yml",
+        "--destination", str(BUILD_DIR),
+    ]
+    env = {**os.environ, "JEKYLL_ENV": "production"}
+    result = subprocess.run(command, cwd=REPO, env=env)
+    if result.returncode != 0:
+        fail("jekyll build failed")
+
+
+def attribute_get(tag, name):
+    match = re.search(rf'\b{name}\s*=\s*"([^"]*)"', tag)
+    return match.group(1) if match else None
+
+
+def is_local(url):
+    """A reference to a file of the site's own, rather than to another site,
+    a fragment of this page, or inline data."""
+    if url == "" or url.startswith("#") or url.startswith("//"):
+        return False
+    return re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", url) is None
+
+
+def built_path(url):
+    path = url.split("#", 1)[0].split("?", 1)[0]
+    return BUILD_DIR / path.lstrip("/")
+
+
+def data_uri(mime, data):
+    return f"data:{mime};base64,{base64.b64encode(data).decode('ascii')}"
+
+
+# ---- fonts -------------------------------------------------------------------
+
+def unicodes_used(*texts):
+    unicodes = set(UNICODES_BASELINE)
+    for text in texts:
+        unicodes.update(ord(c) for c in html.unescape(text))
+        # Characters that only appear escaped: \u2192 or \u{1F600} in scripts,
+        # \2192 in CSS content.
+        for match in re.finditer(r"\\u\{([0-9a-fA-F]{1,6})\}|\\u([0-9a-fA-F]{4})", text):
+            unicodes.add(int(match.group(1) or match.group(2), 16))
+        for match in re.finditer(r"\\([0-9a-fA-F]{1,6})", text):
+            unicodes.add(int(match.group(1), 16))
+    return {u for u in unicodes if u >= 0x20 and u <= 0x10FFFF}
+
+
+def font_subset_woff2(path, unicodes):
+    font = TTFont(path)
+    options = subset.Options()
+    options.layout_features = ["*"]
+    options.hinting = False
+    options.desubroutinize = True
+    options.drop_tables += ["FFTM"]  # FontForge timestamps; unsubsettable
+    subsetter = subset.Subsetter(options)
+    subsetter.populate(unicodes=unicodes)
+    subsetter.subset(font)
+    font.flavor = "woff2"
+    buffer = io.BytesIO()
+    font.save(buffer)
+    return buffer.getvalue()
+
+
+def css_fonts_inline(css, css_dir, unicodes):
+    """Point every @font-face at one subset WOFF2 data URI, built from the
+    face's WOFF2 source if it lists one, else its first."""
+    stats = {"faces": 0, "bytes_before": 0, "bytes_after": 0}
+    font_cache = {}
+
+    def face_rewrite(face_match):
+        face = face_match.group(0)
+        src_match = re.search(r"src\s*:\s*([^;}]+)", face)
+        if not src_match:
+            return face
+        urls = re.findall(r"""url\(\s*['"]?([^'")]+?)['"]?\s*\)""", src_match.group(1))
+        urls = [u for u in urls if is_local(u)]
+        if not urls:
+            return face
+        source = next((u for u in urls if u.split("?")[0].endswith(".woff2")), urls[0])
+        font_path = (css_dir / source.split("?")[0].split("#")[0]).resolve()
+        if not font_path.is_file():
+            fail(f"font not found: {font_path}")
+        if font_path not in font_cache:
+            font_cache[font_path] = font_subset_woff2(font_path, unicodes)
+            stats["bytes_before"] += font_path.stat().st_size
+            stats["bytes_after"] += len(font_cache[font_path])
+        stats["faces"] += 1
+        src = f'src: url({data_uri("font/woff2", font_cache[font_path])}) format("woff2")'
+        return face[:src_match.start()] + src + face[src_match.end():]
+
+    css = re.sub(r"@font-face\s*\{[^}]*\}", face_rewrite, css)
+    return css, stats
+
+
+# ---- page --------------------------------------------------------------------
+
+def links_inline(page, css_for):
+    """Fold the <link>s the page loads into it: the stylesheet becomes a
+    <style>, the SVG favicon a data URI, and the other icons and the manifest
+    go, since a file on disk has no use for them."""
+
+    def link_rewrite(match):
+        tag = match.group(0)
+        rel = (attribute_get(tag, "rel") or "").lower().split()
+        href = attribute_get(tag, "href") or ""
+        if not is_local(href):
+            return tag
+        if "stylesheet" in rel:
+            return f"<style>\n{css_for(href)}\n</style>"
+        if "icon" in rel and href.endswith(".svg"):
+            svg = built_path(href).read_bytes()
+            return f'<link rel="icon" type="image/svg+xml" href="{data_uri("image/svg+xml", svg)}">'
+        if {"icon", "apple-touch-icon", "manifest"} & set(rel):
+            return ""
+        return tag
+
+    return re.sub(r"<link\b[^>]*>", link_rewrite, page)
+
+
+def sprite_inline(page):
+    """Swap <use> references into the external icon sprite for an inline copy
+    of the symbols they name, ids prefixed so they can't meet the page's."""
+    reference = re.compile(rf'((?:xlink:)?href=")(?:{re.escape(SPRITE_PATH)})#([\w-]+)"')
+    names = sorted({m.group(2) for m in reference.finditer(page)})
+    if not names:
+        return page
+    if f'id="{SPRITE_ID_PREFIX}' in page:
+        fail(f'the page already has ids starting "{SPRITE_ID_PREFIX}"; pick another SPRITE_ID_PREFIX')
+    sprite = built_path(SPRITE_PATH).read_text()
+    symbols = []
+    for name in names:
+        # First definition wins, as it would in the browser.
+        symbol = re.search(rf'<symbol\b[^>]*\bid="{re.escape(name)}".*?</symbol>', sprite, re.DOTALL)
+        if not symbol:
+            fail(f"icon #{name} is not in {SPRITE_PATH}")
+        symbols.append(symbol.group(0).replace(f'id="{name}"', f'id="{SPRITE_ID_PREFIX}{name}"', 1))
+    page = reference.sub(lambda m: f'{m.group(1)}#{SPRITE_ID_PREFIX}{m.group(2)}"', page)
+    sprite_inline_svg = (
+        '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="0" height="0"'
+        ' style="position:absolute;overflow:hidden">' + "".join(symbols) + "</svg>"
+    )
+    page, count = re.subn(r"<body\b[^>]*>", lambda m: m.group(0) + sprite_inline_svg, page, count=1)
+    if count != 1:
+        fail("no <body> to put the icon sprite in")
+    return page
+
+
+SCRIPT_ELEMENT = re.compile(r"(<script\b[^>]*>.*?</script>)", re.DOTALL | re.IGNORECASE)
+
+
+def markup_map(page, transform):
+    """Apply transform to the page outside its <script> elements, whose code
+    builds markup of its own (href="' + url + '") that is not to be touched."""
+    parts = SCRIPT_ELEMENT.split(page)
+    return "".join(part if i % 2 else transform(part) for i, part in enumerate(parts))
+
+
+def links_absolutize(page, site_url):
+    """Whatever markup still points at a file of the site's own goes to the
+    live site."""
+
+    def rewrite(match):
+        attribute, url = match.group(1), match.group(2)
+        if not is_local(url):
+            return match.group(0)
+        url = url[2:] if url.startswith("./") else url.lstrip("/")
+        return f'{attribute}="{site_url}/{url}"'
+
+    return markup_map(page, lambda part: re.sub(r'\b((?:xlink:)?href|src)="([^"]*)"', rewrite, part))
+
+
+def problems_find(page):
+    problems = []
+    markup = "".join(SCRIPT_ELEMENT.split(page)[::2])
+    for match in re.finditer(r'\b((?:xlink:)?href|src|srcset|poster|data)="([^"]*)"', markup):
+        if is_local(match.group(2)):
+            problems.append(f'local reference left: {match.group(1)}="{match.group(2)}"')
+    for match in re.finditer(r"""url\(\s*['"]?([^'")\s]*)""", markup):
+        if is_local(match.group(1)):
+            problems.append(f"local url() left: {match.group(1)}")
+    for match in re.finditer(r"<script\b[^>]*\bsrc=[^>]*>", page):
+        problems.append(f"script still loaded from elsewhere: {match.group(0)}")
+    for match in re.finditer(r"<link\b[^>]*>", page):
+        if "stylesheet" in (attribute_get(match.group(0), "rel") or ""):
+            problems.append(f"stylesheet still loaded from elsewhere: {match.group(0)}")
+    if re.search(r"@import\b", page):
+        problems.append("CSS @import left in the page")
+    return problems
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument("--out", type=Path, default=OUT_DEFAULT, help=f"where to write (default {OUT_DEFAULT.relative_to(REPO)})")
+    parser.add_argument("--no-build", action="store_true", help="reuse the last Jekyll build in _dist/site")
+    args = parser.parse_args()
+
+    if not args.no_build:
+        jekyll_build()
+    index_path = BUILD_DIR / "index.html"
+    if not index_path.is_file():
+        fail(f"no {index_path.relative_to(REPO)}; run without --no-build")
+
+    site_url = site_url_read()
+    page = index_path.read_text()
+    font_stats = {"faces": 0, "bytes_before": 0, "bytes_after": 0}
+
+    def css_for(href):
+        css_path = built_path(href)
+        css = css_path.read_text()
+        css = re.sub(r"/\*# sourceMappingURL=[^*]*\*/", "", css)
+        if re.search(r"</style", css, re.IGNORECASE):
+            fail(f"{href} contains </style and can't be inlined as is")
+        css, stats = css_fonts_inline(css, css_path.parent, unicodes_used(page, css))
+        for key in font_stats:
+            font_stats[key] += stats[key]
+        return css
+
+    page = links_inline(page, css_for)
+    page = sprite_inline(page)
+    page = links_absolutize(page, site_url)
+
+    problems = problems_find(page)
+    if problems:
+        fail("the page isn't self-contained:\n  " + "\n  ".join(problems))
+
+    data = page.encode("utf-8")
+    if len(data) > SIZE_LIMIT_BYTES:
+        fail(f"{len(data):,} bytes is over the {SIZE_LIMIT_BYTES:,}-byte limit")
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_bytes(data)
+
+    print(
+        f"single-file: wrote {args.out} ({len(data) / 1e6:.2f} MB); "
+        f"{font_stats['faces']} font faces, "
+        f"{font_stats['bytes_before'] / 1e6:.2f} MB of fonts subset to "
+        f"{font_stats['bytes_after'] / 1e6:.2f} MB"
+    )
+
+
+if __name__ == "__main__":
+    main()

@@ -22,8 +22,9 @@ degree opens the same card format a project does.
                 {%- comment -%}pdf-link hands the file to the page's own viewer
                 rather than to the browser, which is as likely to drop a PDF in
                 Downloads as to show it. The href stays a real link underneath,
-                for a modified click and for no-JS.{%- endcomment -%}
-                {%- if include.p.pdf -%}<li><a class="pdf-link" rel="me" href="./{{ include.p.pdf }}.pdf" target="_blank" title="{{ include.p.pdf | escape }}" data-pdf-title="{{ include.p.project-title | escape }}" data-pdf-download="{{ include.p.pdf }}.pdf"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#pdf' | relative_url }}"></use></svg></a></li>{%- endif -%}
+                for a modified click and for no-JS. The single-file build
+                carries no PDFs, so it drops the link.{%- endcomment -%}
+                {%- if include.p.pdf and site.single_file != true -%}<li><a class="pdf-link" rel="me" href="./{{ include.p.pdf }}.pdf" target="_blank" title="{{ include.p.pdf | escape }}" data-pdf-title="{{ include.p.project-title | escape }}" data-pdf-download="{{ include.p.pdf }}.pdf"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#pdf' | relative_url }}"></use></svg></a></li>{%- endif -%}
                 {%- if include.p.html -%}<li><a rel="me" href="./{{ include.p.html }}.html" target="_blank" title="{{ include.p.html | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#html' | relative_url }}"></use></svg></a></li>{%- endif -%}
                 {%- if include.p.website -%}<li><a rel="me" href="https://{{ include.p.website | escape }}" target="_blank" title="{{ include.p.website | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#website' | relative_url }}"></use></svg></a></li>{%- endif -%}
                 {%- if include.p.google-drive -%}<li><a rel="me" href="https://drive.google.com/drive/{{ include.p.google-drive | escape }}" target="_blank" title="https://drive.google.com/drive/{{ include.p.google-drive  | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#google-drive' | relative_url }}"></use></svg></a></li>{%- endif -%}
