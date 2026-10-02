@@ -18,6 +18,7 @@ arc:
 ---
 A freelance job turning a Pomera DM250, a small ARM writing gadget, into a dual-boot device running a minimal Debian writing environment with Chinese input, neither of which the stock device offers.
 
+## Technical Details
 * Debian armhf and its packages run as a dual-boot OS on the embedded ARM device.
 * Chinese input works through Pinyin and ibus, with room for more input methods.
 * The writing UI is i3, xfce4-terminal, nano, and custom Bash scripts, to the client's specification.

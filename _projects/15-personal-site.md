@@ -2,7 +2,7 @@
 project-title: "tjmisko.github.io"
 project-type: "Web Development - Front End - Jekyll, SCSS & JavaScript"
 project-status: "Built 2022 - Rebuilt 2026 - Live"
-project-headline: "The 2022 version of this site, written on a Jekyll Minima fork."
+project-headline: "The 2022 version of this site, as a Jekyll Minima fork."
 project-collaborators: "Jennifer Tachibana"
 github: tjmisko.github.io
 tags:
@@ -18,10 +18,4 @@ arc:
   sub: "Personal site · Jekyll · JS"
   span: "Sep – Dec 2022"
 ---
-I started this site in autumn 2022 on a fork of Jekyll's Minima theme and wrote that version myself. It was rebuilt in 2026 as a single page by coding agents under my direction, including the Trajectory chart, which is generated from each project's front matter.
-
-The 2022 version had three pieces of my own JavaScript.
-
-* Bar charts were drawn directly against the DOM, before I used a charting library.
-* Draggable, sortable elements reshuffled live on drop, animated with GreenSock.
-* A browser time tracker prototype ran over exported Google Calendar `.ics` data, with category rollups and a draggable plot.
+I started this site in autumn 2022 as a fork of Jekyll's Minima theme. The current iteration is up to date as of October 1, 2026.

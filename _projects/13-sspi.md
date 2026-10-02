@@ -31,6 +31,7 @@ arc:
 ---
 The SSPI is a composite index of national policy across sustainability, market structure, and public goods: 57 indicators across 49 countries at the time. I joined the IRLE team as a research apprentice in 2020 and led it from 2021 to 2023.
 
+## Details
 * Led three teams of about six undergraduates each through data collection, documentation, validation, and robustness checks.
 * Set the collection and validation standards and started the data-handling work that became sspi.world.
 * Tested score robustness to normalization, weighting, and composition choices with sensitivity tests, principal components analysis, and Cronbach's alpha.
