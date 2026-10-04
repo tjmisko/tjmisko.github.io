@@ -956,6 +956,20 @@ layout: default
       content.appendChild(panels);
       const tabButtons = Array.from(tabs.children);
 
+      // The open group is remembered for the tab's session, so a reload or a
+      // trip back from another page finds the same group. Storage can be
+      // missing or refuse (a private window); then it is simply the first.
+      const STORE_KEY = "skills-group";
+      const recall = () => {
+        try {
+          const i = Number(sessionStorage.getItem(STORE_KEY));
+          return Number.isInteger(i) && i >= 0 && i < groups.length ? i : 0;
+        } catch (_) { return 0; }
+      };
+      const remember = (i) => {
+        try { sessionStorage.setItem(STORE_KEY, String(i)); } catch (_) {}
+      };
+
       // A group turned away is parked flat once it has finished turning, so
       // nothing sits at ninety degrees behind the column. Left rotated, it is
       // kept out of sight only by visibility and the panel's clip, and iOS
@@ -981,6 +995,7 @@ layout: default
           t.setAttribute("aria-selected", String(k === i));
           t.tabIndex = k === i ? 0 : -1;
         });
+        remember(i);
         // The first group shows where it stands on load; there is nothing to
         // turn from.
         if (!groups.some((g) => g.classList.contains("is-active"))) {
@@ -1047,7 +1062,7 @@ layout: default
         step(e.key === "ArrowRight" ? 1 : -1);
         tabButtons[current].focus();
       });
-      select(0);
+      select(recall());
 
       // Fits means the stacked section, heading included, clears the screen
       // with a little room to spare. The screen is the small viewport (svh): on
