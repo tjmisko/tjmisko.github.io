@@ -136,6 +136,13 @@ p, ul {
 @media screen and (max-width: $on-palm) {
   .homepage-card { padding: 0; }
 }
+// Where the page snaps (the query on html, above), the sections sit flush:
+// with the gap between them the snap points stood a screen and a bit apart,
+// so every page's travel was longer than the screen it replaced, and a fling
+// had a strip of nothing to come to rest over before the snap pulled it on.
+@media (min-height: 500px) and (prefers-reduced-motion: no-preference) {
+  .homepage-card { margin-bottom: 0; }
+}
 
 // Scroll-reveal utility: elements start faded + slightly lowered and settle
 // into place when `.is-visible` is added by the IntersectionObserver in
