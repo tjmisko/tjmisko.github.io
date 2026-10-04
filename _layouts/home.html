@@ -956,6 +956,23 @@ layout: default
       content.appendChild(panels);
       const tabButtons = Array.from(tabs.children);
 
+      // A group turned away is parked flat once it has finished turning, so
+      // nothing sits at ninety degrees behind the column. Left rotated, it is
+      // kept out of sight only by visibility and the panel's clip, and iOS
+      // lets both slip for a frame while the page scrolls past.
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const park = (group) => {
+        if (group.classList.contains("is-active")) return;
+        group.style.transition = "none";
+        group.classList.remove("is-prev", "is-next");
+        void group.offsetWidth;
+        group.style.transition = "";
+      };
+      panels.addEventListener("transitionend", (e) => {
+        if (e.propertyName !== "transform" || e.target.parentNode !== panels) return;
+        park(e.target);
+      });
+
       // dir  which way the drum turns: +1 onward (the outgoing group leaves to
       //      the left), -1 back. Left out, it is the way the tabs read.
       let current = 0;
@@ -990,6 +1007,8 @@ layout: default
         incoming.classList.remove("is-prev", "is-next");
         incoming.classList.add("is-active");
         current = i;
+        // Without motion there is no turn to wait out, and no transitionend.
+        if (reduceMotion.matches) park(outgoing);
       };
       // The drum's axis stands half a column behind it, so its faces meet at
       // the column's edges as they turn.
@@ -1035,7 +1054,10 @@ layout: default
       // a phone the toolbar coming and going changes innerHeight on every
       // scroll, and the layout must not flip mid-scroll. The stack is measured
       // by switching back to it and out again in one go — no frame is painted
-      // in between, so nothing flickers.
+      // in between. The switch still counts as a style change, though, and
+      // would start every group's transition from its stacked look: the
+      // hidden groups would fade out in front of the open one. So the groups
+      // hold still (.is-still) until the switch is over.
       const FIT_MARGIN = 32;
       const probe = document.createElement("div");
       probe.style.cssText = "position:absolute;top:0;left:0;width:0;visibility:hidden;height:100vh;height:100svh;";
@@ -1045,10 +1067,13 @@ layout: default
         const w = container.clientWidth, h = probe.offsetHeight;
         if (w === lastW && h === lastH) return;
         lastW = w; lastH = h;
+        panels.classList.add("is-still");
         setTabbed(false);
         const stacked = container.offsetHeight;
         setTabbed(stacked > h - FIT_MARGIN);
         setPivot();
+        void panels.offsetWidth;
+        panels.classList.remove("is-still");
       };
       fit();
       if (document.fonts && document.fonts.ready) {

@@ -714,6 +714,9 @@ p, ul {
                 opacity var(--dur-reveal) var(--ease-out);
   }
 }
+// Held while the script measures the stack (fit() in home.html), so switching
+// layouts and back doesn't set the groups turning.
+.skills-panels.is-still > .skills-group { transition: none !important; }
 .skills-tab {
   all: unset;
   @include small-label(0.1em);
