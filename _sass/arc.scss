@@ -457,7 +457,8 @@ $arc-trim: 850px;
 // A chip that goes somewhere — a project's card, or a bar carrying a `link` —
 // says so the same way whichever it is, and a bar that goes nowhere still reads
 // as a bar. Anchors also take the chip's own color rather than the page's link
-// orange, which would break the family palette the chart is drawn in.
+// orange, which would break the family palette the chart is drawn in. Hover
+// outlines the chip in that family color too, not a neutral whitening.
 button.arc-chip,
 a.arc-chip { cursor: pointer; }
 a.arc-chip { color: $homepage-font-color; text-decoration: none; }
@@ -465,7 +466,7 @@ button.arc-chip:hover,
 button.arc-chip:focus-visible,
 a.arc-chip:hover,
 a.arc-chip:focus-visible {
-  border-color: rgba(225, 225, 225, 0.4);
+  border-color: var(--phase-edge, #{$arc-research});
   border-left-width: 3px;
 }
 // Color families carry domain relationships (there is no grouping box):
@@ -732,12 +733,15 @@ $arc-fit-size: unquote("max(0.5rem, min(1em, (100cqi - var(--fit) * 0.5px) / (va
 }
 // The side projects also drop the family's 3px left bar, on both charts: a
 // plain rounded box, so the orange edge is left to the work that carries it.
-// Hover lightens all four sides together instead of growing the bar back.
+// Hover colors all four sides together instead of growing the bar back.
 .arc-lanes--work > .arc-chip--mini.arc-chip--software {
   border-left-width: 1px;
   border-left-color: $arc-faint;
   &:hover,
-  &:focus-visible { border-left-color: rgba(225, 225, 225, 0.4); }
+  &:focus-visible {
+    border-left-width: 1px;
+    border-left-color: var(--phase-edge);
+  }
 }
 // ---- Hover popovers --------------------------------------------------------
 // Every item on the chart carries one: its dates and a one-line description,
@@ -1364,22 +1368,26 @@ $arc-fit-size: unquote("max(0.5rem, min(1em, (100cqi - var(--fit) * 0.5px) / (va
   strong { font-weight: 400; }
 }
 // Families keep their accent edge and lend the segment layer its colors:
-// a translucent fill for daily-driver phases, and the stripe color for the
-// occasional hatch.
+// a translucent fill for daily-driver phases, the stripe color for the
+// occasional hatch, and the full-strength edge a hovered bar or phase is
+// outlined in.
 .arc-chip--analysis {
   border-left-color: $arc-data;
   --seg-fill: rgba(110, 150, 185, 0.16);
   --seg-hatch: rgba(110, 150, 185, 0.25);
+  --seg-edge: #{$arc-data};
 }
 .arc-chip--language {
   border-left-color: $arc-software;
   --seg-fill: rgba(250, 130, 30, 0.13);
   --seg-hatch: rgba(250, 130, 30, 0.24);
+  --seg-edge: #{$arc-software};
 }
 .arc-chip--environment {
   border-left-color: $arc-research;
   --seg-fill: rgba(225, 225, 225, 0.09);
   --seg-hatch: rgba(225, 225, 225, 0.20);
+  --seg-edge: #{$arc-research};
 }
 // Still in use: the bar runs into the now line, so accent its trailing edge.
 .arc-chip--tool.is-ongoing {
@@ -1419,7 +1427,7 @@ $arc-fit-size: unquote("max(0.5rem, min(1em, (100cqi - var(--fit) * 0.5px) / (va
 .arc-chip--tool:hover,
 .arc-chip--tool:focus-visible,
 .arc-chip--tool:focus-within {
-  border-color: rgba(225, 225, 225, 0.4);
+  border-color: var(--seg-edge, #{$arc-research});
   z-index: 3;
 }
 
@@ -1452,15 +1460,15 @@ $arc-fit-size: unquote("max(0.5rem, min(1em, (100cqi - var(--fit) * 0.5px) / (va
 // A hairline of page background between adjacent phases, so the texture change
 // reads as a deliberate boundary rather than a rendering seam.
 .arc-seg + .arc-seg { border-left: 1px solid $homepage-background-color; }
-// Highlight the hovered/focused phase alone: a uniform veil brightens either
-// texture, and the inset line pins down its exact extent.
+// Highlight the hovered/focused phase alone: a uniform veil of the family color
+// lifts either texture, and the inset line pins down its exact extent.
 .arc-seg:hover::after,
 .arc-seg:focus-visible::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 0 0 1px rgba(225, 225, 225, 0.3);
+  background: color-mix(in srgb, var(--seg-edge, #{$arc-research}) 8%, transparent);
+  box-shadow: inset 0 0 0 1px var(--seg-edge, #{$arc-research});
 }
 .arc-seg:focus-visible { outline: none; } // the ::after ring stands in for it
 
