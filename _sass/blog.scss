@@ -55,8 +55,8 @@ pre {
 $blog-gutter: clamp(16px, 6vw, 60px);
 
 // The column is 80ch of body text wide. ch is measured in the element's own
-// font, so the body face and size are set here, on the column, for the
-// paragraphs to inherit; 80ch then counts characters of the text itself.
+// font, so the column carries the body face and size too, making 80ch count
+// characters of the paragraph text itself.
 .blog-content {
     box-sizing: border-box;
     width: 100%;
@@ -83,9 +83,13 @@ $blog-gutter: clamp(16px, 6vw, 60px);
         font-size: 14pt;
         margin: 25px 0px 5px 0px;
     }
+    // Restated, not inherited: home.scss sets every p and ul in Roboto.
     p, ul {
+        font-family: "Merriweather";
+        font-weight: lighter;
         font-style: normal;
         line-height: 2.2;
+        font-size: clamp(11pt, 2vw, 13.5pt);
     }
     // Book-style paragraphs: justified, no gap between them, and every
     // paragraph after the first set off by a first-line indent instead.
