@@ -173,12 +173,11 @@ $blog-gutter: clamp(16px, 6vw, 60px);
 }
 
 // Phones: the column runs edge to edge less one shared gutter, so lines stay a
-// readable length, and everything vertical tightens: no reserved header height,
-// a shorter leading, and the meta list unindented.
+// readable length, and the header tightens: no reserved height, and the meta
+// list unindented. The body keeps its full leading.
 @media screen and (max-width: $on-palm) {
     .blog-content {
         padding: 16px $gutter-palm;
-        p, ul { line-height: 1.75; }
     }
     .post-header {
         margin-top: 8px;
