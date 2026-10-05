@@ -163,3 +163,37 @@ $blog-gutter: clamp(16px, 6vw, 60px);
 .iframe-ngram {
     background-color: transparent;
 }
+
+// A post has no section rail, so it takes back the gutter home.scss reserves
+// for one on .page-content; otherwise the column sits off-centre on a desktop
+// and loses width on a phone.
+.page-content:has(> .post) {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+// Phones: the column runs edge to edge less one shared gutter, so lines stay a
+// readable length, and everything vertical tightens: no reserved header height,
+// a shorter leading, and the meta list unindented.
+@media screen and (max-width: $on-palm) {
+    .blog-content {
+        padding: 16px $gutter-palm;
+        p, ul { line-height: 1.75; }
+    }
+    .post-header {
+        margin-top: 8px;
+        margin-bottom: 20px;
+        min-height: 0;
+        h1 {
+            font-size: 18pt;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+        ul {
+            margin-left: 0;
+            padding-left: 0;
+            font-size: 9.5pt;
+            line-height: 1.6;
+        }
+    }
+}
