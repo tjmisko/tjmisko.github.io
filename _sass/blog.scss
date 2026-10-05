@@ -53,7 +53,7 @@ pre {
 .blog-content {
     padding: 30px clamp(30px, 10%, 10%);
     overflow: hidden;
-    max-width: 700px;
+    max-width: 780px;
     color: $homepage-font-color;
     overflow-wrap: break-word;
     h1 {
@@ -78,8 +78,15 @@ pre {
         line-height: 2.2;
         font-size: clamp(11pt, 2vw, 13.5pt);
     }
+    // Book-style paragraphs: justified, no gap between them, and every
+    // paragraph after the first set off by a first-line indent instead.
+    p {
+        margin: 0;
+        text-align: justify;
+        hyphens: auto;
+    }
     p + p {
-        margin: 25px 0px;
+        text-indent: 2em;
     }
 
     blockquote {
