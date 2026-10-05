@@ -1,8 +1,8 @@
 ---
 project-title: "Lysilogy"
-project-type: "Software - Preprocess Scientific Papers"
+project-type: "Software - Custom Agents - Rust & React"
 project-status: "Active - Prototyping"
-project-headline: "Viewer and preprocessor for scientific articles to assist in reading specialist literature outside your own field."
+project-headline: "Preprocessor for scientific articles facilitating the reading of literature outside your field. Agents build an artifact providing external context fetched from the citation graph, a top down view of the sections of the paper, and answer queries inside the keyboard-driven reader inteface."
 tags:
   - "all"
   - "software"
@@ -21,7 +21,7 @@ Lysilogy consumes a directory of scientific PDFs. A Rust backend extracts each w
 4. **Full Text**: Read the full text without distractions, with built-in, context-rich answers to questions that come up during reading.
 
 ## Technical Details
-* Rust backend, React frontend. An Axum/Tokio server handles discovery, PDF extraction, persistence and job state. A React + TypeScript reader built on pdf.js provides keyboard-first, vim-style navigation.
+* Rust backend, React frontend. Axum/Tokio server handles discovery, PDF extraction, persistence and job state. React + TypeScript reader built on pdf.js provides keyboard-first, vim-style navigation.
 * Agents run as sandboxed CLI subprocesses. Codex or Claude Code run as read-only subprocesses with only the tools each task needs. The backend owns all progress and state, and each concurrent analysis stage is cached under a key built from the prompt, schema, source, provider and model, so retries only rerun what failed.
 * Multi-stage pipeline with independent review. Orientation, structural mapping and historical context run in parallel. Context goes research → writer → reviewer: writer only sees frozen evidence, and a separate model pass checks whether claims are supported, in the right order, and useful.
 * Provenance checked in code. Quoted abstracts and AI highlights must exactly match spans in Poppler-extracted text with token coordinates. Every cited URL must pass DNS, redirect, public-address and HTTP checks, and one failed citation withholds the whole note.
