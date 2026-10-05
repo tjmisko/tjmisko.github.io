@@ -14,7 +14,7 @@
     top: 30px;
 }
 // page.html only: in post.html the text sits inside .blog-content, which sets
-// its own 80ch measure.
+// its own 75ch measure.
 .post > .post-content {max-width: 650px;}
 
 .blog-feed-page {
@@ -56,13 +56,13 @@ pre {
 // from it (a % padding would resolve against the parent, not the column).
 $blog-gutter: clamp(16px, 6vw, 60px);
 
-// The column is 80ch of body text wide. ch is measured in the element's own
-// font, so the column carries the body face and size too, making 80ch count
+// The column is 75ch of body text wide. ch is measured in the element's own
+// font, so the column carries the body face and size too, making 75ch count
 // characters of the paragraph text itself.
 .blog-content {
     box-sizing: border-box;
     width: 100%;
-    max-width: calc(80ch + 2 * #{$blog-gutter});
+    max-width: calc(75ch + 2 * #{$blog-gutter});
     padding: 30px $blog-gutter;
     overflow: hidden;
     font-family: "Merriweather";
