@@ -99,6 +99,11 @@ $blog-gutter: clamp(16px, 6vw, 60px);
         margin: 0;
         text-align: justify;
         hyphens: auto;
+        // Hyphenate sparingly: only words of 8+ letters, leaving at least 4 on
+        // each side of the break. text-wrap: pretty weighs the whole paragraph
+        // when choosing breaks, so it hyphenates less to begin with.
+        hyphenate-limit-chars: 8 4 4;
+        text-wrap: pretty;
     }
     p + p {
         text-indent: 3em;
