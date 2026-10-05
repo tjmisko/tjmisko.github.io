@@ -15,6 +15,23 @@ degree opens the same card format a project does.
             <div class="project-description" style="display: none;"> {{ include.p.content }}</div>
         </div>
         <div class="project-footer">
+            {%- comment -%}A long-form writeup, named by its own title. The
+            footer is row-reverse, so first here is the bottom-right corner.
+            Shown in the modal only (.project-writeup in home.scss). The
+            single-file build carries no posts, so it links to the live site.{%- endcomment -%}
+            {%- if include.p.writeup -%}
+              {%- assign writeup = site.posts | where: "url", include.p.writeup | first -%}
+              {%- if writeup -%}
+                {%- if site.single_file -%}{%- assign writeup_href = writeup.url | absolute_url -%}{%- else -%}{%- assign writeup_href = writeup.url | relative_url -%}{%- endif -%}
+                <a class="project-writeup" href="{{ writeup_href }}">
+                  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+                    <path d="M3.5 1.5 H8.5 L11 4 V12.5 H3.5 Z M8.5 1.5 V4 H11 M5.5 7 H9 M5.5 9.5 H9"
+                          fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                  </svg>
+                  <span>{{ writeup.title | escape }}</span>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
             <ul class="project-linkbox">
                 {%- if include.p.github -%}<li><a rel="me" href="https://github.com/tjmisko/{{ include.p.github | cgi_escape | escape }}" target="_blank" title="{{ include.p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
                 {%- if include.p.external-github -%}<li><a rel="me" href="https://github.com/{{ include.p.external-github | escape }}" target="_blank" title="{{ include.p.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}

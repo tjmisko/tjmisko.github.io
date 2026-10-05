@@ -1244,7 +1244,27 @@ $rolodex-passed: mix($homepage-accent-color, $homepage-background-color, 42%);
     border-top-color: rgba(225, 225, 225, 0.08);
   }
   .project-status { font-size: 0.68rem; }
+  // The writeup link: a page icon and the post's title, in the accent with the
+  // same filling hairline as .project-link.
+  .project-writeup {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    font-family: "Roboto";
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: $homepage-accent-color;
+    text-decoration: none;
+    span {
+      border-bottom: 1px solid rgba(250, 130, 30, 0.4);
+      transition: border-color var(--dur-fast) var(--ease-out);
+    }
+    &:hover span, &:focus-visible span { border-bottom-color: $homepage-accent-color; }
+  }
 }
+// The rolodex face has no room for it; the card itself opens the modal.
+.project-card:not(.project-modal) .project-writeup { display: none; }
 
 .project-modal-parent.is-open .project-card.project-modal {
   transform: scale(1);

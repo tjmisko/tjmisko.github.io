@@ -3,6 +3,7 @@ project-title: "BinderBuilder"
 project-type: "Software - Automation - Internal Tool - Python"
 project-status: "Completed May 2024"
 project-headline: "A command-line tool that matches expert-report footnotes to their sources, highlights the cited passage, and structures the QC and verification loop, cutting per-footnote checking time by 60%."
+writeup: /projects/binder-builder/
 tags:
   - "all"
   - "software"
