@@ -50,10 +50,22 @@ pre {
     padding: 1em 1em;
 }
 
+// Side padding of the post column, in vw so the column's width can be summed
+// from it (a % padding would resolve against the parent, not the column).
+$blog-gutter: clamp(16px, 6vw, 60px);
+
+// The column is 80ch of body text wide. ch is measured in the element's own
+// font, so the body face and size are set here, on the column, for the
+// paragraphs to inherit; 80ch then counts characters of the text itself.
 .blog-content {
-    padding: 30px clamp(30px, 10%, 10%);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: calc(80ch + 2 * #{$blog-gutter});
+    padding: 30px $blog-gutter;
     overflow: hidden;
-    max-width: 780px;
+    font-family: "Merriweather";
+    font-weight: lighter;
+    font-size: clamp(11pt, 2vw, 13.5pt);
     color: $homepage-font-color;
     overflow-wrap: break-word;
     h1 {
@@ -72,11 +84,8 @@ pre {
         margin: 25px 0px 5px 0px;
     }
     p, ul {
-        font-family: "Merriweather";
-        font-weight: lighter;
         font-style: normal;
         line-height: 2.2;
-        font-size: clamp(11pt, 2vw, 13.5pt);
     }
     // Book-style paragraphs: justified, no gap between them, and every
     // paragraph after the first set off by a first-line indent instead.
