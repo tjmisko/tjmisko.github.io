@@ -1,13 +1,15 @@
 ---
 layout: post
-title: "BinderBuilder"
+title: "Building BinderBuilder"
+project: "BinderBuilder"
+project-dates: "Feb – Apr 2024"
 author: "Tristan Misko"
 permalink: /projects/binder-builder/
 ---
 
 While working as an Economics and Damages Associate at BRG supporting antitrust litigation, I found myself losing significant time to highly repetitive QC work for footnote verification. We'd have reports with something like 200 to 500 footnotes depending on the size, and it would be an associate's job (often mine) to go through each footnote, pull up the document in the filesystem, scan or search through the document to find the quote, then mark it as verified in the report. Solo verification would take four to eight hours of work per report, repeated for every report (*i.e.* usually a few times per month).
 
-The steps were simple, routine, and programmatic: find the file, open it, confirm that the quoted text matches the source, and make sure we're not quoting it out of context. So I proposed to my principal that whenever I had downtime (as happens in consulting), I would build some automation tooling to make the process more efficient.
+The steps were simple, routine, and programmatic: find the file, open it, confirm that the quoted text matches the source, and make sure we're not quoting it out of context. Only that last step really needed human judgment; the rest was mechanical overhead that software could handle. I identified the problem, explained it to my principal, and got approval to build the solution whenever we hit a slow period (as happens in consulting).
 
 Over the course of several weeks I built out a Python Click application called BinderBuilder (with `fzf` and `mupdf` subprocesses) to implement the automation. It extracted and parsed the Word document's body and footnote XML, picked out the most relevant words (Author, Year, Title, Bates Number, etc.) to fuzzy-search the filesystem, surfaced the top candidate matches, then opened the files in a lightweight MuPDF window, with matching text from the document autohighlighted when possible. The CLI presented all of the relevant information---quoted text from the report, footnote text, and the original source document---on one screen for the cost of a few keypresses, allowing the QCing associate to stay in the flow of quickly checking documents instead of bumbling around the filesystem (a mapped network drive) looking for things.
 
