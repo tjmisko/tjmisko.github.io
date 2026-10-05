@@ -20,10 +20,9 @@ layout: default
           {%- comment -%}Project writeups name the project and when it ran in
           place of the publish date.{%- endcomment -%}
           {%- if page.project -%}
-            <li>Project: {{ page.project | escape }}</li>
-          {%- endif -%}
-          {%- if page.project-dates -%}
-            <li>Project Dates: {{ page.project-dates | escape }}</li>
+            <li>Project: {{ page.project | escape }}
+              {%- if page.project-dates %} ({{ page.project-dates | escape }}){%- endif -%}
+            </li>
           {%- else -%}
           <li>Date Published: <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
               {{ page.date | date: date_format }}
