@@ -1,7 +1,7 @@
 ---
 project-title: "BinderBuilder"
 project-type: "Software - Automation - Internal Tool - Python"
-project-status: "Completed Apr 2024"
+project-status: "Completed May 2024"
 project-headline: "A command-line tool that matches expert-report footnotes to their sources, highlights the cited passage, and structures the QC and verification loop, cutting per-footnote checking in the common case from about 60 to 25 seconds."
 tags:
   - "all"
@@ -16,7 +16,7 @@ arc:
   kind: cli
   label: "BinderBuilder"
   sub: "Python CLI · NLP footnote-checker · built at BRG"
-  span: "Feb – Apr 2024"
+  span: "Feb – May 2024"
 ---
 Expert-report footnotes are checked against their sources by hand. BinderBuilder is a Python CLI I wrote at BRG in 2024 to find and open the source for each one.
 
