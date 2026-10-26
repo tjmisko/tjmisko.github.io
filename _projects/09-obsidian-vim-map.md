@@ -11,7 +11,7 @@ tags:
 arc:
   node:
     small: true
-    order: 4
+    order: 5
     kind: web
     label: "Vim Map"
     sub: "Obsidian plugin · TypeScript · agent-built to my direction"

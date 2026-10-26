@@ -16,5 +16,5 @@ arc:
 Economics and damages associate supporting antitrust litigation.
 * Built Stata pipelines transforming messy third-party business data in Excel into dataframes behind econometric analyses and report figures.
 * Conducted secondary research and contributed report-ready analysis, figures, and technical paragraphs for reports.
-* Designed and built <a class="project-link" data-project="10-binder-builder" href="#projects-card">BinderBuilder</a>, an internal tool to automate the mechanical parts of footnote checking.
+* Designed and built <a class="project-link" data-project="11-binder-builder" href="#projects-card">BinderBuilder</a>, an internal tool to automate the mechanical parts of footnote checking.
 * Worked with and audited financial models in Excel and Stata using data from CapIQ and Bloomberg.
