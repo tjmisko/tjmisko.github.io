@@ -31,4 +31,4 @@ Limpid opens the current agent turn (from Claude Code, Codex, or pi) or any mark
 * Syntax highlighting uses tree-sitter grammars loaded at runtime, with injections so that SQL inside strings or code inside markdown is highlighted as its own language. Math renders natively as MathML; Mermaid diagrams load after first paint and are cached.
 * Every rendered block carries its byte range in the source, so comments, replies, and visual-mode yanks stay attached to the exact text they refer to.
 * Thin plugins for Claude Code and pi bind a socket per agent session, so a saved reply goes straight back to the session that asked.
-* Replaces htmlview, an earlier viewer of mine, and was designed against its measured load times and memory use.
+* Replaces htmlview, an earlier viewer of mine, and was designed against its measured load times and memory use. Built with coding agents under my direction.
