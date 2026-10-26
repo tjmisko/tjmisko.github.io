@@ -11,13 +11,10 @@ arc:
   end: 2024.5
   label: "Antitrust Litigation Support @ BRG"
   span: "Aug 2023 – Jul 2024"
-  blurb: "Stata analysis behind antitrust expert reports, reproducible from raw inputs."
+  blurb: "Produced Stata pipelines behind antitrust expert reports, reproducible from raw inputs."
 ---
-Economics and damages consulting on antitrust litigation, Aug 2023 to Jul 2024, building the analysis behind expert reports in Stata from raw client and third-party data. That analysis shipped to opposing counsel as a backup that their experts re-ran, so every reported figure had to reproduce from raw inputs.
-
-* I built Stata MP ingest, parse, and clean pipelines over dozens of inconsistently formatted Excel feeds, up to about 500 GB, on memory-capped Azure VMs.
-* The do-files regenerated every reported figure from raw inputs and shipped as formal litigation backups.
-* Coverage, sanity, and outlier checks caught defects before a report went out, including a miscomputation in a financial-statement pipeline.
-* I also contributed report-ready analysis, figures, and technical paragraphs, and gathered and drafted qualitative evidence for the reports.
-
-<a class="project-link" data-project="10-binder-builder" href="#projects-card">BinderBuilder</a>, a Python CLI written here, has its own entry.
+Economics and damages associate supporting antitrust litigation.
+* Built Stata pipelines transforming messy third-party business data in Excel into dataframes behind econometric analyses and report figures.
+* Conducted secondary research and contributed report-ready analysis, figures, and technical paragraphs for reports.
+* Designed and built <a class="project-link" data-project="10-binder-builder" href="#projects-card">BinderBuilder</a>, an internal tool to automate the mechanical parts of footnote checking.
+* Worked with and audited financial models in Excel and Stata using data from CapIQ and Bloomberg.

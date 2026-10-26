@@ -3,6 +3,7 @@ project-title: "Lysilogy"
 project-type: "Software - Custom Agents - Rust & React"
 project-status: "Active - Prototyping"
 project-headline: "Preprocessor for scientific articles facilitating the reading of literature outside your field. Agents build an artifact providing external context fetched from the citation graph, a top down view of the sections of the paper, and answer queries inside the keyboard-driven reader inteface."
+website: lysilogy.com
 tags:
   - "all"
   - "software"
