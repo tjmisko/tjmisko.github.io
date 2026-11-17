@@ -2,7 +2,7 @@
 project-title: "Functionary"
 project-type: "Software - Automation Harness - Rust & React"
 project-status: "Active - Iteration and Development"
-project-headline: "Tooling and infrastructure for building automations you can understand and rely on: sketch a process with a coding agent, then run, evaluate, and iterate on it, with agents held to bounded discretion and every step recorded."
+project-headline: "Agent harness for knowledge work. A coding agent drafts your process as a flow of prebuilt blocks on a visual canvas, where you can inspect and edit it. The flow compiles to Rust and runs in a sandboxed backend."
 website: functionary.app
 tags:
   - "all"
@@ -10,23 +10,30 @@ tags:
   - "automation"
 arc:
   node:
+    group: ai-engineering
     label: "Functionary"
-    sub: "Automation Canvas · Agent Harnesses · Reliable Workflow Automation"
+    sub: "Build Reliable Agentic Workflows"
     span: "Apr 2026 – Present"
 ---
-Functionary provides a visual canvas, custom agents, and an execution backend for automating information processing tasks as repeateable workflows with inspectible provenance. Users sketch a process to execute, using coding agents to progressively formalize it into a directed acyclic graph of blocks corresponding to bounded, evaluable steps that remains visible on the canvas.
+Functionary is an agent harness for knowledge work. Users declare the process they want in plain language, and a coding agent progressively formalizes it through rounds of agent drafts and user corrections into a flow: a restricted subset of Rust composed from prebuilt blocks, each a bounded, evaluable step. The flow stays visible on a visual canvas where you read and edit it, and canvas edits and agent edits change the same source.
 
-At execution time, Functionary compiles the canvas into a program, runs it, and records what each step consumed and produced. Blocks include common processing tasks, code execution, agent review, and human reviews. Executor state persists across restarts.
+When you run a flow, Functionary compiles exactly the checked source into a program and runs it in a sandbox, keeping each step's inputs and outputs for review. Blocks cover common processing tasks, search, agent steps, checks, and human review. Run state persists across restarts.
+
+In a pre-registered trial, Claude Sonnet 5.5 wrote valid flows for 10 of 11 tasks on the first attempt and 11 of 11 within two repairs.
 
 ## Design Priorities
 * **Control**: Use the capabilities of agents to process information without handing them control over the process. Blocks receive bounded global context (high level objective of the flow) and local context DAG inputs.
 * **Security**: Separate the data plane from the control plane when executing a task. Don't trust agents to follow instructions.
-* **Legibility**: Make the process inspectable at a glance. 
+* **Legibility**: Make the process inspectable at a glance.
 * **Reliability**: Guarantee that the approved process is what actually executes. When agents inevitably fail, the failure point remains visible, and the flow can be adjusted to prevent future failures.
-* **Modularity**: Many computer tasks look like compositions of a large but bounded set of primatives that "just anyone" can do. Pull this source, summarize that text, check this quote against the source.
+* **Modularity**: Many computer tasks look like compositions of a large but bounded set of primitives that "just anyone" can do. Pull this source, summarize that text, check this quote against the source.
 
 ## Technical Details
-* Execution backend built in Rust; flow-editing frontend in TypeScript (React and React Flow)
-* Outputs carry a SHA-256 hash chain over block, inputs, and config, re-verified after every block. The chain is unkeyed: it catches edits and reordering, not a writer with store access.
-* Dispatcher owns each run's plan cursor and hands workers owned envelopes over channels. Per-resource semaphores are taken in canonical key order so branches sharing one LLM quota cannot deadlock.
-* Prototyped over the course of four months using coding agents running multiday unattended task-phases in Docker behind a default-deny egress allowlist, closing 700+ tasks across 90+ phases.
+* Execution backend built in Rust; flow-editing frontend in TypeScript (React and React Flow).
+* Agents write flows in a restricted subset of ordinary Rust, compiled through a typed graph IR to sandboxed async Rust. Anything outside the subset is rejected on save, before it can run.
+* The source is canonical and the canvas is derived from it. Every edit is applied to both and rejected if they disagree.
+* Flow authoring is separated from doing work: authoring agents build and edit flows but lack tools to perform work themselves, while block agents get the tools their task requires but cannot edit the flow's control flow.
+* One contract declares every block. It generates the type-level library `rustc` checks flows against, the canvas catalog, and the reference the authoring agent reads.
+* Each step is recorded in a SQLite journal before its effect runs, so a crashed run resumes without repeating finished model calls or effects.
+* Evals for flow authoring and block behavior: golden datasets with deterministic scorers and agent-evaluable rubrics.
+* Built solo by directing coding agents across 1,700+ tasks in a DAG ledger, reviewing and writing code by hand when needed.

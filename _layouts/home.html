@@ -23,7 +23,6 @@ layout: default
 
           Learn more about
           <a class="homepage-link" href="#projects-card" data-project="01-functionary">Functionary</a>,
-          <a class="homepage-link" href="#projects-card" data-project="03-lysilogy">Lysilogy</a>,
           <a class="homepage-link" href="#projects-card" data-project="02-switchboard">Switchboard</a>,
           and my
           <a class="homepage-link" href="#projects-card" data-project="04-sspi-data-webapp">other projects</a>
@@ -39,11 +38,6 @@ layout: default
     </div>
 </div>
 
-<!-- Three main goals: -->
-    <!-- 1. Use computational tools over manual processes at scale when appropriate -->
-    <!-- 2. Let automated tooling handle the mechanical parts (under supervision and checks)-->
-    <!-- 3. Guide scarce human attention to where it is most needed. -->
-
 <div class="homepage-card" id="arc-card">
   <div class="arc-container">
     {%- assign work_last_year = 2026 -%}
@@ -56,61 +50,18 @@ layout: default
     {%- assign arc_full = arc_units | floor -%}
     {%- assign arc_tail = arc_units | minus: arc_full | round: 4 -%}
     {%- assign arc_now = arc_full | plus: 3 -%}
-    {%- comment -%}The same arithmetic on the narrow scale, which starts at 2018
-    rather than 2020: with the names out of the bars and in a gutter, the matrix
-    can afford the four columns the wide waterfall spends on density, and every
-    bar starts where it started instead of clamping to the left edge. The
-    fractional tail is the same either way — the two origins differ by a whole
-    number of half-years, which cancels out of the fraction.{%- endcomment -%}
     {%- assign arc_full_m = arc_dec | minus: 2018 | times: 2 | floor -%}
     {%- assign arc_now_m = arc_full_m | plus: 3 -%}
-    {%- comment -%}Bars and segments past roughly two-thirds across flip their
-    popover anchor so it opens inward instead of off the grid.{%- endcomment -%}
     {%- assign arc_late = arc_full | times: 2 | divided_by: 3 | plus: 2 -%}
     <h1 class="site-header reveal">Trajectory</h1>
-    <!-- Every view lives inside one .reveal stage: a view that is hidden when
-         the IntersectionObserver runs would never receive .is-visible and
-         would stay invisible after being switched to. -->
     <div class="arc-stage reveal">
     <div class="arc-view" id="arc-view-work" role="tabpanel" aria-labelledby="arc-tab-work">
       <div class="arc-lanes-wrap">
         <div class="arc-scroll">
-          {%- comment -%}The column template is in arc.scss (.arc-lanes--work), which
-          redraws it per width; only the half-year count comes from here.{%- endcomment %}
           <div class="arc-lanes arc-lanes--work"
                style="--arc-cols: {{ work_cols }}; --arc-cols-tail: {{ work_cols | minus: 1 }};">
-            {%- comment -%}Rows are 1 ruler + 7 content, so the rules run to
-            line 9.{%- endcomment -%}
             {%- include arc-year-ruler.html end=9 last=work_last_year narrow_origin=2020 -%}
 
-            {%- comment -%}The rail starts below the ruler row: leaving row 1
-            clear keeps it off the 2020 label, which overhangs its own grid line
-            to the left.
-
-            Backdrop and labels are separate elements. The backdrop is one
-            full-height panel: several of them would leave the row gaps between
-            bands unmasked for chips to show through, and would stack their own
-            alpha wherever they did cover.
-
-            The labels are one stack rather than one element per band. Centering
-            each on the rows it named put them where the row heights happened to
-            fall — RESEARCH and DATA 48px apart, with more than twice that of
-            empty rail above and below the pair. They step evenly instead, and
-            the stack takes the relay's own row (5) so that row's midpoint lands
-            between RESEARCH and DATA: the names straddle the turn from research
-            into data work two to a side. The step is sized so the two above the
-            turn land on rows rather than between them — COURSEWORK on the
-            degree, RESEARCH on Quasioptimal — which is also why the research row
-            carries a little air under it (.arc-quiet). DATA and SOFTWARE take
-            the step from there. See .arc-lane-labels--band.
-
-            Row 3 belongs to no band. The honors thesis was both the last of the
-            coursework and the first of the research, and the row it sits on says
-            so by belonging to neither of the bands it lies between — and by
-            hanging in the clear between them rather than sitting on its own
-            midline, which is what arc.between does for the papers and
-            .arc-group--thesis for the outline around them.
-            {%- endcomment %}
             <div class="arc-lane-rail" style="grid-row: 2 / 9;" aria-hidden="true"></div>
             <div class="arc-lane-labels arc-lane-labels--band" style="grid-row: 5 / 6;">
               <span>COURSEWORK</span>
@@ -119,40 +70,16 @@ layout: default
               <span>SOFTWARE</span>
             </div>
 
-            <!-- The same key for the narrow chart, where the lanes are columns
-                 and so name themselves at the head of one rather than down the
-                 side of the grid. Four names collapse to three: COURSEWORK has
-                 nothing to name over there — the degree is arc.wide_only, and
-                 the column it shared is Quasioptimal's alone — and the thesis
-                 strip between research and data goes unnamed, left to the
-                 outline and the cards its papers open. Each carries its lane's
-                 color, which is what the old three-dot legend was for. -->
             <div class="arc-lane-head is-narrow-only arc-lane-head--research" style="--ln: 2;">RESEARCH</div>
             <div class="arc-lane-head is-narrow-only arc-lane-head--data" style="--ln: 3;">DATA</div>
             <div class="arc-lane-head is-narrow-only arc-lane-head--software"
                  style="--ln: 4; --ln-end: 6;">SOFTWARE</div>
 
-            <!-- honors-thesis outline, on the unbanded row between the degree
-                 above it and the research below, and hung with the papers it
-                 encloses (see .arc-group--thesis).
-
-                 The narrow chart no longer makes that argument with a column.
-                 The papers sit in the research lane there — see the packing
-                 table in arc-chip.html — and the outline is that lane's width
-                 over the two half-years the theses took (2021H2 and 2022H1,
-                 rows 5 to 7). What the wide chart says by putting them between
-                 the bands, the narrow one says by leaving them the data palette
-                 in a research lane. -->
             <div class="arc-group arc-group--thesis" style="grid-row: 3; grid-column: 5 / 7;
                  --m0: 5; --m1: 7; --ln: 2;">
               <span class="arc-group-label arc-group-label--below">Honors Thesis</span>
             </div>
 
-            <!-- Every chip on the grid is generated from a document's front
-                 matter (p.arc) by _includes/arc-chip.html: projects from
-                 _projects, roles and schooling from _experience. Each one
-                 hovers to a popover with its dates and a one-line description,
-                 and clicks through to that document's detail modal. -->
             {%- for p in site.experience -%}
               {%- if p.arc.lane -%}{%- include arc-chip.html p=p work_end=work_end -%}{%- endif -%}
             {%- endfor -%}
@@ -160,12 +87,6 @@ layout: default
               {%- if p.arc.lane -%}{%- include arc-chip.html p=p work_end=work_end -%}{%- endif -%}
             {%- endfor -%}
 
-            <!-- The one item that is a destination rather than a card: it opens
-                 quasioptimal.io directly, so it keeps the quiet link treatment
-                 and gets a hover popover but no modal. Still running, so it runs
-                 out to the end of the scale and into the junction rather than
-                 stopping on a date. It sits on the research row: the writing is
-                 research of its own, and the row above is the degree. -->
             <a class="arc-quiet" style="grid-row: 4; grid-column: 8 / {{ work_end }};
                --m0: 8; --m1: 14; --ln: 2;"
                href="https://quasioptimal.io" target="_blank" rel="noopener">
@@ -178,63 +99,23 @@ layout: default
               </span>
             </a>
 
-            <!-- Wide chart only. On a phone the node's contents are a section of
-                 their own (#work-card, below), and both of these are hidden. -->
             <div class="arc-junction" style="grid-column: {{ work_end }};"></div>
             <div class="arc-node" style="grid-column: {{ work_end | plus: 1 }};">
               {%- include current-work.html -%}
             </div>
 
-            <!-- The lanes descend research → data → software, and the descent is
-                 the one thing on the chart that has a reason rather than a date.
-                 It sits inside the chart, in the open triangle the chips leave
-                 below their own descending staircase, with its arrow running the
-                 same way they do. The bottom row is the small-tools run, which
-                 starts at 2024 (column 10), so the note takes the six columns of
-                 clear row to its left.
-
-                 The narrow chart leaves the mirror image of that triangle: the
-                 staircase runs from the research lane at the top left down to
-                 the software lanes at the bottom right, so the clear ground is
-                 above and to the right of it — the two software columns running
-                 down to the first side project in 2022 (row 6). The note takes
-                 the lower half of that block rather than all of it: hard against
-                 the ruler it read as a heading for the lanes it sits in, which
-                 is what the column heads directly above it already are. Starting
-                 a year down the scale, it reads as an annotation hanging in the
-                 void instead. The arrow points the same way it does on the wide
-                 chart, down and to the right, along the diagonal the work
-                 actually travels. -->
             <div class="arc-descent" style="grid-row: 8; grid-column: 4 / 10;
                  --m0: 4; --m1: 6; --ln: 4; --ln-end: 6;"
                  tabindex="0" role="note">
-              {%- comment -%}The arrow rides inside the caption, tied to its last
-              word by a nowrap span: on the narrow chart the caption breaks onto
-              two lines, and an arrow beside it rather than in it could drop to a
-              line of its own.{%- endcomment %}
               <span class="arc-descent-caption">Down the Tech <span class="arc-descent-tail">Stack<svg
                    class="arc-descent-arrow" width="15" height="15" viewBox="0 0 13 13"
                    aria-hidden="true" focusable="false">
                 <path d="M2.5 2.5 L10 10 M10 5.5 L10 10 L5.5 10" fill="none" stroke="currentColor"
                       stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
               </svg></span></span>
-              {%- comment -%}Phrased without reference to the lanes: the mobile
-              feed transposes them away, and this note still has to read.
-              {%- endcomment %}
               <span class="arc-pop">
                 <strong>Down the Tech Stack</strong>
-                <small> To do the research backing the SSPI at IRLE, I had
-                to become adept at working with data, both at the analytical
-                level (competence in econometrics, statistics, and data
-                science) and, as the data got bigger and harder to handle, at
-                the infrastructure level. The process our team inherited was crude,
-                manual, error-prone, and costly to reproduce. The primary obstacle to
-                better research was scaling our data (covering more years and
-                more countries, with better robustness checks and more
-                statistical power), and the obstacle to scaling the data was
-                engineering a reliable, reproducible collection process, so I
-                taught myself to be an engineer.
-                </small>
+                <small> To do economics research, I had to get good with data. To get good with data, I had to get good with software.</small>
               </span>
             </div>
           </div>
@@ -242,45 +123,14 @@ layout: default
       </div>
     </div>
 
-    <!-- The waterfall: one bar per tool, all sourced from _data/tools.yml, on a
-         scale that runs from 2020 out to the build date. Unlike the work grid,
-         which stops at a fixed 2026, this one has a live "now" line — the bars
-         are a running inventory, so an ongoing one should keep growing.
-
-         Every view in the data file draws into this one tab, on one grid, so
-         they share a time axis: the first is the chart proper, and each one
-         after it is a minor band below a divider — related context, drawn at
-         reduced weight so it doesn't compete with the argument above it. -->
     {%- assign primary = site.data.tools.views | first -%}
-    {%- comment -%}No color key: the bar names carry the distinction the colors
-    draw (spreadsheets and stats packages against general-purpose languages,
-    with the environment band set off below the divider), so naming it again
-    only adds a row of dots.{%- endcomment -%}
     <div class="arc-view arc-view--waterfall" id="arc-view-{{ primary.id }}" role="tabpanel"
          aria-labelledby="arc-tab-{{ primary.id }}" hidden>
-      {%- comment -%}A minor band's summary is optional: without the guard a band
-      that doesn't want one still emits an empty paragraph, and its negative
-      top margin pulls the chart up into the line above.{%- endcomment -%}
       {%- for v in site.data.tools.views offset: 1 -%}
         {%- if v.throughline %}
       <p class="arc-throughline arc-throughline--minor">{{ v.throughline }}</p>
         {%- endif -%}
       {%- endfor %}
-      {%- comment -%}No standing key, for the textures any more than for the
-      colors: every bar and every phase names its own cadence in the popover the
-      pointer is already on, which is where the question gets asked. A legend
-      answered it in advance, at the cost of a row above the chart.{%- endcomment %}
-      {%- comment -%}Both row counts have to be known before anything is emitted:
-      every year rule spans the full chart, so it needs the last row's grid line
-      up front, and on the narrow chart that line has to travel on the grid
-      element itself. The two counts differ because the two charts don't spend
-      rows on the same things — see the note on the counters further down. Each
-      band after the first also spends a row on its divider, on both.
-
-      The narrow count can't be left to `grid-row: 2 / -1` the way the columns
-      are: -1 is the end of the *explicit* grid, and every row of the matrix past
-      the ruler is implicit (grid-auto-rows). It resolves to line 2 there, and
-      the rules and the now line come out one row tall.{%- endcomment -%}
       {%- assign tool_rows = 0 -%}
       {%- assign tool_rows_m = 0 -%}
       {%- for v in site.data.tools.views -%}
@@ -296,9 +146,6 @@ layout: default
               {%- assign g_rows = g_rows | plus: 1 -%}
             {%- endunless -%}
           {%- endfor -%}
-          {%- comment -%}A group that is one row wide (a single succession) is
-          one line narrow too; any other spends a line on its head and one on
-          each tool. See the drawing pass below.{%- endcomment -%}
           {%- if g_rows == 1 -%}
             {%- assign tool_rows_m = tool_rows_m | plus: 1 -%}
           {%- else -%}
@@ -314,38 +161,19 @@ layout: default
                style="grid-template-columns: 104px repeat({{ arc_full }}, 1fr) {{ arc_tail }}fr 46px;
                       --m-template: max-content repeat({{ arc_full_m }}, 1fr) {{ arc_tail }}fr 8px;
                       --m-rows: {{ grid_end_m }};">
-            {%- comment -%}Popovers open downward, which for the bottom rows would
-            mean reserving a band of dead space under the chart — enough of it to
-            push the view switch off a normal screen. Bars from here down open
-            upward instead, into rows that are already drawn.{%- endcomment -%}
             {%- assign tools_flip = tool_rows | minus: 3 -%}
             {%- include arc-year-ruler.html end=grid_end last=arc_now_year %}
             <div class="arc-ruler-tick arc-ruler-tick--now"
                  style="grid-column: {{ arc_now }}; --m0: {{ arc_now_m }};"><span>now</span></div>
 
-            {%- comment -%}Two row counters, because the two charts don't put the
-            same things on rows. Wide, a row is a lane a bar sits in and a
-            succession (`continues`) shares one; the group rails run down the
-            side and cost nothing. Narrow, a group of several rows takes a line
-            per tool and heads its rows from a line above them instead of a rail
-            beside them. A group that is one succession (OS, Editor, …) stays one
-            line there as well, with the group's name in the gutter (.is-one-line
-            in arc.scss). Either way each tool names itself inside its own bar,
-            where the bar is wide enough.
-            {%- endcomment -%}
             {%- assign tool_row = 1 -%}
             {%- assign tool_row_m = 1 -%}
             {%- for v in site.data.tools.views -%}
-              {%- comment -%}Captured here because forloop.first inside the
-              group and tool loops below refers to those, not to this one.
-              {%- endcomment -%}
               {%- assign minor = "" -%}
               {%- unless forloop.first -%}
                 {%- assign minor = " is-minor" -%}
                 {%- assign tool_row = tool_row | plus: 1 -%}
                 {%- assign tool_row_m = tool_row_m | plus: 1 -%}
-            {%- comment -%}Rule only, no band label: the group rails below it
-            (EDITORS, NOTES, …) already say what the band is.{%- endcomment %}
             <div class="arc-band-divider"
                  style="grid-row: {{ tool_row }}; grid-column: 1 / {{ arc_now }};
                         --tr: {{ tool_row_m }};"></div>
@@ -361,19 +189,12 @@ layout: default
                 {%- assign one_line = "" -%}
                 {%- if g_rows == 1 -%}{%- assign one_line = " is-one-line" -%}{%- endif -%}
                 {%- for t in g.tools -%}
-                  {%- comment -%}A tool marked `continues` shares the previous
-                  tool's row, turning a non-overlapping succession (editors,
-                  operating systems) into one row of adjacent segments instead of
-                  a staircase.{%- endcomment -%}
                   {%- unless t.continues -%}
                     {%- assign tool_row = tool_row | plus: 1 -%}
                   {%- endunless -%}
                   {%- if one_line == "" -%}
                     {%- assign tool_row_m = tool_row_m | plus: 1 -%}
                   {%- endif -%}
-                  {%- comment -%}A tool with `segments` derives its extent from
-                  them — first phase's start to last phase's end (or now) — so
-                  the bar and its phases can never disagree.{%- endcomment -%}
                   {%- if t.segments -%}
                     {%- assign seg_first = t.segments | first -%}
                     {%- assign seg_last = t.segments | last -%}
@@ -385,19 +206,10 @@ layout: default
                     {%- assign t_end_date = t.end -%}
                     {%- assign t_ongoing = t.ongoing -%}
                   {%- endif -%}
-                  {%- comment -%}Data errors stop the build here rather than
-                  drawing something quietly wrong: each guard "includes" a file
-                  that doesn't exist, so the build dies with a missing-include
-                  error whose name says which tool to fix and which rule it
-                  broke.{%- endcomment -%}
                   {%- if t_end_date == nil and t_ongoing != true -%}
                     {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--needs-an-end-date-or-ongoing{%- endcapture -%}
                     {% include {{ arc_fail }} %}
                   {%- endif -%}
-                  {%- comment -%}Dates are authored yyyy-mm-dd and mapped to
-                  decimal years by the same day-of-year arithmetic as the now
-                  line, then bar edges snap to the nearest half-year column —
-                  Jan 1 and Jul 1 land exactly on grid lines.{%- endcomment -%}
                   {%- assign t_year = t_start_date | date: "%Y" | plus: 0 -%}
                   {%- assign t_start = t_start_date | date: "%j" | plus: 0 | minus: 1 | divided_by: 365.0 | plus: t_year -%}
                   {%- if t_end_date -%}
@@ -408,9 +220,6 @@ layout: default
                       {% include {{ arc_fail }} %}
                     {%- endif -%}
                   {%- endif -%}
-                  {%- comment -%}Relay rows (`continues`) hold successions, so
-                  a bar reaching back past its predecessor's end is a data
-                  error, not a drawing choice.{%- endcomment -%}
                   {%- if t.continues and t_start < relay_prev_end -%}
                     {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--overlaps-the-previous-bar-in-its-row{%- endcapture -%}
                     {% include {{ arc_fail }} %}
@@ -421,41 +230,23 @@ layout: default
                     {%- assign relay_prev_end = t_end -%}
                   {%- endif -%}
                   {%- assign col_raw = t_start | minus: 2020 | times: 2 | plus: 2 | round -%}
-                  {%- comment -%}Still in use means "runs to today", so the bar
-                  ends on the computed now line rather than on a date in the data
-                  that would quietly go stale.{%- endcomment -%}
                   {%- if t_ongoing -%}
                     {%- assign col_end = arc_now -%}
                   {%- else -%}
                     {%- assign col_end = t_end | minus: 2020 | times: 2 | plus: 2 | round -%}
                   {%- endif -%}
-                  {%- comment -%}Picked up before the ruler starts: clamp to the
-                  left edge and mark it, so the bar reads as running in from
-                  off-chart rather than starting in 2020. The popover still
-                  carries the real dates — and --o keeps the unclamped column, so
-                  the mobile feed still files it by when it actually began rather
-                  than under the 2020 heading.{%- endcomment -%}
                   {%- assign col_start = col_raw -%}
                   {%- assign clipped = "" -%}
                   {%- if col_raw < 2 -%}
                     {%- assign col_start = 2 -%}
                     {%- assign clipped = " is-clipped" -%}
                   {%- endif -%}
-                  {%- comment -%}The narrow scale reaches back to 2018, which is
-                  as far back as anything here goes, so nothing clips over there.
-                  Clamped all the same: backdating an entry should shorten a bar,
-                  not emit a column 0 and break the matrix.{%- endcomment -%}
                   {%- assign m_col_start = t_start | minus: 2018 | times: 2 | plus: 2 | round | at_least: 2 -%}
                   {%- if t_ongoing -%}
                     {%- assign m_col_end = arc_now_m -%}
                   {%- else -%}
                     {%- assign m_col_end = t_end | minus: 2018 | times: 2 | plus: 2 | round -%}
                   {%- endif -%}
-                  {%- comment -%}A bar with a `link` is the anchor itself rather
-                  than a div: it is the whole target, and it gets its focus from
-                  the href instead of a tabindex. A bar with phases can't be one
-                  — its segments are focusable, and interactive content nested
-                  inside a link is neither valid nor operable.{%- endcomment -%}
                   {%- if t.link and t.segments -%}
                     {%- capture arc_fail -%}ERROR--tools-yml--{{ t.name | slugify }}--a-linked-bar-cannot-also-carry-segments{%- endcapture -%}
                     {% include {{ arc_fail }} %}
@@ -472,37 +263,16 @@ layout: default
                         --tr: {{ tool_row_m }}; --m0: {{ m_col_start }}; --m1: {{ m_col_end }};"
                  data-tool="{{ t.name | escape }}" aria-label="{{ t.name }}"
                  {%- if t.link %} href="{{ t.link }}" target="_blank" rel="noopener"
-                 {%- comment -%}role goes with the tabindex: a bare div can be
-                 focused but can't carry an accessible name, and on the narrow
-                 matrix — where a bar too short for its name hides it — the
-                 aria-label above is the only name it has. Segmented bars aren't
-                 focusable themselves; their phases are, and each of those names
-                 itself.{%- endcomment -%}
                  {%- else -%}{%- unless t.segments %} tabindex="0" role="button"{% endunless %}{% endif %}>
-              {%- comment -%}`short` is the narrow matrix's fallback for a name
-              that doesn't fit its bar (the marking pass in the script below
-              swaps it in); a name that still doesn't fit is hidden.{%- endcomment %}
               <strong><span class="arc-tool-full">{{ t.name }}</span>
                 {%- if t.short -%}<span class="arc-tool-short">{{ t.short }}</span>{%- endif -%}
               </strong>
               <span class="arc-pop arc-pop--tool">
-                {%- comment -%}Shown only when the bar's own title had to be cut
-                — see the marking pass in the script below. A segmented bar
-                suppresses this popover on desktop in favour of its phases', so
-                its name is the one that can't come back this way; the bars long
-                enough to carry segments are the wide ones, which don't
-                clip.{%- endcomment -%}
                 <strong class="arc-pop-title">{{ t.name }}</strong>
                 <small class="arc-pop-span">{{ t.span }}</small>
                 <small>{{ t.note }}</small>
               </span>
               {%- if t.segments -%}
-                {%- comment -%}Phase positions are percentages of the bar's
-                visible span. Every column under the bar is a proportional fr
-                unit (the fractional tail included), so percent-of-width equals
-                percent-of-time — no column math needed. Clamps mirror the
-                bar-level clipping: a phase reaching past either edge is cut at
-                the edge, not wrapped.{%- endcomment -%}
                 {%- assign vis_start = t_start | at_least: 2020 -%}
                 {%- if t_ongoing -%}
                   {%- assign vis_end = arc_dec -%}
@@ -525,10 +295,6 @@ layout: default
                   {%- else -%}
                     {%- assign seg_end = vis_end -%}
                   {%- endif -%}
-                  {%- comment -%}Phases must be in date order and disjoint
-                  (touching is fine, gaps are fine), and only the last may run
-                  on. Violations stop the build the same way the bar-level
-                  guards do.{%- endcomment -%}
                   {%- assign seg_error = "" -%}
                   {%- if s.ongoing and forloop.last != true -%}
                     {%- assign seg_error = "ongoing-before-the-last-phase" -%}
@@ -566,18 +332,12 @@ layout: default
                 {%- endfor -%}
               </span>
               {%- else -%}
-              {%- comment -%}No phases: one full-width segment (CSS defaults to
-              left 0, width 100%) so every bar speaks the same solid-vs-hatched
-              language.{%- endcomment -%}
               <span class="arc-seg-track" aria-hidden="true">
                 <span class="arc-seg is-{% if t.occasional %}occasional{% else %}daily{% endif %}"></span>
               </span>
               {%- endif -%}
             </{{ tool_tag }}>
                 {%- endfor -%}
-                {%- comment -%}Emitted after its rows so the span can use the row
-                counter; grid placement is explicit, so DOM order is free.
-                {%- endcomment %}
             <div class="arc-lane-labels arc-lane-labels--group{{ minor }}{{ one_line }}"
                  style="grid-row: {{ group_first }} / {{ tool_row | plus: 1 }};
                         --tr: {{ group_head_m }};">
@@ -594,27 +354,12 @@ layout: default
     </div>
     </div>
 
-    <!-- A tool is a row in a data file rather than a document, so there is no
-         card behind it for a tap to open the way a work chip opens one. Its note
-         and its phases come up here instead — the same copy the pointer gets
-         from the popovers on the wide chart, in the one place a phone has room
-         for it. Filled in by the script below. -->
-    {%- comment -%}A panel, not a modal: the chart behind it stays live, and
-    tapping the next row refills this one in place. So it says region and
-    announces its own changes rather than claiming a dialog's focus.
-    {%- endcomment %}
     <div class="arc-sheet" id="arc-sheet" role="region" aria-live="polite"
          aria-label="Tool detail" hidden>
       <button type="button" class="arc-sheet-close" aria-label="Close">&times;</button>
       <div class="arc-sheet-body"></div>
     </div>
 
-    <!-- The view switch sits under the chart: it reads as a footer control for
-         the thing above it rather than competing with the section header. -->
-    {%- comment -%}Each tab's throughline is a popover on the tab itself rather
-    than a paragraph above its chart. The popovers hang off the toggle, not the
-    buttons, and the accessible name is set explicitly so the sentence is a
-    description and not part of the name.{%- endcomment %}
     <div class="arc-toggle reveal" role="tablist" aria-label="Trajectory view">
       <button type="button" class="arc-toggle-btn is-active" role="tab" data-view="work"
               id="arc-tab-work" aria-controls="arc-view-work" aria-selected="true"
@@ -631,22 +376,11 @@ layout: default
         <span class="arc-pop arc-pop--tab" id="arc-tip-{{ primary.id }}" role="tooltip">{{ primary.throughline }}</span>
       </button>
     </div>
-    {%- comment -%}Detail cards for the experience chips. A project chip finds
-    its card in the portfolio rolodex; a role or a degree has no card there (and
-    should not — the rolodex is projects), so its card is rendered here, hidden,
-    for the modal to clone. Same include as the rolodex, so both open in the same
-    format.{%- endcomment %}
     <div class="arc-detail-sources" hidden>
       {%- for p in site.experience -%}{%- include project-card.html p=p -%}{%- endfor -%}
     </div>
   </div>
   <script>
-  // Arc chips and node entries open the matching detail card's modal — from the
-  // portfolio rolodex for a project, from the hidden sources above for a role or
-  // a degree. Cards carry data-project slugs, so the documents stay the single
-  // source of truth. openProjectModal is published by the portfolio script
-  // further down the page; both run on DOMContentLoaded, so it is defined long
-  // before any click can land here.
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".arc-chip[data-project], .arc-node-link[data-project]").forEach(function (el) {
       el.addEventListener("click", function () {
@@ -654,17 +388,6 @@ layout: default
         if (card && window.openProjectModal) window.openProjectModal(card);
       });
     });
-    // ---- Tool detail sheet (narrow chart only) ----------------------------
-    // On the matrix a bar is a 19px band of color with its name out in the
-    // gutter: everything the wide chart reveals on hover — the span, the note,
-    // and the cadence of each phase — has nowhere to go. A tap raises it here.
-    // The copy is read straight out of the popovers already in the markup, so
-    // the data file stays the one source of truth and this adds no second copy
-    // of anything.
-    //
-    // The descent note's paragraph comes up here too (see below), so the sheet
-    // keeps track of whose copy it is holding: the caption stays lit while its
-    // own paragraph is up, and a second tap on it puts the sheet away.
     const arcSheet = document.getElementById("arc-sheet");
     const arcDescent = document.querySelector("#arc-card .arc-descent");
     if (arcSheet) {
@@ -683,8 +406,6 @@ layout: default
       const closeSheet = () => {
         arcSheet.classList.remove("is-open");
         setSheetOwner(null);
-        // Wait out the slide-down before pulling it from the layout, or it
-        // vanishes instead of leaving.
         clearTimeout(sheetHideTimer);
         sheetHideTimer = setTimeout(() => { arcSheet.hidden = true; }, 220);
       };
@@ -693,9 +414,6 @@ layout: default
         arcSheetBody.innerHTML = html;
         setSheetOwner(owner);
         arcSheet.hidden = false;
-        // Two frames: the element has to be in the layout at translateY(100%)
-        // before the class that moves it off can be a transition rather than a
-        // starting position.
         requestAnimationFrame(() => requestAnimationFrame(() => {
           arcSheet.classList.add("is-open");
         }));
@@ -705,12 +423,8 @@ layout: default
         const own = bar.querySelector(":scope > .arc-pop--tool");
         parts.push('<strong>' + (bar.dataset.tool || "") + '</strong>');
         if (own) {
-          // The bar's own popover leads with the title, which the line above
-          // just said; take the rest of it.
           own.querySelectorAll(":scope > small").forEach((s) => parts.push(s.outerHTML));
         }
-        // One line per phase, each keeping the cadence edge it wears on the
-        // chart: solid for daily, dashed for occassional.
         bar.querySelectorAll(".arc-seg").forEach((seg) => {
           const pop = seg.querySelector(":scope > .arc-pop--tool");
           if (!pop) return;
@@ -723,8 +437,6 @@ layout: default
         }
         showSheet(parts.join(""), bar);
       };
-      // The matrix only exists below 700px; above it the bars speak for
-      // themselves and a linked one should still just follow its link.
       const isNarrow = () => window.matchMedia("(max-width: 700px)").matches;
       document.querySelectorAll("#arc-card .arc-chip--tool").forEach((bar) => {
         bar.addEventListener("click", (e) => {
@@ -732,11 +444,6 @@ layout: default
           e.preventDefault();
           openSheet(bar);
         });
-        // Keyboard reaches these too — a tablet in portrait is a narrow
-        // viewport with arrow keys. The popovers a focus ring would open on the
-        // wide chart are switched off here, so focus raises the sheet instead.
-        // focusin rather than focus: a segmented bar's phases are what actually
-        // take the focus, and this needs to hear about it from the bar.
         bar.addEventListener("focusin", () => {
           if (isNarrow()) openSheet(bar);
         });
@@ -744,7 +451,6 @@ layout: default
       arcSheet.querySelector(".arc-sheet-close").addEventListener("click", closeSheet);
       document.addEventListener("click", (e) => {
         if (arcSheet.hidden || arcSheet.contains(e.target)) return;
-        // Their own handlers have already refilled or put away the sheet.
         if (e.target.closest(".arc-chip--tool, .arc-descent")) return;
         closeSheet();
       });
@@ -752,18 +458,6 @@ layout: default
         if (e.key === "Escape" && !arcSheet.hidden) closeSheet();
       });
 
-      // ---- The descent note (narrow chart only) ---------------------------
-      // On the wide chart this is a caption you hover for the paragraph behind
-      // it. On the narrow one it is the same caption, tapped, and the paragraph
-      // comes up in the sheet: the staircase keeps the outline its clear block
-      // draws, and a paragraph this long, opened in place, ran off the top of
-      // the screen.
-      //
-      // The role changes with the width because the behaviour does — a note
-      // you can only read is not a control, and a disclosure that never says
-      // whether it is open is not one either. Both are set from here rather
-      // than in the markup, since only one of the two widths has anything to
-      // disclose.
       if (arcDescent) {
         const narrow = window.matchMedia("(max-width: 700px)");
         const descentPop = arcDescent.querySelector(":scope > .arc-pop");
@@ -786,8 +480,6 @@ layout: default
         };
         arcDescent.addEventListener("click", toggle);
         arcDescent.addEventListener("keydown", (e) => {
-          // It carries a tabindex on both charts, so on this one it has to
-          // answer the keys its new role promises.
           if (e.key !== "Enter" && e.key !== " ") return;
           e.preventDefault();
           toggle();
@@ -797,26 +489,8 @@ layout: default
       }
     }
 
-    // ---- Elided titles ----------------------------------------------------
-    // A chip narrower than one word of its own title cuts the title off rather
-    // than spilling it past its border (see .arc-chip > strong in arc.scss).
-    // The name is the one thing a full-size chip's popover leaves out, on the
-    // grounds that the chip is already saying it — true right up until it
-    // isn't. So mark the chips whose lettering doesn't fit and let CSS print
-    // the full name in the popover for exactly those.
-    //
-    // Measured, not assumed: which titles clip depends on the text, the font
-    // and the column width, so there is no breakpoint to write it as. A hidden
-    // view measures 0/0 and reads as fitting, which is why switching tabs
-    // re-runs this alongside resizes and the webfonts landing.
-    //
-    // On the narrow matrix a tool with a `short` name tries that first (a
-    // "JS" where "JavaScript" won't go); only if the short one is cut too does
-    // the bar give up its title.
     const narrowChart = window.matchMedia("(max-width: 700px)");
     const markElided = () => {
-      // A pixel of tolerance: sub-pixel text metrics round either way, and a
-      // chip that fits exactly should not claim to have been cut.
       const isCut = (title) => !!title && title.scrollWidth > title.clientWidth + 1;
       document.querySelectorAll("#arc-card .arc-chip").forEach((chip) => {
         const title = chip.querySelector(":scope > strong");
@@ -837,11 +511,6 @@ layout: default
       elideTimer = setTimeout(markElided, 150);
     });
 
-    // ---- Trajectory view switch ------------------------------------------
-    // Two readings of the same years: what I built, on a fixed 2020–2026 scale,
-    // and what I built it with, on one that runs out to the build date.
-    // Standard tablist semantics — arrows move between tabs, the inactive tabs
-    // stay out of the tab order.
     const arcTabs = Array.from(document.querySelectorAll("#arc-card .arc-toggle-btn"));
     if (arcTabs.length) {
       const showView = (view) => {
@@ -852,7 +521,6 @@ layout: default
           tab.tabIndex = isActive ? 0 : -1;
           document.getElementById("arc-view-" + tab.dataset.view).hidden = !isActive;
         });
-        // The view that was hidden had no dimensions to measure until now.
         markElided();
       };
       arcTabs.forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
@@ -870,11 +538,6 @@ layout: default
   </script>
 </div>
 
-<!-- Phones only: the Trajectory's closing panel, lifted out of the chart into a
-     screen of its own. At the foot of a narrow chart it was a box inside a
-     box, and a long one; here it is a section like the others, with room to
-     read the cards. Hidden above the narrow chart's width (arc.scss), where the
-     panel is at the end of the chart and this would say it twice. -->
 <div class="homepage-card" id="work-card">
   <div class="info-container">
     <h1 class="site-header reveal">Current Work</h1>
@@ -894,12 +557,6 @@ layout: default
         {% endfor %}
     </div>
     <script>
-    // ---- Skills: stacked or tabbed ----------------------------------------
-    // The groups are one stack wherever the whole section fits the screen, and
-    // tabs wherever it doesn't (see .skills-content.is-tabbed in home.scss).
-    // The markdown is left as written: the groups are wrapped and the tab row
-    // is built from their h5 labels here, so skills.md stays the one place the
-    // groups and their order are set. Without script it is simply the stack.
     document.addEventListener("DOMContentLoaded", function () {
       const container = document.getElementById("skills");
       const content = container && container.querySelector(".skills-content");
@@ -916,7 +573,6 @@ layout: default
         const group = document.createElement("section");
         group.className = "skills-group";
         group.id = "skills-group-" + i;
-        // The label and everything after it up to the next label.
         let node = label;
         const members = [];
         while (node && !(node !== label && node.tagName === "H5")) {
@@ -930,9 +586,6 @@ layout: default
         tab.type = "button";
         tab.className = "skills-tab";
         tab.id = "skills-tab-" + i;
-        // A label may carry a shorter form for phones (data-short, set in
-        // skills.md): both are printed and CSS picks one, and the accessible
-        // name stays the full label either way.
         const full = label.textContent.trim();
         if (label.dataset.short) {
           tab.setAttribute("aria-label", full);
@@ -954,9 +607,6 @@ layout: default
       content.appendChild(panels);
       const tabButtons = Array.from(tabs.children);
 
-      // The open group is remembered for the tab's session, so a reload or a
-      // trip back from another page finds the same group. Storage can be
-      // missing or refuse (a private window); then it is simply the first.
       const STORE_KEY = "skills-group";
       const recall = () => {
         try {
@@ -968,10 +618,6 @@ layout: default
         try { sessionStorage.setItem(STORE_KEY, String(i)); } catch (_) {}
       };
 
-      // A group turned away is parked flat once it has finished turning, so
-      // nothing sits at ninety degrees behind the column. Left rotated, it is
-      // kept out of sight only by visibility and the panel's clip, and iOS
-      // lets both slip for a frame while the page scrolls past.
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       const park = (group) => {
         if (group.classList.contains("is-active")) return;
@@ -985,8 +631,6 @@ layout: default
         park(e.target);
       });
 
-      // dir  which way the drum turns: +1 onward (the outgoing group leaves to
-      //      the left), -1 back. Left out, it is the way the tabs read.
       let current = 0;
       const select = (i, dir) => {
         tabButtons.forEach((t, k) => {
@@ -994,8 +638,6 @@ layout: default
           t.tabIndex = k === i ? 0 : -1;
         });
         remember(i);
-        // The first group shows where it stands on load; there is nothing to
-        // turn from.
         if (!groups.some((g) => g.classList.contains("is-active"))) {
           groups[i].classList.add("is-active");
           current = i;
@@ -1005,9 +647,6 @@ layout: default
         const turn = dir || (i > current ? 1 : -1);
         const outgoing = groups[current];
         const incoming = groups[i];
-        // The incoming group is put on the side it comes in from with no
-        // transition, so it swings in from there rather than from wherever the
-        // last turn left it.
         incoming.style.transition = "none";
         incoming.classList.remove("is-prev", "is-next");
         incoming.classList.add(turn > 0 ? "is-next" : "is-prev");
@@ -1020,16 +659,11 @@ layout: default
         incoming.classList.remove("is-prev", "is-next");
         incoming.classList.add("is-active");
         current = i;
-        // Without motion there is no turn to wait out, and no transitionend.
         if (reduceMotion.matches) park(outgoing);
       };
-      // The drum's axis stands half a column behind it, so its faces meet at
-      // the column's edges as they turn.
       const setPivot = () => {
         panels.style.setProperty("--skills-pivot", -(panels.clientWidth / 2) + "px");
       };
-      // Tab semantics only while it is tabs: stacked, the groups are plain
-      // sections under their own headings and the buttons aren't shown.
       const setTabbed = (on) => {
         content.classList.toggle("is-tabbed", on);
         if (on) tabs.setAttribute("role", "tablist"); else tabs.removeAttribute("role");
@@ -1045,9 +679,6 @@ layout: default
         });
       };
       tabButtons.forEach((t, i) => t.addEventListener("click", () => select(i)));
-      // On touch, a sideways swipe across the section turns the drum one group
-      // along, and on round from the last group to the first, the way the
-      // arrow keys already do. Same query as the rolodex's touchNav.
       const touchNav = window.matchMedia("(max-width: 600px), (pointer: coarse)");
       const step = (dir) => select((current + dir + tabButtons.length) % tabButtons.length, dir);
       if (window.addSwipe) {
@@ -1062,15 +693,6 @@ layout: default
       });
       select(recall());
 
-      // Fits means the stacked section, heading included, clears the screen
-      // with a little room to spare. The screen is the small viewport (svh): on
-      // a phone the toolbar coming and going changes innerHeight on every
-      // scroll, and the layout must not flip mid-scroll. The stack is measured
-      // by switching back to it and out again in one go — no frame is painted
-      // in between. The switch still counts as a style change, though, and
-      // would start every group's transition from its stacked look: the
-      // hidden groups would fade out in front of the open one. So the groups
-      // hold still (.is-still) until the switch is over.
       const FIT_MARGIN = 32;
       const probe = document.createElement("div");
       probe.style.cssText = "position:absolute;top:0;left:0;width:0;visibility:hidden;height:100vh;height:100svh;";
@@ -1104,13 +726,6 @@ layout: default
 <div class="homepage-card" id="projects-card">
   <div class="project-modal-parent"></div>
   <h1 class="site-header reveal"> Portfolio </h1>
-  {%- comment -%}On a phone or any touch screen the track is a readout, not a
-  control: seventeen 7px dots are no target for a finger, and a track that took
-  the drag took the page's scroll with it. The arrows page instead. Where they
-  sit is data-arrows — "track" puts them at either end of the track, "below"
-  in a row under the deck with a count between them (see .rolodex in
-  home.scss). All four are hidden where the track is still a control.
-  {%- endcomment %}
   <div class="rolodex reveal" id="rolodex" data-arrows="track">
     <div class="rolodex-deck" id="rolodex-deck">
       {%- include project-feed.html -%}
@@ -1134,12 +749,7 @@ layout: default
   </div>
   {%- include compare-arrows.html -%}
   <script>
-  // Setup is deferred to DOMContentLoaded so querySelectorAll(".reveal") sees
-  // every section. Portfolio is now the last card, so the sections above are
-  // already parsed either way, but the guard costs nothing and survives a
-  // reorder.
   document.addEventListener("DOMContentLoaded", function () {
-  // ---- Project modal ----------------------------------------------------
   const modalParent = document.querySelector(".project-modal-parent");
   let modalCloseTimer = 0;
 
@@ -1148,14 +758,11 @@ layout: default
     modalParent.innerHTML = "";
     const modalWindow = projectCard.cloneNode(true);
     modalWindow.classList.add("project-modal");
-    // Drop reveal bookkeeping so the clone animates with the modal's own
-    // transition rather than starting from a faded reveal state.
     modalWindow.classList.remove("reveal", "is-visible");
     modalWindow
       .querySelectorAll(".project-description, .project-collaborators, .project-supervisor")
       .forEach((el) => { el.style.display = "block"; });
     modalWindow.addEventListener("click", (event) => event.stopPropagation());
-    // Shown on phones only (.project-modal-close in home.scss).
     const closeButton = document.createElement("button");
     closeButton.type = "button";
     closeButton.className = "project-modal-close";
@@ -1163,9 +770,6 @@ layout: default
     closeButton.innerHTML = "&times;";
     closeButton.addEventListener("click", closeModal);
     modalWindow.prepend(closeButton);
-    // A link to another project's card switches the modal to that card. Looked
-    // up in the rolodex, never in the modal itself, and left as a plain
-    // #projects-card anchor if the target is missing.
     modalWindow.querySelectorAll("a.project-link[data-project]").forEach((link) => {
       link.addEventListener("click", (event) => {
         const target = document.querySelector(
@@ -1176,32 +780,19 @@ layout: default
       });
     });
     modalParent.appendChild(modalWindow);
-    // Flip to the open state on the next frame so the transition runs.
     requestAnimationFrame(() => modalParent.classList.add("is-open"));
   }
-  // The Trajectory opens these too, from a script block earlier in the page.
   window.openProjectModal = openModal;
 
   function closeModal() {
     if (!modalParent.classList.contains("is-open")) return;
     modalParent.classList.remove("is-open");
-    // Clear contents once the fade-out has finished.
     clearTimeout(modalCloseTimer);
     modalCloseTimer = setTimeout(() => { modalParent.innerHTML = ""; }, 250);
   }
 
   modalParent.addEventListener("click", closeModal);
 
-  // ---- PDF viewer --------------------------------------------------------
-  // One overlay shows every PDF the site links to: the resume from the hero
-  // button, the papers from the cards in the portfolio. We render the PDF
-  // ourselves with pdf.js into a <canvas> rather than pointing an <iframe> at
-  // the file: browsers configured to "save" PDFs (common on Linux/Firefox)
-  // would otherwise download the file and leave the frame blank. Fetching +
-  // drawing means no navigation, so nothing auto-downloads, and we control the
-  // output so it's never blank. Every trigger keeps a working href underneath,
-  // and the Download / open-in-new-tab links in the header stay as fallbacks
-  // (and on render failure).
   (function pdfViewer() {
     const overlay = document.getElementById("pdf-modal");
     if (!overlay) return;
@@ -1212,8 +803,6 @@ layout: default
     const closeBtn = overlay.querySelector(".pdf-modal-close");
     let lastFocus = null;
 
-    // pdf.js (UMD build) is loaded lazily on first open from a CDN; the worker
-    // is pinned to the same version.
     const PDFJS_VERSION = "3.11.174";
     const PDFJS_SRC = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" + PDFJS_VERSION + "/pdf.min.js";
     const PDFJS_WORKER = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" + PDFJS_VERSION + "/pdf.worker.min.js";
@@ -1250,10 +839,6 @@ layout: default
       return pdfjsPromise;
     }
 
-    // Draw one page into the box already standing in for it. The resume is a
-    // single page, but a paper runs to dozens: rendering them all up front
-    // would spend hundreds of megabytes of canvas on pages nobody has scrolled
-    // to, so each one waits until it comes within range of the viewport.
     async function drawPage(pageEl) {
       if (pageEl.dataset.state) return; // already drawn, or drawing
       pageEl.dataset.state = "drawing";
@@ -1270,20 +855,10 @@ layout: default
         await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
         pageEl.dataset.state = "drawn";
       } catch (err) {
-        // One page that won't draw leaves its empty box behind rather than
-        // taking down the document around it; the fallback links still work.
         pageEl.dataset.state = "failed";
       }
     }
 
-    // Lay the document out as one empty box per page, each at that page's own
-    // aspect ratio so the scrollbar tells the truth before a single page has
-    // been drawn.
-    //
-    // Every run carries a token. Asking for another document (or resizing)
-    // partway through starts a newer run, and the older one drops out at its
-    // next checkpoint instead of laying its pages into a frame that has moved
-    // on to something else.
     async function renderDoc(force) {
       if (!docSrc) return;
       if ((renderState === "done" || renderState === "error") && !force) return;
@@ -1301,8 +876,6 @@ layout: default
         const styles = getComputedStyle(frame);
         const padX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
         const available = Math.max(frame.clientWidth - padX, 120);
-        // Hold the reader's place across a re-layout (a rotate, a resize):
-        // measured as a fraction, since the new layout is a different height.
         const wasAt = frame.scrollHeight > frame.clientHeight
           ? frame.scrollTop / frame.scrollHeight
           : 0;
@@ -1314,8 +887,6 @@ layout: default
             pageObserver.unobserve(entry.target);
             drawPage(entry.target);
           }
-          // A page and a half of margin: scrolling at a normal clip finds the
-          // next page already drawn, without running far ahead of the reader.
         }, { root: frame, rootMargin: "150% 0px" });
         for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
           const page = await pdfDoc.getPage(pageNum);
@@ -1338,8 +909,6 @@ layout: default
       }
     }
 
-    // src   the file to show
-    // meta  title for the header, and the filename a download should land under
     function openPdf(src, meta) {
       if (!src) return;
       const info = meta || {};
@@ -1351,8 +920,6 @@ layout: default
       downloadLink.href = src;
       downloadLink.setAttribute("download", info.download || "");
       newTabLink.href = src;
-      // A second look at the document already loaded costs nothing: the pages
-      // are still drawn. A different one starts over, and lets go of the last.
       if (src !== docSrc) {
         if (pdfDoc) { pdfDoc.destroy(); pdfDoc = null; }
         docSrc = src;
@@ -1364,10 +931,6 @@ layout: default
       (closeBtn || overlay).focus();
       renderDoc(false);
     }
-    // Reports whether it had anything to close, so the one Escape handler
-    // further down can offer the key here first and stop if it was taken. The
-    // viewer opens over the project modal — a card's own paper is one click
-    // away inside it — and one Escape should only ever close the top layer.
     function closePdf() {
       if (!overlay.classList.contains("is-open")) return false;
       overlay.classList.remove("is-open");
@@ -1377,25 +940,16 @@ layout: default
     }
     window.closePdfModal = closePdf;
 
-    // Both resume buttons: the rail's, and the one a phone shows at the top of
-    // Home instead (resume-button.html).
     document.querySelectorAll(".resume-button").forEach((trigger) => {
       trigger.addEventListener("click", () => openPdf(trigger.dataset.pdf, {
         title: trigger.dataset.pdfTitle,
         download: trigger.dataset.pdfDownload,
       }));
     });
-    // Every PDF link on a card opens here instead of handing the file to the
-    // browser, which is as likely to drop it in Downloads as to show it.
-    // Capture rather than bubble: a card cloned into the project modal stops
-    // click propagation at the modal, so a listener on document would never
-    // hear about the links inside it.
     document.addEventListener("click", (event) => {
       const target = event.target;
       const link = target instanceof Element ? target.closest("a.pdf-link") : null;
       if (!link) return;
-      // Modified clicks stay the browser's: ctrl/cmd-click still opens the file
-      // in a tab of its own, and a middle click still goes to the background.
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
       event.stopPropagation(); // the card underneath shouldn't open as well
@@ -1406,12 +960,9 @@ layout: default
     }, true);
 
     if (closeBtn) closeBtn.addEventListener("click", closePdf);
-    // Close when the backdrop (not the panel) is clicked.
     overlay.addEventListener("click", (event) => {
       if (event.target === overlay) closePdf();
     });
-    // Escape arrives by way of the keyboard handler at the foot of this script.
-    // Re-render at the new width when the viewport changes (e.g. phone rotate).
     let resizeTimer = null;
     window.addEventListener("resize", () => {
       if (renderState !== "done" || !overlay.classList.contains("is-open")) return;
@@ -1420,10 +971,6 @@ layout: default
     });
   })();
 
-  // ---- Smooth-scroll for in-page anchor links ---------------------------
-  // (CSS scroll-behavior stays off so it doesn't fight native snap.)
-  // Links carrying data-project also focus that card in the rolodex; see
-  // initRolodex below.
   document.querySelectorAll('a.homepage-link[href^="#"], a.site-rail-link[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
       const targetId = link.getAttribute("href").slice(1);
@@ -1435,7 +982,6 @@ layout: default
     });
   });
 
-  // ---- Scroll-reveal -----------------------------------------------------
   const prefersReducedMotion =
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const STAGGER_MS = prefersReducedMotion ? 0 : 40;
@@ -1452,18 +998,8 @@ layout: default
         el.classList.add("is-visible");
       }
     }
-    // threshold 0 + default margin: an element reveals as soon as any part of
-    // it enters the viewport. This guarantees content centered low in a tall
-    // card at the page bottom can't get stranded below a raised trigger line
-    // and stay invisible.
   }, { threshold: 0 });
 
-  // ---- Hero ASCII typing animation (fresh loads only) -------------------
-  // On a genuine page load/reload, type the name banner out behind a
-  // vim-style block cursor. Skipped under prefers-reduced-motion and for
-  // back/forward (bfcache) restores, where the finished banner is already on
-  // screen. Runs before the observe() loop below so the banner can opt out of
-  // the reveal system without being observed.
   (function typeHeroBanner() {
     const banner = document.querySelector(".name-title-ascii");
     if (!banner) return;
@@ -1471,16 +1007,11 @@ layout: default
     const nav = performance.getEntriesByType("navigation")[0];
     const navType = nav ? nav.type : "navigate";
     const isFreshLoad = navType === "navigate" || navType === "reload";
-    // Leave the banner to the reveal observer (plain fade-in) in these cases.
     if (prefersReducedMotion || !isFreshLoad) return;
 
-    // Drop the trailing blank line, then keep an intact copy for fallback.
     const source = banner.textContent.replace(/\s+$/, "");
     if (!source) return;
 
-    // Hero copy below the banner is held back until typing finishes, then
-    // cascades up. (Everything above the banner — "Welcome! I'm" — still
-    // reveals immediately via the observer.)
     const greeting = document.getElementById("greeting");
     const heroReveals = greeting ? Array.from(greeting.querySelectorAll(".reveal")) : [];
     const bannerPos = heroReveals.indexOf(banner);
@@ -1500,11 +1031,7 @@ layout: default
     }
 
     try {
-      // Opt the banner out of the reveal fade and show it immediately; its
-      // glyphs stay transparent until the cursor types each one in.
       banner.classList.remove("reveal");
-      // Hold the copy below the banner: it stays hidden (still .reveal) while
-      // the observe loop skips anything marked reveal-deferred.
       deferred.forEach((el) => el.classList.add("reveal-deferred"));
 
       const cells = []; // one span per visible glyph, in type order
@@ -1520,8 +1047,6 @@ layout: default
         fragment.appendChild(span);
         cells.push(span);
       }
-      // One extra cell past the final glyph so the closing cursor rests off the
-      // last character (terminal-style) rather than on top of it.
       const cursorRest = document.createElement("span");
       cursorRest.className = "ascii-char";
       cursorRest.textContent = " ";
@@ -1552,8 +1077,6 @@ layout: default
         }
         for (let k = 0; k < total; k++) cells[k].classList.add("is-typed");
         revealDeferred(); // banner fully typed — cascade the copy up
-        // Rest solid on the last cell for a beat (so the line reads as "done"),
-        // then a few terminal-style blinks, then settle.
         const last = cells[total - 1];
         last.classList.add("is-cursor");
         const LINGER_MS = 150; // solid hold before the blink-out
@@ -1563,7 +1086,6 @@ layout: default
           let ticks = 0;
           const blink = setInterval(() => {
             last.classList.toggle("is-cursor");
-            // Two toggles per flash (on, then off); stop after FLASHES, off.
             if (++ticks >= FLASHES * 2) {
               clearInterval(blink);
               last.classList.remove("is-cursor");
@@ -1574,25 +1096,14 @@ layout: default
 
       requestAnimationFrame(step);
     } catch (err) {
-      // Anything unexpected: show the banner intact and release the copy.
       banner.textContent = source;
       banner.classList.remove("reveal");
       revealDeferred();
     }
   })();
 
-  // Reveal the static content (hero copy, section headers, skills). Skip
-  // anything the typing animation is holding back (reveal-deferred); those are
-  // released by revealDeferred() once the banner finishes typing.
   document.querySelectorAll(".reveal:not(.reveal-deferred)").forEach((el) => revealObserver.observe(el));
 
-  // ---- Project rolodex ---------------------------------------------------
-  // Projects are paged one row (up to 3 cards) at a time; each row rolls in on
-  // a horizontal 3D axis set behind the card plane. Row paging is driven by the
-  // Up/Down keys (when focus is in projects) and the side track only — mouse
-  // wheel and touch swipe are intentionally NOT bound so the page can scroll
-  // normally. Left/Right move focus between cards within the active row
-  // (bounded). No wrap. A card's click/Enter still opens the detail modal.
   (function initRolodex() {
     const rolodex = document.getElementById("rolodex");
     const deck = document.getElementById("rolodex-deck");
@@ -1607,8 +1118,6 @@ layout: default
     const stepPrev = rolodex.querySelector(".rolodex-step--prev");
     const stepNext = rolodex.querySelector(".rolodex-step--next");
     const count = document.getElementById("rolodex-count");
-    // Must match the media query in home.scss that shows the arrows and turns
-    // the track into a readout.
     const touchNav = window.matchMedia("(max-width: 600px), (pointer: coarse)");
 
     let cpr = 0;     // cards per row, responsive to width
@@ -1616,10 +1125,6 @@ layout: default
     let active = 0;  // active row index
 
     const columnsForWidth = () => {
-      // Measure the deck itself. Never fall back to window.innerWidth: it is
-      // wider than the (often column-constrained) deck, so on an initial
-      // 0-width read it would cram too many cards into too little space and
-      // never self-correct without a resize.
       const w = deck.clientWidth || deck.getBoundingClientRect().width;
       return Math.max(1, Math.min(3, Math.floor(w / 340)));
     };
@@ -1634,14 +1139,12 @@ layout: default
       Array.from(track.children).forEach((tick, i) => {
         tick.classList.toggle("is-active", i === active);
         tick.classList.toggle("is-passed", i < active);
-        // A readout's dots take no focus; a control's do.
         tick.tabIndex = touchNav.matches ? -1 : 0;
       });
       track.setAttribute("aria-valuenow", String(active + 1));
       if (stepPrev) stepPrev.disabled = active === 0;
       if (stepNext) stepNext.disabled = active === rows.length - 1;
       if (count) count.textContent = (active + 1) + " / " + rows.length;
-      // Drive the accent fill on the side track up to the active node.
       const lastRow = rows.length - 1;
       track.style.setProperty("--rolodex-progress", lastRow > 0 ? String(active / lastRow) : "0");
     }
@@ -1673,16 +1176,6 @@ layout: default
       fitHeadlines();
     }
 
-    // Fill each face with its summary, just short of overflowing. One size for
-    // the whole deck, so the cards stay consistent: the largest at which every
-    // card's content still fits its fixed-height face. Measured, not assumed —
-    // it depends on the text, the column count and the webfont. Cards in a row
-    // that isn't laid out (no-motion mode hides them) can't be measured and
-    // don't constrain the size.
-    // A card also has to leave HEADLINE_GAP px of clear space between its text
-    // and its footer, so the copy fills the face without touching the rule.
-    // offsetTop rather than getBoundingClientRect: the rows that aren't current
-    // are rotated away, and a transform would skew the numbers.
     const HEADLINE_MAX = 1.5, HEADLINE_MIN = 0.8, HEADLINE_STEP = 0.02, HEADLINE_GAP = 20;
     function fitHeadlines() {
       let size = HEADLINE_MAX;
@@ -1708,9 +1201,6 @@ layout: default
       active = next;
       applyRowStates();
       if (focusCard) {
-        // Preserve the column across the row transition so vertical paging
-        // doesn't snap focus back to the first card. col is undefined for
-        // tick/drag jumps, which fall back to the first card.
         const cards = rows[active].querySelectorAll(".project-card");
         if (cards.length) {
           const idx = col == null ? 0 : Math.min(cards.length - 1, Math.max(0, col));
@@ -1724,21 +1214,13 @@ layout: default
     track.setAttribute("aria-label", "Project position");
     track.setAttribute("aria-valuemin", "1");
 
-    // The arrows page one row at a time. Focus stays on the arrow rather than
-    // moving to the card, so a run of taps doesn't lift each card in turn.
     [stepPrev, stepNext].forEach((btn) => {
       if (!btn) return;
       btn.addEventListener("click", () => step(Number(btn.dataset.step), false));
     });
     touchNav.addEventListener("change", applyRowStates);
-    // And a sideways swipe across the deck does what the arrows do: left for
-    // the next row, right for the one before. Sideways rather than up and down,
-    // which would take the page's scroll away from a finger on the card.
     if (window.addSwipe) window.addSwipe(deck, (dir) => step(dir, false), () => touchNav.matches);
 
-    // The deck is overflow: clip and can't scroll. Where clip is unsupported it
-    // falls back to hidden, which can — so put back any scroll that happens, or
-    // the row slides up and the cards' tops are cut off under the heading.
     deck.addEventListener("scroll", () => {
       if (deck.scrollTop || deck.scrollLeft) { deck.scrollTop = 0; deck.scrollLeft = 0; }
     }, { passive: true });
@@ -1747,10 +1229,6 @@ layout: default
     rolodex.classList.add("rolodex--ready");
     if (prefersReducedMotion) rolodex.classList.add("rolodex--no-motion");
 
-    // Re-measure when the deck's width crosses a column boundary. A
-    // ResizeObserver fires on the first real layout, so an initial 0-width read
-    // (which would otherwise lock in a crammed column count) self-corrects as
-    // soon as the deck is sized.
     let resizeTimer = 0;
     const remeasure = () => {
       clearTimeout(resizeTimer);
@@ -1762,16 +1240,9 @@ layout: default
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHeadlines);
     window.addEventListener("resize", remeasure, { passive: true });
 
-    // Keyboard nav (only while focus is within projects):
-    //   Up/Down    page rows (clamped — leave the section via corner nav)
-    //   Left/Right move focus between cards within the active row (bounded)
-    // Mouse wheel and touch swipe are deliberately not bound so they fall
-    // through to normal page scrolling.
     projectsCard.addEventListener("keydown", (e) => {
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {
         e.preventDefault();
-        // Carry the current column into the destination row so paging stays in
-        // the same column (clamped to that row's card count).
         const cards = Array.from(rows[active].querySelectorAll(".project-card"));
         const col = cards.indexOf(document.activeElement);
         step(e.key === "ArrowDown" ? 1 : -1, true, col < 0 ? 0 : col);
@@ -1787,10 +1258,6 @@ layout: default
       }
     });
 
-    // The handler above only fires once focus is already inside the projects
-    // section. When the section is the one in view but nothing in it is focused
-    // yet, Left/Right should still pull focus into the rolodex. Cover that case
-    // at the document level (bail if the section already handled the key).
     document.addEventListener("keydown", (e) => {
       if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
       if (e.defaultPrevented) return;                       // handled by focus-in path
@@ -1804,8 +1271,6 @@ layout: default
       first.focus({ preventScroll: true });
     });
 
-    // Hero links name a project: roll the deck to its row and focus its card.
-    // The scroll itself is the anchor handler's; this only moves the rolodex.
     document.querySelectorAll("a.homepage-link[data-project]").forEach((link) => {
       link.addEventListener("click", () => {
         const card = allCards.find((c) => c.dataset.project === link.dataset.project);
@@ -1813,10 +1278,6 @@ layout: default
         const row = rows.findIndex((r) => r.contains(card));
         if (row < 0) return;
         if (row !== active) { active = row; applyRowStates(); }
-        // Focus now, and again once the smooth scroll has settled: the click
-        // that got us here leaves focus on the link, and a card that is still
-        // mid-flip can decline it. Retry only while focus is still off the
-        // card, and stop if the user has moved into another one.
         const claim = () => {
           if (document.activeElement === card) return;
           const other = document.activeElement && document.activeElement.closest &&
@@ -1830,16 +1291,12 @@ layout: default
         };
         mark();
         card.focus({ preventScroll: true });
-        // "Settled" is a scroll position that stops changing: scrollend is
-        // missing on older Safari, and a fixed delay is too short for a long
-        // smooth scroll on a phone. The cap covers a page that never scrolls.
         let idle = 0;
         const finish = () => {
           clearTimeout(idle);
           window.removeEventListener("scroll", bump);
           const had = document.activeElement === card;
           claim();
-          // Refocused after a blur had cleared the mark.
           if (!had && document.activeElement === card) mark();
         };
         const bump = () => { clearTimeout(idle); idle = setTimeout(finish, 150); };
@@ -1848,8 +1305,6 @@ layout: default
       });
     });
 
-    // Side track: click a tick or drag to jump to a row. Not on touch, where
-    // the track only reports the position and the arrows do the paging.
     const rowFromPointer = (clientY) => {
       const r = track.getBoundingClientRect();
       return Math.round(((clientY - r.top) / r.height) * (rows.length - 1));
@@ -1869,23 +1324,13 @@ layout: default
     });
   })();
 
-  // ---- Keyboard handling -------------------------------------------------
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      // Top layer first: the PDF viewer sits over the project modal, so while
-      // it is up the key is spent closing it and nothing else. It says whether
-      // it took the key — asking it here, rather than letting it listen for
-      // Escape itself, is what keeps one press from closing two layers.
       if (window.closePdfModal && window.closePdfModal()) return;
-      // Modal close takes priority: when a project modal is open the card that
-      // opened it is usually still the focused element, so check open-state
-      // first to avoid blurring the card instead of closing the modal.
       if (modalParent.classList.contains("is-open")) {
         closeModal();
         return;
       }
-      // No project modal open: if a rolodex card holds focus, step focus back
-      // out of the rolodex.
       const active = document.activeElement;
       if (active && active.classList.contains("project-card") &&
           !active.classList.contains("project-modal")) {
@@ -1899,7 +1344,6 @@ layout: default
     }
   });
 
-  // ---- Input-mode tracking (mouse vs keyboard) ---------------------------
   document.addEventListener("mousemove", () => {
     document.documentElement.classList.remove("using-keyboard");
     document.documentElement.classList.add("using-mouse");
@@ -1921,7 +1365,6 @@ layout: default
     if (isScrolling) return;
     const card = e.target.closest(".project-card");
     if (!card || document.documentElement.classList.contains("using-keyboard")) return;
-    // Only move focus if focus is not already on a card via keyboard.
     if (document.activeElement !== card) {
       card.focus({ preventScroll: true });
     }
@@ -1931,11 +1374,6 @@ layout: default
   </script>
 </div>
 
-{%- comment -%}One viewer for every PDF the site links to: the resume from the
-hero button, the papers from the cards in the portfolio. Title, source and both
-fallback links are filled in by whatever opened it, so nothing here names a
-document. The single-file build has no PDFs to show, and pdfViewer() bows out
-when this is missing.{%- endcomment -%}
 {%- unless site.single_file -%}
 <div class="pdf-modal-parent" id="pdf-modal" role="dialog" aria-modal="true" aria-label="Document" aria-hidden="true">
   <div class="pdf-modal">
@@ -1945,9 +1383,6 @@ when this is missing.{%- endcomment -%}
         <a class="pdf-modal-action" data-role="download" href="#" download>Download</a>
         <a class="pdf-modal-action" data-role="new-tab" href="#" target="_blank" rel="noopener">Open in new tab</a>
       </div>
-      {%- comment -%}Outside the actions, so that on a phone — where the two
-      links drop to a row of their own — the close stays up on the title's row,
-      in the corner it is looked for in.{%- endcomment -%}
       <button class="pdf-modal-close" type="button" aria-label="Close document">&times;</button>
     </div>
     <div class="pdf-modal-frame" role="document" tabindex="0"></div>

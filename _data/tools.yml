@@ -1,65 +1,3 @@
-# Waterfall for the Trajectory card (see _layouts/home.html), drawn on a ruler
-# running from 2020 to today; each tool is one bar. "Today" is resolved from
-# site.time when the site is built, so the now line moves with each publish and
-# no date here has to stand in for it.
-#
-# All the entries under `views` share one tab and one grid, so they read against
-# the same time axis. The first is the chart proper. Each one after it is a minor
-# band below a divider, drawn at reduced weight — context rather than argument,
-# so add a view here only for something meant to sit under the main story.
-#
-#   start / end   real dates, yyyy-mm-dd. The grid's columns are half-years, so
-#                 a bar's edges snap to the nearest half-year line — Jan 1 and
-#                 Jul 1 land exactly; segment boundaries inside a bar keep their
-#                 exact date positions. Anything starting before 2020 is clamped
-#                 to the left edge and drawn clipped; keep the display dates in
-#                 `span`. An end on or before its start fails the build, as does
-#                 a `continues` bar starting before the previous bar's end.
-#   ongoing       true if still in use. The bar then runs to the computed now
-#                 line and `end` is not read — leave it off rather than writing
-#                 a date that will go stale.
-#   occasional    true for reach-for-it-sometimes tools (hatched, dimmer) —
-#                 shorthand for a single occasional segment covering the bar.
-#   segments      optional list of phases within one bar, for tools whose use
-#                 has waxed and waned. Solid fill = daily driver, diagonal
-#                 hatch = reached for occasionally. Each phase takes:
-#                   start     yyyy-mm-dd date the phase begins
-#                   end       optional — defaults to the next phase's start, so
-#                             a contiguous history only dates each turn
-#                   cadence   daily (default) or occasional
-#                   ongoing   true on the last phase if it runs to now
-#                   span      display string for the phase popover's date line
-#                   note      a sentence on what was going on in that phase
-#                 When segments are present the bar's extent derives from them
-#                 (first start → last end/now), and tool-level start / end /
-#                 ongoing are not read. Keep the tool-level span and note: they
-#                 head the tool's card in the mobile feed.
-#                 Phases must be in date order and disjoint (touching is fine,
-#                 gaps are fine), only the last may be ongoing, and the last
-#                 must either end or be ongoing. Any violation fails the build
-#                 with a missing-include error naming the tool and the rule.
-#   continues     true to share the previous tool's row instead of starting a
-#                 new one. For things you switch between rather than accumulate
-#                 (editors, operating systems) the spans don't overlap, so a
-#                 staircase would be misleading — they belong on one row as a
-#                 relay of segments. Set it on every entry after the first.
-#   link          optional URL. The bar becomes that link — the whole bar, in a
-#                 new tab — instead of a plain span, so say where it goes in the
-#                 `note`. Not available to a bar with segments: those are
-#                 focusable in their own right, and nesting them inside a link
-#                 fails the build.
-#   family        `analysis`, `language`, or `environment`; drives bar color
-#                 through .arc-chip--<family>. There is no color key — the bar
-#                 names carry the distinction — so adding a family here means
-#                 adding a rule for it in _sass/arc.scss.
-#   span / note   display strings for the hover popover (and the mobile feed).
-#   short         optional shorter name for the phone chart, used only when the
-#                 full name doesn't fit inside its bar there. A name that still
-#                 doesn't fit is hidden (a tap on the bar shows it).
-#
-# Bars render top-to-bottom in file order, so keep each group roughly
-# chronological by `start`. Adding a group — or a whole band — is a change here
-# only; rows, rail labels, and dividers are all derived.
 
 views:
   - id: tools
@@ -126,8 +64,9 @@ views:
                 cadence: daily
                 span: 2022 – 2025
                 note: >-
-                  Primary language for four years, chosen for the sspi.world Flask
-                  backend as a lingua franca that research apprentices already knew
+                  Primary language used for sspi.world's Flask
+                  backend. I built almost everything for the SSPI in Python because
+                  it was a *lingua franca* that research apprentices already knew
                   from their coursework. Used to build out the ETL pipeline for
                   sspi.world, the website backend, and later the CLI tools.
               - start: 2026-01-01

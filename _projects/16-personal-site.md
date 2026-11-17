@@ -3,7 +3,6 @@ project-title: "tjmisko.github.io"
 project-type: "Web Development - Front End - Jekyll, SCSS & JavaScript"
 project-status: "Built 2022 - Rebuilt 2026 - Live"
 project-headline: "The 2022 version of this site, as a Jekyll Minima fork."
-project-collaborators: "Jennifer Tachibana"
 github: tjmisko.github.io
 tags:
   - "all"

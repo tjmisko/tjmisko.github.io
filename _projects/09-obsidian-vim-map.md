@@ -23,5 +23,5 @@ Vim Map is a fork of Map View, the Obsidian plugin that places a vault's geoloca
 
 * A normal mode for the map, with a mode badge, a command that focuses the map, vim-like keys for panning, zooming, and moving between markers, and a go-to place finder on `Shift+G`.
 * Boundary layers: GeoJSON regions stored in notes, with per-note color, per-level hover panes, nested regions, and a layers toggle in the map controls. Regions inherit their note's tags, so tag queries match them.
-* Keyboard interaction degrades gracefully on mobile, where the plugin also runs.
+* The plugin also runs on mobile.
 * A deviations file catalogs every place the fork departs from upstream.

@@ -23,3 +23,6 @@ ehthumbs.db
 Thumbs.db
 *.Rhistory
 .worktrees/
+
+# Local notes and archived material
+_local/

@@ -1,105 +1,3 @@
-{%- comment -%}
-One chip on the Trajectory work grid, drawn from a document's `arc` front
-matter. Projects and experiences render through here identically, so every item
-on the chart carries the same two affordances: a hover popover with its dates
-and a one-line description, and a click that opens the document's detail modal.
-
-  p            the document (a _projects or _experience entry)
-  work_end     the grid line the fixed scale ends on, for arc.ongoing chips
-
-A document may also carry arc.node for the panel past the end of the scale
-(see home.html); the two are independent, so one project can be drawn in both
-places — Taskbuffer's 2024 shell tool is a mini here and its 2026 plugins a
-mini in the panel's Software Tools band, both opening the same card.
-
-Front matter read here:
-  arc.lane     research | data | software — which color family the chip takes
-  arc.tone     overrides lane for color only (a research role in the data palette)
-  arc.row      grid row, 2–8. Also picks the lane column on the narrow chart,
-               where several rows share one — see the packing table below.
-  arc.between  the chip hangs centered in the clear space between the bars above
-               and below it rather than on its own row's midline. For the
-               unbanded row, whose whole point is that what sits there belongs to
-               neither side of it. Purely visual: the chip keeps its row and only
-               overhangs into the next one's band, so set it on every chip in the
-               row — and on whatever else is drawn around them, or the outline
-               slides off what it encloses. See .arc-chip.is-between.
-  arc.relay    true for chips that share a row as one continuous succession
-               (SSPI research → BRG → IRLE engineering). They stretch to a
-               common height instead of each hugging its own text, so a
-               two-line label can't leave its neighbours sitting short — the
-               run should read as one line across the chart. Set it on every
-               chip in the row, not just the tall one.
-  arc.wide_only  drawn on the wide chart and left off the narrow one. For an
-               item that is context where there is room for context and noise
-               where there isn't: a phone has one screen of height to spend on
-               the whole arc, and something that only sets the scene should not
-               be holding the top of it. The document still renders its card and
-               is still reachable from the portfolio — this hides a bar, not an
-               entry. Mirrors .is-narrow-only, which the lane heads wear.
-  arc.start    decimal year the chip begins (2023.5 = mid-2023)
-  arc.end      decimal year it ends; omitted when arc.ongoing is set
-  arc.ongoing  runs off the fixed scale into the junction instead of ending
-  arc.kind     paper | cli | web — draws the chip as an icon-only mini instead
-  arc.label    the chip's title
-  arc.sub      short technical tagline under the title
-  arc.span     human-readable dates, shown in the popover
-  arc.blurb    optional one-sentence override for the popover. Left off, the
-               popover reads the document's project-headline, so a chip and
-               its card say the same thing once; set it only where the chip
-               is a single era or role of a longer story and needs its own
-               sentence (the 2022 site, the first Taskbuffer, the roles).
-  arc.parts    optional list of sections of one document, for work that changed
-               in kind partway through — a role that became a different role
-               over the same project. The document is still one box, but
-               divided: each part takes its own stretch of it, with its own
-               title and its own tint, and the turn from one to the next is
-               marked by an edge inside the box. The popover opens with
-               arc.label and lists every part, and hovering a section lifts its
-               line, as with phases. Parts and phases are both divisions of the
-               bar, so declaring both fails the build, and so does declaring
-               parts on an arc.kind mini. Each takes:
-                 start    decimal year the part begins
-                 end      optional — defaults to the next part's start, so a
-                          contiguous succession only has to date each turn; the
-                          last part defaults to the chip's own end (or runs to
-                          the junction under arc.ongoing)
-                 label    the part's title; falls back to arc.label
-                 sub      short tagline under it; falls back to arc.sub
-                 span     human-readable dates for the part's popover line
-                 blurb    one sentence for the popover; falls back to
-                          arc.blurb, then to project-headline
-               Parts must be in date order and disjoint (touching is fine, gaps
-               are fine); a violation fails the build with a missing-include
-               error naming the document and the rule.
-  arc.phases   optional list of activity phases inside one chip, for work that
-               ran hot and cold rather than at one pitch throughout. Solid =
-               active, diagonal hatch = backburner. Each phase takes:
-                 start    decimal year the phase begins
-                 end      optional — defaults to the next phase's start, so a
-                          contiguous history only has to date each turn; the
-                          last phase defaults to the chip's own end
-                 cadence  active (default) or backburner
-                 span     display string for the phase's line in the popover
-                 note     a sentence on what the work looked like in that phase
-               Unlike the toolchain band's `segments`, phases do NOT set the
-               chip's extent — arc.start / arc.end still do, and phases only
-               texture what is already drawn, clipped to it. Phases must be in
-               date order and disjoint (touching is fine, gaps are fine); a
-               violation fails the build with a missing-include error naming
-               the document and the rule.
-               On an arc.kind mini there is no bar to texture, so the phases
-               are listed in the popover and nothing more: a way for a chip
-               that stands for one era of a longer story to tell the whole of
-               it. The list is drawn as given, not validated against a bar it
-               doesn't have.
-  arc.era      optional 1-based index into arc.phases naming the era this chip
-               stands for. Its line in the popover's list holds at full
-               strength and the rest sit back, the way a hovered stretch of a
-               textured bar lifts its own line. For a mini that is one era of
-               a project with several (Taskbuffer's 2024 shell tool), paired
-               with arc.node.era on the same document's panel entry.
-{%- endcomment -%}
 {%- assign a = include.p.arc -%}
 {%- assign chip_blurb = a.blurb | default: include.p.project-headline -%}
 {%- assign col_raw = a.start | minus: 2020 | times: 2 | plus: 2 | round -%}
@@ -108,71 +6,12 @@ Front matter read here:
 {%- else -%}
   {%- assign col_end = a.end | minus: 2020 | times: 2 | plus: 2 | round -%}
 {%- endif -%}
-{%- comment -%}Nothing in _projects predates the ruler today, but clamp anyway so
-backdating an entry can't emit a column 0 or a negative one and silently break
-the grid.{%- endcomment -%}
 {%- assign col_start = col_raw -%}
 {%- assign clipped = "" -%}
 {%- if col_raw < 2 -%}
   {%- assign col_start = 2 -%}
   {%- assign clipped = " is-clipped" -%}
 {%- endif -%}
-{%- comment -%}---- The same chip, placed on the narrow chart ------------------
-Below 700px the grid turns a quarter turn: time runs down the page and the lanes
-run across it (see "Mobile: the transposed chart" in arc.scss). Both placements
-are computed here and both ride out on the element — the wide one as grid-row /
-grid-column, the narrow one as the custom properties the media query reads,
-since a stylesheet can't outrank an inline style without them.
-
-  --m0 / --m1  the half-year rows the chip spans, on the same 2020 origin the
-               columns use — so for any chip drawn on both charts these two carry
-               the same numbers as grid-column, and a bar that is four columns
-               wide over there is four rows tall over here. (They still have to
-               ride out separately: the media query has to override an inline
-               grid-column, and only a custom property can outrank one.) The
-               narrow chart reached back to 2018 for as long as the degree was
-               drawn on it; with the degree arc.wide_only there is nothing before
-               2020 left to reach for, and two empty years at the head of a phone
-               screen cost more than they show. arc.ongoing runs to the foot of
-               the fixed scale (2026), which is row 14.
-  --ln         the lane column.
-
-Lanes are packed rather than one-per-row: seven columns at this width would be
-51px each, which no title survives. Two desktop rows can share a column when
-nothing on one ever runs at the same time as anything on the other, and after
-the half-year snapping four qualify:
-
-  2 the degree + 4 Quasioptimal
-      + 3 the theses               → 2  RESEARCH   (the degree is wide_only, so
-                                        what actually shares this lane is the
-                                        theses to 2022 and Quasioptimal from
-                                        2023. The theses had a 30px strip of
-                                        their own between research and data,
-                                        which is where the wide chart puts them
-                                        and why arc.between hangs them there —
-                                        but that argument was made by a column
-                                        too narrow to hold anything but a glyph,
-                                        and the theses ARE the research. They
-                                        keep the data palette they wear on the
-                                        wide chart, so nothing about what kind
-                                        of work they were is lost by moving.)
-  5 the employment relay           → 3  DATA       (already one contiguous run)
-  6 side projects + 8 the CLIs     → 4  SOFTWARE   (Lindy → the site → Retend →
-                                        BinderBuilder → the first Taskbuffer →
-                                        Pomera, each starting where the last
-                                        stopped. The config repo on row 8 shares
-                                        Taskbuffer's half-year and would land on
-                                        top of it, so it is arc.wide_only.)
-  7 sspi.world                     → 5  SOFTWARE, second track: the one thing
-                                        that ran under everything else
-
-A new row has to be told which column it joins, and told deliberately — landing
-in column 0 would silently stack it on the year gutter — so an unmapped row
-stops the build.{%- endcomment -%}
-{%- comment -%}Clamped, though nothing reaches back past 2020 that is still drawn
-here: the degree does, and is only kept off the chart by display — a negative
-grid line would resolve against the far end of the grid and put it somewhere
-surprising if that ever changed.{%- endcomment -%}
 {%- assign m_start = a.start | minus: 2020 | times: 2 | plus: 2 | round | at_least: 2 -%}
 {%- if a.ongoing -%}
   {%- assign m_end = 14 -%}
@@ -191,17 +30,10 @@ surprising if that ever changed.{%- endcomment -%}
     {%- capture arc_fail -%}ERROR--arc--{{ include.p.slug }}--row-{{ a.row }}-has-no-lane-column-on-the-narrow-chart{%- endcapture -%}
     {% include {{ arc_fail }} %}
 {%- endcase -%}
-{%- comment -%}A popover on one of the top rows would open up into the ruler and
-be clipped by the scroll container, so those two rows open downward instead.
-{%- endcomment -%}
 {%- assign pop_dir = "" -%}
 {%- if a.row < 4 -%}{%- assign pop_dir = " arc-pop--down" -%}{%- endif -%}
 {%- assign wide_only = "" -%}
 {%- if a.wide_only -%}{%- assign wide_only = " is-wide-only" -%}{%- endif -%}
-{%- comment -%}Phase geometry is measured against the bar as *drawn*, not against
-the raw front-matter dates: both edges snapped to the nearest half-year column on
-the way in, so measuring against the unsnapped years would slide every phase
-boundary off the fill it is supposed to divide.{%- endcomment -%}
 {%- assign bar_start_year = col_start | minus: 2 | times: 0.5 | plus: 2020 -%}
 {%- assign bar_end_year = col_end | minus: 2 | times: 0.5 | plus: 2020 -%}
 {%- assign bar_len = bar_end_year | minus: bar_start_year -%}
@@ -214,17 +46,6 @@ boundary off the fill it is supposed to divide.{%- endcomment -%}
   {% include {{ arc_fail }} %}
 {%- endif -%}
 {%- if a.parts -%}
-{%- comment -%}One box for the whole document, divided into a section per part.
-The parts are one job that changed in kind, not separate jobs, so they share an
-edge, a fill and a click rather than standing apart with the gap that separates
-the roles further along the row. Each section carries its own title in its own
-stretch of the bar, and the turn between them is marked inside the box (see
-.arc-stage in arc.scss). As with phases, the sections take no popover of their
-own: the chip's one popover lists every part, and hovering a section lifts its
-line there.
-
-Validation runs first, over every part, so the box is only drawn from parts that
-are known to be in order.{%- endcomment -%}
 {%- assign prev_part_end = 0 -%}
 {%- for pt in a.parts -%}
   {%- assign pt_start = pt.start -%}
@@ -260,10 +81,6 @@ are known to be in order.{%- endcomment -%}
                --m0: {{ m_start }}; --m1: {{ m_end }}; --ln: {{ m_lane }};"
         data-project="{{ include.p.slug }}">
   {%- for pt in a.parts -%}
-    {%- comment -%}A section's share of the box is its share of the drawn bar,
-    measured the way phases are: against the snapped extent, and clipped to it.
-    The last section takes whatever is left, so rounding can't leave a sliver
-    of box uncovered at the end.{%- endcomment -%}
     {%- if forloop.last -%}
       {%- assign pt_r = bar_end_year -%}
     {%- else -%}
@@ -283,8 +100,6 @@ are known to be in order.{%- endcomment -%}
     {%- if pt_sub %}<small>{{ pt_sub }}</small>{% endif -%}
   </span>
   {%- endfor -%}
-  {%- comment -%}The sections name the roles, not the job, so this popover always
-  opens with the job's own title — the one line no section says.{%- endcomment -%}
   <span class="arc-pop{{ pop_dir }}">
     <strong>{{ a.label }}</strong>
     {%- if a.span %}<small class="arc-pop-span">{{ a.span }}</small>{% endif -%}
@@ -310,8 +125,6 @@ are known to be in order.{%- endcomment -%}
         data-project="{{ include.p.slug }}" aria-label="{{ a.label }}"
         {%- if a.era %} data-era="{{ a.era }}"{% endif %}>
   <span class="arc-ico arc-ico--{{ a.kind }}" aria-hidden="true"></span>
-  {%- comment -%}A mini shows nothing but its icon on either chart, so its
-  popover opens with the title the chip never says.{%- endcomment -%}
   <span class="arc-pop{{ pop_dir }}">
     <strong>{{ a.label }}</strong>
     {%- if a.sub %}<small>{{ a.sub }}</small>{% endif -%}
@@ -321,10 +134,6 @@ are known to be in order.{%- endcomment -%}
   </span>
 </button>
 {%- else -%}
-{%- comment -%}A full-size chip already shows its title and tagline, so its
-popover carries only what the chip can't: the dates and the description — plus
-the title itself, held back until the chip is too narrow to finish saying it.
-{%- endcomment -%}
 <button type="button"
         class="arc-chip arc-chip--{{ a.tone | default: a.lane }}{{ clipped }}{{ wide_only }}
                {%- if a.between %} is-between{% endif -%}
@@ -334,11 +143,6 @@ the title itself, held back until the chip is too narrow to finish saying it.
                --m0: {{ m_start }}; --m1: {{ m_end }}; --ln: {{ m_lane }};
                --fit: {% include arc-fit.html text=a.label %};"
         data-project="{{ include.p.slug }}">
-  {%- comment -%}The phase layer sits under the lettering and takes no pointer
-  events of its own: a work chip is a single button that opens a modal, so the
-  phases explain themselves through the chip's one popover rather than each
-  carrying an interactive popover of their own (a focusable descendant would
-  make the button invalid).{%- endcomment -%}
   {%- if a.phases and bar_len > 0 -%}
   <span class="arc-phase-track" aria-hidden="true">
     {%- assign prev_phase_end = 0 -%}
@@ -352,9 +156,6 @@ the title itself, held back until the chip is too narrow to finish saying it.
       {%- else -%}
         {%- assign p_end = bar_end_year -%}
       {%- endif -%}
-      {%- comment -%}Same contract as the toolchain band's segments: in date
-      order, disjoint, each one ending after it starts. Violations stop the
-      build rather than drawing a phase on top of its neighbour.{%- endcomment -%}
       {%- assign phase_error = "" -%}
       {%- if p_end <= p_start -%}
         {%- assign phase_error = "phase-ends-on-or-before-its-start" -%}
@@ -366,26 +167,12 @@ the title itself, held back until the chip is too narrow to finish saying it.
         {% include {{ arc_fail }} %}
       {%- endif -%}
       {%- assign prev_phase_end = p_end -%}
-      {%- comment -%}Clipped to the drawn bar the same way the bar is clipped to
-      the ruler: a phase reaching past either edge is cut at the edge.
-      {%- endcomment -%}
       {%- assign p_l = p_start | at_least: bar_start_year -%}
       {%- assign p_r = p_end | at_most: bar_end_year -%}
       {%- if p_r > p_l -%}
         {%- assign p_left = p_l | minus: bar_start_year | times: 100.0 | divided_by: bar_len | round: 2 -%}
         {%- assign p_width = p_r | minus: p_l | times: 100.0 | divided_by: bar_len | round: 2 -%}
         {%- assign cadence = ph.cadence | default: "active" -%}
-    {%- comment -%}data-phase pairs the stretch of bar with its line in the
-    popover, so hovering one lifts the other. Indexed rather than positional: a
-    phase clipped out of the drawn bar is skipped here but still listed there,
-    and counting siblings would slip by one from that point on.
-
-    One offset, two axes. The percentages are of the bar's drawn span, which runs
-    across it on the wide chart and down it on the narrow one, so the same pair
-    of numbers rides out twice: as left/width for the first and as --pt/--ph for
-    the second, which the media query reads into top/height. They agree because
-    both charts snap to the same half-years — only the origin differs, and an
-    origin cancels out of a proportion.{%- endcomment %}
     <span class="arc-phase is-{{ cadence }}" data-phase="{{ forloop.index }}"
           style="left: {{ p_left }}%; width: {{ p_width }}%;
                  --pt: {{ p_left }}%; --ph: {{ p_width }}%;"></span>
@@ -397,13 +184,9 @@ the title itself, held back until the chip is too narrow to finish saying it.
   {%- if a.sub %}<small>{{ a.sub }}</small>{% endif -%}
   {%- if a.span or chip_blurb or a.phases -%}
   <span class="arc-pop{{ pop_dir }}">
-    {%- comment -%}Shown only when the chip's own title had to be cut — see the
-    marking pass in home.html.{%- endcomment -%}
     <strong class="arc-pop-title">{{ a.label }}</strong>
     {%- if a.span %}<small class="arc-pop-span">{{ a.span }}</small>{% endif -%}
     {%- if chip_blurb %}<small>{{ chip_blurb }}</small>{% endif -%}
-    {%- comment -%}The phase breakdown, since the textures on the bar can say
-    that the pitch changed but not what changed or when.{%- endcomment -%}
     {%- if a.phases %}{% include arc-pop-phases.html phases=a.phases %}{% endif -%}
   </span>
   {%- endif -%}

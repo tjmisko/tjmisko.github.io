@@ -1,8 +1,8 @@
 ---
 project-title: "Coldstore"
 project-type: "Software - Storage Daemon - Go, React & SQLite"
-project-status: "Deployed Aug 2026"
-project-headline: "A home-server daemon that keeps Syncthing folders under a size budget by archiving old files to cold storage, with a web gallery of every file."
+project-status: "Active - Deployed Aug 2026"
+project-headline: "A home-server daemon that keeps Syncthing folders under a size budget by archiving old files to cold storage, with a keyboard-driven web gallery for browsing, tagging, and restoring them."
 github: Coldstore
 tags:
   - "all"
@@ -17,12 +17,16 @@ arc:
     sub: "Syncthing cold-storage daemon · Go, React, SQLite"
     span: "Aug 2026"
 ---
-Coldstore is a daemon for my home server that keeps each Syncthing folder under a size budget by moving the least-recently-touched files to a cold archive on the same host. Syncthing propagates the deletion, so archiving on the server frees the phone and laptop. A SQLite catalog and web UI keep every archived file browsable and restorable.
+Coldstore handles storage, syncing, and file management for my home server. Syncthing syncs phones and laptops to the server; Coldstore's daemon keeps each Syncthing folder under a size budget by moving the least-recently-touched files to a cold archive on the server. Syncthing propagates the deletion to the client devices, so archiving on the server frees space on the phone and laptop.
 
-*The Go and the React were written by coding agents under my direction and review.*
+A web gallery compiled into the Go binary enables navigation, browsing, and restoration from the archive. It supports filtering over tags, descriptions, capture date, and location, along with Live Photo pairing, document previews, and reading views for EPUBs and PDFs. It is served over Tailscale with access limited to an allowlist of Tailscale logins.
 
-* A cross-filesystem move copies to a temp sibling, fsyncs, re-reads and SHA-256-verifies the copy, renames it into place, then unlinks the source.
-* One process-wide mover mutex serializes the quota tick, the API, and the job worker. Crash recovery runs only at startup, before the mover or API exist.
-* The React gallery is compiled into the Go binary and deployed as one file with a systemd unit.
-* The end-to-end test tier pairs two Syncthing devices so it can observe the deletion propagating.
-* I ran the 23-issue work breakdown as three Claude Code worktrees and two Codex branches over one week in August 2026, then merged and deployed it.
+Go, React, and SQLite, deployed as one binary with a systemd unit. Built with coding agents under my direction.
+
+## Technical Details
+* **Archive**: Each file is stored once, as an immutable blob named by its SHA-256. An append-only, checksummed journal records every change and is the source of truth, so the SQLite index and the browsable folder tree (hardlinks into the blobs) can both be rebuilt from it. A complete backup is the blobs plus the journal, and a scrub re-hashes blobs to detect corruption.
+* **Concurrency:** A process-wide mover mutex serializes a periodic disk quota check, the API, and the job worker.
+* **Safe Moves**: Executes safe cross-filesystem moves by copying the original to a temp sibling, running `fsync`, checking the SHA-256 of the copy, renaming it into place, then unlinking the source.
+* **Recovery**: Crash recovery runs at startup, before the mover or API exist, ensuring interrupted moves are resolved before anything else can touch them.
+* **Testing:** Crash tests kill the process at each registered crash point and check that the archive's journal recovers; recovery from index deletion and blob corruption are also tested.
+* **Deployment**: Runs on a Debian 12 HP N40L microserver. The archive lives on a btrfs RAID1 pair, so either disk can fail without data loss.

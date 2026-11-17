@@ -2,7 +2,6 @@
 project-title: "University of California, Berkeley"
 project-type: "Education - B.A. Applied Mathematics - B.A. Economics, Honors"
 project-status: "Completed May 2022"
-project-headline: Concurrent degrees in Applied Mathematics (Statistics Concentration) and Economics.
 arc:
   lane: research
   row: 2
@@ -14,7 +13,7 @@ arc:
   blurb: "Concurrent degrees in Applied Mathematics (Statistics Concentration) and Economics."
 ---
 ## Supplemental Coursework
-* **Programming, Data Structures, and Operating Systems** (CS 61A/B/C).
+* **Programming, Data Structures, and Computer Architecture** (CS 61A/B/C).
 * **Introduction to Machine Learning** (CS 189).
 * **Probability Theory** (STAT 134), **Statistics** (STAT 135), **Stochastic Processes** (STAT 151).
 

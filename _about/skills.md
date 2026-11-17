@@ -2,9 +2,10 @@
 layout: post
 ---
 ##### Technology
-* **Systems & Backend**: Design and implementation of correct, reliable, and performant systems in Rust and Python. Familiarity with Go, Typescript, and C. 
+* **Programming Languages**: Fluency from years of writing Python, JavaScript, Bash, R, and Stata. Learning to think, write, and build in Rust. I can read, reason about, and manage agents in Go, TypeScript, Lua, and C.
+* **Backend & Systems**: REST & SSE APIs in Flask, Django, Axum; SQLite, Postgres, MongoDB; Tokio; sandboxing (bwrap, seccomp).
 * **Data**: ETL Pipelines, DAG Workflows, Data Modeling, and Data Reliability. Experience with persistence layers in SQLite, Postgres, and MongoDB.
-* **Web**: Interfaces and webpages in TypeScript, JavaScript, React, and HTML/CSS.
+* **Web**: Interfaces and webpages in JavaScript and HTML/CSS.
 * **Applied AI**: Evaluations, observability, context engineering/RAG.
 * **Infrastructure & Automation**: Provisioning and operating of self-hosted and cloud-hosted services in Linux. Bash, CI/CD, Docker, and reproducible system configuration.
 

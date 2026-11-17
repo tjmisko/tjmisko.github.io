@@ -26,7 +26,7 @@ It became clear to me by the end of 2023 I was going to spend a significant prop
 Given the phenomenal and rather unexpected success of AI agents, the "Season of Configuration"---ultimately an investment in a particular style of human-computer interface---has seen lower returns in the payoff for code manipulation speed, but has seen unexpectedly high returns in working natively with plaintext tools in a plaintext-oriented stack.
 
 ## Facets
-* Setup a [custom keyboard layout](https://configure.zsa.io/voyager/layouts/3aeEA/latest/0) based on Colemak DH (which I learned painstakingly in this period), with layers that keep the arrow keys and a number pad directly under my right hand, on a ZSA Voyager, which I use on camera mount clamps.
-* Iterated on a my Neovim configuration in Lua, and wrote the dozens of little bash scripts I use daily.
+* Set up a [custom keyboard layout](https://configure.zsa.io/voyager/layouts/3aeEA/latest/0) based on Colemak DH (which I learned painstakingly in this period), with layers that keep the arrow keys and a number pad directly under my right hand, on a ZSA Voyager, which I use on camera mount clamps.
+* Iterated on my Neovim configuration in Lua, and wrote the dozens of little bash scripts I use daily.
 * Dual booted Asahi Fedora Remix on my M1 Macbook, which I've been using daily since.
-* Setup the Obsidian Vault I use daily to run my life and keep track of information.
+* Set up the Obsidian Vault I use daily to run my life and keep track of information.

@@ -42,11 +42,13 @@ arc:
     sub: "Neovim + Obsidian plugins · Lua, TypeScript · agent-directed"
     span: "Feb 2026 – Present"
 ---
-Taskbuffer collects the checkbox tasks in my markdown notes into one Neovim buffer, sorted into horizons from Overdue to Someday, and edits the source notes in place. It is pure Lua with no build step and depends only on ripgrep. I use it daily.
+Taskbuffer collects tasks from my notes and projects into one Neovim buffer, sorted and grouped into horizons. Edits in the central virtual buffer modify the source notes in place. Task state remains distributed, making it easy to create and group tasks locally.
 
-*I hand-wrote the first two versions, about ninety lines of Bash and a 62-line Go filter in a separate repo, and coding agents under my direction wrote all of taskbuffer.nvim, Go version included, and the Obsidian port.*
+Today, Taskbuffer in Neovim is pure Lua with a ripgrep dependency. I use it daily.
 
-* It began as a Bash script, with a small Go program taking over date bucketing when the vault grew.
-* The first plugin version required a Go toolchain and a build step on the user's machine, so I had agents rebuild it in pure Lua.
-* The Lua cutover ran behind a flag, gated on parity with the Go binary it replaced.
-* A TypeScript port for Obsidian drives the same notes from my phone, held in parity by a written contract and a ported test corpus.
+## History
+* Taskbuffer began as a Bash script, with a small Go program taking over date bucketing when the vault grew.
+* I converted and extended this to a Go-based Neovim plugin in early 2026, but this required a clunky `go build` step on the user's machine, so I had agents rebuild it in pure Lua.
+* A TypeScript port for Obsidian implements the same core behavior, held in parity by a written contract and a ported test corpus. It enables me to work from the taskbuffer on my phone.
+
+I hand-wrote the early versions, then used coding agents to port and extend functionality to taskbuffer.nvim and obsidian-taskbuffer.
