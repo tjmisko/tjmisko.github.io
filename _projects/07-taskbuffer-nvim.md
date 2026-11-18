@@ -1,6 +1,6 @@
 ---
 project-title: "Taskbuffer"
-project-type: "Software - Neovim Plugin - Lua, with a TypeScript Obsidian Port"
+project-type: "Neovim Plugin - Lua, with a TypeScript Obsidian Port"
 project-status: "Completed April 2026"
 project-headline: "Centralizes and sorts plaintext tasks across markdown notes or codebases into one time-sorted interactive Neovim buffer (or Obsidian window, for mobile support)."
 github: taskbuffer.nvim

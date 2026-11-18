@@ -1,0 +1,9 @@
+{%- comment -%}
+The shortest telling of a project: the first sentence of its headline. Hover
+popovers use this, the rolodex face carries the whole headline, and the modal
+carries the long form.
+
+  text  a project-headline
+{%- endcomment -%}
+{%- assign sentences = include.text | split: ". " -%}
+{%- if sentences.size > 1 -%}{{ sentences.first }}.{%- else -%}{{ include.text }}{%- endif -%}

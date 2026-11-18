@@ -20,7 +20,8 @@
         data-project="{{ p.slug }}">
   <strong>{{ p.arc.node.label }}</strong>
   <small>{{ p.arc.node.sub }}</small>
-  {%- assign node_blurb = p.arc.node.blurb | default: p.project-headline -%}
+  {%- capture headline_short -%}{%- include headline-short.html text=p.project-headline -%}{%- endcapture -%}
+  {%- assign node_blurb = p.arc.node.blurb | default: headline_short -%}
   {%- if p.arc.node.span or node_blurb -%}
   <span class="arc-pop">
     <strong class="arc-pop-title">{{ p.arc.node.label }}</strong>
@@ -53,7 +54,8 @@
       <strong>{{ p.arc.node.label }}</strong>
       {%- if p.arc.node.sub %}<small>{{ p.arc.node.sub }}</small>{% endif -%}
       {%- if p.arc.node.span %}<small class="arc-pop-span">{{ p.arc.node.span }}</small>{% endif -%}
-      {%- assign node_blurb = p.arc.node.blurb | default: p.project-headline -%}
+      {%- capture headline_short -%}{%- include headline-short.html text=p.project-headline -%}{%- endcapture -%}
+      {%- assign node_blurb = p.arc.node.blurb | default: headline_short -%}
       {%- if node_blurb %}<small>{{ node_blurb }}</small>{% endif -%}
       {%- if p.arc.phases %}{% include arc-pop-phases.html phases=p.arc.phases %}{% endif -%}
     </span>

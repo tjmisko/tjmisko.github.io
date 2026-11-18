@@ -1,6 +1,6 @@
 ---
 project-title: "Functionary"
-project-type: "Software - Automation Harness - Rust & React"
+project-type: "Automation Harness - Rust & React"
 project-status: "Active - Iteration and Development"
 project-headline: "Agent harness for knowledge work. A coding agent drafts your process as a flow of prebuilt blocks on a visual canvas, where you can inspect and edit it. The flow compiles to Rust and runs in a sandboxed backend."
 website: functionary.app
@@ -13,6 +13,7 @@ arc:
     group: ai-engineering
     label: "Functionary"
     sub: "Build Reliable Agentic Workflows"
+    blurb: "Agent harness for knowledge work. A coding agent drafts your process as a flow of prebuilt blocks on a visual canvas, where you can inspect and edit it."
     span: "Apr 2026 – Present"
 ---
 Functionary is an agent harness for knowledge work. Users declare the process they want in plain language, and a coding agent progressively formalizes it through rounds of agent drafts and user corrections into a flow: a restricted subset of Rust composed from prebuilt blocks, each a bounded, evaluable step. The flow stays visible on a visual canvas where you read and edit it, and canvas edits and agent edits change the same source.

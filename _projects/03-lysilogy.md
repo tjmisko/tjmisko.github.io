@@ -1,6 +1,6 @@
 ---
 project-title: "Lysilogy"
-project-type: "Software - Custom Agents - Rust & React"
+project-type: "Custom Agents - Rust & React"
 project-status: "Active - Prototyping"
 project-headline: "Preprocesses scientific papers so you can read into a literature outside your field. Agents map each paper's sections and key ideas so you can find what's worth reading quickly. A graph view of a paper's citations helps you build a reading ramp up to it."
 website: lysilogy.com
@@ -15,7 +15,7 @@ arc:
     sub: "Navigate Technical Literature"
     span: "Aug 2026 – Present"
 ---
-Lysilogy consumes directories of scientific PDFs. A Rust backend extracts each with Poppler, shells out to a local coding-agent CLI for a typed analysis, and serves a keyboard-driven React reader with five views of increasing detail:
+Lysilogy preprocesses scientific papers so you can read into a literature outside your field. It consumes directories of scientific PDFs: a Rust backend extracts each with Poppler, shells out to a local coding-agent CLI for a typed analysis, and serves a keyboard-driven React reader with five views of increasing detail:
 
 1. **Abstract**: The author's abstract, verified against the PDF text, under a one-sentence generated thesis.
 2. **Overview**: A map of the PDF's pages and sections, showing where and how long the authors spend on each claim. Open a section to read its pages alongside a digest.

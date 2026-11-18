@@ -5,6 +5,7 @@ project-status: "Built 2022 - Site Retired 2025"
 project-headline: The public GitHub Pages site for UC Berkeley's swing dance club.
 project-collaborators: "Jennifer Tachibana, Alan Jian"
 external-github: "lindyonsproul/lindyonsproul.github.io"
+deck: false
 tags:
   - "all"
   - "software"

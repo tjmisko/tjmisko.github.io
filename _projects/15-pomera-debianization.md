@@ -3,6 +3,7 @@ project-title: "Pomera DM250 Writerdeck Debianization"
 project-type: "Freelance - Embedded Linux - Systems"
 project-status: "Completed Feb 2025"
 project-headline: "Freelance: turned a Pomera DM250 writing gadget into a dual-boot, minimal Debian writing environment with Chinese input."
+deck: false
 tags:
   - "all"
   - "software"

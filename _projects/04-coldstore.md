@@ -1,6 +1,6 @@
 ---
 project-title: "Coldstore"
-project-type: "Software - Storage Daemon - Go, React & SQLite"
+project-type: "Storage Daemon - Go, React & SQLite"
 project-status: "Active - Deployed Aug 2026"
 project-headline: "A home-server daemon that keeps Syncthing folders under a size budget by archiving old files to cold storage, with a keyboard-driven web gallery for browsing, tagging, and restoring them."
 github: Coldstore

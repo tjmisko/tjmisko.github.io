@@ -1,6 +1,6 @@
 ---
 project-title: "Limpid"
-project-type: "Software - Agent Response Reader - Rust, GTK & WebKit"
+project-type: "Agent Response Reader - Rust, GTK & WebKit"
 project-status: "Active - Daily Use"
 project-headline: "A snappy, keyboard-driven reader for coding-agent responses, HTML artifacts, and markdown. Read a long answer as a clean page, comment on any block or answer the agent's questions <i>in situ</i>, and send responses back to the session on close."
 github: limpid

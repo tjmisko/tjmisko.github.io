@@ -1,4 +1,5 @@
 {%- comment -%}The rolodex face of every project. The card markup itself lives in
 project-card.html, which the Trajectory also uses to render its experience
-entries into the same modal.{%- endcomment -%}
-{%- for p in site.projects -%}{%- include project-card.html p=p -%}{%- endfor -%}
+entries into the same modal. Projects with `deck: false` stay off the deck;
+their cards are rendered hidden in the Trajectory instead (see home.html).{%- endcomment -%}
+{%- for p in site.projects -%}{%- if p.deck != false -%}{%- include project-card.html p=p -%}{%- endif -%}{%- endfor -%}

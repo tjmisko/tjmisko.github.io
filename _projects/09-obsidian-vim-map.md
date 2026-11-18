@@ -1,6 +1,6 @@
 ---
 project-title: "Vim Map"
-project-type: "Software - Obsidian Plugin - TypeScript"
+project-type: "Obsidian Plugin - TypeScript"
 project-status: "Active"
 project-headline: "A fork of Obsidian's Map View plugin with vim-style modal navigation over the vault's places and boundary regions kept in notes."
 github: obsidian-vim-map

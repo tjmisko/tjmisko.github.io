@@ -1,8 +1,9 @@
 ---
 project-title: "Configuration"
-project-type: "Software - Dotfiles & System Configuration"
+project-type: "Dotfiles & System Configuration"
 project-status: "Completed Aug 2024"
 project-headline: "Configured all the primary tools I now rely on."
+deck: false
 tags:
   - "all"
   - "software"

@@ -1,9 +1,10 @@
 ---
 project-title: "TRMNL Dashboard"
-project-type: "Software - E-Ink Dashboard - Bash, Go & Liquid"
+project-type: "E-Ink Dashboard - Bash, Go & Liquid"
 project-status: "Active Development"
 project-headline: "A plugin for a TRMNL e-ink dashboard that displays the day's birthdays, events, tasks, transit, and weather on my wall at home."
 github: TRMNL-Configuration
+deck: false
 tags:
   - "all"
   - "software"

@@ -1,6 +1,6 @@
 ---
 project-title: "Switchboard"
-project-type: "Software - Systems Daemon - Rust"
+project-type: "Systems Daemon - Rust"
 project-status: "Active - Daily Use"
 project-headline: "Interactive status bar driven by a Rust daemon that reports the status of every coding-agent session, across harnesses and remote sessions, and jumps into any of them with a keypress or click."
 github: switchboard

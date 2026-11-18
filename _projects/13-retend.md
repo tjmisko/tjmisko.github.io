@@ -1,8 +1,9 @@
 ---
 project-title: "Retend"
-project-type: "Software - Time Tracking - Bash, Neovim & Go"
+project-type: "Time Tracking - Bash, Neovim & Go"
 project-status: "Completed Early 2024" 
 project-headline: "Retrospective time tracking system and dashboard in fifteen minute intervals." 
+deck: false
 tags:
   - "all"
   - "software"

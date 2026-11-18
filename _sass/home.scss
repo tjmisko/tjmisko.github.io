@@ -1122,7 +1122,7 @@ $rolodex-passed: mix($homepage-accent-color, $homepage-background-color, 42%);
   background-color: $project-card-color;
   font-size: 0.9em;
   border-radius: 8px;
-  padding: 20px 20px 16px;
+  padding: 20px 20px 12px;
   // Hairline at rest, like every other surface on the page; the accent border
   // and the lift below arrive on hover.
   border: 1px solid $rule;
@@ -1230,6 +1230,22 @@ $rolodex-passed: mix($homepage-accent-color, $homepage-background-color, 42%);
     strong, b { font-weight: 500; color: $homepage-font-color; }
     code { font-family: "IBM Plex Mono", monospace; font-size: 0.88em; }
   }
+  // A long form that opens with prose already says what the headline says, so
+  // the headline steps aside and that opening paragraph is set as the lede.
+  // A long form that opens on a heading or a list keeps the headline above it.
+  &:has(.project-description > p:first-child) {
+    .project-headline { display: none; }
+    .project-description {
+      margin-top: 18px;
+      padding-top: 0;
+      border-top: 0;
+      > p:first-child {
+        font-size: 1rem;
+        line-height: 1.55;
+        color: rgba(225, 225, 225, 0.92);
+      }
+    }
+  }
   // A link to another card: the accent, underlined by a hairline that fills on
   // hover, the same gesture as the home page's own links.
   .project-link {
@@ -1241,6 +1257,7 @@ $rolodex-passed: mix($homepage-accent-color, $homepage-background-color, 42%);
   }
   .project-footer {
     margin-top: 6px;
+    padding-top: 20px;
     border-top-color: rgba(225, 225, 225, 0.08);
   }
   .project-status { font-size: 0.68rem; }
@@ -1336,7 +1353,9 @@ html.using-keyboard .project-card:focus-visible,
   align-items: center;
   font-size: 0.6rem;
   border-top: 1px solid $rule;
-  padding-top: 8px;
+  // Equal air above and below the footer row: this padding matches the
+  // card's bottom padding, so the row sits centered between rule and edge.
+  padding-top: 12px;
   margin-top: 10px;
   gap: 24px;
 }
@@ -1408,6 +1427,7 @@ html.using-keyboard .project-card:focus-visible,
 }
 
 .project-linkbox .svg-icon {
+  display: block;
   width: 22px;
   height: 22px;
   // Dimmed like the hero social icons; hover still brings up the accent.

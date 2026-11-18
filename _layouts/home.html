@@ -25,7 +25,7 @@ layout: default
           <a class="homepage-link" href="#projects-card" data-project="01-functionary">Functionary</a>,
           <a class="homepage-link" href="#projects-card" data-project="02-switchboard">Switchboard</a>,
           and my
-          <a class="homepage-link" href="#projects-card" data-project="04-sspi-data-webapp">other projects</a>
+          <a class="homepage-link" href="#projects-card" data-project="06-sspi-data-webapp">other projects</a>
           below.
         </p>
         <p class="reveal">
@@ -378,6 +378,7 @@ layout: default
     </div>
     <div class="arc-detail-sources" hidden>
       {%- for p in site.experience -%}{%- include project-card.html p=p -%}{%- endfor -%}
+      {%- for p in site.projects -%}{%- if p.deck == false -%}{%- include project-card.html p=p -%}{%- endif -%}{%- endfor -%}
     </div>
   </div>
   <script>

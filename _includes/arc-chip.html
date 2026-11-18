@@ -1,5 +1,6 @@
 {%- assign a = include.p.arc -%}
-{%- assign chip_blurb = a.blurb | default: include.p.project-headline -%}
+{%- capture headline_short -%}{%- include headline-short.html text=include.p.project-headline -%}{%- endcapture -%}
+{%- assign chip_blurb = a.blurb | default: headline_short -%}
 {%- assign col_raw = a.start | minus: 2020 | times: 2 | plus: 2 | round -%}
 {%- if a.ongoing -%}
   {%- assign col_end = include.work_end -%}
