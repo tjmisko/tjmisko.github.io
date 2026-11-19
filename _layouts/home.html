@@ -845,7 +845,11 @@ layout: default
       pageEl.dataset.state = "drawing";
       try {
         const page = await pdfDoc.getPage(Number(pageEl.dataset.page));
-        const dpr = window.devicePixelRatio || 1;
+        // Device pixels per layout pixel. On a big screen the page is zoomed
+        // (scale.scss), which devicePixelRatio doesn't count: without it a page
+        // would be drawn at its unzoomed size and stretched soft.
+        const pageZoom = parseFloat(getComputedStyle(document.documentElement).zoom) || 1;
+        const dpr = (window.devicePixelRatio || 1) * pageZoom;
         const base = page.getViewport({ scale: 1 });
         const viewport = page.getViewport({ scale: (pageEl.clientWidth / base.width) * dpr });
         const canvas = document.createElement("canvas");

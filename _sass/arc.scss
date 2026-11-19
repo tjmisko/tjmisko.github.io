@@ -630,7 +630,8 @@ $arc-fit-size: unquote("max(0.5rem, min(1em, (100cqi - var(--fit) * 0.5px) / (va
   gap: 6px;
   h3 {
     font-family: "IBM Plex Mono";
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
     margin: 0;
     color: $homepage-accent-color;
     font-weight: normal;
@@ -704,7 +705,7 @@ $arc-fit-size: unquote("max(0.5rem, min(1em, (100cqi - var(--fit) * 0.5px) / (va
     justify-content: center;
     z-index: 5;
     box-shadow: 0 14px 36px -22px rgba(250, 130, 30, 0.14);
-    h3 { font-size: 1.3rem; }
+    h3 { font-size: 1.15rem; }
     .arc-node-band { font-size: 0.74rem; margin: 4px 0 -1px; }
     .arc-chip {
       padding: 7px 11px;

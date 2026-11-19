@@ -1,0 +1,43 @@
+// ---- Big screens -------------------------------------------------------------
+// The page is drawn for a 1920x1080 screen. Past that — a 4K monitor at 100%,
+// a TV — its fixed measures (a 600px column, a 1280px chart, 14pt type) stayed
+// the size they were and the rest of the screen went to margin.
+//
+// Above the design size the whole page is zoomed by however much bigger the
+// screen is, on whichever axis has less to spare, so every section still fits
+// one screen: 2x on a 3840x2160 display, 4x at 7680x4320, 1.33x on a 3440x1440
+// ultrawide (its height, not its width). Zoom rather than new breakpoints
+// because it scales px, pt and rem alike and leaves media queries reading the
+// real viewport, so the layout a big screen gets is the desktop one, enlarged.
+//
+// Everything is inside the query: at or below 1920x1080 none of this applies.
+//
+// The ratio of two lengths as a plain number is tan(atan2(a, b)); dividing a
+// length by a length in calc() is not yet supported everywhere.
+$scale-base-width: 1920px;
+$scale-base-height: 1080px;
+
+@property --page-zoom {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@media screen and (min-width: #{$scale-base-width + 1px}) and (min-height: #{$scale-base-height + 1px}) {
+  :root {
+    --page-zoom: #{unquote("max(1, min(tan(atan2(100vw, #{$scale-base-width})), tan(atan2(100vh, #{$scale-base-height}))))")};
+    zoom: var(--page-zoom);
+  }
+
+  // Viewport units are zoomed along with everything else, so a length that has
+  // to come out as a share of the real screen is divided back down.
+  .homepage-card {
+    min-height: calc(100svh / var(--page-zoom));
+  }
+  .pdf-modal {
+    height: #{unquote("min(calc(90vh / var(--page-zoom)), 1100px)")};
+  }
+  .pdf-modal-parent {
+    padding: calc(4vmin / var(--page-zoom));
+  }
+}

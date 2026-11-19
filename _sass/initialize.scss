@@ -97,5 +97,6 @@ $on-large:         $on-laptop !default;
 @import
   "home",
   "arc",
-  "blog"// Hook to override existing styles.
+  "blog",// Hook to override existing styles.
+  "scale"
 ;
